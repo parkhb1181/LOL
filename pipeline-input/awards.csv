@@ -1,11 +1,11 @@
-# awards.csv v0.2 — 검수 진행 중 (CURSOR_GUIDE §4.4 게이트)
+# awards.csv v0.3 — 검수 진행 중 (CURSOR_GUIDE §4.4 게이트)
 # source(검수 URL):
 #   https://lol.fandom.com/wiki/Worlds_MVP
 #   https://lol.fandom.com/wiki/LCK/Season_MVP
 #   https://lol.fandom.com/wiki/LCK/Finals_MVP
 #   https://lol.fandom.com/wiki/LCK/All-Pro_Team
 # 생성: AI 학습 데이터 기반 + 호빈 웹검색 검증 병행
-# 표기: 행 앞 # ? = 불확실 → 호빈 URL 확인 후 주석 해제 or 수정/삭제
+# 표기: # ? = 불확실(플레이어 또는 스플릿 미확인) / # ~ = 추정(유력하나 소스 미확인)
 # split: SPRING/SUMMER/WINTER/NONE (연간 단일 수상 또는 스플릿 미상)
 # MSI_MVP는 §6.1 가점 대상 아님 — 주석 보존만 (04-ratings 미사용)
 playerId,year,league,award,value,split
@@ -17,16 +17,12 @@ Mata,2014,WORLDS,WORLDS_MVP,,NONE
 MaRin,2015,WORLDS,WORLDS_MVP,,NONE
 Faker,2016,WORLDS,WORLDS_MVP,,NONE
 Ruler,2017,WORLDS,WORLDS_MVP,,NONE
-# ? 2018: Rookie(MID) vs TheShy(TOP) — IG 우승 (미확정)
-Rookie,2018,WORLDS,WORLDS_MVP,,NONE
-# ? 2019: Tian(JGL) vs Doinb(MID) — FPX 우승 (미확정)
+Ning,2018,WORLDS,WORLDS_MVP,,NONE
 Tian,2019,WORLDS,WORLDS_MVP,,NONE
 Canyon,2020,WORLDS,WORLDS_MVP,,NONE
-# ? 2021: Viper(ADC) vs Scout(MID) — EDG 우승 (미확정)
-Viper,2021,WORLDS,WORLDS_MVP,,NONE
-# ? 2022: Zeka(MID) vs Deft(ADC) — DRX 우승 (미확정)
-Zeka,2022,WORLDS,WORLDS_MVP,,NONE
-# ? 2023: 실수상자 불확실 — T1 우승 (Faker 아님)
+Scout,2021,WORLDS,WORLDS_MVP,,NONE
+Kingen,2022,WORLDS,WORLDS_MVP,,NONE
+Zeus,2023,WORLDS,WORLDS_MVP,,NONE
 Faker,2024,WORLDS,WORLDS_MVP,,NONE
 
 # ═══════════════════════════════════════════════════
@@ -47,22 +43,24 @@ Faker,2024,WORLDS,WORLDS_MVP,,NONE
 Faker,2013,LCK,SEASON_MVP,,SUMMER
 Faker,2014,LCK,SEASON_MVP,,WINTER
 Duke,2015,LCK,SEASON_MVP,,SPRING
-# ? 2015 서머 SEASON_MVP — 확인 필요
+Ssumday,2015,LCK,SEASON_MVP,,SUMMER
 Smeb,2016,LCK,SEASON_MVP,,SPRING
 Smeb,2016,LCK,SEASON_MVP,,SUMMER
-# ? 2017 스프링 SEASON_MVP — 확인 필요
+Crown,2017,LCK,SEASON_MVP,,SPRING
 Kuro,2017,LCK,SEASON_MVP,,SUMMER
-# ? 2018 스프링 SEASON_MVP — 확인 필요
+Bdd,2017,LCK,SEASON_MVP,,SUMMER
+Bdd,2018,LCK,SEASON_MVP,,SPRING
 Khan,2018,LCK,SEASON_MVP,,SUMMER
 Chovy,2019,LCK,SEASON_MVP,,SPRING
-# ? 2019 서머 SEASON_MVP — 확인 필요
+Canyon,2019,LCK,SEASON_MVP,,SUMMER
 # ? 2020 스프링 SEASON_MVP — 확인 필요
 ShowMaker,2020,LCK,SEASON_MVP,,SUMMER
-# ? 2021 스프링 SEASON_MVP — 확인 필요
+Canyon,2021,LCK,SEASON_MVP,,SPRING
 Peanut,2021,LCK,SEASON_MVP,,SUMMER
-# ? 2022 스프링 SEASON_MVP — 확인 필요
+Keria,2022,LCK,SEASON_MVP,,SPRING
 Ruler,2022,LCK,SEASON_MVP,,SUMMER
-# ? 2023 스프링+서머 SEASON_MVP — 확인 필요
+# ? 2023 스프링 SEASON_MVP — 확인 필요
+# ? 2023 서머 SEASON_MVP — 확인 필요
 Chovy,2024,LCK,SEASON_MVP,,SPRING
 Chovy,2024,LCK,SEASON_MVP,,SUMMER
 
@@ -71,14 +69,18 @@ Chovy,2024,LCK,SEASON_MVP,,SUMMER
 # 2015~2019: 포스트시즌 MVP → FINALS_MVP(+4) 매핑 (시대 공정성)
 # 2020+: 공식 Finals MVP 제도 시작
 # ═══════════════════════════════════════════════════
+Easyhoon,2015,LCK,FINALS_MVP,,SPRING
 Faker,2015,LCK,FINALS_MVP,,SUMMER
 Duke,2016,LCK,FINALS_MVP,,SPRING
 Kuro,2016,LCK,FINALS_MVP,,SUMMER
 Peanut,2017,LCK,FINALS_MVP,,SPRING
 Khan,2017,LCK,FINALS_MVP,,SUMMER
-# ? 2018 포스트시즌 MVP — 확인 필요
-# ? 2019 포스트시즌 MVP — 확인 필요
-# ? 2020 Finals MVP (제도 첫해) — 확인 필요
+PraY,2018,LCK,FINALS_MVP,,SPRING
+Score,2018,LCK,FINALS_MVP,,SUMMER
+Teddy,2019,LCK,FINALS_MVP,,SPRING
+Clid,2019,LCK,FINALS_MVP,,SUMMER
+Cuzz,2020,LCK,FINALS_MVP,,SPRING
+Nuguri,2020,LCK,FINALS_MVP,,SUMMER
 Khan,2021,LCK,FINALS_MVP,,SPRING
 ShowMaker,2021,LCK,FINALS_MVP,,SUMMER
 Peanut,2022,LCK,FINALS_MVP,,SUMMER
@@ -88,13 +90,13 @@ Zeka,2024,LCK,FINALS_MVP,,SUMMER
 # ═══════════════════════════════════════════════════
 # LCK ALL-PRO 1ST TEAM (2020~2024 — 행별 합산)
 # ═══════════════════════════════════════════════════
-# ── 2020 ──
-Nuguri,2020,LCK,ALLPRO_1ST,,NONE
+# ── 2020 서머 ──
+Nuguri,2020,LCK,ALLPRO_1ST,,SUMMER
 Canyon,2020,LCK,ALLPRO_1ST,,SUMMER
-ShowMaker,2020,LCK,ALLPRO_1ST,,NONE
-Ghost,2020,LCK,ALLPRO_1ST,,NONE
-BeryL,2020,LCK,ALLPRO_1ST,,NONE
-# ? 2020: Canyon=SUMMER 확정, 나머지 스플릿 미상
+ShowMaker,2020,LCK,ALLPRO_1ST,,SUMMER
+# ? ADC 2020서머 1st — 미확인 (Ghost는 2nd)
+BeryL,2020,LCK,ALLPRO_1ST,,SUMMER
+Ghost,2020,LCK,ALLPRO_2ND,,SUMMER
 
 # ── 2021 ──
 # ? Canna,2021,LCK,ALLPRO_1ST,,NONE
@@ -102,7 +104,7 @@ Canyon,2021,LCK,ALLPRO_1ST,,SPRING
 Faker,2021,LCK,ALLPRO_1ST,,NONE
 Gumayusi,2021,LCK,ALLPRO_1ST,,NONE
 Keria,2021,LCK,ALLPRO_1ST,,NONE
-# ? 2021: TOP 수상자(Canna?) + Faker·Gumayusi 스플릿 확인 필요
+# ? 2021: TOP(Canna?) + Faker·Gumayusi·Keria 스플릿 미상
 
 # ── 2022 ──
 Zeus,2022,LCK,ALLPRO_1ST,,NONE
@@ -120,12 +122,17 @@ Gumayusi,2023,LCK,ALLPRO_1ST,,NONE
 Keria,2023,LCK,ALLPRO_1ST,,NONE
 # ? 2023: 전체 스플릿 미상
 
-# ── 2024 ──
-# ? Doran,2024,LCK,ALLPRO_1ST,,NONE
+# ── 2024 스프링 ──
+# ? Doran,2024,LCK,ALLPRO_1ST,,SPRING
 Canyon,2024,LCK,ALLPRO_1ST,,SPRING
-Canyon,2024,LCK,ALLPRO_1ST,,SUMMER
 Chovy,2024,LCK,ALLPRO_1ST,,SPRING
+# ? Delight,2024,LCK,ALLPRO_1ST,,SPRING
+# ? 2024 스프링: TOP(Doran?)·SUP(Delight?) 확인 필요
+
+# ── 2024 서머 ──
+# ~ Kiin,2024,LCK,ALLPRO_1ST,,SUMMER
+Canyon,2024,LCK,ALLPRO_1ST,,SUMMER
 Chovy,2024,LCK,ALLPRO_1ST,,SUMMER
-Peyz,2024,LCK,ALLPRO_1ST,,NONE
-# ? Delight,2024,LCK,ALLPRO_1ST,,NONE
-# ? 2024: TOP(Doran?) · SUP(Delight?) 확인 필요 / Peyz 스플릿 미상
+Peyz,2024,LCK,ALLPRO_1ST,,SUMMER
+# ~ Lehends,2024,LCK,ALLPRO_1ST,,SUMMER
+# ~ 2024 서머: Canyon·Chovy·Peyz 확정, Kiin(TOP)·Lehends(SUP) 젠지 라인업 추정
