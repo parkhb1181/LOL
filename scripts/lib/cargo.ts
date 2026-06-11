@@ -33,31 +33,41 @@ interface RawCargo {
 
 const RETRIES_EXHAUSTED = 'retries exhausted'
 
+// rate-limit 전용 초기 백오프 (5회) — 이후 60초 고정 무한 재시도
+const RATE_BACKOFF = [60_000, 90_000, 120_000, 180_000, 240_000]
+const RATE_FIXED_MS = 60_000
+// 네트워크/5xx 오류는 기존 백오프 유지 (최대 6회 후 RETRIES_EXHAUSTED)
+const OTHER_BACKOFF = [60_000, 90_000, 120_000, 180_000, 240_000, 300_000]
+
 async function fetchOnce(params: Record<string, string>): Promise<CargoRow[]> {
   const u = new URL(BASE)
   u.searchParams.set('action', 'cargoquery')
   u.searchParams.set('format', 'json')
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v)
 
-  const BACKOFF = [60_000, 90_000, 120_000, 180_000, 240_000, 300_000]
-  for (let attempt = 0; attempt < BACKOFF.length + 1; attempt++) {
-    const wait = BACKOFF[attempt] ?? BACKOFF[BACKOFF.length - 1]
+  let rateAttempt = 0   // rate-limit 연속 횟수 (5 초과 시 60초 고정 무한)
+  let otherAttempt = 0  // 네트워크/5xx 오류 횟수 (6회 초과 시 중단)
 
+  while (true) {
     let res: Response
     try {
       res = await apiFetch(u.toString())
     } catch (e) {
-      // 네트워크 오류(DNS 실패, 연결 끊김 등)도 일시적 — 백오프 재시도
       consecutiveSuccess = 0
-      process.stderr.write(`network error (attempt ${attempt + 1}) — ${wait / 1000}s 대기: ${e}\n`)
+      const wait = OTHER_BACKOFF[otherAttempt] ?? OTHER_BACKOFF[OTHER_BACKOFF.length - 1]
+      otherAttempt++
+      process.stderr.write(`network error (attempt ${otherAttempt}) — ${wait / 1000}s 대기: ${e}\n`)
+      if (otherAttempt > OTHER_BACKOFF.length) throw new Error(RETRIES_EXHAUSTED)
       await sleep(wait)
       continue
     }
 
-    // 5xx 서버 오류도 일시적 — 재시도
     if (res.status >= 500) {
       consecutiveSuccess = 0
-      process.stderr.write(`HTTP ${res.status} (attempt ${attempt + 1}) — ${wait / 1000}s 대기\n`)
+      const wait = OTHER_BACKOFF[otherAttempt] ?? OTHER_BACKOFF[OTHER_BACKOFF.length - 1]
+      otherAttempt++
+      process.stderr.write(`HTTP ${res.status} (attempt ${otherAttempt}) — ${wait / 1000}s 대기\n`)
+      if (otherAttempt > OTHER_BACKOFF.length) throw new Error(RETRIES_EXHAUSTED)
       await sleep(wait)
       continue
     }
@@ -67,7 +77,10 @@ async function fetchOnce(params: Record<string, string>): Promise<CargoRow[]> {
     if (json.error) {
       if (json.error.code === 'ratelimited') {
         consecutiveSuccess = 0
-        process.stderr.write(`ratelimited (attempt ${attempt + 1}) — ${wait / 1000}s 대기\n`)
+        // 5회 초과 후 60초 고정 무한 재시도 (stall 방지)
+        const wait = rateAttempt < RATE_BACKOFF.length ? RATE_BACKOFF[rateAttempt] : RATE_FIXED_MS
+        rateAttempt++
+        process.stderr.write(`ratelimited (attempt ${rateAttempt}) — ${wait / 1000}s 대기\n`)
         await sleep(wait)
         continue
       }
@@ -76,7 +89,6 @@ async function fetchOnce(params: Record<string, string>): Promise<CargoRow[]> {
     consecutiveSuccess++
     return (json.cargoquery ?? []).map(r => r.title)
   }
-  throw new Error(RETRIES_EXHAUSTED)
 }
 
 const CACHE_DIR = path.join(process.cwd(), 'pipeline-cache', 'cargo')

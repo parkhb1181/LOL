@@ -33,9 +33,17 @@ async function main() {
     return
   }
 
-  const resultsPath = path.join(process.cwd(), 'pipeline-cache', 'results.json')
-  if (!fs.existsSync(resultsPath)) {
-    throw new Error('results.json 없음 — 03-results.ts 먼저 실행')
+  // worlds-results.json 폴백: 03-results.ts가 Worlds 섹션 완료 직후 저장하는 중간 파일
+  const fullResultsPath = path.join(process.cwd(), 'pipeline-cache', 'results.json')
+  const worldsOnlyPath  = path.join(process.cwd(), 'pipeline-cache', 'worlds-results.json')
+  let resultsPath = fullResultsPath
+  if (!fs.existsSync(fullResultsPath)) {
+    if (fs.existsSync(worldsOnlyPath)) {
+      resultsPath = worldsOnlyPath
+      console.log('worlds-results.json 사용 (Worlds 전용 화이트리스트 — 국내 선수 미포함)')
+    } else {
+      throw new Error('results.json / worlds-results.json 없음 — 03-results.ts 먼저 실행')
+    }
   }
 
   const results: ResultEntry[] = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
