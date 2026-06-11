@@ -31,13 +31,13 @@ interface RawCargo {
   error?: { code?: string; info?: string }
 }
 
-const RETRIES_EXHAUSTED = 'retries exhausted'
+// 모든 재시도 가능 오류 공통 백오프 — 한도 초과 후 60s 고정 무한 (밤새 배치용)
+const BACKOFF_STEPS = [60_000, 90_000, 120_000, 180_000, 240_000, 300_000]
+const FIXED_RETRY_MS = 60_000
 
-// rate-limit 전용 초기 백오프 (5회) — 이후 60초 고정 무한 재시도
-const RATE_BACKOFF = [60_000, 90_000, 120_000, 180_000, 240_000]
-const RATE_FIXED_MS = 60_000
-// 네트워크/5xx 오류는 기존 백오프 유지 (최대 6회 후 RETRIES_EXHAUSTED)
-const OTHER_BACKOFF = [60_000, 90_000, 120_000, 180_000, 240_000, 300_000]
+function backoffWait(attempt: number): number {
+  return attempt < BACKOFF_STEPS.length ? BACKOFF_STEPS[attempt] : FIXED_RETRY_MS
+}
 
 async function fetchOnce(params: Record<string, string>): Promise<CargoRow[]> {
   const u = new URL(BASE)
@@ -45,42 +45,39 @@ async function fetchOnce(params: Record<string, string>): Promise<CargoRow[]> {
   u.searchParams.set('format', 'json')
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v)
 
-  let rateAttempt = 0   // rate-limit 연속 횟수 (5 초과 시 60초 고정 무한)
-  let otherAttempt = 0  // 네트워크/5xx 오류 횟수 (6회 초과 시 중단)
+  let attempt = 0  // 재시도 횟수 (rate-limit·429·5xx·네트워크 오류 공통)
 
   while (true) {
     let res: Response
     try {
       res = await apiFetch(u.toString())
     } catch (e) {
+      // 네트워크 오류 — 한도 없이 무한 재시도
       consecutiveSuccess = 0
-      const wait = OTHER_BACKOFF[otherAttempt] ?? OTHER_BACKOFF[OTHER_BACKOFF.length - 1]
-      otherAttempt++
-      process.stderr.write(`network error (attempt ${otherAttempt}) — ${wait / 1000}s 대기: ${e}\n`)
-      if (otherAttempt > OTHER_BACKOFF.length) throw new Error(RETRIES_EXHAUSTED)
+      const wait = backoffWait(attempt++)
+      process.stderr.write(`network error (attempt ${attempt}) — ${wait / 1000}s 대기: ${e}\n`)
       await sleep(wait)
       continue
     }
 
-    if (res.status >= 500) {
+    // HTTP 429 또는 5xx — rate-limit/서버 오류, 무한 재시도
+    if (res.status === 429 || res.status >= 500) {
       consecutiveSuccess = 0
-      const wait = OTHER_BACKOFF[otherAttempt] ?? OTHER_BACKOFF[OTHER_BACKOFF.length - 1]
-      otherAttempt++
-      process.stderr.write(`HTTP ${res.status} (attempt ${otherAttempt}) — ${wait / 1000}s 대기\n`)
-      if (otherAttempt > OTHER_BACKOFF.length) throw new Error(RETRIES_EXHAUSTED)
+      const wait = backoffWait(attempt++)
+      process.stderr.write(`HTTP ${res.status} (attempt ${attempt}) — ${wait / 1000}s 대기\n`)
       await sleep(wait)
       continue
     }
+    // 4xx (404·400 등) — 쿼리 자체 오류, 재시도 불가
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
     const json: RawCargo = await res.json()
     if (json.error) {
       if (json.error.code === 'ratelimited') {
+        // JSON ratelimited 응답 — 무한 재시도
         consecutiveSuccess = 0
-        // 5회 초과 후 60초 고정 무한 재시도 (stall 방지)
-        const wait = rateAttempt < RATE_BACKOFF.length ? RATE_BACKOFF[rateAttempt] : RATE_FIXED_MS
-        rateAttempt++
-        process.stderr.write(`ratelimited (attempt ${rateAttempt}) — ${wait / 1000}s 대기\n`)
+        const wait = backoffWait(attempt++)
+        process.stderr.write(`ratelimited (attempt ${attempt}) — ${wait / 1000}s 대기\n`)
         await sleep(wait)
         continue
       }
@@ -124,25 +121,17 @@ export async function cargoPaginate(
   let offset = 0
   process.stderr.write(`[cargo] ${cacheKey}\n`)
 
-  try {
-    while (true) {
-      const page = await fetchOnce({
-        ...params,
-        limit: String(PAGE_LIMIT),
-        offset: String(offset),
-      })
-      all.push(...page)
-      if (page.length < PAGE_LIMIT) break
-      offset += PAGE_LIMIT
-    }
-  } catch (err) {
-    if (err instanceof Error && err.message === RETRIES_EXHAUSTED) {
-      // 최대 재시도 후에도 실패 — 빈 배열로 폴백, 재실행 시 다시 시도 가능
-      process.stderr.write(`[cargo] ${cacheKey} — 최대 재시도 실패, 스킵 (cargo-failures.json 기록)\n`)
-      recordFailure(cacheKey)
-      return []
-    }
-    throw err
+  // fetchOnce는 rate-limit·429·5xx·네트워크 오류를 무한 재시도 — throw하지 않음
+  // 4xx·Cargo 오류만 throw (쿼리 자체 문제 → 상위로 전파)
+  while (true) {
+    const page = await fetchOnce({
+      ...params,
+      limit: String(PAGE_LIMIT),
+      offset: String(offset),
+    })
+    all.push(...page)
+    if (page.length < PAGE_LIMIT) break
+    offset += PAGE_LIMIT
   }
 
   fs.writeFileSync(cacheFile, JSON.stringify(all, null, 2), 'utf-8')
