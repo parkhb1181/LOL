@@ -1,1 +1,116 @@
+# awards.csv v0 초안 — 검수 전 레이팅 빌드 사용 금지 (CURSOR_GUIDE §4.4 게이트)
+# source(검수 URL):
+#   https://lol.fandom.com/wiki/Worlds_MVP
+#   https://lol.fandom.com/wiki/MSI_MVP
+#   https://lol.fandom.com/wiki/LCK/Season_MVP
+#   https://lol.fandom.com/wiki/LCK/Finals_MVP
+#   https://lol.fandom.com/wiki/LCK/All-Pro_Team
+# 생성: AI 학습 데이터 기반 (Leaguepedia rate-limit으로 실시간 조회 불가)
+# 표기: 행 앞 # ? = 불확실 → 호빈이 위 URL 확인 후 주석 해제 or 수정/삭제
+# league: 수상 발생 대회(WORLDS/MSI) 또는 소속 리그(LCK)
 playerId,year,league,award,value
+
+# ═══════════════════════════════════════════════════
+# WORLDS_MVP (2013~2024)
+# ═══════════════════════════════════════════════════
+# 2013: 공식 MVP 제도 존재 여부 불확실 — Leaguepedia 확인 후 추가
+Mata,2014,WORLDS,WORLDS_MVP,
+Faker,2015,WORLDS,WORLDS_MVP,
+Faker,2016,WORLDS,WORLDS_MVP,
+Ruler,2017,WORLDS,WORLDS_MVP,
+# ? 2017: Ruler(ADC) vs Crown(MID) — SSG 우승
+Rookie,2018,WORLDS,WORLDS_MVP,
+# ? 2018: Rookie(MID) vs TheShy(TOP) — IG 우승
+Tian,2019,WORLDS,WORLDS_MVP,
+# ? 2019: Tian(JGL) vs Doinb(MID) — FPX 우승
+ShowMaker,2020,WORLDS,WORLDS_MVP,
+# ? 2020: ShowMaker(MID) vs Canyon(JGL) — DWG 우승. Canyon이면 아래로 교체:
+# Canyon,2020,WORLDS,WORLDS_MVP,
+Viper,2021,WORLDS,WORLDS_MVP,
+# ? 2021: Viper(ADC) vs Scout(MID) — EDG 우승
+Zeka,2022,WORLDS,WORLDS_MVP,
+# ? 2022: Zeka(MID) vs Deft(ADC) — DRX 우승
+Faker,2023,WORLDS,WORLDS_MVP,
+Chovy,2024,WORLDS,WORLDS_MVP,
+# ? 2024: Chovy(MID) vs Ruler(ADC) — Gen.G 우승
+
+# ═══════════════════════════════════════════════════
+# MSI_MVP (2015~2024, 2020 없음)
+# ═══════════════════════════════════════════════════
+# ? 2015: EDG 우승. MVP 불확실 → Leaguepedia 확인 후 추가
+Faker,2016,MSI,MSI_MVP,
+Faker,2017,MSI,MSI_MVP,
+# ? 2017: SKT 우승. Faker vs Bang 확인 필요
+Uzi,2018,MSI,MSI_MVP,
+# ? 2018: RNG 우승. Uzi(ADC) 유력
+# ? 2019: G2 우승. Caps/Perkz 중 확인 필요 → 추가 보류
+# ? 2021: RNG 우승. 불확실
+Faker,2022,MSI,MSI_MVP,
+# ? 2022: T1 우승. Faker vs Gumayusi 확인 필요
+# ? 2023: JDG 우승. knight 등 확인 필요 → 추가 보류
+Chovy,2024,MSI,MSI_MVP,
+# ? 2024: Gen.G 우승. Chovy 유력
+
+# ═══════════════════════════════════════════════════
+# LCK SEASON_MVP (스플릿별 — 연도당 최대 2행)
+# 대부분 불확실. Leaguepedia LCK/Season_MVP 필수 확인 후 채울 것
+# 확실한 것만 활성화, 나머지 주석 처리
+# ═══════════════════════════════════════════════════
+ShowMaker,2020,LCK,SEASON_MVP,
+# ? 2020 Spring MVP 확인 필요
+# ? 이하 연도 전체 Leaguepedia 확인 후 추가:
+# Faker,20XX,LCK,SEASON_MVP,
+
+# ═══════════════════════════════════════════════════
+# LCK FINALS_MVP (스플릿별 — 연도당 최대 2행)
+# 대부분 불확실. Leaguepedia LCK/Finals_MVP 필수 확인 후 채울 것
+# ═══════════════════════════════════════════════════
+# 전 항목 주석 처리 — 검수 후 해제
+# ? Faker,2016,LCK,FINALS_MVP,
+# ? Faker,2017,LCK,FINALS_MVP,
+# ? ShowMaker,2020,LCK,FINALS_MVP,
+# ? Faker,2023,LCK,FINALS_MVP,
+# ? Chovy,2024,LCK,FINALS_MVP,
+
+# ═══════════════════════════════════════════════════
+# LCK ALL-PRO 1ST TEAM (2020~2024 — 포지션별 1인)
+# ═══════════════════════════════════════════════════
+# 2020 — DWG 지배 시즌 (비교적 확실)
+Nuguri,2020,LCK,ALLPRO_1ST,
+Canyon,2020,LCK,ALLPRO_1ST,
+ShowMaker,2020,LCK,ALLPRO_1ST,
+Ghost,2020,LCK,ALLPRO_1ST,
+BeryL,2020,LCK,ALLPRO_1ST,
+# ? 전원 DWG인지, 포지션 중복 없는지 확인 필요
+
+# 2021 — 일부 불확실
+# ? Canna,2021,LCK,ALLPRO_1ST,
+# ? Canyon,2021,LCK,ALLPRO_1ST,
+Faker,2021,LCK,ALLPRO_1ST,
+Gumayusi,2021,LCK,ALLPRO_1ST,
+Keria,2021,LCK,ALLPRO_1ST,
+# ? TOP/JGL 수상자 확인 후 주석 해제
+
+# 2022 — T1 전성기 (비교적 확실)
+Zeus,2022,LCK,ALLPRO_1ST,
+Oner,2022,LCK,ALLPRO_1ST,
+Faker,2022,LCK,ALLPRO_1ST,
+Gumayusi,2022,LCK,ALLPRO_1ST,
+Keria,2022,LCK,ALLPRO_1ST,
+
+# 2023 — 일부 불확실
+Zeus,2023,LCK,ALLPRO_1ST,
+Oner,2023,LCK,ALLPRO_1ST,
+# ? 2023 JGL: Oner vs Peanut 확인 필요
+Faker,2023,LCK,ALLPRO_1ST,
+Gumayusi,2023,LCK,ALLPRO_1ST,
+# ? 2023 ADC: Gumayusi vs Peyz 확인 필요
+Keria,2023,LCK,ALLPRO_1ST,
+
+# 2024 — Gen.G 우승 시즌. 일부 불확실
+# ? Doran,2024,LCK,ALLPRO_1ST,
+# ? Peanut,2024,LCK,ALLPRO_1ST,
+Chovy,2024,LCK,ALLPRO_1ST,
+Peyz,2024,LCK,ALLPRO_1ST,
+# ? Delight,2024,LCK,ALLPRO_1ST,
+# ? 2024 TOP/JGL/SUP 확인 후 주석 해제
