@@ -151,9 +151,11 @@ type OpponentsFile = { regular: Opponent[]; intl: Opponent[] };
 // zod 강제: regular.length === 9 (정규 시즌 상대), intl.length >= 12 (MSI/Worlds 추첨 풀). 두 풀 간 팀 중복 허용
 
 // pipeline-input/awards.csv 컬럼 (헤더 고정)
-// playerId,year,league,award,value
+// playerId,year,league,award,value,split
 // award ∈ SEASON_MVP|FINALS_MVP|WORLDS_MVP|ALLPRO_1ST|ALLPRO_2ND|ALLPRO_3RD|EDITORIAL
 // value는 EDITORIAL 전용(±1~5 정수, 앵커 보정 한정·최대 10건), 그 외 award는 공란
+// split: SPRING/SUMMER/WINTER/NONE — 04-ratings 행별 합산 (복수 행 = 누적 가산)
+// MSI_MVP는 가점 대상 아님 — awards.csv에 주석 보존만
 ```
 
 로스터 도출 규칙 (PRD §4.4): (팀, 대회, 선수, 역할)별 출전 경기 수 집계 → 같은 포지션에 복수 선수면 **5경기 이상 전원 포함, 미만이면 최다 출전자만**. 연도 단위로 스플릿 통합(같은 팀·연도의 스프링/서머 로스터 합집합). **선발은 결정론적으로**: 출전 경기 수 내림차순 → 동률 시 playerId 알파벳 오름차순. 동일 입력에서 빌드 산출물은 항상 비트 단위 동일해야 한다 (정합성 검증의 전제).
@@ -183,7 +185,10 @@ base 60
 + 국내 플옵 최종 순위: 1위 +10 / 2위 +6 / 3~4위 +3 / 5~6위 +3 / 7위 이하 +1   (연내 복수 스플릿 가점 합산 — 중복제거 없음)
 + MSI: 1위 +8 / 2위 +5 / 3~4위 +3
 + Worlds: 1위 +15 / 2위 +10 / 3~4위 +7 / 5~8위 +4 / 진출 +2
-+ awards.csv: SEASON_MVP +6 / FINALS_MVP +4 / WORLDS_MVP +8 / ALLPRO_1ST +5 / 2ND +3 / 3RD +1 (AllPro는 2020+ 시즌만 — 제도 부재 이전 미적용)
++ awards.csv: SEASON_MVP +6 / FINALS_MVP +4 / WORLDS_MVP +8 / ALLPRO_1ST +5 / 2ND +3 / 3RD +1
+              AllPro: 2020+ 스플릿만 (이전 미적용)
+              FINALS_MVP: 공식 제도 2020+ 시작; 2015~2019 포스트시즌 MVP → FINALS_MVP(+4) 매핑 (시대 공정성)
+              MSI_MVP: 가점 없음 (§6.1 MSI 가점은 대회 순위 기준, MVP 수상 별도 없음)
 + EDITORIAL: value 그대로 가산 (±1~5, 앵커 보정 전용 — PRD §6.1)
 clamp(60, 99)
 ```
