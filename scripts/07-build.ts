@@ -7,6 +7,7 @@ import { PlayerSeasonSchema, TeamYearSchema, OpponentsFileSchema } from '../src/
 import type { PlayerSeason, TeamYear } from '../src/lib/data'
 import type { RatedEntry } from './04-ratings'
 import type { ResultEntry } from './03-results'
+import type { RostersFile, RosterEntry } from './02-rosters'
 
 // §3 slugify: 소문자화 → 영숫자 외 하이픈 → 연속 하이픈 축약 → 양끝 제거
 function slugify(s: string): string {
@@ -63,6 +64,9 @@ async function main() {
   const errors: string[] = []
 
   for (const entry of rated) {
+    // LEC/LCS 선수-시즌 v1 제외 — 국내 결과 없어 OVR 저평가됨 (v1.1에서 03 LEC/LCS 수집 후 추가)
+    if (entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS') continue
+
     const teamSlug = slugify(entry.team)
     const id = `${slugify(entry.playerId)}_${entry.year}_${teamSlug}`
 
@@ -178,18 +182,18 @@ async function main() {
 
   // §4.5 DoD 보고
   console.log('\n=== Phase 1 DoD 검증 ===')
-  console.log(`players.json: ${playerSeasons.length}건 (목표 ≥ 3,000)`)
+  console.log(`players.json: ${playerSeasons.length}건 (목표 ≥ 3,000 — v1: LCK+LPL only)`)
   console.log(`teams.json: ${teamYears.length}건 (목표 ≥ 550)`)
 
   const roles5 = Object.keys(spinIndex).length === 5
   const rolesNonEmpty = Object.values(spinIndex).every(v => v.length > 0)
   console.log(`spin-index.json: 5개 role ${roles5 ? '✓' : '✗'}, 각 배열 비어있지 않음 ${rolesNonEmpty ? '✓' : '✗'}`)
 
-  // 리그·연도별 결손 리포트
-  const LEAGUES = ['LCK', 'LPL', 'LEC', 'LCS'] as const
+  // 리그·연도별 결손 리포트 (v1: LCK/LPL만)
+  const REPORT_LEAGUES = ['LCK', 'LPL'] as const
   const YEAR_FROM = 2013, YEAR_TO = 2025
-  console.log('\n리그·연도별 PlayerSeason 수:')
-  for (const league of LEAGUES) {
+  console.log('\n리그·연도별 PlayerSeason 수 (v1 LCK/LPL):')
+  for (const league of REPORT_LEAGUES) {
     const missing: number[] = []
     for (let y = YEAR_FROM; y <= YEAR_TO; y++) {
       const count = playerSeasons.filter(p => p.league === league && p.year === y).length
@@ -199,6 +203,42 @@ async function main() {
       console.log(`  ${league}: 결손 연도 ${missing.join(', ')}`)
     } else {
       console.log(`  ${league}: 전 연도 커버`)
+    }
+  }
+  console.log('  LEC/LCS: v1 제외 (국내 결과 미수집 — v1.1 예정)')
+
+  // 서브 선수 N경기 기준 후보 제시
+  const rostersPath = path.join(process.cwd(), 'pipeline-cache', 'rosters.json')
+  if (fs.existsSync(rostersPath)) {
+    const rosters: RostersFile = JSON.parse(fs.readFileSync(rostersPath, 'utf-8'))
+    // playerId+year+team → gameCount 맵
+    const gcMap = new Map<string, number>()
+    for (const e of rosters.entries) {
+      gcMap.set(`${e.playerId}|${e.year}|${e.team}`, e.gameCount)
+    }
+    // players.json의 각 선수-시즌 게임 수 조회
+    const playerGames = playerSeasons.map(ps => {
+      const gc = gcMap.get(`${ps.playerId}|${ps.year}|${ps.team}`) ?? 0
+      return { ...ps, gameCount: gc }
+    })
+    console.log('\n=== 서브 N경기 기준 후보 제시 (참고용) ===')
+    for (const threshold of [5, 10, 15, 20]) {
+      const excluded = playerGames.filter(p => p.gameCount < threshold)
+      console.log(`  < ${threshold}경기: ${excluded.length}명 제외 대상 (전체 ${playerSeasons.length}명 중 ${(excluded.length/playerSeasons.length*100).toFixed(1)}%)`)
+    }
+    // 실제 후보 목록 (< 10경기)
+    const candidates = playerGames.filter(p => p.gameCount < 10)
+      .sort((a, b) => a.gameCount - b.gameCount)
+    if (candidates.length > 0 && candidates.length <= 50) {
+      console.log('  < 10경기 목록:')
+      for (const p of candidates) {
+        console.log(`    ${p.playerId} ${p.year} (${p.team}) — ${p.gameCount}경기`)
+      }
+    } else if (candidates.length > 50) {
+      console.log(`  < 10경기 후보 ${candidates.length}명 (상위 20명만):`)
+      for (const p of candidates.slice(0, 20)) {
+        console.log(`    ${p.playerId} ${p.year} (${p.team}) — ${p.gameCount}경기`)
+      }
     }
   }
 
