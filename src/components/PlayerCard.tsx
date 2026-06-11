@@ -49,27 +49,17 @@ function avatarBg(teamSlug: string): string {
   return `hsl(${hues[h % hues.length]}, 40%, 35%)`
 }
 
-// OVR 등급 — DESIGN_GUIDE v1.0 전 임시 임계값 (토큰 확정 후 CSS 변수로 대체)
-function getOvrTier(ovr: number): 'legendary' | 'gold' | 'silver' | 'base' {
-  if (ovr >= 99) return 'legendary'
-  if (ovr >= 90) return 'gold'
-  if (ovr >= 84) return 'silver'
-  return 'base'
-}
-
 export default function PlayerCard({ player, size = 'pick', disabled = false, onClick }: Props) {
   // imgError: 초기값 false(hydration 안전) — onError 시 아바타로 전환
   const [imgError, setImgError] = useState(false)
   // crownError: crown.png 미수령 시 broken icon 대신 레이어 전체 숨김
   const [crownError, setCrownError] = useState(false)
 
-  // 버그3 fix: IGN(nameEn) 항상 표시 — nameKo는 실명이라 언어 토글과 무관하게 닉네임 고정
   const name = player.nameEn
   const isWorlds = player.frame === 'WORLDS'
   const hasCrown = player.crown
   const hasMsi = player.msiWinner
   const badges = player.badges
-  const tier = getOvrTier(player.ovr)
 
   return (
     <button
@@ -78,49 +68,26 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
       className={[
         SIZE_CLS[size],
         'relative flex flex-col rounded-lg overflow-hidden select-none transition-transform',
-        // 배경: OVR 등급별 (임시 — DESIGN_GUIDE v1.0 토큰 교체 예정)
-        tier === 'legendary' ? 'bg-[var(--card-legendary-bg,#131000)]' :
-        tier === 'gold'      ? 'bg-[var(--card-gold-bg,#110f07)]' :
-        tier === 'silver'    ? 'bg-[var(--card-silver-bg,#0f1012)]' :
-                               'bg-[var(--card-bg,#1a1a2e)]',
-        'border',
-        // 테두리: WORLDS 프레임 우선, 아니면 OVR 등급
+        'bg-[var(--card-bg,#1a1a2e)] border',
         isWorlds
           ? 'border-[var(--card-worlds-border,#c0a060)] shadow-[0_0_12px_var(--card-worlds-glow,#c0a06055)]'
-          : tier === 'legendary'
-            ? 'border-[var(--card-legendary-border,#d4a017)] shadow-[0_0_10px_var(--card-legendary-glow,#d4a01730)]'
-            : tier === 'gold'
-              ? 'border-[var(--card-gold-border,#7a5f10)]'
-              : tier === 'silver'
-                ? 'border-[var(--card-silver-border,#505870)]'
-                : 'border-[var(--card-border,#2a2a4a)]',
+          : 'border-[var(--card-border,#2a2a4a)]',
         disabled
           ? 'opacity-40 cursor-not-allowed'
           : 'cursor-pointer hover:scale-105 active:scale-95',
       ].join(' ')}
       aria-label={`${player.nameEn} ${player.year} ${player.team}`}
     >
-      {/* WORLDS 시머 스윕 — WORLDS 프레임 전용 */}
+      {/* WORLDS 시머 스윕 — globals.css @keyframes shimmer 사용 */}
       {isWorlds && (
         <span className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg" aria-hidden>
-          <span className="absolute -inset-full animate-[shimmer_2.5s_linear_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12" />
-        </span>
-      )}
-      {/* legendary(OVR 99) 골드 시머 — WORLDS 아닌 카드 한정 */}
-      {tier === 'legendary' && !isWorlds && (
-        <span className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg" aria-hidden>
-          <span className="absolute -inset-full animate-[shimmer_2.5s_linear_infinite] bg-gradient-to-r from-transparent via-[#ffd70018] to-transparent -skew-x-12" />
+          <span className="absolute inset-y-0 w-full animate-[shimmer_2.5s_linear_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </span>
       )}
 
       {/* 좌상단: OVR + 역할 */}
       <div className="absolute top-1 left-1.5 z-20 flex flex-col leading-none">
-        <span className={`${OVR_SIZE[size]} font-black drop-shadow ${
-          tier === 'legendary' ? 'text-[var(--card-legendary-ovr,#ffd700)]' :
-          tier === 'gold'      ? 'text-[var(--card-gold-ovr,#d4a540)]' :
-          tier === 'silver'    ? 'text-[var(--card-silver-ovr,#c8cdd6)]' :
-                                 'text-[var(--card-ovr,#f0f0f0)]'
-        }`}>
+        <span className={`${OVR_SIZE[size]} font-black drop-shadow text-[var(--card-ovr,#f0f0f0)]`}>
           {player.ovr}
         </span>
         <span className="text-[10px] font-semibold text-[var(--card-role,#a0a0c0)] uppercase tracking-wider">

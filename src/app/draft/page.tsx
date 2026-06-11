@@ -12,7 +12,7 @@ import PlayerCard from '@/components/PlayerCard'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import { useLang } from '@/i18n'
-import type { PlayerSeason, Opponent, OpponentsFile } from '@/lib/data'
+import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
 
 // ── 데이터 로드 훅 ────────────────────────────────────────────────────────────
@@ -133,58 +133,104 @@ function PickScreen({
   )
 }
 
-// ── REVEAL 화면 ───────────────────────────────────────────────────────────────
+// ── REVEAL 화면 — 한 번에 핵심 하나씩 표시 ───────────────────────────────────
 function RevealScreen({
   steps,
   revealStep,
   onSkip,
-  opponents,
 }: {
   steps: SimStep[]
   revealStep: number
   onSkip: () => void
-  opponents: OpponentsFile | null
 }) {
   const { t } = useLang()
-  const visibleSteps = steps.slice(0, revealStep)
+  const visible = steps.slice(0, revealStep)
+  const current = visible[visible.length - 1]
+  const past = visible.slice(0, -1)
 
-  const oppMap = new Map<string, Pick<Opponent, 'label' | 'rating'>>()
-  if (opponents) {
-    for (const o of [...opponents.regular, ...opponents.intl]) {
-      oppMap.set(o.name, { label: o.label, rating: o.rating })
-    }
+  // 현재 step의 핵심 판정 (W/L/중립)
+  function stepResult(step: SimStep): 'win' | 'lose' | 'neutral' {
+    if (step.stage.endsWith('_missed') || step.stage === 'worlds_swiss_out') return 'lose'
+    if (step.stage.endsWith('win') || step.stage.endsWith('_out')) return 'neutral'
+    const s0 = step.series?.[0]
+    if (s0) return s0.win ? 'win' : 'lose'
+    return 'neutral'
   }
 
+  const cur = current ? stepResult(current) : 'neutral'
+  const isRegular = current?.stage.includes('_regular') ?? false
+  const isMissed  = current?.stage.includes('_missed') || current?.stage === 'worlds_swiss_out'
+
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
+    <div className="flex flex-col" style={{ minHeight: '70vh' }}>
+      {/* 건너뛰기 */}
+      <div className="flex justify-end mb-4">
         <button
           onClick={onSkip}
-          className="text-sm px-4 py-1.5 rounded border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white transition-colors"
+          className="text-xs px-3 py-1.5 rounded border border-white/10 text-white/30 hover:text-white/60 transition-colors"
         >
           {t.skipReveal}
         </button>
       </div>
-      <div className="flex flex-col gap-2">
-        {visibleSteps.map((step, i) => (
-          <div key={i} className="bg-[var(--card-bg,#1a1a2e)] rounded-lg p-3 border border-[var(--card-border,#2a2a4a)]">
-            <p className="text-sm text-[var(--card-name,#e8e8f0)] font-medium">{step.label}</p>
-            {step.series && (
-              <div className="flex flex-wrap gap-2 mt-1">
-                {step.series.map((s, j) => {
-                  const meta = oppMap.get(s.opp)
-                  const display = s.win
-                    ? `vs ${s.opp} ${s.score}`
-                    : `vs ${meta?.label ?? s.opp} (${meta?.rating ?? '?'}) — 패`
-                  return (
-                    <span key={j} className={`text-xs px-2 py-0.5 rounded-full ${s.win ? 'bg-green-900/50 text-green-300' : 'bg-red-900/50 text-red-300'}`}>
-                      {display}
-                    </span>
-                  )
-                })}
+
+      {/* 이전 단계 — 소형 요약 */}
+      {past.length > 0 && (
+        <div className="flex flex-col gap-1 mb-6 opacity-40">
+          {past.map((step, i) => {
+            const r = stepResult(step)
+            return (
+              <div key={i} className={`text-xs flex items-center gap-2 ${r === 'win' ? 'text-green-400' : r === 'lose' ? 'text-red-400' : 'text-white/50'}`}>
+                <span className="w-3 text-center">{r === 'win' ? '✓' : r === 'lose' ? '✗' : '·'}</span>
+                <span className="truncate">{step.label}</span>
               </div>
-            )}
-          </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* 현재 단계 — 히어로 */}
+      {current && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-8">
+          <p className="text-[10px] tracking-[0.35em] text-white/20 uppercase">
+            {current.stage.replace(/_/g, ' ')}
+          </p>
+          <h2 className={`text-2xl font-bold leading-snug ${
+            cur === 'win'  ? 'text-green-300' :
+            cur === 'lose' ? 'text-red-300' :
+            isMissed       ? 'text-white/40' : 'text-white'
+          }`}>
+            {current.label}
+          </h2>
+
+          {/* 시리즈 결과 — 정규시즌 제외, 점수 크게 표시 */}
+          {!isRegular && current.series?.[0] && (
+            <div className={`text-5xl font-black mt-2 tabular-nums ${
+              current.series[0].win ? 'text-green-400' : 'text-red-400'
+            }`}>
+              {current.series[0].score}
+            </div>
+          )}
+
+          {/* 정규시즌: W/L 점 그리드 */}
+          {isRegular && current.series && current.series.length > 0 && (
+            <div className="flex flex-wrap gap-1 justify-center max-w-[200px] mt-2">
+              {current.series.map((s, j) => (
+                <div key={j} className={`w-2 h-2 rounded-full ${s.win ? 'bg-green-400' : 'bg-red-400/60'}`} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 진행 표시 */}
+      <div className="flex justify-center gap-1.5 mt-4 pb-2">
+        {steps.map((_, i) => (
+          <div
+            key={i}
+            className={`rounded-full transition-all duration-300 ${
+              i < revealStep ? 'w-3 h-1.5 bg-white/50' : 'w-1.5 h-1.5 bg-white/15'
+            }`}
+          />
         ))}
       </div>
     </div>
@@ -299,11 +345,34 @@ function buildTimeline(steps: SimStep[]): TLEntry[] {
   return entries
 }
 
-const TL_ICON: Record<TLEntry['status'], string> = {
-  win: '🟢',
-  lose: '🔴',
-  out: '⚪',
+// 등급별 강조 색상 (display-only)
+const GRADE_COLOR: Record<string, string> = {
+  'GRAND SLAM':  'text-[#ffd700]',
+  'LEGENDARY':   'text-[#c080ff]',
+  'ELITE':       'text-[#60c0ff]',
+  'CONTENDER':   'text-[#40d4a0]',
+  'PLAYOFF TEAM':'text-[#e8e8f0]',
+  'REBUILD':     'text-[#6868a0]',
 }
+
+const TL_ICON: Record<TLEntry['status'], string> = {
+  win: '●',
+  lose: '●',
+  out: '○',
+}
+const TL_COLOR: Record<TLEntry['status'], string> = {
+  win: 'text-green-400',
+  lose: 'text-red-400',
+  out: 'text-white/25',
+}
+
+// 경기 상세: stage prefix → 섹션 레이블
+const DETAIL_SECTIONS = [
+  { prefix: 'Split 1', label: '스프링 시즌' },
+  { prefix: 'msi',     label: 'MSI' },
+  { prefix: 'Split 2', label: '서머 시즌' },
+  { prefix: 'worlds',  label: 'Worlds' },
+]
 
 // ── RESULT 화면 — GAME_SPEC §7: 5인 카드 + 4단계 타임라인 + 등급 ──────────────
 function ResultScreen({
@@ -319,10 +388,8 @@ function ResultScreen({
 }) {
   const { t } = useLang()
   const [copied, setCopied] = useState(false)
-  // 경기 상세 접이식 토글 — 기본 접힘
   const [showDetail, setShowDetail] = useState(false)
 
-  // 공유 URL 조립 — §8.1 형식: /r?p=id1.id2...&s=seed
   const pIds = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
   const shareUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/r?p=${encodeURIComponent(pIds)}&s=${seed}`
@@ -341,32 +408,49 @@ function ResultScreen({
   }
 
   const timeline = buildTimeline(simResult.steps)
+  const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-white'
+
+  // 경기 상세: 섹션별 그룹
+  const detailSections = DETAIL_SECTIONS
+    .map(s => ({ label: s.label, steps: simResult.steps.filter(st => st.stage.startsWith(s.prefix)) }))
+    .filter(s => s.steps.length > 0)
 
   return (
-    <div className="flex flex-col gap-6 items-center">
-      {/* 등급 */}
+    <div className="flex flex-col gap-8 items-center">
+      {/* 트로피 뱃지 */}
+      {simResult.trophies.length > 0 && (
+        <div className="flex gap-2 flex-wrap justify-center">
+          {simResult.trophies.map(tr => (
+            <span key={tr} className="text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full border border-white/20 text-white/50">
+              {tr === 'SPLIT1' ? '스프링' : tr === 'MSI' ? 'MSI' : tr === 'SPLIT2' ? '서머' : 'Worlds'}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* 등급 — 색상 강조 + 크게 */}
       <div className="text-center">
-        <p className="text-sm text-[var(--card-role,#a0a0c0)] uppercase tracking-widest">Result</p>
-        <h2 className="text-4xl font-black text-white mt-1">
+        <p className="text-[10px] tracking-[0.5em] text-white/20 uppercase mb-2">Season Result</p>
+        <h2 className={`text-5xl font-black leading-none ${gradeColor}`}>
           {t.grade[simResult.grade as keyof typeof t.grade] ?? simResult.grade}
         </h2>
-        <p className="text-[var(--card-role,#a0a0c0)] text-sm mt-1">
-          {t.teamOvr}: {simResult.teamOvr}
+        <p className="text-white/30 text-sm mt-3">
+          Team OVR {simResult.teamOvr}
         </p>
       </div>
 
       {/* GAME_SPEC §7: 4단계 결과 타임라인 */}
       {timeline.length > 0 && (
-        <div className="w-full max-w-sm bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-4 flex flex-col gap-3">
+        <div className="w-full max-w-xs flex flex-col gap-2.5">
           {timeline.map((entry, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <span className="text-base leading-5 mt-0.5">{TL_ICON[entry.status]}</span>
-              <div>
-                <span className="text-sm font-bold text-white">{entry.stage}</span>
-                <span className={`text-sm ml-2 ${
-                  entry.status === 'win' ? 'text-green-300' :
-                  entry.status === 'lose' ? 'text-red-300' :
-                  'text-[var(--card-role,#a0a0c0)]'
+            <div key={i} className="flex items-baseline gap-3">
+              <span className={`text-[10px] ${TL_COLOR[entry.status]} flex-shrink-0`}>{TL_ICON[entry.status]}</span>
+              <div className="flex items-baseline gap-2 min-w-0">
+                <span className="text-xs font-bold text-white/70 flex-shrink-0 w-14">{entry.stage}</span>
+                <span className={`text-xs truncate ${
+                  entry.status === 'win'  ? 'text-green-300/80' :
+                  entry.status === 'lose' ? 'text-red-300/80' :
+                  'text-white/25'
                 }`}>
                   {entry.detail}
                 </span>
@@ -376,40 +460,77 @@ function ResultScreen({
         </div>
       )}
 
-      {/* 경기 상세 토글 — 영수증 철학: 왜 이 결과인지 근거 제공 */}
-      {simResult.steps.some(s => s.series?.length) && (
-        <div className="w-full max-w-sm">
-          <button
-            onClick={() => setShowDetail(v => !v)}
-            className="w-full text-xs text-[var(--card-role,#a0a0c0)] hover:text-white/80 transition-colors py-2 text-center"
-          >
-            {showDetail ? '▲ 경기 상세 접기' : '▼ 경기 상세 보기'}
-          </button>
-          {showDetail && (
-            <div className="bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-3 flex flex-col gap-2 mt-1">
-              {simResult.steps
-                .filter(s => s.series?.length)
-                .map((step, i) => (
-                  <div key={i}>
-                    <p className="text-[10px] text-[var(--card-role,#a0a0c0)] mb-0.5">{step.label}</p>
-                    {step.series?.map((g, j) => (
-                      <p key={j} className={`text-xs ml-3 font-mono ${g.win ? 'text-green-400' : 'text-red-400'}`}>
-                        {g.win ? '승' : '패'}  {g.score}  vs {g.opp}
-                      </p>
-                    ))}
-                  </div>
-                ))}
-            </div>
-          )}
-        </div>
-      )}
-
       {/* 5인 카드 */}
       <div className="flex flex-wrap gap-2 justify-center">
         {ROLES.map((_, i) => picks[i] && (
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
         ))}
       </div>
+
+      {/* 경기 상세 토글 — 섹션별 그룹화 */}
+      {detailSections.length > 0 && (
+        <div className="w-full max-w-sm">
+          <button
+            onClick={() => setShowDetail(v => !v)}
+            className="w-full text-xs text-white/25 hover:text-white/50 transition-colors py-2 text-center tracking-wider"
+          >
+            {showDetail ? '▲ 경기 상세 접기' : '▼ 경기 상세 보기'}
+          </button>
+          {showDetail && (
+            <div className="bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-4 flex flex-col gap-5 mt-1">
+              {detailSections.map((section, si) => (
+                <div key={si}>
+                  <p className="text-[9px] tracking-[0.4em] uppercase text-white/20 mb-2">{section.label}</p>
+                  {section.steps.map((step, i) => {
+                    const ser = step.series
+                    const isReg = step.stage.includes('_regular')
+                    const noSeries = !ser || ser.length === 0
+
+                    if (isReg && ser && ser.length > 0) {
+                      const wins = ser.filter(s => s.win).length
+                      return (
+                        <div key={i} className="mb-3">
+                          <div className="text-xs text-white/40 mb-1.5">
+                            정규시즌 <span className="text-green-400/70">{wins}승</span> <span className="text-red-400/50">{ser.length - wins}패</span>
+                          </div>
+                          <div className="flex flex-wrap gap-0.5">
+                            {ser.map((s, j) => (
+                              <div key={j} className={`w-2.5 h-2.5 rounded-sm ${s.win ? 'bg-green-500/60' : 'bg-red-500/30'}`} title={`vs ${s.opp} ${s.score}`} />
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    }
+
+                    if (noSeries) {
+                      return (
+                        <div key={i} className={`text-xs mb-1 ${step.stage.endsWith('win') ? 'text-yellow-400/60' : 'text-white/20'}`}>
+                          {step.label}
+                        </div>
+                      )
+                    }
+
+                    // 시리즈 매치 (sf/final/knockout/MSI/Swiss)
+                    return ser!.map((s, j) => {
+                      // 라운드 약어: label 마지막 의미 단어
+                      const words = step.label.replace(/ vs .+$/, '').split(' ')
+                      const round = words[words.length - 1] ?? ''
+                      return (
+                        <div key={`${i}-${j}`} className={`flex items-center gap-2 text-xs mb-1.5 ${s.win ? 'text-green-400/90' : 'text-red-400/90'}`}>
+                          <span className="font-mono font-bold tabular-nums min-w-[28px]">{s.score}</span>
+                          <span className="text-white/25">vs</span>
+                          <span className="flex-1 text-white/70 truncate">{s.opp}</span>
+                          <span className="text-white/20 text-[10px] flex-shrink-0">{round}</span>
+                        </div>
+                      )
+                    })
+                  })}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 버튼 */}
       <div className="flex gap-3 flex-wrap justify-center">
@@ -550,7 +671,6 @@ export default function DraftPage() {
             steps={state.simResult.steps}
             revealStep={state.revealStep}
             onSkip={machine.revealSkip}
-            opponents={data?.opponents ?? null}
           />
         )}
 

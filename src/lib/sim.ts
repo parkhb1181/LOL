@@ -120,13 +120,13 @@ function runDomesticSplit(
   let userWinsTotal = 0
   const regularSeries: SimStep['series'] = []
 
-  // 정규시즌: 9팀 × 2회 Bo1
+  // 정규시즌: 9팀 × 2회 Bo3 (2선승)
   for (const opp of regular) {
     let winsVsThis = 0
     for (let g = 0; g < 2; g++) {
-      const ser = playSeries('bo1', myOvr, opp.rating, rng)
+      const ser = playSeries('bo3', myOvr, opp.rating, rng)
       if (ser.win) { userWinsTotal++; winsVsThis++ }
-      regularSeries.push({ opp: opp.name, score: ser.win ? '1-0' : '0-1', win: ser.win })
+      regularSeries.push({ opp: opp.name, score: `${ser.wins}-${ser.losses}`, win: ser.win })
     }
     userWinsPerBot.push(winsVsThis)
   }
