@@ -10,8 +10,7 @@
       "cpt-jack_2013_cj-entus-blaze",
       "flame_2013_cj-entus-blaze",
       "helios-shin-dong-jin_2013_cj-entus-blaze",
-      "lustboy_2013_cj-entus-blaze",
-      "muse_2013_cj-entus-blaze"
+      "lustboy_2013_cj-entus-blaze"
     ],
     "rolesAvailable": [
       "ADC",
@@ -20,7 +19,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 4
+    "weight": 2
   },
   {
     "key": "sk-telecom-t1-2_2013",
@@ -108,7 +107,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 4
+    "weight": 2
   },
   {
     "key": "azubu-frost_2013",
@@ -143,7 +142,6 @@
       "dade_2014_samsung-blue",
       "deft_2014_samsung-blue",
       "heart_2014_samsung-blue",
-      "pawn_2014_samsung-blue",
       "spirit_2014_samsung-blue"
     ],
     "rolesAvailable": [
@@ -162,16 +160,11 @@
     "year": 2014,
     "league": "LCK",
     "roster": [
-      "alvingo_2014_xenics-storm",
       "arrow_2014_xenics-storm",
       "coco_2014_xenics-storm",
       "gimgoon_2014_xenics-storm",
-      "ink-choi-sun-ho_2014_xenics-storm",
-      "ohq_2014_xenics-storm",
       "piccaboo_2014_xenics-storm",
-      "ren-jung-byung-wook_2014_xenics-storm",
-      "swift_2014_xenics-storm",
-      "vin-shin-min-jae_2014_xenics-storm"
+      "swift_2014_xenics-storm"
     ],
     "rolesAvailable": [
       "ADC",
@@ -193,7 +186,6 @@
       "daydream_2014_cj-entus-blaze",
       "emperor-kim-jin-hyun_2014_cj-entus-blaze",
       "flame_2014_cj-entus-blaze",
-      "gunza_2014_cj-entus-blaze",
       "lustboy_2014_cj-entus-blaze"
     ],
     "rolesAvailable": [
@@ -237,16 +229,8 @@
       "apple_2014_incredible-miracle-2",
       "betkyo_2014_incredible-miracle-2",
       "frozen-kim-tae-il_2014_incredible-miracle-2",
-      "kuro_2014_incredible-miracle-2",
       "lasha_2014_incredible-miracle-2",
-      "lilac-jeon-ho-jin_2014_incredible-miracle-2",
-      "ondal_2014_incredible-miracle-2",
-      "paragon_2014_incredible-miracle-2",
-      "pll_2014_incredible-miracle-2",
-      "reign-over_2014_incredible-miracle-2",
-      "s0nstar_2014_incredible-miracle-2",
-      "tusin_2014_incredible-miracle-2",
-      "wisdom_2014_incredible-miracle-2"
+      "reign-over_2014_incredible-miracle-2"
     ],
     "rolesAvailable": [
       "ADC",
@@ -312,10 +296,7 @@
       "bory_2014_incredible-miracle-1",
       "lilac-jeon-ho-jin_2014_incredible-miracle-1",
       "midking_2014_incredible-miracle-1",
-      "smeb_2014_incredible-miracle-1",
-      "smurph_2014_incredible-miracle-1",
-      "thy_2014_incredible-miracle-1",
-      "violet-lim-doo-sung_2014_incredible-miracle-1"
+      "smeb_2014_incredible-miracle-1"
     ],
     "rolesAvailable": [
       "ADC",
@@ -357,17 +338,9 @@
     "roster": [
       "cain_2014_najin-black-sword",
       "duke-lee-ho-seong_2014_najin-black-sword",
-      "expession_2014_najin-black-sword",
-      "helios-shin-dong-jin_2014_najin-black-sword",
       "kuro_2014_najin-black-sword",
       "lee_2014_najin-black-sword",
-      "limit-ju-min-gyu_2014_najin-black-sword",
-      "nagne_2014_najin-black-sword",
-      "ohq_2014_najin-black-sword",
-      "peng-yoon-young-min_2014_najin-black-sword",
-      "pray_2014_najin-black-sword",
-      "ssong_2014_najin-black-sword",
-      "watch_2014_najin-black-sword"
+      "pray_2014_najin-black-sword"
     ],
     "rolesAvailable": [
       "ADC",
@@ -386,8 +359,6 @@
     "league": "LCK",
     "roster": [
       "coco_2014_cj-entus-frost",
-      "gankedbymom_2014_cj-entus-frost",
-      "helios-shin-dong-jin_2014_cj-entus-frost",
       "madlife_2014_cj-entus-frost",
       "shy_2014_cj-entus-frost",
       "space-seon-ho-san_2014_cj-entus-frost",
@@ -409,7 +380,6 @@
     "year": 2014,
     "league": "LCK",
     "roster": [
-      "dade_2014_samsung-ozone",
       "dandy_2014_samsung-ozone",
       "imp_2014_samsung-ozone",
       "looper_2014_samsung-ozone",
@@ -433,19 +403,10 @@
     "league": "LCK",
     "roster": [
       "actscene_2014_jin-air-green-wings-falcons",
-      "ganked-by-mom_2014_jin-air-green-wings-falcons",
       "gbm_2014_jin-air-green-wings-falcons",
       "kish_2014_jin-air-green-wings-falcons",
       "miso_2014_jin-air-green-wings-falcons",
-      "mystic_2014_jin-air-green-wings-falcons",
-      "pilot-na-woo-hyung_2014_jin-air-green-wings-falcons",
-      "realfoxy_2014_jin-air-green-wings-falcons",
-      "reapered_2014_jin-air-green-wings-falcons",
-      "roar-oh-jang-won_2014_jin-air-green-wings-falcons",
-      "rock-kim-hui-chan_2014_jin-air-green-wings-falcons",
-      "starlast_2014_jin-air-green-wings-falcons",
-      "vin-shin-min-jae_2014_jin-air-green-wings-falcons",
-      "xd_2014_jin-air-green-wings-falcons"
+      "mystic_2014_jin-air-green-wings-falcons"
     ],
     "rolesAvailable": [
       "ADC",
@@ -465,7 +426,6 @@
     "roster": [
       "ggoong_2014_najin-white-shield",
       "gorilla_2014_najin-white-shield",
-      "nofe_2014_najin-white-shield",
       "save_2014_najin-white-shield",
       "watch_2014_najin-white-shield",
       "zefa_2014_najin-white-shield"
@@ -477,7 +437,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 8
+    "weight": 4
   },
   {
     "key": "prime-optimus_2014",
@@ -510,10 +470,7 @@
     "roster": [
       "insec_2014_kt-rolster-bullets",
       "kakao_2014_kt-rolster-bullets",
-      "leopard_2014_kt-rolster-bullets",
-      "limit-ju-min-gyu_2014_kt-rolster-bullets",
       "mafa_2014_kt-rolster-bullets",
-      "nagne_2014_kt-rolster-bullets",
       "ryu_2014_kt-rolster-bullets",
       "score_2014_kt-rolster-bullets"
     ],
@@ -524,7 +481,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 4
+    "weight": 2
   },
   {
     "key": "bigfile-miracle_2014",
@@ -581,10 +538,6 @@
       "chei_2014_jin-air-green-wings-stealths",
       "cpt-jack_2014_jin-air-green-wings-stealths",
       "fly-song-yong-jun_2014_jin-air-green-wings-stealths",
-      "hoon-kim-nam-hoon_2014_jin-air-green-wings-stealths",
-      "icebear_2014_jin-air-green-wings-stealths",
-      "mystic_2014_jin-air-green-wings-stealths",
-      "realfoxy_2014_jin-air-green-wings-stealths",
       "trace_2014_jin-air-green-wings-stealths"
     ],
     "rolesAvailable": [
@@ -671,11 +624,31 @@
     "roster": [
       "ambition_2015_cj-entus",
       "coco_2015_cj-entus",
-      "helper-kwon-yeong-jae_2015_cj-entus",
       "madlife_2015_cj-entus",
       "shy_2015_cj-entus",
-      "space-seon-ho-san_2015_cj-entus",
-      "trick_2015_cj-entus"
+      "space-seon-ho-san_2015_cj-entus"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "kt-rolster_2015",
+    "team": "KT Rolster",
+    "teamSlug": "kt-rolster",
+    "year": 2015,
+    "league": "LCK",
+    "roster": [
+      "arrow_2015_kt-rolster",
+      "fixer_2015_kt-rolster",
+      "nagne_2015_kt-rolster",
+      "score_2015_kt-rolster",
+      "ssumday_2015_kt-rolster"
     ],
     "rolesAvailable": [
       "ADC",
@@ -687,31 +660,6 @@
     "weight": 4
   },
   {
-    "key": "kt-rolster_2015",
-    "team": "KT Rolster",
-    "teamSlug": "kt-rolster",
-    "year": 2015,
-    "league": "LCK",
-    "roster": [
-      "arrow_2015_kt-rolster",
-      "edge_2015_kt-rolster",
-      "fixer_2015_kt-rolster",
-      "hachani_2015_kt-rolster",
-      "nagne_2015_kt-rolster",
-      "piccaboo_2015_kt-rolster",
-      "score_2015_kt-rolster",
-      "ssumday_2015_kt-rolster"
-    ],
-    "rolesAvailable": [
-      "ADC",
-      "JGL",
-      "MID",
-      "SUP",
-      "TOP"
-    ],
-    "weight": 8
-  },
-  {
     "key": "sk-telecom-t1_2015",
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -720,11 +668,8 @@
     "roster": [
       "bang_2015_sk-telecom-t1",
       "bengi_2015_sk-telecom-t1",
-      "easyhoon_2015_sk-telecom-t1",
       "faker_2015_sk-telecom-t1",
       "marin_2015_sk-telecom-t1",
-      "piccaboo_2015_sk-telecom-t1",
-      "t0m-im-jae-hyeon_2015_sk-telecom-t1",
       "wolf-lee-jae-wan_2015_sk-telecom-t1"
     ],
     "rolesAvailable": [
@@ -743,15 +688,11 @@
     "year": 2015,
     "league": "LCK",
     "roster": [
-      "cain_2015_najin-e-mfire",
       "duke-lee-ho-seong_2015_najin-e-mfire",
       "ggoong_2015_najin-e-mfire",
       "ohq_2015_najin-e-mfire",
-      "peanut_2015_najin-e-mfire",
       "pure_2015_najin-e-mfire",
-      "tank_2015_najin-e-mfire",
-      "watch_2015_najin-e-mfire",
-      "zefa_2015_najin-e-mfire"
+      "watch_2015_najin-e-mfire"
     ],
     "rolesAvailable": [
       "ADC",
@@ -760,7 +701,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 4
+    "weight": 2
   },
   {
     "key": "jin-air-green-wings_2015",
@@ -771,11 +712,8 @@
     "roster": [
       "chaser_2015_jin-air-green-wings",
       "chei_2015_jin-air-green-wings",
-      "cpt-jack_2015_jin-air-green-wings",
       "gbm_2015_jin-air-green-wings",
-      "kuzan_2015_jin-air-green-wings",
       "pilot-na-woo-hyung_2015_jin-air-green-wings",
-      "sweet-lee-eun-teak_2015_jin-air-green-wings",
       "trace_2015_jin-air-green-wings"
     ],
     "rolesAvailable": [
@@ -785,7 +723,7 @@
       "SUP",
       "TOP"
     ],
-    "weight": 4
+    "weight": 2
   },
   {
     "key": "ge-tigers_2015",
@@ -820,8 +758,7 @@
       "hojin_2015_koo-tigers",
       "kuro_2015_koo-tigers",
       "pray_2015_koo-tigers",
-      "smeb_2015_koo-tigers",
-      "wisdom_2015_koo-tigers"
+      "smeb_2015_koo-tigers"
     ],
     "rolesAvailable": [
       "ADC",
@@ -840,11 +777,9 @@
     "league": "LCK",
     "roster": [
       "ambition_2016_samsung-galaxy",
-      "corejj_2016_samsung-galaxy",
       "crown_2016_samsung-galaxy",
       "cuvee_2016_samsung-galaxy",
       "ruler_2016_samsung-galaxy",
-      "stitch_2016_samsung-galaxy",
       "wraith_2016_samsung-galaxy"
     ],
     "rolesAvailable": [
@@ -886,7 +821,6 @@
     "league": "LCK",
     "roster": [
       "bang_2016_sk-telecom-t1",
-      "bengi_2016_sk-telecom-t1",
       "blank-kang-sun-gu_2016_sk-telecom-t1",
       "duke-lee-ho-seong_2016_sk-telecom-t1",
       "faker_2016_sk-telecom-t1",
@@ -908,11 +842,9 @@
     "year": 2016,
     "league": "LCK",
     "roster": [
-      "blanc-jin-seong-min_2016_jin-air-green-wings",
       "chei_2016_jin-air-green-wings",
       "kuzan_2016_jin-air-green-wings",
       "pilot-na-woo-hyung_2016_jin-air-green-wings",
-      "sweet-lee-eun-teak_2016_jin-air-green-wings",
       "trace_2016_jin-air-green-wings",
       "winged_2016_jin-air-green-wings"
     ],
@@ -932,7 +864,6 @@
     "year": 2016,
     "league": "LCK",
     "roster": [
-      "cry_2016_rox-tigers",
       "gorilla_2016_rox-tigers",
       "kuro_2016_rox-tigers",
       "peanut_2016_rox-tigers",
@@ -956,11 +887,9 @@
     "league": "LCK",
     "roster": [
       "ikssu_2016_afreeca-freecs",
-      "lindarang_2016_afreeca-freecs",
       "lira_2016_afreeca-freecs",
       "mickey-son-young-min_2016_afreeca-freecs",
       "sangyoon_2016_afreeca-freecs",
-      "seonghwan_2016_afreeca-freecs",
       "snowflower_2016_afreeca-freecs"
     ],
     "rolesAvailable": [
@@ -983,10 +912,7 @@
       "corejj_2017_samsung-galaxy",
       "crown_2017_samsung-galaxy",
       "cuvee_2017_samsung-galaxy",
-      "haru_2017_samsung-galaxy",
-      "ruler_2017_samsung-galaxy",
-      "stitch_2017_samsung-galaxy",
-      "wraith_2017_samsung-galaxy"
+      "ruler_2017_samsung-galaxy"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1005,12 +931,9 @@
     "league": "LCK",
     "roster": [
       "bang_2017_sk-telecom-t1",
-      "blank-kang-sun-gu_2017_sk-telecom-t1",
       "faker_2017_sk-telecom-t1",
       "huni_2017_sk-telecom-t1",
       "peanut_2017_sk-telecom-t1",
-      "profit_2017_sk-telecom-t1",
-      "untara_2017_sk-telecom-t1",
       "wolf-lee-jae-wan_2017_sk-telecom-t1"
     ],
     "rolesAvailable": [
@@ -1050,10 +973,7 @@
     "league": "LCK",
     "roster": [
       "bdd_2017_longzhu-gaming",
-      "crash_2017_longzhu-gaming",
       "cuzz_2017_longzhu-gaming",
-      "expession_2017_longzhu-gaming",
-      "fly-song-yong-jun_2017_longzhu-gaming",
       "gorilla_2017_longzhu-gaming",
       "khan_2017_longzhu-gaming",
       "pray_2017_longzhu-gaming"
@@ -1099,7 +1019,6 @@
       "kramer_2017_afreeca-freecs",
       "kuro_2017_afreeca-freecs",
       "marin_2017_afreeca-freecs",
-      "mowgli_2017_afreeca-freecs",
       "spirit_2017_afreeca-freecs",
       "tusin_2017_afreeca-freecs"
     ],
@@ -1119,11 +1038,9 @@
     "year": 2018,
     "league": "LCK",
     "roster": [
-      "aiming_2018_afreeca-freecs",
       "kiin_2018_afreeca-freecs",
       "kramer_2018_afreeca-freecs",
       "kuro_2018_afreeca-freecs",
-      "mowgli_2018_afreeca-freecs",
       "spirit_2018_afreeca-freecs",
       "tusin_2018_afreeca-freecs"
     ],
@@ -1147,7 +1064,6 @@
       "corejj_2018_ksv-esports",
       "crown_2018_ksv-esports",
       "cuvee_2018_ksv-esports",
-      "haru_2018_ksv-esports",
       "ruler_2018_ksv-esports"
     ],
     "rolesAvailable": [
@@ -1168,13 +1084,9 @@
     "roster": [
       "bang_2018_sk-telecom-t1",
       "blank-kang-sun-gu_2018_sk-telecom-t1",
-      "blossom-park-beom-chan_2018_sk-telecom-t1",
       "effort_2018_sk-telecom-t1",
       "faker_2018_sk-telecom-t1",
-      "pirean_2018_sk-telecom-t1",
-      "thal_2018_sk-telecom-t1",
-      "untara_2018_sk-telecom-t1",
-      "wolf-lee-jae-wan_2018_sk-telecom-t1"
+      "thal_2018_sk-telecom-t1"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1193,12 +1105,10 @@
     "league": "LCK",
     "roster": [
       "bdd_2018_kingzone-dragonx",
-      "cuzz_2018_kingzone-dragonx",
       "gorilla_2018_kingzone-dragonx",
       "khan_2018_kingzone-dragonx",
       "peanut_2018_kingzone-dragonx",
-      "pray_2018_kingzone-dragonx",
-      "rascal_2018_kingzone-dragonx"
+      "pray_2018_kingzone-dragonx"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1218,8 +1128,6 @@
     "roster": [
       "deft_2018_kt-rolster",
       "mata_2018_kt-rolster",
-      "pawn_2018_kt-rolster",
-      "rush_2018_kt-rolster",
       "score_2018_kt-rolster",
       "smeb_2018_kt-rolster",
       "ucal_2018_kt-rolster"
@@ -1244,7 +1152,6 @@
       "corejj_2018_gen-g",
       "cuvee_2018_gen-g",
       "fly-song-yong-jun_2018_gen-g",
-      "haru_2018_gen-g",
       "ruler_2018_gen-g"
     ],
     "rolesAvailable": [
@@ -1265,7 +1172,6 @@
     "roster": [
       "chovy_2018_griffin-korean-team",
       "lehends_2018_griffin-korean-team",
-      "rather_2018_griffin-korean-team",
       "sword-choi-sung-won_2018_griffin-korean-team",
       "tarzan-lee-seung-yong_2018_griffin-korean-team",
       "viper-park-do-hyeon_2018_griffin-korean-team"
@@ -1287,15 +1193,9 @@
     "league": "LCK",
     "roster": [
       "aiming_2019_afreeca-freecs",
-      "brook-lee-jang-hoon_2019_afreeca-freecs",
       "dread-lee-jin-hyeok_2019_afreeca-freecs",
-      "jelly-son-ho-gyeong_2019_afreeca-freecs",
       "kiin_2019_afreeca-freecs",
-      "proud_2019_afreeca-freecs",
       "senan_2019_afreeca-freecs",
-      "spirit_2019_afreeca-freecs",
-      "ssol_2019_afreeca-freecs",
-      "ssun-kim-tae-yang_2019_afreeca-freecs",
       "ucal_2019_afreeca-freecs"
     ],
     "rolesAvailable": [
@@ -1316,11 +1216,8 @@
     "roster": [
       "beryl_2019_damwon-gaming",
       "canyon_2019_damwon-gaming",
-      "flame_2019_damwon-gaming",
-      "hoit_2019_damwon-gaming",
       "nuclear_2019_damwon-gaming",
       "nuguri_2019_damwon-gaming",
-      "punch_2019_damwon-gaming",
       "showmaker_2019_damwon-gaming"
     ],
     "rolesAvailable": [
@@ -1340,7 +1237,6 @@
     "league": "LCK",
     "roster": [
       "chovy_2019_griffin-korean-team",
-      "doran-choi-hyeon-joon_2019_griffin-korean-team",
       "lehends_2019_griffin-korean-team",
       "sword-choi-sung-won_2019_griffin-korean-team",
       "tarzan-lee-seung-yong_2019_griffin-korean-team",
@@ -1363,7 +1259,6 @@
     "league": "LCK",
     "roster": [
       "clid_2019_sk-telecom-t1",
-      "effort_2019_sk-telecom-t1",
       "faker_2019_sk-telecom-t1",
       "khan_2019_sk-telecom-t1",
       "mata_2019_sk-telecom-t1",
@@ -1410,7 +1305,6 @@
       "cuzz_2019_kingzone-dragonx",
       "deft_2019_kingzone-dragonx",
       "naehyun_2019_kingzone-dragonx",
-      "pawn_2019_kingzone-dragonx",
       "rascal_2019_kingzone-dragonx",
       "tusin_2019_kingzone-dragonx"
     ],
@@ -1433,12 +1327,8 @@
       "aiming_2020_kt-rolster",
       "bono-kim-gi-beom_2020_kt-rolster",
       "kuro_2020_kt-rolster",
-      "malrang_2020_kt-rolster",
-      "ray_2020_kt-rolster",
-      "smeb_2020_kt-rolster",
       "sohwan_2020_kt-rolster",
-      "tusin_2020_kt-rolster",
-      "ucal_2020_kt-rolster"
+      "tusin_2020_kt-rolster"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1456,11 +1346,8 @@
     "year": 2020,
     "league": "LCK",
     "roster": [
-      "all-in_2020_afreeca-freecs",
       "ben_2020_afreeca-freecs",
-      "dread-lee-jin-hyeok_2020_afreeca-freecs",
       "fly-song-yong-jun_2020_afreeca-freecs",
-      "jelly-son-ho-gyeong_2020_afreeca-freecs",
       "kiin_2020_afreeca-freecs",
       "mystic_2020_afreeca-freecs",
       "spirit_2020_afreeca-freecs"
@@ -1483,7 +1370,6 @@
     "roster": [
       "bdd_2020_gen-g",
       "clid_2020_gen-g",
-      "kellin_2020_gen-g",
       "life_2020_gen-g",
       "rascal_2020_gen-g",
       "ruler_2020_gen-g"
@@ -1507,8 +1393,6 @@
       "beryl_2020_damwon-gaming",
       "canyon_2020_damwon-gaming",
       "ghost-jang-yong-jun_2020_damwon-gaming",
-      "hoit_2020_damwon-gaming",
-      "nuclear_2020_damwon-gaming",
       "nuguri_2020_damwon-gaming",
       "showmaker_2020_damwon-gaming"
     ],
@@ -1529,10 +1413,8 @@
     "league": "LCK",
     "roster": [
       "canna_2020_t1",
-      "clozer_2020_t1",
       "cuzz_2020_t1",
       "effort_2020_t1",
-      "ellim_2020_t1",
       "faker_2020_t1",
       "teddy_2020_t1"
     ],
@@ -1599,11 +1481,8 @@
       "arthur-park-mi-reu_2021_hanwha-life-esports",
       "chovy_2021_hanwha-life-esports",
       "deft_2021_hanwha-life-esports",
-      "dudu-lee-dong-ju_2021_hanwha-life-esports",
       "morgan_2021_hanwha-life-esports",
-      "vsta_2021_hanwha-life-esports",
-      "willer_2021_hanwha-life-esports",
-      "yohan_2021_hanwha-life-esports"
+      "vsta_2021_hanwha-life-esports"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1621,7 +1500,6 @@
     "year": 2021,
     "league": "LCK",
     "roster": [
-      "bang_2021_afreeca-freecs",
       "dread-lee-jin-hyeok_2021_afreeca-freecs",
       "fly-song-yong-jun_2021_afreeca-freecs",
       "kiin_2021_afreeca-freecs",
@@ -1646,12 +1524,9 @@
     "roster": [
       "bao-jeong-hyeon-woo_2021_drx",
       "becca-son-min-woo_2021_drx",
-      "jett_2021_drx",
-      "jun-yoon-se-jun_2021_drx",
       "kingen_2021_drx",
       "pyosik_2021_drx",
-      "solka_2021_drx",
-      "taeyoon-kim-tae-yoon_2021_drx"
+      "solka_2021_drx"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1669,7 +1544,6 @@
     "year": 2021,
     "league": "LCK",
     "roster": [
-      "bay_2021_nongshim-redforce",
       "deokdam_2021_nongshim-redforce",
       "gori_2021_nongshim-redforce",
       "kellin_2021_nongshim-redforce",
@@ -1693,9 +1567,7 @@
     "league": "LCK",
     "roster": [
       "bdd_2021_gen-g",
-      "burdol_2021_gen-g",
       "clid_2021_gen-g",
-      "flawless_2021_gen-g",
       "life_2021_gen-g",
       "rascal_2021_gen-g",
       "ruler_2021_gen-g"
@@ -1720,7 +1592,6 @@
       "canyon_2021_dwg-kia",
       "ghost-jang-yong-jun_2021_dwg-kia",
       "khan_2021_dwg-kia",
-      "malrang_2021_dwg-kia",
       "showmaker_2021_dwg-kia"
     ],
     "rolesAvailable": [
@@ -1740,15 +1611,10 @@
     "league": "LCK",
     "roster": [
       "canna_2021_t1",
-      "clozer_2021_t1",
       "cuzz_2021_t1",
-      "ellim_2021_t1",
       "faker_2021_t1",
-      "gumayusi_2021_t1",
       "keria_2021_t1",
-      "oner_2021_t1",
-      "teddy_2021_t1",
-      "zeus_2021_t1"
+      "teddy_2021_t1"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1769,9 +1635,7 @@
       "croco_2021_liiv-sandbox",
       "effort_2021_liiv-sandbox",
       "fate-yoo-su-hyeok_2021_liiv-sandbox",
-      "leo-han-gyeo-re_2021_liiv-sandbox",
       "prince-lee-chae-hwan_2021_liiv-sandbox",
-      "route_2021_liiv-sandbox",
       "summit_2021_liiv-sandbox"
     ],
     "rolesAvailable": [
@@ -1791,7 +1655,6 @@
     "league": "LCK",
     "roster": [
       "aiming_2022_kt-rolster",
-      "aria-lee-ga-eul_2022_kt-rolster",
       "cuzz_2022_kt-rolster",
       "life_2022_kt-rolster",
       "rascal_2022_kt-rolster",
@@ -1835,13 +1698,10 @@
     "year": 2022,
     "league": "LCK",
     "roster": [
-      "bible_2022_dwg-kia",
       "burdol_2022_dwg-kia",
       "canyon_2022_dwg-kia",
       "deokdam_2022_dwg-kia",
-      "hoya_2022_dwg-kia",
       "kellin_2022_dwg-kia",
-      "nuguri_2022_dwg-kia",
       "showmaker_2022_dwg-kia"
     ],
     "rolesAvailable": [
@@ -1863,11 +1723,8 @@
       "chovy_2022_gen-g",
       "doran-choi-hyeon-joon_2022_gen-g",
       "lehends_2022_gen-g",
-      "lospa_2022_gen-g",
-      "ophelia_2022_gen-g",
       "peanut_2022_gen-g",
-      "ruler_2022_gen-g",
-      "youngjae_2022_gen-g"
+      "ruler_2022_gen-g"
     ],
     "rolesAvailable": [
       "ADC",
@@ -1888,8 +1745,6 @@
       "clozer_2022_liiv-sandbox",
       "croco_2022_liiv-sandbox",
       "dove_2022_liiv-sandbox",
-      "envyy_2022_liiv-sandbox",
-      "ice-yoon-sang-hoon_2022_liiv-sandbox",
       "kael-kim-jin-hong_2022_liiv-sandbox",
       "prince-lee-chae-hwan_2022_liiv-sandbox"
     ],
@@ -1913,7 +1768,6 @@
       "hena_2022_fredit-brion",
       "lava_2022_fredit-brion",
       "morgan_2022_fredit-brion",
-      "sw0rd_2022_fredit-brion",
       "umti_2022_fredit-brion"
     ],
     "rolesAvailable": [
@@ -1936,7 +1790,6 @@
       "fate-yoo-su-hyeok_2022_kwangdong-freecs",
       "hoit_2022_kwangdong-freecs",
       "kiin_2022_kwangdong-freecs",
-      "moham_2022_kwangdong-freecs",
       "teddy_2022_kwangdong-freecs"
     ],
     "rolesAvailable": [
@@ -2001,12 +1854,8 @@
     "roster": [
       "beryl_2023_drx",
       "croco_2023_drx",
-      "deokdam_2023_drx",
       "fate-yoo-su-hyeok_2023_drx",
-      "juhan_2023_drx",
-      "kyeahoo_2023_drx",
       "paduck_2023_drx",
-      "pleata_2023_drx",
       "rascal_2023_drx"
     ],
     "rolesAvailable": [
@@ -2026,11 +1875,9 @@
     "league": "LCK",
     "roster": [
       "burdol_2023_liiv-sandbox",
-      "clear-song-hyeon-min_2023_liiv-sandbox",
       "clozer_2023_liiv-sandbox",
       "envyy_2023_liiv-sandbox",
       "kael-kim-jin-hong_2023_liiv-sandbox",
-      "teddy_2023_liiv-sandbox",
       "willer_2023_liiv-sandbox"
     ],
     "rolesAvailable": [
@@ -2049,7 +1896,6 @@
     "year": 2023,
     "league": "LCK",
     "roster": [
-      "bible_2023_dplus-kia",
       "canna_2023_dplus-kia",
       "canyon_2023_dplus-kia",
       "deft_2023_dplus-kia",
@@ -2095,7 +1941,6 @@
     "league": "LCK",
     "roster": [
       "clid_2023_hanwha-life-esports",
-      "grizzly_2023_hanwha-life-esports",
       "kingen_2023_hanwha-life-esports",
       "life_2023_hanwha-life-esports",
       "viper-park-do-hyeon_2023_hanwha-life-esports",
@@ -2121,7 +1966,6 @@
       "gumayusi_2023_t1",
       "keria_2023_t1",
       "oner_2023_t1",
-      "poby_2023_t1",
       "zeus_2023_t1"
     ],
     "rolesAvailable": [
@@ -2144,7 +1988,6 @@
       "kellin_2024_dplus-kia",
       "kingen_2024_dplus-kia",
       "lucid-choi-yong-hyeok_2024_dplus-kia",
-      "moham_2024_dplus-kia",
       "showmaker_2024_dplus-kia"
     ],
     "rolesAvailable": [
@@ -2164,12 +2007,10 @@
     "league": "LCK",
     "roster": [
       "andil_2024_kwangdong-freecs",
-      "bull_2024_kwangdong-freecs",
       "bulldog-lee-tae-young_2024_kwangdong-freecs",
       "cuzz_2024_kwangdong-freecs",
       "dudu-lee-dong-ju_2024_kwangdong-freecs",
-      "leaper_2024_kwangdong-freecs",
-      "quantum-son-jeong-hwan_2024_kwangdong-freecs"
+      "leaper_2024_kwangdong-freecs"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2278,7 +2119,6 @@
       "clear-song-hyeon-min_2024_bnk-fearx",
       "clozer_2024_bnk-fearx",
       "duro_2024_bnk-fearx",
-      "execute_2024_bnk-fearx",
       "hena_2024_bnk-fearx",
       "raptor-jeon-eo-jin_2024_bnk-fearx"
     ],
@@ -2321,13 +2161,10 @@
     "league": "LCK",
     "roster": [
       "bdd_2025_kt-rolster",
-      "casting_2025_kt-rolster",
       "cuzz_2025_kt-rolster",
       "deokdam_2025_kt-rolster",
-      "paduck_2025_kt-rolster",
       "perfect-lee-seung-min_2025_kt-rolster",
-      "peter-jeong-yoon-su_2025_kt-rolster",
-      "way-han-gil_2025_kt-rolster"
+      "peter-jeong-yoon-su_2025_kt-rolster"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2346,7 +2183,6 @@
     "league": "LCK",
     "roster": [
       "calix-syun-hyun-bin_2025_nongshim-redforce",
-      "fisher-lee-jeong-tae_2025_nongshim-redforce",
       "gideon_2025_nongshim-redforce",
       "jiwoo_2025_nongshim-redforce",
       "kingen_2025_nongshim-redforce",
@@ -2416,8 +2252,7 @@
       "faker_2025_t1",
       "gumayusi_2025_t1",
       "keria_2025_t1",
-      "oner_2025_t1",
-      "smash-shin-geum-jae_2025_t1"
+      "oner_2025_t1"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2435,11 +2270,8 @@
     "year": 2025,
     "league": "LCK",
     "roster": [
-      "bull_2025_oksavingsbank-brion",
       "clozer_2025_oksavingsbank-brion",
       "croco_2025_oksavingsbank-brion",
-      "ellim_2025_oksavingsbank-brion",
-      "hambak_2025_oksavingsbank-brion",
       "hype-byeon-jeong-hyeon_2025_oksavingsbank-brion",
       "morgan_2025_oksavingsbank-brion",
       "pollu_2025_oksavingsbank-brion"
@@ -2461,11 +2293,9 @@
     "league": "LCK",
     "roster": [
       "clear-song-hyeon-min_2025_bnk-fearx",
-      "daystar_2025_bnk-fearx",
       "diable_2025_bnk-fearx",
       "kellin_2025_bnk-fearx",
       "raptor-jeon-eo-jin_2025_bnk-fearx",
-      "soboro_2025_bnk-fearx",
       "vicla_2025_bnk-fearx"
     ],
     "rolesAvailable": [
@@ -2488,9 +2318,7 @@
       "jing-rao-jing_2013_positive-energy",
       "jojo-kan-yiu-tou_2013_positive-energy",
       "namei_2013_positive-energy",
-      "qingzhi-hu-wei_2013_positive-energy",
-      "sicca_2013_positive-energy",
-      "ziv-hu-wei_2013_positive-energy"
+      "sicca_2013_positive-energy"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2509,11 +2337,9 @@
     "league": "LPL",
     "roster": [
       "bigpomelo_2013_oh-my-god",
-      "coma-fang-hong-ri_2013_oh-my-god",
       "cool_2013_oh-my-god",
       "gogoing_2013_oh-my-god",
       "lovelin_2013_oh-my-god",
-      "loveling_2013_oh-my-god",
       "san-guo-jun-liang_2013_oh-my-god"
     ],
     "rolesAvailable": [
@@ -2533,14 +2359,10 @@
     "league": "LPL",
     "roster": [
       "allen-yin-le_2014_oh-my-god",
-      "cloud-hu-zhen-wei_2014_oh-my-god",
       "cool_2014_oh-my-god",
-      "dada7_2014_oh-my-god",
       "drug_2014_oh-my-god",
       "gogoing_2014_oh-my-god",
-      "pomelo_2014_oh-my-god",
-      "san-guo-jun-liang_2014_oh-my-god",
-      "xiyang_2014_oh-my-god"
+      "san-guo-jun-liang_2014_oh-my-god"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2558,10 +2380,8 @@
     "year": 2014,
     "league": "LPL",
     "roster": [
-      "actsin_2014_team-we",
       "caomei_2014_team-we",
       "conan_2014_team-we",
-      "ninja_2014_team-we",
       "ruo-teng-yang-tian-xia_2014_team-we",
       "sukim_2014_team-we",
       "weixiao_2014_team-we"
@@ -2608,9 +2428,7 @@
       "kid_2014_invictus-gaming",
       "kitties_2014_invictus-gaming",
       "pdd_2014_invictus-gaming",
-      "yongsoo_2014_invictus-gaming",
-      "zz1tai_2014_invictus-gaming",
-      "zzitai_2014_invictus-gaming"
+      "zz1tai_2014_invictus-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2631,9 +2449,6 @@
       "17_2014_lgd-gaming",
       "pyl-chen-bo_2014_lgd-gaming",
       "quan_2014_lgd-gaming",
-      "rena_2014_lgd-gaming",
-      "star-fu-yang_2014_lgd-gaming",
-      "styz_2014_lgd-gaming",
       "we1less_2014_lgd-gaming",
       "xq_2014_lgd-gaming"
     ],
@@ -2676,13 +2491,10 @@
     "league": "LPL",
     "roster": [
       "acorn_2015_lgd-gaming",
-      "flame_2015_lgd-gaming",
       "godv-wei-zhen_2015_lgd-gaming",
       "imp_2015_lgd-gaming",
       "pyl-chen-bo_2015_lgd-gaming",
-      "tbq_2015_lgd-gaming",
-      "we1less_2015_lgd-gaming",
-      "xiaoxi_2015_lgd-gaming"
+      "tbq_2015_lgd-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2703,11 +2515,8 @@
       "aluka_2015_team-we",
       "conan_2015_team-we",
       "mystic_2015_team-we",
-      "ninja_2015_team-we",
       "spirit_2015_team-we",
-      "styz_2015_team-we",
-      "xiye_2015_team-we",
-      "yuzhe_2015_team-we"
+      "xiye_2015_team-we"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2726,17 +2535,10 @@
     "league": "LPL",
     "roster": [
       "assassin_2015_team-king",
-      "cola-jiang-nan_2015_team-king",
-      "corn-lei-wen_2015_team-king",
-      "hu1_2015_team-king",
-      "insec_2015_team-king",
       "leyn_2015_team-king",
       "mlxg_2015_team-king",
-      "namei_2015_team-king",
-      "sinkdream_2015_team-king",
       "skye_2015_team-king",
-      "wuxin_2015_team-king",
-      "zero-yoon-kyung-sup_2015_team-king"
+      "wuxin_2015_team-king"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2758,10 +2560,7 @@
       "beast-kim-joo-hyun_2015_snake-esports",
       "ella_2015_snake-esports",
       "flandre_2015_snake-esports",
-      "kryst4l_2015_snake-esports",
-      "martin-tan-qi_2015_snake-esports",
-      "u_2015_snake-esports",
-      "zzr_2015_snake-esports"
+      "kryst4l_2015_snake-esports"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2779,13 +2578,10 @@
     "year": 2015,
     "league": "LPL",
     "roster": [
-      "amazingj_2015_edward-gaming",
-      "baeme_2015_edward-gaming",
       "clearlove_2015_edward-gaming",
       "deft_2015_edward-gaming",
       "koro1_2015_edward-gaming",
       "meiko_2015_edward-gaming",
-      "mouse_2015_edward-gaming",
       "pawn_2015_edward-gaming"
     ],
     "rolesAvailable": [
@@ -2804,13 +2600,10 @@
     "year": 2015,
     "league": "LPL",
     "roster": [
-      "candy-tang-xin_2015_masters-3",
       "condi_2015_masters-3",
       "dade_2015_masters-3",
-      "dreams-he-zhi-hong_2015_masters-3",
       "looper_2015_masters-3",
       "lovecd_2015_masters-3",
-      "ruo-teng-yang-tian-xia_2015_masters-3",
       "smlz_2015_masters-3"
     ],
     "rolesAvailable": [
@@ -2831,13 +2624,9 @@
     "roster": [
       "carry-wang-zu-jing_2015_vici-gaming",
       "dandy_2015_vici-gaming",
-      "endless-xu-hao_2015_vici-gaming",
       "hetong_2015_vici-gaming",
       "mata_2015_vici-gaming",
-      "peng-peng-yi-bo_2015_vici-gaming",
-      "vasilii_2015_vici-gaming",
-      "world6_2015_vici-gaming",
-      "xuan-pi-xiao-xuan_2015_vici-gaming"
+      "vasilii_2015_vici-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2856,16 +2645,10 @@
     "league": "LPL",
     "roster": [
       "amazing-liu-shi-yu_2015_oh-my-god",
-      "cloud-hu-zhen-wei_2015_oh-my-god",
       "cool_2015_oh-my-god",
       "gogoing_2015_oh-my-god",
-      "juejue_2015_oh-my-god",
       "loveling_2015_oh-my-god",
-      "luo-luo-ci-rui_2015_oh-my-god",
-      "north-zhang-yu-ze_2015_oh-my-god",
-      "san-guo-jun-liang_2015_oh-my-god",
-      "uzi-jian-zi-hao_2015_oh-my-god",
-      "xiyang_2015_oh-my-god"
+      "uzi-jian-zi-hao_2015_oh-my-god"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2886,9 +2669,7 @@
       "kakao_2015_invictus-gaming",
       "kid_2015_invictus-gaming",
       "kitties_2015_invictus-gaming",
-      "pokemon_2015_invictus-gaming",
       "rookie_2015_invictus-gaming",
-      "time-tang-jing-tai_2015_invictus-gaming",
       "zzitai_2015_invictus-gaming"
     ],
     "rolesAvailable": [
@@ -2930,11 +2711,8 @@
     "league": "LPL",
     "roster": [
       "957_2016_team-we",
-      "aluka_2016_team-we",
-      "conan_2016_team-we",
       "condi_2016_team-we",
       "mystic_2016_team-we",
-      "spirit_2016_team-we",
       "xiye_2016_team-we",
       "zero-yoon-kyung-sup_2016_team-we"
     ],
@@ -2954,15 +2732,11 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "1ntruder_2016_lgd-gaming",
       "eimy_2016_lgd-gaming",
       "imp_2016_lgd-gaming",
       "marin_2016_lgd-gaming",
-      "punished_2016_lgd-gaming",
       "pyl-chen-bo_2016_lgd-gaming",
-      "we1less_2016_lgd-gaming",
-      "xiaoxi_2016_lgd-gaming",
-      "yu-li-xin-nan_2016_lgd-gaming"
+      "we1less_2016_lgd-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -2980,13 +2754,10 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "athena_2016_edward-gaming",
       "clearlove_2016_edward-gaming",
       "deft_2016_edward-gaming",
-      "koro1_2016_edward-gaming",
       "meiko_2016_edward-gaming",
       "mouse_2016_edward-gaming",
-      "pawn_2016_edward-gaming",
       "scout_2016_edward-gaming"
     ],
     "rolesAvailable": [
@@ -3005,12 +2776,10 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "borisal_2016_qiao-gu-reapers",
       "doinb_2016_qiao-gu-reapers",
       "mor_2016_qiao-gu-reapers",
       "peco-yu-rui_2016_qiao-gu-reapers",
       "swift_2016_qiao-gu-reapers",
-      "uzi-jian-zi-hao_2016_qiao-gu-reapers",
       "v_2016_qiao-gu-reapers"
     ],
     "rolesAvailable": [
@@ -3033,8 +2802,7 @@
       "dandy_2016_vici-gaming",
       "easyhoon_2016_vici-gaming",
       "endless-xu-hao_2016_vici-gaming",
-      "loong_2016_vici-gaming",
-      "xuanxuanpi_2016_vici-gaming"
+      "loong_2016_vici-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3054,10 +2822,7 @@
     "roster": [
       "ella_2016_snake-esports",
       "flandre_2016_snake-esports",
-      "jiezou_2016_snake-esports",
-      "kryst4l_2016_snake-esports",
       "martin-tan-qi_2016_snake-esports",
-      "sofm_2016_snake-esports",
       "tank_2016_snake-esports",
       "zzr_2016_snake-esports"
     ],
@@ -3077,14 +2842,10 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "letme_2016_royal-never-give-up",
-      "ley_2016_royal-never-give-up",
       "looper_2016_royal-never-give-up",
       "mata_2016_royal-never-give-up",
       "mlxg_2016_royal-never-give-up",
-      "namei_2016_royal-never-give-up",
       "uzi-jian-zi-hao_2016_royal-never-give-up",
-      "wuxx_2016_royal-never-give-up",
       "xiaohu_2016_royal-never-give-up"
     ],
     "rolesAvailable": [
@@ -3103,15 +2864,10 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "baolan_2016_invictus-gaming",
       "kid_2016_invictus-gaming",
       "kitties_2016_invictus-gaming",
-      "marge_2016_invictus-gaming",
       "rain-an-hyeon-guk_2016_invictus-gaming",
       "rookie_2016_invictus-gaming",
-      "s4ve_2016_invictus-gaming",
-      "tabe_2016_invictus-gaming",
-      "time-tang-jing-tai_2016_invictus-gaming",
       "zz1tai_2016_invictus-gaming"
     ],
     "rolesAvailable": [
@@ -3133,9 +2889,7 @@
       "amazingj_2016_i-may",
       "athena_2016_i-may",
       "avoidless_2016_i-may",
-      "baeme_2016_i-may",
       "jinjiao_2016_i-may",
-      "mitty_2016_i-may",
       "road-yun-han-gil_2016_i-may"
     ],
     "rolesAvailable": [
@@ -3154,7 +2908,6 @@
     "year": 2016,
     "league": "LPL",
     "roster": [
-      "city_2016_game-talents",
       "gimgoon_2016_game-talents",
       "pentaq_2016_game-talents",
       "republic_2016_game-talents",
@@ -3181,8 +2934,7 @@
       "ben_2017_team-we",
       "condi_2017_team-we",
       "mystic_2017_team-we",
-      "xiye_2017_team-we",
-      "zero-yoon-kyung-sup_2017_team-we"
+      "xiye_2017_team-we"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3200,15 +2952,11 @@
     "year": 2017,
     "league": "LPL",
     "roster": [
-      "again_2017_royal-never-give-up",
-      "korol_2017_royal-never-give-up",
       "letme_2017_royal-never-give-up",
       "ming-shi-sen-ming_2017_royal-never-give-up",
       "mlxg_2017_royal-never-give-up",
       "uzi-jian-zi-hao_2017_royal-never-give-up",
-      "xiaohu_2017_royal-never-give-up",
-      "y1han_2017_royal-never-give-up",
-      "y4_2017_royal-never-give-up"
+      "xiaohu_2017_royal-never-give-up"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3228,10 +2976,7 @@
     "roster": [
       "ali-liu-xu-dong_2017_qg-reapers",
       "alone-wang-zi-jun_2017_qg-reapers",
-      "candyseven_2017_qg-reapers",
       "clid_2017_qg-reapers",
-      "cloud-hu-zhen-wei_2017_qg-reapers",
-      "deceit_2017_qg-reapers",
       "doinb_2017_qg-reapers",
       "kabe_2017_qg-reapers"
     ],
@@ -3254,11 +2999,8 @@
       "amazingj_2017_i-may",
       "athena_2017_i-may",
       "ben4_2017_i-may",
-      "flawless_2017_i-may",
       "jinjiao_2017_i-may",
-      "road-yun-han-gil_2017_i-may",
-      "sks_2017_i-may",
-      "starlight_2017_i-may"
+      "road-yun-han-gil_2017_i-may"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3276,11 +3018,7 @@
     "year": 2017,
     "league": "LPL",
     "roster": [
-      "audi_2017_edward-gaming",
-      "clearlove7_2017_edward-gaming",
       "fireloli_2017_edward-gaming",
-      "iboy_2017_edward-gaming",
-      "koro1_2017_edward-gaming",
       "meiko_2017_edward-gaming",
       "mouse_2017_edward-gaming",
       "scout_2017_edward-gaming",
@@ -3303,20 +3041,10 @@
     "league": "LPL",
     "roster": [
       "coco_2017_newbee",
-      "cool_2017_newbee",
-      "corn-lei-wen_2017_newbee",
-      "crisp_2017_newbee",
-      "dade_2017_newbee",
-      "happy_2017_newbee",
-      "happyy_2017_newbee",
       "lwx_2017_newbee",
       "mor_2017_newbee",
-      "morzb_2017_newbee",
-      "pinus_2017_newbee",
-      "skye_2017_newbee",
       "swift_2017_newbee",
-      "v_2017_newbee",
-      "vasilii_2017_newbee"
+      "v_2017_newbee"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3335,13 +3063,9 @@
     "league": "LPL",
     "roster": [
       "duke-lee-ho-seong_2017_invictus-gaming",
-      "kidkid_2017_invictus-gaming",
-      "marge_2017_invictus-gaming",
       "megan_2017_invictus-gaming",
       "ning_2017_invictus-gaming",
-      "rio_2017_invictus-gaming",
       "rookie_2017_invictus-gaming",
-      "theshy_2017_invictus-gaming",
       "west_2017_invictus-gaming"
     ],
     "rolesAvailable": [
@@ -3362,9 +3086,6 @@
     "roster": [
       "five_2017_oh-my-god",
       "icon_2017_oh-my-god",
-      "jiekou_2017_oh-my-god",
-      "juejue_2017_oh-my-god",
-      "s1mlz_2017_oh-my-god",
       "smlz_2017_oh-my-god",
       "world6_2017_oh-my-god",
       "xiyang_2017_oh-my-god"
@@ -3386,14 +3107,9 @@
     "league": "LPL",
     "roster": [
       "flandre_2017_snake-esports",
-      "guoguo_2017_snake-esports",
-      "hudie_2017_snake-esports",
       "kryst4l_2017_snake-esports",
-      "mint_2017_snake-esports",
-      "mo_2017_snake-esports",
       "ohq_2017_snake-esports",
       "sofm_2017_snake-esports",
-      "tank_2017_snake-esports",
       "zz1tai_2017_snake-esports"
     ],
     "rolesAvailable": [
@@ -3412,9 +3128,6 @@
     "year": 2017,
     "league": "LPL",
     "roster": [
-      "avoidless_2017_suning",
-      "brain_2017_suning",
-      "dian_2017_suning",
       "fenfen_2017_suning",
       "fury-lee-jin-yong_2017_suning",
       "h4cker_2017_suning",
@@ -3437,17 +3150,10 @@
     "year": 2018,
     "league": "LPL",
     "roster": [
-      "694_2018_team-we",
       "957_2018_team-we",
-      "ben_2018_team-we",
       "celestial_2018_team-we",
       "condi_2018_team-we",
-      "gentle_2018_team-we",
-      "magic-zhou-jun-xuan_2018_team-we",
-      "melon-zhong-wang_2018_team-we",
-      "missing_2018_team-we",
       "mystic_2018_team-we",
-      "pepper-hu-zhi-wei_2018_team-we",
       "xiye_2018_team-we"
     ],
     "rolesAvailable": [
@@ -3466,15 +3172,11 @@
     "year": 2018,
     "league": "LPL",
     "roster": [
-      "able_2018_royal-never-give-up",
       "karsa_2018_royal-never-give-up",
       "letme_2018_royal-never-give-up",
       "ming-shi-sen-ming_2018_royal-never-give-up",
-      "mlxg_2018_royal-never-give-up",
       "uzi-jian-zi-hao_2018_royal-never-give-up",
-      "xiaohu_2018_royal-never-give-up",
-      "y4_2018_royal-never-give-up",
-      "zz1tai_2018_royal-never-give-up"
+      "xiaohu_2018_royal-never-give-up"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3493,13 +3195,10 @@
     "league": "LPL",
     "roster": [
       "amazingj_2018_bilibili-gaming",
-      "athena_2018_bilibili-gaming",
       "chieftain_2018_bilibili-gaming",
       "jinjiao_2018_bilibili-gaming",
-      "m1anhua_2018_bilibili-gaming",
       "mole_2018_bilibili-gaming",
-      "road-yun-han-gil_2018_bilibili-gaming",
-      "sks_2018_bilibili-gaming"
+      "road-yun-han-gil_2018_bilibili-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3518,7 +3217,6 @@
     "league": "LPL",
     "roster": [
       "baolan_2018_invictus-gaming",
-      "duke-lee-ho-seong_2018_invictus-gaming",
       "jackeylove_2018_invictus-gaming",
       "ning_2018_invictus-gaming",
       "rookie_2018_invictus-gaming",
@@ -3540,14 +3238,11 @@
     "year": 2018,
     "league": "LPL",
     "roster": [
-      "alex-chen-yu-ming_2018_funplus-phoenix",
-      "bing-feng-jin-wei_2018_funplus-phoenix",
       "cool_2018_funplus-phoenix",
       "crisp_2018_funplus-phoenix",
       "gimgoon_2018_funplus-phoenix",
       "lwx_2018_funplus-phoenix",
-      "pepper-hu-zhi-wei_2018_funplus-phoenix",
-      "xinyi_2018_funplus-phoenix"
+      "pepper-hu-zhi-wei_2018_funplus-phoenix"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3566,12 +3261,7 @@
     "league": "LPL",
     "roster": [
       "cat-wu-yao_2018_topsports-gaming",
-      "corn-lei-wen_2018_topsports-gaming",
-      "fage_2018_topsports-gaming",
       "ggoong_2018_topsports-gaming",
-      "karin_2018_topsports-gaming",
-      "lies-guo-hao-tian_2018_topsports-gaming",
-      "marin_2018_topsports-gaming",
       "moyu_2018_topsports-gaming",
       "qiuqiu-zhang-ming_2018_topsports-gaming",
       "xx-xiong-yu-long_2018_topsports-gaming"
@@ -3592,7 +3282,6 @@
     "year": 2018,
     "league": "LPL",
     "roster": [
-      "clearlove_2018_edward-gaming",
       "haro_2018_edward-gaming",
       "iboy_2018_edward-gaming",
       "meiko_2018_edward-gaming",
@@ -3618,8 +3307,6 @@
       "clid_2018_jd-gaming",
       "loken_2018_jd-gaming",
       "lvmao_2018_jd-gaming",
-      "rd_2018_jd-gaming",
-      "xiaohan-pan-han_2018_jd-gaming",
       "yagao_2018_jd-gaming",
       "zoom_2018_jd-gaming"
     ],
@@ -3641,9 +3328,7 @@
     "roster": [
       "doinb_2018_rogue-warriors",
       "flawless_2018_rogue-warriors",
-      "holder_2018_rogue-warriors",
       "killua_2018_rogue-warriors",
-      "kiwi_2018_rogue-warriors",
       "mouse_2018_rogue-warriors",
       "smlz_2018_rogue-warriors"
     ],
@@ -3667,8 +3352,6 @@
       "guoguo_2018_snake-esports",
       "hudie_2018_snake-esports",
       "kryst4l_2018_snake-esports",
-      "light-wang-guang-yu_2018_snake-esports",
-      "maestro-hu-jian-xin_2018_snake-esports",
       "sofm_2018_snake-esports"
     ],
     "rolesAvailable": [
@@ -3687,12 +3370,9 @@
     "year": 2018,
     "league": "LPL",
     "roster": [
-      "angel-xiang-tao_2018_suning",
-      "fenfen_2018_suning",
       "fury-lee-jin-yong_2018_suning",
       "h4cker_2018_suning",
       "knight-zhuo-ding_2018_suning",
-      "tian_2018_suning",
       "xiaoal_2018_suning",
       "yoon_2018_suning"
     ],
@@ -3716,7 +3396,6 @@
       "ben_2019_topsports-gaming",
       "knight9_2019_topsports-gaming",
       "loken_2019_topsports-gaming",
-      "moyu_2019_topsports-gaming",
       "xx-xiong-yu-long_2019_topsports-gaming"
     ],
     "rolesAvailable": [
@@ -3735,14 +3414,11 @@
     "year": 2019,
     "league": "LPL",
     "roster": [
-      "amazingj_2019_royal-never-give-up",
       "karsa_2019_royal-never-give-up",
       "langx_2019_royal-never-give-up",
       "ming-shi-sen-ming_2019_royal-never-give-up",
       "uzi-jian-zi-hao_2019_royal-never-give-up",
-      "wink_2019_royal-never-give-up",
-      "xiaohu_2019_royal-never-give-up",
-      "zz1tai_2019_royal-never-give-up"
+      "xiaohu_2019_royal-never-give-up"
     ],
     "rolesAvailable": [
       "ADC",
@@ -3760,9 +3436,6 @@
     "year": 2019,
     "league": "LPL",
     "roster": [
-      "angel-xiang-tao_2019_suning",
-      "biubiu_2019_suning",
-      "h4cker_2019_suning",
       "maple-huang-yi-tang_2019_suning",
       "smlz_2019_suning",
       "swordart_2019_suning",
@@ -3786,11 +3459,7 @@
     "league": "LPL",
     "roster": [
       "baolan_2019_invictus-gaming",
-      "duke-lee-ho-seong_2019_invictus-gaming",
-      "forge_2019_invictus-gaming",
       "jackeylove_2019_invictus-gaming",
-      "leyan_2019_invictus-gaming",
-      "lucas-li-tan-pan-ao_2019_invictus-gaming",
       "ning_2019_invictus-gaming",
       "rookie_2019_invictus-gaming",
       "theshy_2019_invictus-gaming"
@@ -3812,7 +3481,6 @@
     "league": "LPL",
     "roster": [
       "beishang_2019_team-we",
-      "magic-zhou-jun-xuan_2019_team-we",
       "missing_2019_team-we",
       "mystic_2019_team-we",
       "poss_2019_team-we",
@@ -3834,11 +3502,8 @@
     "year": 2019,
     "league": "LPL",
     "roster": [
-      "bvoy_2019_jd-gaming",
       "flawless_2019_jd-gaming",
       "imp_2019_jd-gaming",
-      "kanavi_2019_jd-gaming",
-      "levi_2019_jd-gaming",
       "lvmao_2019_jd-gaming",
       "yagao_2019_jd-gaming",
       "zoom_2019_jd-gaming"
@@ -3881,14 +3546,10 @@
     "year": 2019,
     "league": "LPL",
     "roster": [
-      "clearlove_2019_edward-gaming",
-      "haro_2019_edward-gaming",
-      "hope-wang-jie_2019_edward-gaming",
       "iboy_2019_edward-gaming",
       "jiejie_2019_edward-gaming",
       "jinoo_2019_edward-gaming",
       "meiko_2019_edward-gaming",
-      "ray_2019_edward-gaming",
       "scout_2019_edward-gaming"
     ],
     "rolesAvailable": [
@@ -3930,11 +3591,8 @@
     "league": "LPL",
     "roster": [
       "jinjiao_2019_bilibili-gaming",
-      "kine_2019_bilibili-gaming",
       "kuro_2019_bilibili-gaming",
       "meteor_2019_bilibili-gaming",
-      "metoer_2019_bilibili-gaming",
-      "mni_2019_bilibili-gaming",
       "xinmo_2019_bilibili-gaming"
     ],
     "rolesAvailable": [
@@ -3953,11 +3611,9 @@
     "league": "LPL",
     "roster": [
       "369_2019_top-esports",
-      "aki-mao-an_2019_top-esports",
       "ben_2019_top-esports",
       "knight9_2019_top-esports",
       "loken_2019_top-esports",
-      "qiuqiu-zhang-ming_2019_top-esports",
       "xx-xiong-yu-long_2019_top-esports"
     ],
     "rolesAvailable": [
@@ -3978,9 +3634,7 @@
     "roster": [
       "asura-lu-qi_2019_lng-esports",
       "duan_2019_lng-esports",
-      "fenfen_2019_lng-esports",
       "flandre_2019_lng-esports",
-      "maestro-hu-jian-xin_2019_lng-esports",
       "plex-bae-ho-young_2019_lng-esports",
       "sofm_2019_lng-esports"
     ],
@@ -4004,8 +3658,6 @@
       "jackeylove_2020_top-esports",
       "karsa_2020_top-esports",
       "knight-zhuo-ding_2020_top-esports",
-      "photic_2020_top-esports",
-      "qiuqiu-zhang-ming_2020_top-esports",
       "yuyanjia_2020_top-esports"
     ],
     "rolesAvailable": [
@@ -4024,7 +3676,6 @@
     "year": 2020,
     "league": "LPL",
     "roster": [
-      "705_2020_jd-gaming",
       "kanavi_2020_jd-gaming",
       "loken_2020_jd-gaming",
       "lvmao_2020_jd-gaming",
@@ -4047,17 +3698,11 @@
     "year": 2020,
     "league": "LPL",
     "roster": [
-      "aliez-huang-hao_2020_victory-five",
-      "as6_2020_victory-five",
       "biubiu_2020_victory-five",
-      "clx_2020_victory-five",
-      "max-li-xiao-qiang_2020_victory-five",
       "mole_2020_victory-five",
       "ppgod_2020_victory-five",
       "samd_2020_victory-five",
-      "weiwei_2020_victory-five",
-      "xiaohan-pan-han_2020_victory-five",
-      "y4_2020_victory-five"
+      "weiwei_2020_victory-five"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4077,7 +3722,6 @@
     "roster": [
       "angel-xiang-tao_2020_suning",
       "bin-chen-ze-bin_2020_suning",
-      "biubiu_2020_suning",
       "huanfeng_2020_suning",
       "sofm_2020_suning",
       "swordart_2020_suning"
@@ -4099,14 +3743,10 @@
     "league": "LPL",
     "roster": [
       "aodi_2020_edward-gaming",
-      "bbd_2020_edward-gaming",
       "hope-wang-jie_2020_edward-gaming",
-      "jiejie_2020_edward-gaming",
-      "jinoo_2020_edward-gaming",
       "junjia_2020_edward-gaming",
       "meiko_2020_edward-gaming",
-      "scout_2020_edward-gaming",
-      "xiaoxiang_2020_edward-gaming"
+      "scout_2020_edward-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4128,7 +3768,6 @@
       "jiumeng_2020_team-we",
       "missing_2020_team-we",
       "morgan_2020_team-we",
-      "plex-bae-ho-young_2020_team-we",
       "teacherma_2020_team-we"
     ],
     "rolesAvailable": [
@@ -4148,10 +3787,8 @@
     "league": "LPL",
     "roster": [
       "betty_2020_royal-never-give-up",
-      "gala_2020_royal-never-give-up",
       "langx_2020_royal-never-give-up",
       "ming-shi-sen-ming_2020_royal-never-give-up",
-      "new_2020_royal-never-give-up",
       "xiaohu_2020_royal-never-give-up",
       "xlb_2020_royal-never-give-up"
     ],
@@ -4171,16 +3808,11 @@
     "year": 2020,
     "league": "LPL",
     "roster": [
-      "chance-pei-piao_2020_lgd-gaming",
-      "cult_2020_lgd-gaming",
-      "killua_2020_lgd-gaming",
       "kramer_2020_lgd-gaming",
       "langx_2020_lgd-gaming",
-      "lies-guo-hao-tian_2020_lgd-gaming",
       "mark-ling-xu_2020_lgd-gaming",
       "peanut_2020_lgd-gaming",
-      "xiye_2020_lgd-gaming",
-      "yuuki-hu-hao-ming_2020_lgd-gaming"
+      "xiye_2020_lgd-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4201,7 +3833,6 @@
       "crisp_2020_funplus-phoenix",
       "doinb_2020_funplus-phoenix",
       "gimgoon_2020_funplus-phoenix",
-      "khan_2020_funplus-phoenix",
       "lwx_2020_funplus-phoenix",
       "tian_2020_funplus-phoenix"
     ],
@@ -4221,10 +3852,7 @@
     "year": 2020,
     "league": "LPL",
     "roster": [
-      "cjj_2020_estar-chinese-team",
       "cryin_2020_estar-chinese-team",
-      "fenfen_2020_estar-chinese-team",
-      "rat_2020_estar-chinese-team",
       "shiauc_2020_estar-chinese-team",
       "wei-yan-yang-wei_2020_estar-chinese-team",
       "wink_2020_estar-chinese-team",
@@ -4246,8 +3874,6 @@
     "year": 2020,
     "league": "LPL",
     "roster": [
-      "baolan_2020_invictus-gaming",
-      "leyan_2020_invictus-gaming",
       "ning_2020_invictus-gaming",
       "puff-ding-wang_2020_invictus-gaming",
       "rookie_2020_invictus-gaming",
@@ -4274,8 +3900,6 @@
       "jackeylove_2021_top-esports",
       "karsa_2021_top-esports",
       "knight-zhuo-ding_2021_top-esports",
-      "qingtian_2021_top-esports",
-      "yuyanjia_2021_top-esports",
       "zhuo_2021_top-esports"
     ],
     "rolesAvailable": [
@@ -4296,9 +3920,6 @@
     "roster": [
       "aiming_2021_bilibili-gaming",
       "biubiu_2021_bilibili-gaming",
-      "jwei_2021_bilibili-gaming",
-      "mark-ling-xu_2021_bilibili-gaming",
-      "meteor_2021_bilibili-gaming",
       "ppgod_2021_bilibili-gaming",
       "weiwei_2021_bilibili-gaming",
       "zeka-kim-geon-woo_2021_bilibili-gaming"
@@ -4343,12 +3964,9 @@
     "roster": [
       "able_2021_oh-my-god",
       "aki-mao-an_2021_oh-my-god",
-      "alielie_2021_oh-my-god",
       "cold_2021_oh-my-god",
       "creme_2021_oh-my-god",
-      "eric-he-qiang_2021_oh-my-god",
-      "new_2021_oh-my-god",
-      "wuming-wang-xin_2021_oh-my-god"
+      "new_2021_oh-my-god"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4369,10 +3987,7 @@
       "ale_2021_lng-esports",
       "icon_2021_lng-esports",
       "iwandy_2021_lng-esports",
-      "kedaya_2021_lng-esports",
       "light-wang-guang-yu_2021_lng-esports",
-      "lp_2021_lng-esports",
-      "m1kuya_2021_lng-esports",
       "tarzan-lee-seung-yong_2021_lng-esports"
     ],
     "rolesAvailable": [
@@ -4413,10 +4028,7 @@
     "year": 2021,
     "league": "LPL",
     "roster": [
-      "baolan_2021_invictus-gaming",
       "lucas-li-tan-pan-ao_2021_invictus-gaming",
-      "neny_2021_invictus-gaming",
-      "puff-ding-wang_2021_invictus-gaming",
       "rookie_2021_invictus-gaming",
       "theshy_2021_invictus-gaming",
       "wink_2021_invictus-gaming",
@@ -4438,13 +4050,10 @@
     "year": 2021,
     "league": "LPL",
     "roster": [
-      "beichuan_2021_funplus-phoenix",
-      "bo_2021_funplus-phoenix",
       "crisp_2021_funplus-phoenix",
       "doinb_2021_funplus-phoenix",
       "lwx_2021_funplus-phoenix",
       "nuguri_2021_funplus-phoenix",
-      "shenyi_2021_funplus-phoenix",
       "tian_2021_funplus-phoenix"
     ],
     "rolesAvailable": [
@@ -4466,9 +4075,7 @@
       "beishang_2021_team-we",
       "breathe_2021_team-we",
       "elk_2021_team-we",
-      "jiumeng_2021_team-we",
       "missing_2021_team-we",
-      "mole_2021_team-we",
       "shanks_2021_team-we"
     ],
     "rolesAvailable": [
@@ -4533,7 +4140,6 @@
     "roster": [
       "kanavi_2021_jd-gaming",
       "loken_2021_jd-gaming",
-      "lpc_2021_jd-gaming",
       "lvmao_2021_jd-gaming",
       "yagao_2021_jd-gaming",
       "zoom_2021_jd-gaming"
@@ -4557,7 +4163,6 @@
       "369_2022_jd-gaming",
       "hope-wang-jie_2022_jd-gaming",
       "kanavi_2022_jd-gaming",
-      "lpc_2022_jd-gaming",
       "missing_2022_jd-gaming",
       "yagao_2022_jd-gaming"
     ],
@@ -4581,7 +4186,6 @@
       "aki-mao-an_2022_oh-my-god",
       "cold_2022_oh-my-god",
       "creme_2022_oh-my-god",
-      "jerry-zhou-ke-xue_2022_oh-my-god",
       "shanji_2022_oh-my-god"
     ],
     "rolesAvailable": [
@@ -4602,10 +4206,8 @@
     "roster": [
       "ale_2022_lng-esports",
       "doinb_2022_lng-esports",
-      "iwandy_2022_lng-esports",
       "light-wang-guang-yu_2022_lng-esports",
       "lvmao_2022_lng-esports",
-      "pandac_2022_lng-esports",
       "tarzan-lee-seung-yong_2022_lng-esports"
     ],
     "rolesAvailable": [
@@ -4646,13 +4248,10 @@
     "year": 2022,
     "league": "LPL",
     "roster": [
-      "beichuan_2022_funplus-phoenix",
       "care_2022_funplus-phoenix",
       "clid_2022_funplus-phoenix",
-      "gori_2022_funplus-phoenix",
       "hang_2022_funplus-phoenix",
       "lwx_2022_funplus-phoenix",
-      "summit_2022_funplus-phoenix",
       "xiaolaohu_2022_funplus-phoenix"
     ],
     "rolesAvailable": [
@@ -4672,7 +4271,6 @@
     "league": "LPL",
     "roster": [
       "bin-chen-ze-bin_2022_royal-never-give-up",
-      "breathe_2022_royal-never-give-up",
       "gala_2022_royal-never-give-up",
       "ming-shi-sen-ming_2022_royal-never-give-up",
       "wei-yan-yang-wei_2022_royal-never-give-up",
@@ -4694,15 +4292,10 @@
     "year": 2022,
     "league": "LPL",
     "roster": [
-      "bin-chen-ze-bin_2022_bilibili-gaming",
       "breathe_2022_bilibili-gaming",
-      "can_2022_bilibili-gaming",
       "crisp_2022_bilibili-gaming",
       "doggo_2022_bilibili-gaming",
       "fofo_2022_bilibili-gaming",
-      "icon_2022_bilibili-gaming",
-      "rise-zhang-sheng_2022_bilibili-gaming",
-      "uzi-jian-zi-hao_2022_bilibili-gaming",
       "weiwei_2022_bilibili-gaming"
     ],
     "rolesAvailable": [
@@ -4725,8 +4318,7 @@
       "iboy_2022_rare-atom",
       "leyan_2022_rare-atom",
       "strive_2022_rare-atom",
-      "yuyanjia_2022_rare-atom",
-      "zorah_2022_rare-atom"
+      "yuyanjia_2022_rare-atom"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4746,11 +4338,9 @@
     "roster": [
       "flandre_2022_edward-gaming",
       "jiejie_2022_edward-gaming",
-      "junjia_2022_edward-gaming",
       "meiko_2022_edward-gaming",
       "scout_2022_edward-gaming",
-      "viper-park-do-hyeon_2022_edward-gaming",
-      "xiaoxiang_2022_edward-gaming"
+      "viper-park-do-hyeon_2022_edward-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4768,13 +4358,11 @@
     "year": 2022,
     "league": "LPL",
     "roster": [
-      "dream-tan-wen-xiang_2022_victory-five",
       "karsa_2022_victory-five",
       "photic_2022_victory-five",
       "ppgod_2022_victory-five",
       "rich-lee-jae-won_2022_victory-five",
-      "rookie_2022_victory-five",
-      "xlb_2022_victory-five"
+      "rookie_2022_victory-five"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4796,10 +4384,7 @@
       "knight-zhuo-ding_2022_top-esports",
       "mark-ling-xu_2022_top-esports",
       "tian_2022_top-esports",
-      "wayward_2022_top-esports",
-      "xiaopeng_2022_top-esports",
-      "zhuo_2022_top-esports",
-      "zoom_2022_top-esports"
+      "wayward_2022_top-esports"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4865,8 +4450,7 @@
       "fofo_2023_edward-gaming",
       "jiejie_2023_edward-gaming",
       "leave_2023_edward-gaming",
-      "meiko_2023_edward-gaming",
-      "uzi-jian-zi-hao_2023_edward-gaming"
+      "meiko_2023_edward-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4884,14 +4468,9 @@
     "year": 2023,
     "league": "LPL",
     "roster": [
-      "angel-xiang-tao_2023_royal-never-give-up",
       "breathe_2023_royal-never-give-up",
-      "bunny_2023_royal-never-give-up",
       "gala_2023_royal-never-give-up",
-      "lele-dang-bo-lin_2023_royal-never-give-up",
-      "lp_2023_royal-never-give-up",
       "lvmao_2023_royal-never-give-up",
-      "ming-shi-sen-ming_2023_royal-never-give-up",
       "tangyuan_2023_royal-never-give-up",
       "wei-yan-yang-wei_2023_royal-never-give-up"
     ],
@@ -4911,15 +4490,11 @@
     "year": 2023,
     "league": "LPL",
     "roster": [
-      "1xn_2023_thundertalk-gaming",
       "beichuan_2023_thundertalk-gaming",
       "hoya_2023_thundertalk-gaming",
       "huanfeng_2023_thundertalk-gaming",
       "ucal_2023_thundertalk-gaming",
-      "xiaohuangren_2023_thundertalk-gaming",
-      "xinliu_2023_thundertalk-gaming",
-      "yaoyao_2023_thundertalk-gaming",
-      "yuyanjia_2023_thundertalk-gaming"
+      "yaoyao_2023_thundertalk-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -4960,7 +4535,6 @@
     "league": "LPL",
     "roster": [
       "biubiu_2023_team-we",
-      "cube-dai-yi_2023_team-we",
       "heng_2023_team-we",
       "hope-wang-jie_2023_team-we",
       "iwandy_2023_team-we",
@@ -4983,7 +4557,6 @@
     "league": "LPL",
     "roster": [
       "crisp_2023_weibo-gaming",
-      "karsa_2023_weibo-gaming",
       "light-wang-guang-yu_2023_weibo-gaming",
       "theshy_2023_weibo-gaming",
       "weiwei_2023_weibo-gaming",
@@ -5006,12 +4579,9 @@
     "league": "LPL",
     "roster": [
       "angel-xiang-tao_2023_ninjas-in-pyjamas-cn",
-      "dream-tan-wen-xiang_2023_ninjas-in-pyjamas-cn",
       "invincible_2023_ninjas-in-pyjamas-cn",
       "photic_2023_ninjas-in-pyjamas-cn",
-      "pout_2023_ninjas-in-pyjamas-cn",
       "shad0w_2023_ninjas-in-pyjamas-cn",
-      "xlb_2023_ninjas-in-pyjamas-cn",
       "zhuo_2023_ninjas-in-pyjamas-cn"
     ],
     "rolesAvailable": [
@@ -5032,7 +4602,6 @@
     "roster": [
       "gala_2023_lng-esports",
       "hang_2023_lng-esports",
-      "lp_2023_lng-esports",
       "scout_2023_lng-esports",
       "tarzan-lee-seung-yong_2023_lng-esports",
       "zika_2023_lng-esports"
@@ -5055,7 +4624,6 @@
     "roster": [
       "jackeylove_2023_top-esports",
       "mark-ling-xu_2023_top-esports",
-      "qingtian_2023_top-esports",
       "rookie_2023_top-esports",
       "tian_2023_top-esports",
       "wayward_2023_top-esports"
@@ -5078,7 +4646,6 @@
     "roster": [
       "1xn_2024_thundertalk-gaming",
       "beichuan_2024_thundertalk-gaming",
-      "feather_2024_thundertalk-gaming",
       "hoya_2024_thundertalk-gaming",
       "qiuqiu-zhang-ming_2024_thundertalk-gaming",
       "ucal_2024_thundertalk-gaming"
@@ -5121,13 +4688,10 @@
     "year": 2024,
     "league": "LPL",
     "roster": [
-      "able_2024_oh-my-god",
       "angel-xiang-tao_2024_oh-my-god",
       "cube-dai-yi_2024_oh-my-god",
-      "hery_2024_oh-my-god",
       "ppgod_2024_oh-my-god",
       "starry_2024_oh-my-god",
-      "tianzhen_2024_oh-my-god",
       "xiaofang_2024_oh-my-god"
     ],
     "rolesAvailable": [
@@ -5149,13 +4713,8 @@
       "ahn-an-shan-ye_2024_invictus-gaming",
       "cryin_2024_invictus-gaming",
       "glfs_2024_invictus-gaming",
-      "leyan_2024_invictus-gaming",
-      "neny_2024_invictus-gaming",
-      "tianzhen_2024_invictus-gaming",
-      "vampire_2024_invictus-gaming",
       "wink_2024_invictus-gaming",
-      "yskm_2024_invictus-gaming",
-      "zuian_2024_invictus-gaming"
+      "yskm_2024_invictus-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5174,7 +4733,6 @@
     "league": "LPL",
     "roster": [
       "aki-mao-an_2024_ninjas-in-pyjamas-cn",
-      "leyan_2024_ninjas-in-pyjamas-cn",
       "photic_2024_ninjas-in-pyjamas-cn",
       "rookie_2024_ninjas-in-pyjamas-cn",
       "shanji_2024_ninjas-in-pyjamas-cn",
@@ -5199,11 +4757,8 @@
       "assum_2024_rare-atom",
       "jwei_2024_rare-atom",
       "naiyou_2024_rare-atom",
-      "shiauc_2024_rare-atom",
       "vicla_2024_rare-atom",
-      "xiaohao_2024_rare-atom",
-      "xiaoxu_2024_rare-atom",
-      "zorah_2024_rare-atom"
+      "xiaoxu_2024_rare-atom"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5225,7 +4780,6 @@
       "elk_2024_bilibili-gaming",
       "knight-zhuo-ding_2024_bilibili-gaming",
       "on_2024_bilibili-gaming",
-      "wei-yan-yang-wei_2024_bilibili-gaming",
       "xun_2024_bilibili-gaming"
     ],
     "rolesAvailable": [
@@ -5247,7 +4801,6 @@
       "burdol_2024_lgd-gaming",
       "haichao_2024_lgd-gaming",
       "jinjiao_2024_lgd-gaming",
-      "kepler_2024_lgd-gaming",
       "meteor_2024_lgd-gaming",
       "shaoye_2024_lgd-gaming"
     ],
@@ -5271,8 +4824,7 @@
       "deokdam_2024_funplus-phoenix",
       "life_2024_funplus-phoenix",
       "milkyway_2024_funplus-phoenix",
-      "xiaolaohu_2024_funplus-phoenix",
-      "zdz_2024_funplus-phoenix"
+      "xiaolaohu_2024_funplus-phoenix"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5294,9 +4846,7 @@
       "crisp_2024_weibo-gaming",
       "light-wang-guang-yu_2024_weibo-gaming",
       "tarzan-lee-seung-yong_2024_weibo-gaming",
-      "xiaohao_2024_weibo-gaming",
-      "xiaohu_2024_weibo-gaming",
-      "zdz_2024_weibo-gaming"
+      "xiaohu_2024_weibo-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5316,7 +4866,6 @@
     "roster": [
       "ale_2024_anyone-s-legend",
       "croco_2024_anyone-s-legend",
-      "hery_2024_anyone-s-legend",
       "hope-wang-jie_2024_anyone-s-legend",
       "kael-kim-jin-hong_2024_anyone-s-legend",
       "shanks_2024_anyone-s-legend"
@@ -5341,7 +4890,6 @@
       "kanavi_2024_jd-gaming",
       "missing_2024_jd-gaming",
       "ruler_2024_jd-gaming",
-      "sheer_2024_jd-gaming",
       "yagao_2024_jd-gaming"
     ],
     "rolesAvailable": [
@@ -5360,16 +4908,11 @@
     "year": 2024,
     "league": "LPL",
     "roster": [
-      "able_2024_team-we",
       "fofo_2024_team-we",
       "heng_2024_team-we",
       "iwandy_2024_team-we",
-      "lp_2024_team-we",
-      "mark-ling-xu_2024_team-we",
-      "prince-lee-chae-hwan_2024_team-we",
       "stay-guo-yi-yang_2024_team-we",
-      "wayward_2024_team-we",
-      "yanxiang_2024_team-we"
+      "wayward_2024_team-we"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5389,7 +4932,6 @@
     "roster": [
       "gala_2024_lng-esports",
       "hang_2024_lng-esports",
-      "mark-ling-xu_2024_lng-esports",
       "scout_2024_lng-esports",
       "weiwei_2024_lng-esports",
       "zika_2024_lng-esports"
@@ -5411,9 +4953,7 @@
     "league": "LPL",
     "roster": [
       "1jiang_2025_ultra-prime",
-      "baiye_2025_ultra-prime",
       "junhao_2025_ultra-prime",
-      "rosielove_2025_ultra-prime",
       "saber-song-dai-lin_2025_ultra-prime",
       "wako_2025_ultra-prime",
       "xiaoxia_2025_ultra-prime"
@@ -5437,7 +4977,6 @@
       "369_2025_top-esports",
       "creme_2025_top-esports",
       "crisp_2025_top-esports",
-      "hang_2025_top-esports",
       "jackeylove_2025_top-esports",
       "kanavi_2025_top-esports"
     ],
@@ -5459,9 +4998,7 @@
     "roster": [
       "ahn-an-shan-ye_2025_edward-gaming",
       "angel-xiang-tao_2025_edward-gaming",
-      "assum_2025_edward-gaming",
       "parukia_2025_edward-gaming",
-      "wink_2025_edward-gaming",
       "xiaohao_2025_edward-gaming",
       "zdz_2025_edward-gaming"
     ],
@@ -5485,9 +5022,7 @@
       "bin-chen-ze-bin_2025_bilibili-gaming",
       "elk_2025_bilibili-gaming",
       "knight-zhuo-ding_2025_bilibili-gaming",
-      "on_2025_bilibili-gaming",
-      "shad0w_2025_bilibili-gaming",
-      "wei-yan-yang-wei_2025_bilibili-gaming"
+      "on_2025_bilibili-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5507,8 +5042,6 @@
     "roster": [
       "breathe_2025_weibo-gaming",
       "crisp_2025_weibo-gaming",
-      "erha_2025_weibo-gaming",
-      "hang_2025_weibo-gaming",
       "light-wang-guang-yu_2025_weibo-gaming",
       "tian_2025_weibo-gaming",
       "xiaohu_2025_weibo-gaming"
@@ -5530,13 +5063,8 @@
     "league": "LPL",
     "roster": [
       "assum_2025_funplus-phoenix",
-      "bat-gao-jun_2025_funplus-phoenix",
       "care_2025_funplus-phoenix",
-      "iyy_2025_funplus-phoenix",
-      "jiaqi_2025_funplus-phoenix",
-      "jiejie_2025_funplus-phoenix",
       "jwei_2025_funplus-phoenix",
-      "milkyway_2025_funplus-phoenix",
       "shad0w_2025_funplus-phoenix",
       "sheer_2025_funplus-phoenix"
     ],
@@ -5557,9 +5085,7 @@
     "league": "LPL",
     "roster": [
       "climber_2025_lgd-gaming",
-      "naiyou_2025_lgd-gaming",
       "sasi-yan-rui_2025_lgd-gaming",
-      "sav1or_2025_lgd-gaming",
       "shaoye_2025_lgd-gaming",
       "xqw_2025_lgd-gaming",
       "ycx_2025_lgd-gaming"
@@ -5584,7 +5110,6 @@
       "karis_2025_team-we",
       "monki_2025_team-we",
       "taeyoon-kim-tae-yoon_2025_team-we",
-      "tianzhen_2025_team-we",
       "vampire_2025_team-we"
     ],
     "rolesAvailable": [
@@ -5606,10 +5131,7 @@
       "aki-mao-an_2025_ninjas-in-pyjamas-cn",
       "doinb_2025_ninjas-in-pyjamas-cn",
       "leave_2025_ninjas-in-pyjamas-cn",
-      "naiyou_2025_ninjas-in-pyjamas-cn",
-      "niket_2025_ninjas-in-pyjamas-cn",
       "ppgod_2025_ninjas-in-pyjamas-cn",
-      "shanji_2025_ninjas-in-pyjamas-cn",
       "solokill_2025_ninjas-in-pyjamas-cn"
     ],
     "rolesAvailable": [
@@ -5654,8 +5176,7 @@
       "jiejie_2025_invictus-gaming",
       "meiko_2025_invictus-gaming",
       "rookie_2025_invictus-gaming",
-      "theshy_2025_invictus-gaming",
-      "wei-yan-yang-wei_2025_invictus-gaming"
+      "theshy_2025_invictus-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5677,10 +5198,7 @@
       "missing_2025_jd-gaming",
       "peyz_2025_jd-gaming",
       "scout_2025_jd-gaming",
-      "wink_2025_jd-gaming",
-      "xiaoxu_2025_jd-gaming",
-      "xun_2025_jd-gaming",
-      "zhuo_2025_jd-gaming"
+      "xun_2025_jd-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5699,12 +5217,10 @@
     "league": "LPL",
     "roster": [
       "1xn_2025_thundertalk-gaming",
-      "aki-mao-an_2025_thundertalk-gaming",
       "beichuan_2025_thundertalk-gaming",
       "feather_2025_thundertalk-gaming",
       "hoya_2025_thundertalk-gaming",
-      "setab_2025_thundertalk-gaming",
-      "xiaohuangren_2025_thundertalk-gaming"
+      "setab_2025_thundertalk-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5723,11 +5239,8 @@
     "league": "LEC",
     "roster": [
       "alex-ich_2013_gambit-gaming",
-      "d4rker_2013_gambit-gaming",
       "darien_2013_gambit-gaming",
-      "diamond-danil-reshetnikov_2013_gambit-gaming",
       "diamondprox_2013_gambit-gaming",
-      "edward_2013_gambit-gaming",
       "genja_2013_gambit-gaming",
       "voidle_2013_gambit-gaming"
     ],
@@ -5749,7 +5262,6 @@
     "roster": [
       "cyanide_2013_fnatic",
       "nrated_2013_fnatic",
-      "puszu_2013_fnatic",
       "soaz_2013_fnatic",
       "xpeke_2013_fnatic",
       "yellowstar_2013_fnatic"
@@ -5774,7 +5286,6 @@
       "mithy_2013_lemondogs",
       "nukeduck_2013_lemondogs",
       "tabzz_2013_lemondogs",
-      "wewillfailer_2013_lemondogs",
       "zorozero_2013_lemondogs"
     ],
     "rolesAvailable": [
@@ -5797,7 +5308,6 @@
       "fredy122_2014_sk-gaming",
       "jesiz_2014_sk-gaming",
       "nrated_2014_sk-gaming",
-      "nyph_2014_sk-gaming",
       "svenskeren_2014_sk-gaming"
     ],
     "rolesAvailable": [
@@ -5863,7 +5373,6 @@
       "febiven_2015_fnatic",
       "huni_2015_fnatic",
       "reignover_2015_fnatic",
-      "rekkles_2015_fnatic",
       "steeelback_2015_fnatic",
       "yellowstar_2015_fnatic"
     ],
@@ -5883,16 +5392,11 @@
     "year": 2015,
     "league": "LEC",
     "roster": [
-      "aod_2015_h2k-gaming",
-      "febiven_2015_h2k-gaming",
-      "hj-rnan_2015_h2k-gaming",
       "hjarnan_2015_h2k-gaming",
       "kasing_2015_h2k-gaming",
       "loulex_2015_h2k-gaming",
       "odoamne_2015_h2k-gaming",
-      "ryu_2015_h2k-gaming",
-      "trashy_2015_h2k-gaming",
-      "voidle_2015_h2k-gaming"
+      "ryu_2015_h2k-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -5932,10 +5436,7 @@
     "year": 2016,
     "league": "LEC",
     "roster": [
-      "emperor-kim-jin-hyun_2016_g2-esports",
       "expect_2016_g2-esports",
-      "hybrid-glenn-doornenbal_2016_g2-esports",
-      "kikis_2016_g2-esports",
       "mithy_2016_g2-esports",
       "perkz_2016_g2-esports",
       "trick_2016_g2-esports",
@@ -5957,13 +5458,10 @@
     "year": 2016,
     "league": "LEC",
     "roster": [
-      "forg1ven_2016_h2k-gaming",
-      "forg1vengre_2016_h2k-gaming",
       "freeze_2016_h2k-gaming",
       "jankos_2016_h2k-gaming",
       "odoamne_2016_h2k-gaming",
       "ryu_2016_h2k-gaming",
-      "selfie_2016_h2k-gaming",
       "vander_2016_h2k-gaming"
     ],
     "rolesAvailable": [
@@ -5984,11 +5482,9 @@
     "roster": [
       "kobbe_2016_splyce",
       "mikyx_2016_splyce",
-      "nisbeth_2016_splyce",
       "sencux_2016_splyce",
       "trashy_2016_splyce",
-      "wunder_2016_splyce",
-      "wunderwear_2016_splyce"
+      "wunder_2016_splyce"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6010,10 +5506,7 @@
       "hans-sama_2017_misfits-gaming",
       "ignar_2017_misfits-gaming",
       "kakao_2017_misfits-gaming",
-      "lamabear_2017_misfits-gaming",
-      "maxlore_2017_misfits-gaming",
-      "powerofevil_2017_misfits-gaming",
-      "selfie_2017_misfits-gaming"
+      "powerofevil_2017_misfits-gaming"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6031,7 +5524,6 @@
     "year": 2017,
     "league": "LEC",
     "roster": [
-      "amazing-maurice-st-ckenschneider_2017_fnatic",
       "broxah_2017_fnatic",
       "caps_2017_fnatic",
       "jesiz_2017_fnatic",
@@ -6077,7 +5569,6 @@
     "league": "LEC",
     "roster": [
       "broxah_2018_fnatic",
-      "bwipo_2018_fnatic",
       "caps_2018_fnatic",
       "hylissang_2018_fnatic",
       "rekkles_2018_fnatic",
@@ -6099,12 +5590,10 @@
     "year": 2018,
     "league": "LEC",
     "roster": [
-      "attila_2018_team-vitality",
       "cabochard_2018_team-vitality",
       "gilius_2018_team-vitality",
       "jactroll_2018_team-vitality",
       "jiizuke_2018_team-vitality",
-      "kikis_2018_team-vitality",
       "minitroupax_2018_team-vitality"
     ],
     "rolesAvailable": [
@@ -6259,8 +5748,7 @@
       "humanoid_2020_mad-lions",
       "kaiser_2020_mad-lions",
       "orome_2020_mad-lions",
-      "shad0w_2020_mad-lions",
-      "shadow-zhao-zhi-qiang_2020_mad-lions"
+      "shad0w_2020_mad-lions"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6326,7 +5814,6 @@
       "bwipo_2021_fnatic",
       "hylissang_2021_fnatic",
       "nisqy_2021_fnatic",
-      "selfmade_2021_fnatic",
       "upset_2021_fnatic"
     ],
     "rolesAvailable": [
@@ -6371,7 +5858,6 @@
       "elyoya_2022_mad-lions",
       "kaiser_2022_mad-lions",
       "nisqy_2022_mad-lions",
-      "reeker_2022_mad-lions",
       "unf0rgiven_2022_mad-lions"
     ],
     "rolesAvailable": [
@@ -6522,15 +6008,11 @@
     "year": 2023,
     "league": "LEC",
     "roster": [
-      "advienne_2023_fnatic",
       "humanoid_2023_fnatic",
       "noah-oh-hyeon-taek_2023_fnatic",
       "oscarinin_2023_fnatic",
       "razork_2023_fnatic",
-      "rekkles_2023_fnatic",
-      "rhuckz_2023_fnatic",
-      "trymbi_2023_fnatic",
-      "wunder_2023_fnatic"
+      "trymbi_2023_fnatic"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6661,7 +6143,6 @@
       "humanoid_2025_fnatic",
       "mikyx_2025_fnatic",
       "oscarinin_2025_fnatic",
-      "poby_2025_fnatic",
       "razork_2025_fnatic",
       "upset_2025_fnatic"
     ],
@@ -6683,7 +6164,6 @@
     "roster": [
       "bloodwater_2013_team-vulcun",
       "mancloud_2013_team-vulcun",
-      "muffinqt_2013_team-vulcun",
       "sycho-sid_2013_team-vulcun",
       "xmithie_2013_team-vulcun",
       "zuna_2013_team-vulcun"
@@ -6704,7 +6184,6 @@
     "year": 2013,
     "league": "LCS",
     "roster": [
-      "chaox_2013_tsm",
       "dyrus_2013_tsm",
       "reginald_2013_tsm",
       "theoddone_2013_tsm",
@@ -6774,10 +6253,6 @@
       "amazing-maurice-st-ckenschneider_2014_tsm",
       "bjergsen_2014_tsm",
       "dyrus_2014_tsm",
-      "gleeb_2014_tsm",
-      "lustboy_2014_tsm",
-      "reginald_2014_tsm",
-      "theoddone_2014_tsm",
       "wildturtle_2014_tsm",
       "xpecial_2014_tsm"
     ],
@@ -6820,11 +6295,8 @@
     "league": "LCS",
     "roster": [
       "aphromoo_2015_counter-logic-gaming",
-      "dexter_2015_counter-logic-gaming",
       "doublelift_2015_counter-logic-gaming",
       "link_2015_counter-logic-gaming",
-      "pobelter_2015_counter-logic-gaming",
-      "seraph_2015_counter-logic-gaming",
       "xmithie_2015_counter-logic-gaming",
       "zionspartan_2015_counter-logic-gaming"
     ],
@@ -6846,7 +6318,6 @@
     "roster": [
       "balls_2015_cloud9",
       "hai_2015_cloud9",
-      "incarnati0n_2015_cloud9",
       "lemonnation_2015_cloud9",
       "meteos_2015_cloud9",
       "sneaky_2015_cloud9"
@@ -6911,13 +6382,9 @@
     "year": 2016,
     "league": "LCS",
     "roster": [
-      "balls_2016_cloud9",
-      "bunny-fufuu_2016_cloud9",
-      "hai_2016_cloud9",
       "impact_2016_cloud9",
       "jensen_2016_cloud9",
       "meteos_2016_cloud9",
-      "rush_2016_cloud9",
       "smoothie_2016_cloud9",
       "sneaky_2016_cloud9"
     ],
@@ -6941,8 +6408,7 @@
       "bjergsen_2016_tsm",
       "doublelift_2016_tsm",
       "hauntzer_2016_tsm",
-      "svenskeren_2016_tsm",
-      "yellowstar_2016_tsm"
+      "svenskeren_2016_tsm"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6962,7 +6428,6 @@
     "roster": [
       "biofrost_2017_tsm",
       "bjergsen_2017_tsm",
-      "doublelift_2017_tsm",
       "hauntzer_2017_tsm",
       "svenskeren_2017_tsm",
       "wildturtle_2017_tsm"
@@ -6984,7 +6449,6 @@
     "league": "LCS",
     "roster": [
       "cody-sun_2017_immortals",
-      "dardoch_2017_immortals",
       "flame_2017_immortals",
       "olleh_2017_immortals",
       "pobelter_2017_immortals",
@@ -7009,7 +6473,6 @@
       "contractz_2017_cloud9",
       "impact_2017_cloud9",
       "jensen_2017_cloud9",
-      "ray_2017_cloud9",
       "smoothie_2017_cloud9",
       "sneaky_2017_cloud9"
     ],
@@ -7029,11 +6492,9 @@
     "year": 2018,
     "league": "LCS",
     "roster": [
-      "anda_2018_100-thieves",
       "aphromoo_2018_100-thieves",
       "cody-sun_2018_100-thieves",
       "meteos_2018_100-thieves",
-      "rikara_2018_100-thieves",
       "ryu_2018_100-thieves",
       "ssumday_2018_100-thieves"
     ],
@@ -7053,14 +6514,9 @@
     "year": 2018,
     "league": "LCS",
     "roster": [
-      "dardoch_2018_team-liquid",
       "doublelift_2018_team-liquid",
       "impact_2018_team-liquid",
-      "lourlo_2018_team-liquid",
-      "matt-matthew-elento_2018_team-liquid",
-      "mickey-son-young-min_2018_team-liquid",
       "olleh_2018_team-liquid",
-      "piglet_2018_team-liquid",
       "pobelter_2018_team-liquid",
       "xmithie_2018_team-liquid"
     ],
@@ -7080,11 +6536,8 @@
     "year": 2018,
     "league": "LCS",
     "roster": [
-      "blaber_2018_cloud9",
-      "goldenglue_2018_cloud9",
       "jensen_2018_cloud9",
       "licorice_2018_cloud9",
-      "smoothie_2018_cloud9",
       "sneaky_2018_cloud9",
       "svenskeren_2018_cloud9",
       "zeyzal_2018_cloud9"
@@ -7131,7 +6584,6 @@
       "damonte_2019_clutch-gaming",
       "huni_2019_clutch-gaming",
       "lira_2019_clutch-gaming",
-      "piglet_2019_clutch-gaming",
       "vulcan-philippe-laflamme_2019_clutch-gaming"
     ],
     "rolesAvailable": [
@@ -7175,11 +6627,8 @@
       "biofrost_2020_tsm",
       "bjergsen_2020_tsm",
       "broken-blade_2020_tsm",
-      "dardoch_2020_tsm",
       "doublelift_2020_tsm",
-      "kobbe_2020_tsm",
-      "spica_2020_tsm",
-      "treatz_2020_tsm"
+      "spica_2020_tsm"
     ],
     "rolesAvailable": [
       "ADC",
@@ -7199,10 +6648,8 @@
     "roster": [
       "broxah_2020_team-liquid",
       "corejj_2020_team-liquid",
-      "doublelift_2020_team-liquid",
       "impact_2020_team-liquid",
       "jensen_2020_team-liquid",
-      "shernfire_2020_team-liquid",
       "tactical_2020_team-liquid"
     ],
     "rolesAvailable": [
@@ -7222,11 +6669,9 @@
     "league": "LCS",
     "roster": [
       "ignar_2020_flyquest",
-      "mash_2020_flyquest",
       "powerofevil_2020_flyquest",
       "santorin_2020_flyquest",
       "solo-colin-earnest_2020_flyquest",
-      "v1per_2020_flyquest",
       "wildturtle_2020_flyquest"
     ],
     "rolesAvailable": [
@@ -7247,10 +6692,8 @@
     "roster": [
       "abbedagge_2021_100-thieves",
       "closer-can-elik_2021_100-thieves",
-      "damonte_2021_100-thieves",
       "fbi_2021_100-thieves",
       "huhi_2021_100-thieves",
-      "ry0ma_2021_100-thieves",
       "ssumday_2021_100-thieves"
     ],
     "rolesAvailable": [
@@ -7270,9 +6713,7 @@
     "league": "LCS",
     "roster": [
       "alphari_2021_team-liquid",
-      "armao_2021_team-liquid",
       "corejj_2021_team-liquid",
-      "jenkins_2021_team-liquid",
       "jensen_2021_team-liquid",
       "santorin_2021_team-liquid",
       "tactical_2021_team-liquid"
@@ -7295,7 +6736,6 @@
     "roster": [
       "blaber_2021_cloud9",
       "fudge_2021_cloud9",
-      "k1ng_2021_cloud9",
       "perkz_2021_cloud9",
       "vulcan-philippe-laflamme_2021_cloud9",
       "zven_2021_cloud9"
@@ -7340,12 +6780,8 @@
     "roster": [
       "berserker-kim-min-cheol_2022_cloud9",
       "blaber_2022_cloud9",
-      "darshan_2022_cloud9",
       "fudge_2022_cloud9",
-      "isles_2022_cloud9",
-      "jensen_2022_cloud9",
       "summit_2022_cloud9",
-      "winsome_2022_cloud9",
       "zven_2022_cloud9"
     ],
     "rolesAvailable": [
@@ -7368,7 +6804,6 @@
       "impact_2022_evil-geniuses-na",
       "inspired_2022_evil-geniuses-na",
       "jojopyun_2022_evil-geniuses-na",
-      "kaori_2022_evil-geniuses-na",
       "vulcan-philippe-laflamme_2022_evil-geniuses-na"
     ],
     "rolesAvailable": [
@@ -7389,7 +6824,6 @@
     "roster": [
       "apa-eain-stearns_2023_team-liquid",
       "corejj_2023_team-liquid",
-      "haeri_2023_team-liquid",
       "pyosik_2023_team-liquid",
       "summit_2023_team-liquid",
       "yeon-sean-sung_2023_team-liquid"
@@ -7412,7 +6846,6 @@
     "roster": [
       "berserker-kim-min-cheol_2023_cloud9",
       "blaber_2023_cloud9",
-      "diplex_2023_cloud9",
       "emenes_2023_cloud9",
       "fudge_2023_cloud9",
       "zven_2023_cloud9"
@@ -7502,7 +6935,6 @@
       "busio_2024_flyquest",
       "bwipo_2024_flyquest",
       "inspired_2024_flyquest",
-      "jensen_2024_flyquest",
       "massu_2024_flyquest",
       "quad_2024_flyquest"
     ],
@@ -7526,8 +6958,7 @@
       "meech_2024_100-thieves",
       "quid_2024_100-thieves",
       "river-kim-dong-woo_2024_100-thieves",
-      "sniper_2024_100-thieves",
-      "tomo_2024_100-thieves"
+      "sniper_2024_100-thieves"
     ],
     "rolesAvailable": [
       "ADC",
@@ -7567,7 +6998,6 @@
     "year": 2025,
     "league": "LCS",
     "roster": [
-      "dhokla_2025_100-thieves",
       "eyla_2025_100-thieves",
       "fbi_2025_100-thieves",
       "quid_2025_100-thieves",

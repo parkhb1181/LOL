@@ -146,6 +146,8 @@ async function main() {
   for (const r of results) {
     const k = `${r.team}|${r.year}`
     if (r.leagueCode === 'WORLDS') {
+      // Regional Finals 제외 — "Korea/Garena/SEA Regional Finals" 등 place=1이 지역 예선 우승(Worlds 우승 아님)
+      if (!r.overviewPage.includes('World Championship')) continue
       const existing = worldsByTeamYear.get(k)
       if (existing === undefined || r.place < existing) worldsByTeamYear.set(k, r.place)
     } else if (r.leagueCode === 'MSI') {

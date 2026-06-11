@@ -52,6 +52,8 @@ async function main() {
   const worldsIndex = new Map<string, number>()
   for (const r of results) {
     if (r.leagueCode !== 'WORLDS') continue
+    // Regional Finals 제외 — 지역 예선 우승(place=1)이 Worlds 우승으로 오인되는 버그 차단
+    if (!r.overviewPage.includes('World Championship')) continue
     const k = `${normalizeTeam(r.team)}|${r.year}`
     const ex = worldsIndex.get(k)
     if (ex === undefined || r.place < ex) worldsIndex.set(k, r.place)

@@ -192,6 +192,22 @@ async function main() {
     })
   }
 
+  // (team, year, role) 단위 중복 제거 — 주전 1명만 (§3: 게임 수 내림차순 → 동률 시 playerId 알파벳 오름차순)
+  // 같은 선수가 "Ssumday"/"ssumday"처럼 케이싱 불일치로 두 항목에 걸쳐 집계된 경우도 여기서 통합
+  const dedupMap = new Map<string, RosterEntry>()
+  for (const e of entries) {
+    const k = `${e.team}|${e.year}|${e.role}`
+    const existing = dedupMap.get(k)
+    if (
+      !existing ||
+      e.gameCount > existing.gameCount ||
+      (e.gameCount === existing.gameCount && e.playerId < existing.playerId)
+    ) {
+      dedupMap.set(k, e)
+    }
+  }
+  const finalEntries = [...dedupMap.values()]
+
   // Players 테이블 메타 수집 (nameEn, nameKo)
   // 캐시 있으면 즉시 로드, 없으면 API 호출 없이 playerId 폴백 (2차 보강은 별도 실행)
   const CARGO_DIR = path.join(process.cwd(), 'pipeline-cache', 'cargo')
@@ -239,12 +255,12 @@ async function main() {
 
   process.stderr.write(`  Players 완료: 캐시 hit=${cacheHit} / 폴백 miss=${cacheMiss}\n`)
 
-  const out: RostersFile = { players, entries }
+  const out: RostersFile = { players, entries: finalEntries }
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2), 'utf-8')
 
   console.log(`\nrosters.json 저장`)
   console.log(`  Players 메타: ${Object.keys(players).length}명`)
-  console.log(`  RosterEntry: ${entries.length}건`)
+  console.log(`  RosterEntry: ${finalEntries.length}건 (dedup 전 ${entries.length}건)`)
 }
 
 main().catch(e => { process.stderr.write(`Fatal: ${e}\n`); process.exit(1) })
