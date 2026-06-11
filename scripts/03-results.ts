@@ -71,12 +71,18 @@ async function main() {
       worldsFlushed = true
     }
 
-    const key = `result_${opKey(t.overviewPage)}`
+    // WORLDS 2017+: TournamentResults는 부모 OverviewPage(슬래시 없음)로 저장됨
+    // 예: "2017 Season World Championship/Main Event" → "2017 Season World Championship"
+    // discovery.md 0-b 확인: WHERE OverviewPage="2016 Season World Championship" 성공 (부모 페이지 형식)
+    const trOverviewPage = (t.leagueCode === 'WORLDS' && t.overviewPage.endsWith('/Main Event'))
+      ? t.overviewPage.slice(0, -'/Main Event'.length)
+      : t.overviewPage
+    const key = `result_${opKey(trOverviewPage)}`
     const rows = await cargoPaginate(
       {
         tables: 'TournamentResults',
         fields: 'Team,Place,OverviewPage',
-        where: `OverviewPage="${t.overviewPage}"`,
+        where: `OverviewPage="${trOverviewPage}"`,
         orderby: 'Place ASC',
       },
       key

@@ -4,7 +4,7 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D1-D2 (2026-06-11) / 03-results.ts 백그라운드 실행 중 (Leaguepedia 레이트 리밋)
+- 날짜 / Phase: D1-D2 (2026-06-11) / 03-results.ts 백그라운드 실행 중 (LCK 21/52건, LPL 27/64건 캐시됨, LEC 진행 중)
 - 빌드 상태: scaffold 완료, TypeScript noEmit 통과 (빌드 미실행)
 - 브랜치: main
 
@@ -19,6 +19,9 @@
 - **awards.csv v0.3** 확정 (WORLDS_MVP 11건·SEASON_MVP·FINALS_MVP·ALLPRO 교정 완료)
 - **01-tournaments.ts 버그 수정** (Worlds 2017+ `/Main Event` 필터 버그 — `includes('/')` → `endsWith('/Main Event')` 허용)
 - `pipeline-cache/tournaments.json` 재생성: LCK 52 / LPL 64 / LEC 77 / LCS 71 / WORLDS 21 / MSI 17 = 302건
+- **LCK 2013~2015 League명 수정** (커밋 b7be083): `getDomesticLeagueValues` 수정 완료
+  - 2013/2014: `"LoL The Champions"`, Season 항목 isPlayoffs=true 처리
+  - 2015: `"LoL The Champions"`, 실제 Playoffs 항목(IsPlayoffs=1) 존재 — Leaguepedia 값 사용
 
 ### Phase 0 검증 결과 요약
 | 항목 | 결과 |
@@ -36,38 +39,66 @@
 | TournamentResults | **채택** |
 
 ## 진행 중
-- **03-results.ts** 백그라운드 실행 중 (신 03 — PIDs 52936/56836/45960, 8:06 PM 기동)
-  - WORLDS 2021 레이트 리밋 백오프 (60s) 대기 중 (`pipeline-cache/03-log.txt`)
-  - 캐시 현황: WORLDS 8건(2013~2020) / MSI 14건 / LCK 21건 / LPL 27건 / LEC 2건(Season3~2014) / LCS 0건
-  - 완료 후 worlds-results.json → results.json 순서로 자동 저장
-- **04→07→08 자동 실행 대기 스크립트** 동작 중 (`pipeline-cache/ratings-build-log.txt`)
-  - results.json 감지(30s 폴링) → 04-ratings → 07-build → 08-anchors 자동 실행
+- **03-results.ts** 백그라운드 실행 중 (PIDs 52936/56836/45960)
+  - worlds-results.json 저장됨 (98건 — 2013~2016 Worlds만, 2017~2025 Worlds 버그로 누락)
+  - LCK 21건·LPL 27건 캐시, LEC 진행 중 → 완료 후 results.json 저장 (오류 포함)
+  - **⚠ 03 완료 후 즉시 04 실행 금지** — results.json 삭제 후 재실행 필요
+- **10-photo-whitelist.ts** 병행 실행 중 (player_* 캐시 생성 중)
+  - 2013~2016 Worlds 기준으로만 화이트리스트 작성 중 — 버그 픽스 후 재실행 필요
 
-## 다음 작업
-1. 03 완료 → 04→07→08 자동 실행 (대기 스크립트가 처리)
-2. **08-anchors 결과 확인** (앵커 5개 기준):
-   - Faker 2016, Canyon 2020, Chovy 2024, Ruler 2017: 데이터 있음
-   - Faker 2013: **데이터 없음** (LCK 2013-2015 갭 문제 → 아래 미해결 이슈)
-3. 10-photo-whitelist.ts 실행 (03 완료 후, worlds-results.json 의존)
-4. LCK 2013-2015 갭 해결 후 01→02→03 재실행 (호빈 게이트)
+## 다음 작업 (우선순위 순)
+
+### ① 03 완료 대기 → Worlds 버그 픽스 재실행 (가장 먼저)
+**03 완료 확인:** `Test-Path pipeline-cache\results.json` → True
+**완료되면 즉시 실행:**
+```powershell
+# 1. 잘못된 캐시 삭제
+Remove-Item pipeline-cache\results.json
+Remove-Item pipeline-cache\worlds-results.json
+Remove-Item pipeline-cache\cargo\result_2017_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2018_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2019_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2020_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2021_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2022_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2023_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2024_Season_World_Championship_Main_Event.json
+Remove-Item pipeline-cache\cargo\result_2025_Season_World_Championship_Main_Event.json
+# 2. 03 재실행 (국내+MSI는 캐시 재사용, Worlds 2017~2025만 신규 9건 fetch)
+npx tsx scripts/03-results.ts
+# 3. 03 완료 후
+npx tsx scripts/04-ratings.ts
+npx tsx scripts/07-build.ts
+npx tsx scripts/08-anchors.ts
+```
+
+### ② 10-photo-whitelist.ts 재실행 (03 재실행 완료 후)
+- worlds-results.json 재생성 후 실행 (2017~2025 Worlds 포함된 버전)
+
+### ③ LCK 2013-2015 + 2025 최신 데이터 수집 (2차 re-run)
+- tournaments.json 삭제 → 01 재실행
+- rosters.json 삭제 → 02 재실행
+- 2025 cargo 캐시 6개 삭제 (t_LCK/LCS/LPL/LEC/WORLDS/MSI_2025)
+- results.json + worlds-results.json 삭제 → 03 재실행
+- 04→07→08 재실행
+
+### ④ 08-anchors 결과 확인
+- 앵커 5개 기준 (Faker 2013 포함) — 정상 범위 확인
+- 2025 LCK top OVR 99 몰림 여부 확인 (Road to MSI 이중가점)
 
 ## 호빈 게이트 대기
 - **awards.csv 검수** — v0.3 완료, 호빈 최종 확인 필요 (Appendix 잔여 `# ?` 항목: 2020 서머 ADC 1st, 일부 SEASON_MVP 2023년)
-- **LCK 2013-2015 데이터 갭 결정**:
-  - `getDomesticLeagueValues("LCK", 2013)` = `"LoL Champions Korea"` → Leaguepedia에 데이터 없음 (리그명 불일치)
-  - 실제 리그명 확인 필요 (`"Champions Korea"` 또는 `"OGN Champions"` 추정 — 레이트 리밋 해소 후 쿼리)
-  - 확인 후: 01-tournaments.ts `getDomesticLeagueValues` 수정 → 02-rosters 재실행 → 03 재실행 (2013-2015 LCK 추가)
-  - **이번 사이클에 포함할지 다음 사이클로 분리할지 호빈 결정 필요**
 - **photo-whitelist.json 검수** (10 실행 후) — 승인 후 사진 다운로드
 - **opponents-2026.json 실값 교체** (D3 — 현재 플레이스홀더)
 
 ## 미해결 이슈
-- **LCK 2013-2015 리그명 미확인** — `"LoL Champions Korea"` 쿼리 결과 0행, 실 리그명 미확인. Faker 2013~2015 포함 전체 초기 LCK 선수 누락. 레이트 리밋 해소 후 쿼리로 확인 가능.
 - **cargo-failures.json**: rate-limit 최대 재시도 실패 대회 목록 (07 완료 후 결손 확인 필요)
 - 앵커 가중치 미확정 (08 결과 후 PRD §6.2 기준 튜닝)
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
+- 2026-06-11 (세션9): **Worlds 2017~2025 TournamentResults 버그 발견+수정.** worlds-results.json 98건 = 2013~2016만(2017~2025 완전 누락). 원인: 03-results.ts가 "/Main Event" 포함 OP로 TournamentResults 쿼리 → `[]` 반환. Fix: trOverviewPage 변수로 "/Main Event" 스트립. TypeScript noEmit 통과. 03 재실행 전 cleanup 스크립트 HANDOFF에 명시.
+- 2026-06-11 (세션8): LCK 2013~2015 League명 실값 확인(2013~2015="LoL The Champions", 2015 Playoffs 항목 별도 존재). 01-tournaments.ts 픽스 커밋(b7be083). worlds-results.json 98건 저장 완료. 03 LPL 처리 중.
 - 2026-06-11 (세션7): awards.csv v0.3 확정, 01-tournaments.ts Worlds 2017+ 버그 수정, tournaments.json 재생성(302건), 03 재실행. 레이트 리밋으로 지연 중, 04→07→08 자동 대기 스크립트 기동.
 - 2026-06-11 (세션6): awards.csv v0.2(split 컬럼 추가·WORLDS/FINALS MVP 1차 교정) + v0.3(2차 교정) 커밋. worlds-results.json 임시 생성. Worlds 2017+ 수집 버그 발견.
 - 2026-06-11 (세션5): 10-photo-whitelist.ts 2025 제외 수정, 11-photo-download.ts 신규 (승인 게이트 포함). 01-tournaments.ts 재실행
