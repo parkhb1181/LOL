@@ -29,10 +29,11 @@ function calcWeight(params: {
   worldsAttended: boolean
   nationalChampion: boolean
   playoffAttended: boolean
+  msiAttended: boolean
 }): number {
   if (params.worldsWin) return 8
   if (params.worldsAttended || params.nationalChampion) return 4
-  if (params.playoffAttended) return 2
+  if (params.playoffAttended || params.msiAttended) return 2
   return 1
 }
 
@@ -65,21 +66,36 @@ async function main() {
     if (ex === undefined || r.place < ex) playoffIndex.set(k, r.place)
   }
 
+  // MSI 참가 인덱스: LEC/LCS 가중치 계산에 사용 (국내 플옵 기록 없는 경우 보완)
+  const msiIndex = new Map<string, number>()
+  for (const r of results) {
+    if (r.leagueCode !== 'MSI') continue
+    const k = `${normalizeTeam(r.team)}|${r.year}`
+    const ex = msiIndex.get(k)
+    if (ex === undefined || r.place < ex) msiIndex.set(k, r.place)
+  }
+
   // PlayerSeason 빌드
   const playerSeasons: PlayerSeason[] = []
   const errors: string[] = []
 
   for (const entry of rated) {
-    // LEC/LCS 선수-시즌 v1 제외 — 국내 결과 없어 OVR 저평가됨 (v1.1에서 03 LEC/LCS 수집 후 추가)
-    if (entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS') continue
-
-    // 카드 풀 컷: 2013 이전=결승진출(≤2위)만 / 2014+=플옵 진출 이상
+    // 카드 풀 컷 — LCK/LPL: 국내 플옵 기준 / LEC/LCS: Worlds·MSI 진출 기준
     const cardTeamKey = `${normalizeTeam(entry.team)}|${entry.year}`
-    const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
-    if (entry.year <= 2013) {
-      if (teamPlayoffPlace === undefined || teamPlayoffPlace > 2) continue
+    const isLECorLCS = entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS'
+
+    if (isLECorLCS) {
+      // LEC/LCS는 국내 결과 미수집 → Worlds/MSI 진출팀만 포함 (국내 중하위권 서구팀 제외)
+      const hasIntl = worldsIndex.has(cardTeamKey) || msiIndex.has(cardTeamKey)
+      if (!hasIntl) continue
     } else {
-      if (teamPlayoffPlace === undefined) continue
+      // LCK/LPL: 2013=결승진출(≤2위)만 / 2014+=플옵 진출 이상
+      const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
+      if (entry.year <= 2013) {
+        if (teamPlayoffPlace === undefined || teamPlayoffPlace > 2) continue
+      } else {
+        if (teamPlayoffPlace === undefined) continue
+      }
     }
 
     const teamSlug = slugify(entry.team)
@@ -142,12 +158,14 @@ async function main() {
     const teamYearKey = `${normalizeTeam(team)}|${year}`
     const worldsPlace = worldsIndex.get(teamYearKey)
     const playoffPlace = playoffIndex.get(teamYearKey)
+    const msiPlace = msiIndex.get(teamYearKey)
 
     const weight = calcWeight({
       worldsWin: worldsPlace === 1,
       worldsAttended: worldsPlace !== undefined,
       nationalChampion: playoffPlace === 1,
       playoffAttended: playoffPlace !== undefined,
+      msiAttended: msiPlace !== undefined,
     })
 
     const sortedRoles = [...roles].sort() as TeamYear['rolesAvailable']
@@ -197,15 +215,15 @@ async function main() {
 
   // §4.5 DoD 보고
   console.log('\n=== Phase 1 DoD 검증 ===')
-  console.log(`players.json: ${playerSeasons.length}건 (목표 ≥ 3,000 — v1: LCK+LPL only)`)
+  console.log(`players.json: ${playerSeasons.length}건 (LCK/LPL 플옵 + LEC/LCS Worlds·MSI 진출)`)
   console.log(`teams.json: ${teamYears.length}건 (목표 ≥ 550)`)
 
   const roles5 = Object.keys(spinIndex).length === 5
   const rolesNonEmpty = Object.values(spinIndex).every(v => v.length > 0)
   console.log(`spin-index.json: 5개 role ${roles5 ? '✓' : '✗'}, 각 배열 비어있지 않음 ${rolesNonEmpty ? '✓' : '✗'}`)
 
-  // 리그·연도별 결손 리포트 (v1: LCK/LPL만)
-  const REPORT_LEAGUES = ['LCK', 'LPL'] as const
+  // 리그·연도별 결손 리포트
+  const REPORT_LEAGUES = ['LCK', 'LPL', 'LEC', 'LCS'] as const
   const YEAR_FROM = 2013, YEAR_TO = 2025
   console.log('\n리그·연도별 PlayerSeason 수 (v1 LCK/LPL):')
   for (const league of REPORT_LEAGUES) {
@@ -220,7 +238,7 @@ async function main() {
       console.log(`  ${league}: 전 연도 커버`)
     }
   }
-  console.log('  LEC/LCS: v1 제외 (국내 결과 미수집 — v1.1 예정)')
+  console.log('  LEC/LCS: Worlds·MSI 진출 시즌만 포함 (국내 결과 미수집 → 국제대회 기준 컷)')
 
   // 서브 선수 N경기 기준 후보 제시
   const rostersPath = path.join(process.cwd(), 'pipeline-cache', 'rosters.json')
