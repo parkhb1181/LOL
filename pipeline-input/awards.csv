@@ -11,6 +11,13 @@
 playerId,year,league,award,value,split
 
 # ═══════════════════════════════════════════════════
+# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 10건)
+# ═══════════════════════════════════════════════════
+# Faker 2015: 역대 최고 MID 피크. Worlds+MSI 동시 제패 + FINALS_MVP에도 OVR 97 → 99 보정
+# SEASON_MVP 2015는 Duke(Spring)/Ssumday(Summer) 수상으로 Faker 미포함 — 팀 성적 대비 개인 공헌 보완
+Faker,2015,LCK,EDITORIAL,4,NONE
+
+# ═══════════════════════════════════════════════════
 # WORLDS_MVP (2014~2024) — 2013 제도 미시상
 # ═══════════════════════════════════════════════════
 Mata,2014,WORLDS,WORLDS_MVP,,NONE

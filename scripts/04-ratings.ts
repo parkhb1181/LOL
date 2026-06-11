@@ -105,11 +105,11 @@ function calcOvr(params: {
   return Math.max(60, Math.min(99, Math.round(score)))
 }
 
-// OVR 범위 압축 60~99 → 78~99 (선형 변환)
-// 모든 선수가 프로급으로 표시 (최하 78, 최상 99, 격차 최대 21)
+// OVR 범위 압축 60~99 → 75~99 (선형 변환)
+// 하한 75로 낮춰 78~80 밀집 완화 (격차 최대 24)
 function compressOvr(raw: number): number {
   const clamped = Math.max(60, Math.min(99, raw))
-  return Math.max(78, Math.min(99, Math.round(78 + (clamped - 60) * 21 / 39)))
+  return Math.max(75, Math.min(99, Math.round(75 + (clamped - 60) * 24 / 39)))
 }
 
 async function main() {
