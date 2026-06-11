@@ -96,8 +96,10 @@ async function main() {
     }
   }
 
-  // 2. Worlds (2013~2025) — League="World Championship", OverviewPage에 "/" 없는 것만 채택
-  //    (Regional Finals는 OverviewPage에 "/<league>/" 포함)
+  // 2. Worlds (2013~2025) — League="World Championship"
+  //    2013~2016: OverviewPage에 "/" 없음 (예: "2016 Season World Championship")
+  //    2017+: "/Main Event" 서픽스 (예: "2017 Season World Championship/Main Event")
+  //    "/Play-In" · "/<league>/Regional Finals" 등 나머지 슬래시 항목 제외
   for (let year = YEAR_FROM; year <= YEAR_TO; year++) {
     const rows = await cargoPaginate(
       {
@@ -108,7 +110,9 @@ async function main() {
       `t_WORLDS_${year}`
     )
     for (const r of rows) {
-      if (!r.OverviewPage || r.OverviewPage.includes('/')) continue
+      if (!r.OverviewPage) continue
+      // 슬래시 있는 항목은 /Main Event 만 허용 (Play-In·지역 예선 제외)
+      if (r.OverviewPage.includes('/') && !r.OverviewPage.endsWith('/Main Event')) continue
       result.push({
         name: r.Name ?? '',
         overviewPage: r.OverviewPage,
