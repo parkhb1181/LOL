@@ -6,6 +6,13 @@ import path from 'path'
 import type { RosterEntry, RostersFile } from './02-rosters'
 import type { ResultEntry } from './03-results'
 
+// 팀명 정규화 — ScoreboardPlayers vs TournamentResults 불일치 해소
+// 2013 SKT T1 분리 시대: ScoreboardPlayers="SK Telecom T1 2", TournamentResults="SK Telecom T1"
+const TEAM_ALIASES: Record<string, string> = {
+  'SK Telecom T1 2': 'SK Telecom T1',
+}
+function normalizeTeam(t: string): string { return TEAM_ALIASES[t] ?? t }
+
 // §3 스키마와 일치하는 중간 출력 (photo는 Phase 2에서 채움)
 export type RatedEntry = {
   playerId: string
@@ -59,29 +66,29 @@ function calcOvr(params: {
 
   // 국내 플옵 — 스플릿별 합산 (Rule 1)
   for (const p of params.playoffPlaces) {
-    if (p === 1) score += 10
-    else if (p === 2) score += 6
-    else if (p <= 4) score += 3
-    else if (p <= 6) score += 3
+    if (p === 1) score += 8
+    else if (p === 2) score += 5
+    else if (p <= 4) score += 2
+    else if (p <= 6) score += 1
     else score += 1
   }
 
   // MSI
   if (params.msiPlace !== null) {
     const p = params.msiPlace
-    if (p === 1) score += 8
-    else if (p === 2) score += 5
-    else if (p <= 4) score += 3
+    if (p === 1) score += 5
+    else if (p === 2) score += 3
+    else if (p <= 4) score += 2
   }
 
   // Worlds
   if (params.worldsPlace !== null) {
     const p = params.worldsPlace
-    if (p === 1) score += 15
-    else if (p === 2) score += 10
-    else if (p <= 4) score += 7
-    else if (p <= 8) score += 4
-    else score += 2  // 진출만
+    if (p === 1) score += 13
+    else if (p === 2) score += 8
+    else if (p <= 4) score += 5
+    else if (p <= 8) score += 3
+    else score += 1  // 진출만
   }
 
   // awards (Rule 4: AllPro는 2020+ 시즌만)
@@ -96,6 +103,13 @@ function calcOvr(params: {
   }
 
   return Math.max(60, Math.min(99, Math.round(score)))
+}
+
+// OVR 범위 압축 60~99 → 78~99 (선형 변환)
+// 모든 선수가 프로급으로 표시 (최하 78, 최상 99, 격차 최대 21)
+function compressOvr(raw: number): number {
+  const clamped = Math.max(60, Math.min(99, raw))
+  return Math.max(78, Math.min(99, Math.round(78 + (clamped - 60) * 21 / 39)))
 }
 
 async function main() {
@@ -161,13 +175,15 @@ async function main() {
     const domesticResults = resultsByTeamYear.get(domesticKey) ?? []
     const playoffPlaces = domesticResults.filter(r => r.isPlayoffs).map(r => r.place)
 
-    // Worlds/MSI (팀 이름 기준 매칭)
-    const teamYearKey = `${team}|${year}`
+    // Worlds/MSI (팀명 정규화 후 매칭 — ScoreboardPlayers vs TournamentResults 불일치 해소)
+    const normalizedTeam = normalizeTeam(team)
+    const teamYearKey = `${normalizedTeam}|${year}`
     const worldsPlace = worldsByTeamYear.get(teamYearKey) ?? null
     const msiPlace = msiByTeamYear.get(teamYearKey) ?? null
 
     const awards = awardsByPY.get(`${playerId}|${year}`) ?? []
-    const ovr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards })
+    const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards })
+    const ovr = compressOvr(rawOvr)
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'

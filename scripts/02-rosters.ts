@@ -193,17 +193,29 @@ async function main() {
   }
 
   // Players 테이블 메타 수집 (nameEn, nameKo)
-  // playerIds를 50개 단위 청크로 IN 쿼리 — 또는 개별 쿼리 (안전하게 배치)
-  // Cargo WHERE에 IN 구문이 지원되는지 불명확 → 개별 쿼리 (캐시 덕에 재실행 비용 없음)
+  // 캐시 있으면 즉시 로드, 없으면 API 호출 없이 playerId 폴백 (2차 보강은 별도 실행)
+  const CARGO_DIR = path.join(process.cwd(), 'pipeline-cache', 'cargo')
   const players: Record<string, PlayerMeta> = {}
   let pidIdx = 0
+  let cacheHit = 0
+  let cacheMiss = 0
   const pidList = [...playerIds]
 
   for (const pid of pidList) {
     pidIdx++
-    if (pidIdx % 200 === 0) process.stderr.write(`  Players: ${pidIdx}/${pidList.length}\n`)
+    if (pidIdx % 200 === 0) process.stderr.write(`  Players: ${pidIdx}/${pidList.length} (hit=${cacheHit} miss=${cacheMiss})\n`)
 
     const key = `player_${pid.replace(/[^a-zA-Z0-9_-]/g, '_')}`
+    const cacheFile = path.join(CARGO_DIR, `${key}.json`)
+
+    if (!fs.existsSync(cacheFile)) {
+      // 캐시 미스 → API 미호출, playerId를 nameEn으로 폴백
+      cacheMiss++
+      players[pid] = { nameEn: pid, nameKo: null, country: '', primaryRole: '' }
+      continue
+    }
+
+    cacheHit++
     const rows = await cargoPaginate(
       {
         tables: 'Players',
@@ -215,13 +227,17 @@ async function main() {
     if (rows.length > 0) {
       const r = rows[0]
       players[pid] = {
-        nameEn: r.Name || pid,
+        nameEn: r.ID || pid,  // Players.Name=본명이므로 ID(닉네임) 사용 (Faker, TheShy 등)
         nameKo: r.NativeName || null,
         country: '',  // Country는 현재 불요 — Phase 2 사진 매핑 시 사용
         primaryRole: r.Role || '',
       }
+    } else {
+      players[pid] = { nameEn: pid, nameKo: null, country: '', primaryRole: '' }
     }
   }
+
+  process.stderr.write(`  Players 완료: 캐시 hit=${cacheHit} / 폴백 miss=${cacheMiss}\n`)
 
   const out: RostersFile = { players, entries }
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2), 'utf-8')

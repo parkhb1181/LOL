@@ -9,6 +9,12 @@ import type { RatedEntry } from './04-ratings'
 import type { ResultEntry } from './03-results'
 import type { RostersFile, RosterEntry } from './02-rosters'
 
+// 팀명 정규화 — ScoreboardPlayers(rated.team) vs TournamentResults(results.team) 불일치 해소
+const TEAM_ALIASES: Record<string, string> = {
+  'SK Telecom T1 2': 'SK Telecom T1',
+}
+function normalizeTeam(t: string): string { return TEAM_ALIASES[t] ?? t }
+
 // §3 slugify: 소문자화 → 영숫자 외 하이픈 → 연속 하이픈 축약 → 양끝 제거
 function slugify(s: string): string {
   return s.toLowerCase()
@@ -41,20 +47,20 @@ async function main() {
   const rated: RatedEntry[] = JSON.parse(fs.readFileSync(ratingsPath, 'utf-8'))
   const results: ResultEntry[] = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
 
-  // Worlds 참가/우승 인덱스: `${team}|${year}` → place
+  // Worlds 참가/우승 인덱스: normalizeTeam 적용 (TournamentResults Worlds="SK Telecom T1")
   const worldsIndex = new Map<string, number>()
   for (const r of results) {
     if (r.leagueCode !== 'WORLDS') continue
-    const k = `${r.team}|${r.year}`
+    const k = `${normalizeTeam(r.team)}|${r.year}`
     const ex = worldsIndex.get(k)
     if (ex === undefined || r.place < ex) worldsIndex.set(k, r.place)
   }
 
-  // 국내 플옵 인덱스: `${team}|${year}` → best place
+  // 국내 플옵 인덱스: normalizeTeam 적용 — 인덱스와 조회 모두 정규화해야 일관성 유지
   const playoffIndex = new Map<string, number>()
   for (const r of results) {
     if (!r.isPlayoffs || r.leagueCode === 'WORLDS' || r.leagueCode === 'MSI') continue
-    const k = `${r.team}|${r.year}`
+    const k = `${normalizeTeam(r.team)}|${r.year}`
     const ex = playoffIndex.get(k)
     if (ex === undefined || r.place < ex) playoffIndex.set(k, r.place)
   }
@@ -66,6 +72,15 @@ async function main() {
   for (const entry of rated) {
     // LEC/LCS 선수-시즌 v1 제외 — 국내 결과 없어 OVR 저평가됨 (v1.1에서 03 LEC/LCS 수집 후 추가)
     if (entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS') continue
+
+    // 카드 풀 컷: 2013 이전=결승진출(≤2위)만 / 2014+=플옵 진출 이상
+    const cardTeamKey = `${normalizeTeam(entry.team)}|${entry.year}`
+    const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
+    if (entry.year <= 2013) {
+      if (teamPlayoffPlace === undefined || teamPlayoffPlace > 2) continue
+    } else {
+      if (teamPlayoffPlace === undefined) continue
+    }
 
     const teamSlug = slugify(entry.team)
     const id = `${slugify(entry.playerId)}_${entry.year}_${teamSlug}`
@@ -124,7 +139,7 @@ async function main() {
 
   const teamYears: TeamYear[] = []
   for (const [key, { team, teamSlug, year, leagueCode, playerIds, roles }] of teamMap) {
-    const teamYearKey = `${team}|${year}`
+    const teamYearKey = `${normalizeTeam(team)}|${year}`
     const worldsPlace = worldsIndex.get(teamYearKey)
     const playoffPlace = playoffIndex.get(teamYearKey)
 
