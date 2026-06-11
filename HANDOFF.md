@@ -4,9 +4,11 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D1-D2 (2026-06-11) / 03-results.ts 백그라운드 실행 중 (LCK 21/52건, LPL 27/64건 캐시됨, LEC 진행 중)
+- 날짜 / Phase: D1-D2 (2026-06-11 21:40) / 03-results.ts 백그라운드 실행 중
+- 03 진행도: LCK 21건·LPL 27건 캐시 완료, **LEC 14건 진행 중**(마지막 LEC 2019 서머), LCS·MSI 미시작
 - 빌드 상태: scaffold 완료, TypeScript noEmit 통과 (빌드 미실행)
 - 브랜치: main
+- **복귀 후 재개 시작점**: `Test-Path pipeline-cache\results.json` → True이면 아래 "다음 작업 ①" 실행
 
 ## 완료
 - 스캐폴드: Next.js 15 + TypeScript + Tailwind, src/ 구조
@@ -40,51 +42,58 @@
 
 ## 진행 중
 - **03-results.ts** 백그라운드 실행 중 (PIDs 52936/56836/45960)
-  - worlds-results.json 저장됨 (98건 — 2013~2016 Worlds만, 2017~2025 Worlds 버그로 누락)
-  - LCK 21건·LPL 27건 캐시, LEC 진행 중 → 완료 후 results.json 저장 (오류 포함)
-  - **⚠ 03 완료 후 즉시 04 실행 금지** — results.json 삭제 후 재실행 필요
-- **10-photo-whitelist.ts** 병행 실행 중 (player_* 캐시 생성 중)
-  - 2013~2016 Worlds 기준으로만 화이트리스트 작성 중 — 버그 픽스 후 재실행 필요
+  - LEC 레이트 리밋 백오프 중 (마지막 캐시 21:28, 프로세스 생존 확인됨)
+  - 완료 후 results.json 저장 — **즉시 04 실행 금지, cleanup 먼저**
+- **10-photo-whitelist.ts** 병행 실행됐으나 결과 무효 (2013~2016 Worlds만 기준) — 03 재실행 후 재실행 필요
 
-## 다음 작업 (우선순위 순)
+## 다음 작업 (통합 재실행 — ①+③ 묶음)
 
-### ① 03 완료 대기 → Worlds 버그 픽스 재실행 (가장 먼저)
-**03 완료 확인:** `Test-Path pipeline-cache\results.json` → True
-**완료되면 즉시 실행:**
+### 복귀 후 첫 번째: 03 완료 확인
 ```powershell
-# 1. 잘못된 캐시 삭제
+Test-Path pipeline-cache\results.json   # True면 아래 실행
+```
+
+### 03 완료 확인 후: 통합 cleanup + 전체 재실행
+```powershell
+# ── 1. results/worlds 삭제 ──
 Remove-Item pipeline-cache\results.json
 Remove-Item pipeline-cache\worlds-results.json
-Remove-Item pipeline-cache\cargo\result_2017_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2018_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2019_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2020_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2021_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2022_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2023_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2024_Season_World_Championship_Main_Event.json
-Remove-Item pipeline-cache\cargo\result_2025_Season_World_Championship_Main_Event.json
-# 2. 03 재실행 (국내+MSI는 캐시 재사용, Worlds 2017~2025만 신규 9건 fetch)
+Remove-Item pipeline-cache\photo-whitelist.json -ErrorAction SilentlyContinue
+
+# ── 2. Worlds /Main Event 빈 캐시 9개 삭제 ──
+2017,2018,2019,2020,2021,2022,2023,2024,2025 | ForEach-Object {
+  Remove-Item "pipeline-cache\cargo\result_$($_)_Season_World_Championship_Main_Event.json" -ErrorAction SilentlyContinue
+}
+
+# ── 3. 2025 cargo 캐시 삭제 (스테일 데이터) ──
+Remove-Item pipeline-cache\cargo\t_LCK_2025_LoL_Champions_Korea.json -ErrorAction SilentlyContinue
+Remove-Item pipeline-cache\cargo\t_LCS_2025_League_of_Legends_Championship_of_The_Americas_North.json -ErrorAction SilentlyContinue
+Remove-Item pipeline-cache\cargo\t_LPL_2025_Tencent_LoL_Pro_League.json -ErrorAction SilentlyContinue
+Remove-Item pipeline-cache\cargo\t_LEC_2025_LoL_EMEA_Championship.json -ErrorAction SilentlyContinue
+Remove-Item pipeline-cache\cargo\t_WORLDS_2025.json -ErrorAction SilentlyContinue
+Remove-Item pipeline-cache\cargo\t_MSI_2025.json -ErrorAction SilentlyContinue
+
+# ── 4. tournaments/rosters 삭제 (LCK 2013~2015 신규 수집) ──
+Remove-Item pipeline-cache\tournaments.json
+Remove-Item pipeline-cache\rosters.json
+
+# ── 5. 순차 재실행 ──
+npx tsx scripts/01-tournaments.ts
+npx tsx scripts/02-rosters.ts
 npx tsx scripts/03-results.ts
-# 3. 03 완료 후
 npx tsx scripts/04-ratings.ts
 npx tsx scripts/07-build.ts
 npx tsx scripts/08-anchors.ts
 ```
 
-### ② 10-photo-whitelist.ts 재실행 (03 재실행 완료 후)
-- worlds-results.json 재생성 후 실행 (2017~2025 Worlds 포함된 버전)
+### 검증 (08 완료 후)
+- worlds-results.json에 Worlds 2017~2025 연도별 실데이터 확인 (IG 2018, DWG 2020, Faker 2023 포함)
+- 08-anchors 앵커 6명 OVR 범위 확인
+- 2025 LCK 최상위 OVR 99 과밀 여부 확인 (Road to MSI 이중가점)
 
-### ③ LCK 2013-2015 + 2025 최신 데이터 수집 (2차 re-run)
-- tournaments.json 삭제 → 01 재실행
-- rosters.json 삭제 → 02 재실행
-- 2025 cargo 캐시 6개 삭제 (t_LCK/LCS/LPL/LEC/WORLDS/MSI_2025)
-- results.json + worlds-results.json 삭제 → 03 재실행
-- 04→07→08 재실행
-
-### ④ 08-anchors 결과 확인
-- 앵커 5개 기준 (Faker 2013 포함) — 정상 범위 확인
-- 2025 LCK top OVR 99 몰림 여부 확인 (Road to MSI 이중가점)
+### 이후 작업
+- 10-photo-whitelist.ts 재실행 (03 완료 직후 자동 또는 수동)
+- 08 결과 보고 → 호빈 승인 → Phase 2 (이미지) 착수
 
 ## 호빈 게이트 대기
 - **awards.csv 검수** — v0.3 완료, 호빈 최종 확인 필요 (Appendix 잔여 `# ?` 항목: 2020 서머 ADC 1st, 일부 SEASON_MVP 2023년)
@@ -97,7 +106,7 @@ npx tsx scripts/08-anchors.ts
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
-- 2026-06-11 (세션9): **Worlds 2017~2025 TournamentResults 버그 발견+수정.** worlds-results.json 98건 = 2013~2016만(2017~2025 완전 누락). 원인: 03-results.ts가 "/Main Event" 포함 OP로 TournamentResults 쿼리 → `[]` 반환. Fix: trOverviewPage 변수로 "/Main Event" 스트립. TypeScript noEmit 통과. 03 재실행 전 cleanup 스크립트 HANDOFF에 명시.
+- 2026-06-11 (세션9): Worlds 2017~2025 TournamentResults 버그 수정(dcf50be). 통합 재실행 계획 수립(①+③ 묶음). 03 LEC 레이트 리밋 대기 중 — 외출 전 HANDOFF 갱신.
 - 2026-06-11 (세션8): LCK 2013~2015 League명 실값 확인(2013~2015="LoL The Champions", 2015 Playoffs 항목 별도 존재). 01-tournaments.ts 픽스 커밋(b7be083). worlds-results.json 98건 저장 완료. 03 LPL 처리 중.
 - 2026-06-11 (세션7): awards.csv v0.3 확정, 01-tournaments.ts Worlds 2017+ 버그 수정, tournaments.json 재생성(302건), 03 재실행. 레이트 리밋으로 지연 중, 04→07→08 자동 대기 스크립트 기동.
 - 2026-06-11 (세션6): awards.csv v0.2(split 컬럼 추가·WORLDS/FINALS MVP 1차 교정) + v0.3(2차 교정) 커밋. worlds-results.json 임시 생성. Worlds 2017+ 수집 버그 발견.
