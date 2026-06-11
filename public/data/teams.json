@@ -1,0 +1,82 @@
+[
+  {
+    "key": "sk-telecom-t1_2016",
+    "team": "SK Telecom T1",
+    "teamSlug": "sk-telecom-t1",
+    "year": 2016,
+    "league": "LCK",
+    "roster": [
+      "bang_2016_sk-telecom-t1",
+      "blank_2016_sk-telecom-t1",
+      "duke_2016_sk-telecom-t1",
+      "faker_2016_sk-telecom-t1",
+      "wolf_2016_sk-telecom-t1"
+    ],
+    "rolesAvailable": ["ADC", "JGL", "MID", "SUP", "TOP"],
+    "weight": 8
+  },
+  {
+    "key": "t1_2023",
+    "team": "T1",
+    "teamSlug": "t1",
+    "year": 2023,
+    "league": "LCK",
+    "roster": [
+      "faker_2023_t1",
+      "gumayusi_2023_t1",
+      "keria_2023_t1",
+      "oner_2023_t1",
+      "zeus_2023_t1"
+    ],
+    "rolesAvailable": ["ADC", "JGL", "MID", "SUP", "TOP"],
+    "weight": 8
+  },
+  {
+    "key": "gen-g_2024",
+    "team": "Gen.G",
+    "teamSlug": "gen-g",
+    "year": 2024,
+    "league": "LCK",
+    "roster": [
+      "canyon_2024_gen-g",
+      "chovy_2024_gen-g",
+      "doran_2024_gen-g",
+      "lehends_2024_gen-g",
+      "peyz_2024_gen-g"
+    ],
+    "rolesAvailable": ["ADC", "JGL", "MID", "SUP", "TOP"],
+    "weight": 4
+  },
+  {
+    "key": "kt-rolster_2018",
+    "team": "KT Rolster",
+    "teamSlug": "kt-rolster",
+    "year": 2018,
+    "league": "LCK",
+    "roster": [
+      "deft_2018_kt-rolster",
+      "mata_2018_kt-rolster",
+      "score_2018_kt-rolster",
+      "smeb_2018_kt-rolster",
+      "ucal_2018_kt-rolster"
+    ],
+    "rolesAvailable": ["ADC", "JGL", "MID", "SUP", "TOP"],
+    "weight": 2
+  },
+  {
+    "key": "drx_2022",
+    "team": "DRX",
+    "teamSlug": "drx",
+    "year": 2022,
+    "league": "LCK",
+    "roster": [
+      "beryl_2022_drx",
+      "deft_2022_drx",
+      "kingen_2022_drx",
+      "pyosik_2022_drx",
+      "zeka_2022_drx"
+    ],
+    "rolesAvailable": ["ADC", "JGL", "MID", "SUP", "TOP"],
+    "weight": 8
+  }
+]

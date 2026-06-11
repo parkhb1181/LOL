@@ -1,0 +1,7 @@
+{
+  "TOP": ["sk-telecom-t1_2016", "t1_2023", "gen-g_2024", "kt-rolster_2018", "drx_2022"],
+  "JGL": ["sk-telecom-t1_2016", "t1_2023", "gen-g_2024", "kt-rolster_2018", "drx_2022"],
+  "MID": ["sk-telecom-t1_2016", "t1_2023", "gen-g_2024", "kt-rolster_2018", "drx_2022"],
+  "ADC": ["sk-telecom-t1_2016", "t1_2023", "gen-g_2024", "kt-rolster_2018", "drx_2022"],
+  "SUP": ["sk-telecom-t1_2016", "t1_2023", "gen-g_2024", "kt-rolster_2018", "drx_2022"]
+}

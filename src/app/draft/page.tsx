@@ -2,6 +2,9 @@
 // §6.1 드래프트 게임 본체 — IDLE→SPIN→PICK→SIM→REVEAL→RESULT
 // §13.4 데이터 플로우 주석 의무 (호빈: React 첫 경험)
 // §13.5 Hydration 방어: 초기 렌더 서버와 동일 상태, mount 후 fetch
+// GAME_SPEC §1: 데이터 로드 완료 즉시 자동 스핀 (IDLE 화면 skip)
+// GAME_SPEC §2: 리롤 단일 버튼 (fullReroll)
+// GAME_SPEC §7: RESULT 4단계 타임라인
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
@@ -10,6 +13,7 @@ import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import { useLang } from '@/i18n'
 import type { PlayerSeason, Opponent, OpponentsFile } from '@/lib/data'
+import type { SimStep } from '@/lib/sim'
 
 // ── 데이터 로드 훅 ────────────────────────────────────────────────────────────
 // §13.5: fetch는 mount 후에만 (SSR에서 window/fetch 불요)
@@ -61,7 +65,6 @@ function RosterSlots({ picks }: { picks: (ReturnType<typeof useDraftMachine>['st
             {pick ? (
               <PlayerCard player={pick.player} size="slot" />
             ) : (
-              // 빈 슬롯
               <div className="w-20 h-28 rounded-lg border border-dashed border-[var(--card-border,#2a2a4a)] flex items-center justify-center text-[var(--card-role,#a0a0c0)] text-xs">
                 {role}
               </div>
@@ -73,46 +76,22 @@ function RosterSlots({ picks }: { picks: (ReturnType<typeof useDraftMachine>['st
   )
 }
 
-// ── IDLE 화면 ─────────────────────────────────────────────────────────────────
-function IdleScreen({ onStart, loading }: { onStart: () => void; loading: boolean }) {
-  const { t } = useLang()
-  return (
-    <div className="flex flex-col items-center justify-center gap-8 py-16">
-      <h1 className="text-4xl font-black text-white tracking-tight">GRANDSLAM</h1>
-      <p className="text-[var(--card-role,#a0a0c0)] text-center max-w-sm">
-        LoL All-Time Draft Simulator
-      </p>
-      <button
-        onClick={onStart}
-        disabled={loading}
-        className="px-10 py-4 text-xl font-bold rounded-xl bg-[var(--accent,#4a6aff)] text-white hover:opacity-90 active:scale-95 transition-all disabled:opacity-40"
-      >
-        {loading ? '로딩 중...' : t.startButton}
-      </button>
-    </div>
-  )
-}
-
-// ── PICK 화면 ─────────────────────────────────────────────────────────────────
+// ── PICK 화면 — GAME_SPEC §2: 리롤 단일 버튼 ──────────────────────────────────
 function PickScreen({
   roster,
   pickedPlayerIds,
   emptyRoles,
   onPick,
-  onRerollTeam,
-  onRerollYear,
-  teamRerollLeft,
-  yearRerollLeft,
+  onFullReroll,
+  rerollLeft,
   spunTeam,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
   emptyRoles: string[]
   onPick: (p: PlayerSeason) => void
-  onRerollTeam: () => void
-  onRerollYear: () => void
-  teamRerollLeft: number
-  yearRerollLeft: number
+  onFullReroll: () => void
+  rerollLeft: number
   spunTeam: { team: string; year: number } | null
 }) {
   const { t } = useLang()
@@ -123,22 +102,15 @@ function PickScreen({
         <h2 className="text-lg font-bold text-white">
           {spunTeam ? `${spunTeam.team} (${spunTeam.year})` : t.pickPrompt}
         </h2>
-        <div className="flex gap-2">
-          <button
-            onClick={onRerollTeam}
-            disabled={teamRerollLeft <= 0}
-            className="text-xs px-3 py-1.5 rounded border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white disabled:opacity-30 transition-colors"
-          >
-            {t.rerollTeam} ({teamRerollLeft})
-          </button>
-          <button
-            onClick={onRerollYear}
-            disabled={yearRerollLeft <= 0}
-            className="text-xs px-3 py-1.5 rounded border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white disabled:opacity-30 transition-colors"
-          >
-            {t.rerollYear} ({yearRerollLeft})
-          </button>
-        </div>
+        {/* GAME_SPEC §2: 팀 전체 재스핀 버튼 1개 */}
+        <button
+          onClick={onFullReroll}
+          disabled={rerollLeft <= 0}
+          className="text-sm px-4 py-2 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 disabled:opacity-30 transition-colors"
+          title="팀 전체 재스핀"
+        >
+          🎲 재스핀 ({rerollLeft})
+        </button>
       </div>
 
       {/* 로스터 그리드 — 모바일 390px에서 가로 스크롤 없음 (flex-wrap) */}
@@ -168,7 +140,7 @@ function RevealScreen({
   onSkip,
   opponents,
 }: {
-  steps: { stage: string; label: string; series?: { opp: string; score: string; win: boolean }[] }[]
+  steps: SimStep[]
   revealStep: number
   onSkip: () => void
   opponents: OpponentsFile | null
@@ -176,7 +148,6 @@ function RevealScreen({
   const { t } = useLang()
   const visibleSteps = steps.slice(0, revealStep)
 
-  // opp name → {label, rating} 조회 맵 — 패배 표시에 사용
   const oppMap = new Map<string, Pick<Opponent, 'label' | 'rating'>>()
   if (opponents) {
     for (const o of [...opponents.regular, ...opponents.intl]) {
@@ -220,7 +191,115 @@ function RevealScreen({
   )
 }
 
-// ── RESULT 화면 ───────────────────────────────────────────────────────────────
+// ── GAME_SPEC §7 — 4단계 결과 타임라인 추출 ─────────────────────────────────
+
+type TLEntry = {
+  stage: string
+  status: 'win' | 'lose' | 'out'
+  detail: string
+}
+
+function buildTimeline(steps: SimStep[]): TLEntry[] {
+  const byStage = new Map(steps.map(s => [s.stage, s]))
+  const entries: TLEntry[] = []
+
+  // 스프링 (Split 1)
+  {
+    const fin = byStage.get('Split 1_final')
+    const sf = byStage.get('Split 1_sf')
+    const missed = byStage.get('Split 1_missed')
+    if (fin) {
+      const win = fin.series?.[0]?.win ?? false
+      const opp = fin.series?.[0]?.opp ?? '?'
+      entries.push({
+        stage: '스프링',
+        status: win ? 'win' : 'lose',
+        detail: win ? `우승 — vs ${opp} 격파` : `준우승 — vs ${opp} 패`,
+      })
+    } else if (sf && !(sf.series?.[0]?.win)) {
+      entries.push({
+        stage: '스프링',
+        status: 'lose',
+        detail: `4강 탈락 — vs ${sf.series?.[0]?.opp ?? '?'}`,
+      })
+    } else if (missed) {
+      entries.push({ stage: '스프링', status: 'out', detail: missed.label })
+    }
+  }
+
+  // MSI
+  {
+    const win = byStage.get('msi_win')
+    const out = byStage.get('msi_out')
+    if (win) {
+      entries.push({ stage: 'MSI', status: 'win', detail: '우승' })
+    } else if (out) {
+      const lastRound = byStage.get('msi_r3') ?? byStage.get('msi_r2') ?? byStage.get('msi_r1')
+      const opp = lastRound?.series?.[0]?.opp ?? '?'
+      const roundLabel = byStage.has('msi_r3') ? '결승' : byStage.has('msi_r2') ? '4강' : '8강'
+      entries.push({ stage: 'MSI', status: 'lose', detail: `${roundLabel} 패 — vs ${opp}` })
+    } else {
+      entries.push({ stage: 'MSI', status: 'out', detail: '미진출' })
+    }
+  }
+
+  // 서머 (Split 2)
+  {
+    const fin = byStage.get('Split 2_final')
+    const sf = byStage.get('Split 2_sf')
+    const missed = byStage.get('Split 2_missed')
+    if (fin) {
+      const win = fin.series?.[0]?.win ?? false
+      const opp = fin.series?.[0]?.opp ?? '?'
+      entries.push({
+        stage: '서머',
+        status: win ? 'win' : 'lose',
+        detail: win ? `우승 — vs ${opp} 격파` : `준우승 — vs ${opp} 패`,
+      })
+    } else if (sf && !(sf.series?.[0]?.win)) {
+      entries.push({
+        stage: '서머',
+        status: 'lose',
+        detail: `4강 탈락 — vs ${sf.series?.[0]?.opp ?? '?'}`,
+      })
+    } else if (missed) {
+      entries.push({ stage: '서머', status: 'out', detail: missed.label })
+    }
+  }
+
+  // Worlds
+  {
+    const win = byStage.get('worlds_win')
+    const fin = byStage.get('worlds_final')
+    const sf = byStage.get('worlds_sf')
+    const qf = byStage.get('worlds_qf')
+    const swissOut = byStage.get('worlds_swiss_out')
+    if (win) {
+      const finOpp = fin?.series?.[0]?.opp ?? '?'
+      entries.push({ stage: 'Worlds', status: 'win', detail: `우승 — vs ${finOpp} 격파` })
+    } else if (fin && !(fin.series?.[0]?.win)) {
+      entries.push({ stage: 'Worlds', status: 'lose', detail: `결승 패 — vs ${fin.series?.[0]?.opp ?? '?'}` })
+    } else if (sf && !(sf.series?.[0]?.win)) {
+      entries.push({ stage: 'Worlds', status: 'lose', detail: `4강 패 — vs ${sf.series?.[0]?.opp ?? '?'}` })
+    } else if (qf && !(qf.series?.[0]?.win)) {
+      entries.push({ stage: 'Worlds', status: 'lose', detail: `8강 패 — vs ${qf.series?.[0]?.opp ?? '?'}` })
+    } else if (swissOut) {
+      entries.push({ stage: 'Worlds', status: 'lose', detail: swissOut.label })
+    } else {
+      entries.push({ stage: 'Worlds', status: 'out', detail: '미진출' })
+    }
+  }
+
+  return entries
+}
+
+const TL_ICON: Record<TLEntry['status'], string> = {
+  win: '🟢',
+  lose: '🔴',
+  out: '⚪',
+}
+
+// ── RESULT 화면 — GAME_SPEC §7: 5인 카드 + 4단계 타임라인 + 등급 ──────────────
 function ResultScreen({
   simResult,
   picks,
@@ -253,6 +332,8 @@ function ResultScreen({
     await navigator.share({ url: shareUrl, title: `GRANDSLAM — ${simResult.grade}` })
   }
 
+  const timeline = buildTimeline(simResult.steps)
+
   return (
     <div className="flex flex-col gap-6 items-center">
       {/* 등급 */}
@@ -266,18 +347,28 @@ function ResultScreen({
         </p>
       </div>
 
-      {/* 트로피 */}
-      {simResult.trophies.length > 0 && (
-        <div className="flex gap-2 flex-wrap justify-center">
-          {simResult.trophies.map(trophy => (
-            <span key={trophy} className="text-xs font-bold px-3 py-1 rounded-full bg-[var(--card-badge-bg,#2a4a8a)] text-[var(--card-badge-text,#80aaff)]">
-              {trophy}
-            </span>
+      {/* GAME_SPEC §7: 4단계 결과 타임라인 */}
+      {timeline.length > 0 && (
+        <div className="w-full max-w-sm bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-4 flex flex-col gap-3">
+          {timeline.map((entry, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <span className="text-base leading-5 mt-0.5">{TL_ICON[entry.status]}</span>
+              <div>
+                <span className="text-sm font-bold text-white">{entry.stage}</span>
+                <span className={`text-sm ml-2 ${
+                  entry.status === 'win' ? 'text-green-300' :
+                  entry.status === 'lose' ? 'text-red-300' :
+                  'text-[var(--card-role,#a0a0c0)]'
+                }`}>
+                  {entry.detail}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       )}
 
-      {/* 픽 요약 */}
+      {/* 5인 카드 */}
       <div className="flex flex-wrap gap-2 justify-center">
         {ROLES.map((_, i) => picks[i] && (
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
@@ -317,6 +408,15 @@ export default function DraftPage() {
   const machine = useDraftMachine(data)
   const { state } = machine
   const { t } = useLang()
+
+  // GAME_SPEC §1: 데이터 로드 완료 즉시 자동 스핀 — IDLE 화면 skip
+  // 의존: data(로드 완료)와 phase(IDLE) 양쪽이 충족될 때 1회 실행
+  useEffect(() => {
+    if (data && state.phase === 'IDLE') {
+      machine.start()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, state.phase])
 
   // SPIN 단계: 자동으로 spinNext 호출
   // 의존: phase가 SPIN으로 전이될 때 1회 실행
@@ -374,8 +474,13 @@ export default function DraftPage() {
       {/* 메인 콘텐츠 */}
       <main className="max-w-2xl mx-auto px-4 py-8">
 
+        {/* IDLE: 로딩 중이거나 자동 스핀 대기 — 일반적으로 거의 안 보임 */}
         {state.phase === 'IDLE' && (
-          <IdleScreen onStart={machine.start} loading={loading} />
+          <div className="flex flex-col items-center justify-center gap-4 py-16">
+            <p className="text-[var(--card-role,#a0a0c0)] animate-pulse">
+              {loading ? '로딩 중...' : '스핀 준비 중...'}
+            </p>
+          </div>
         )}
 
         {(state.phase === 'SPIN' || state.phase === 'PICK') && (
@@ -392,10 +497,8 @@ export default function DraftPage() {
                 pickedPlayerIds={machine.pickedPlayerIds}
                 emptyRoles={machine.emptyRoles}
                 onPick={(p) => machine.pick(p, state.spunTeam!)}
-                onRerollTeam={machine.rerollTeam}
-                onRerollYear={machine.rerollYear}
-                teamRerollLeft={state.teamRerollLeft}
-                yearRerollLeft={state.yearRerollLeft}
+                onFullReroll={machine.fullReroll}
+                rerollLeft={state.rerollLeft}
                 spunTeam={state.spunTeam}
               />
             )}

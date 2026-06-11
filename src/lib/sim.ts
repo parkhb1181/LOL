@@ -40,8 +40,8 @@ const ROLE_WEIGHT: Record<string, number> = {
   MID: 1.10, JGL: 1.10, ADC: 1.00, TOP: 0.95, SUP: 0.85,
 }
 
-// §9 Elo 스케일 (튜닝 파라미터)
-const S = 40
+// §9 Elo 스케일 (튜닝 파라미터) — S=20: OVR 80 vs 92 단판 승률 20% (GAME_SPEC §4 기준점)
+const S = 20
 
 function calcTeamOvr(picks: SimPlayer[]): number {
   // §7.1 — teamPower / 5 로 60~99 스케일 정규화
