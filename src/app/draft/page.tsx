@@ -319,6 +319,8 @@ function ResultScreen({
 }) {
   const { t } = useLang()
   const [copied, setCopied] = useState(false)
+  // 경기 상세 접이식 토글 — 기본 접힘
+  const [showDetail, setShowDetail] = useState(false)
 
   // 공유 URL 조립 — §8.1 형식: /r?p=id1.id2...&s=seed
   const pIds = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
@@ -371,6 +373,34 @@ function ResultScreen({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* 경기 상세 토글 — 영수증 철학: 왜 이 결과인지 근거 제공 */}
+      {simResult.steps.some(s => s.series?.length) && (
+        <div className="w-full max-w-sm">
+          <button
+            onClick={() => setShowDetail(v => !v)}
+            className="w-full text-xs text-[var(--card-role,#a0a0c0)] hover:text-white/80 transition-colors py-2 text-center"
+          >
+            {showDetail ? '▲ 경기 상세 접기' : '▼ 경기 상세 보기'}
+          </button>
+          {showDetail && (
+            <div className="bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-3 flex flex-col gap-2 mt-1">
+              {simResult.steps
+                .filter(s => s.series?.length)
+                .map((step, i) => (
+                  <div key={i}>
+                    <p className="text-[10px] text-[var(--card-role,#a0a0c0)] mb-0.5">{step.label}</p>
+                    {step.series?.map((g, j) => (
+                      <p key={j} className={`text-xs ml-3 font-mono ${g.win ? 'text-green-400' : 'text-red-400'}`}>
+                        {g.win ? '승' : '패'}  {g.score}  vs {g.opp}
+                      </p>
+                    ))}
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
 
