@@ -7,7 +7,6 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
-import { useLang } from '@/i18n'
 
 // 결정론적 R2 URL 생성 — 환경변수 미설정 또는 NEXT_PUBLIC_PHOTOS_ENABLED=false 시 null
 function photoUrl(id: string): string | null {
@@ -51,11 +50,13 @@ function avatarBg(teamSlug: string): string {
 }
 
 export default function PlayerCard({ player, size = 'pick', disabled = false, onClick }: Props) {
-  const { lang } = useLang()
   // imgError: 초기값 false(hydration 안전) — onError 시 아바타로 전환
   const [imgError, setImgError] = useState(false)
+  // crownError: crown.png 미수령 시 broken icon 대신 레이어 전체 숨김
+  const [crownError, setCrownError] = useState(false)
 
-  const name = (lang === 'ko' && player.nameKo) ? player.nameKo : player.nameEn
+  // 버그3 fix: IGN(nameEn) 항상 표시 — nameKo는 실명이라 언어 토글과 무관하게 닉네임 고정
+  const name = player.nameEn
   const isWorlds = player.frame === 'WORLDS'
   const hasCrown = player.crown
   const hasMsi = player.msiWinner
@@ -135,28 +136,37 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
           </div>
         )}
 
-        {/* 왕관 오버레이 — /public/crown.png 고정 에셋 (Cursor 생성 금지) */}
-        {hasCrown && (
-          <div className="absolute top-0 left-1 z-20 w-6 h-6 -rotate-12 pointer-events-none">
-            {/* crown.png 미수령 시 자리만 유지 */}
+        {/* 왕관 오버레이 — WORLDS_MVP 개인 수상자 (Cursor 에셋 생성 금지)
+            crownError 시 div 전체 숨김 — broken icon 방지 */}
+        {hasCrown && !crownError && (
+          <div className="absolute top-9 left-1 z-20 w-5 h-5 -rotate-12 pointer-events-none">
             <Image
-              src="/crown.png"
+              src="/img/crown.png"
               alt="crown"
-              width={24}
-              height={24}
-              className="drop-shadow"
-              onError={() => {/* 에셋 미수령 — 렌더 무시 */}}
+              width={20}
+              height={20}
+              className="object-contain drop-shadow"
+              onError={() => setCrownError(true)}
             />
           </div>
         )}
       </div>
 
-      {/* 하단: 이름 + 팀·연도 */}
+      {/* 하단: 아이콘 + 이름 + 팀·연도 */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
-        {/* MSI WINNER 라벨 (i18n 제외, 영문 고정) */}
-        {hasMsi && (
-          <div className="text-center text-[7px] font-bold text-[var(--card-msi,#88eeaa)] bg-[var(--card-msi-bg,#0a2a15)] rounded-full px-2 py-0.5 mb-0.5 truncate">
-            MSI WINNER
+        {/* 우승 아이콘 — Worlds(팀) + MSI(팀) 나란히. 위치는 이름 위 */}
+        {(isWorlds || hasMsi) && (
+          <div className="flex justify-center items-end gap-1 mb-0.5">
+            {isWorlds && (
+              <div className="relative" style={{ width: size === 'slot' ? 10 : 13, height: size === 'slot' ? 14 : 18 }}>
+                <Image src="/img/world.png" alt="Worlds" fill className="object-contain drop-shadow" />
+              </div>
+            )}
+            {hasMsi && (
+              <div className="relative" style={{ width: size === 'slot' ? 9 : 12, height: size === 'slot' ? 14 : 18 }}>
+                <Image src="/img/msi.png" alt="MSI" fill className="object-contain drop-shadow" />
+              </div>
+            )}
           </div>
         )}
         <p className="text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight" style={{ fontSize: size === 'slot' ? '9px' : '11px' }}>

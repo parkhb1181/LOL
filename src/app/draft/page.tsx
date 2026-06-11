@@ -284,7 +284,13 @@ function buildTimeline(steps: SimStep[]): TLEntry[] {
     } else if (qf && !(qf.series?.[0]?.win)) {
       entries.push({ stage: 'Worlds', status: 'lose', detail: `8강 패 — vs ${qf.series?.[0]?.opp ?? '?'}` })
     } else if (swissOut) {
-      entries.push({ stage: 'Worlds', status: 'lose', detail: swissOut.label })
+      // 마지막 패배 스위스 라운드에서 상대 추출 (worlds_swiss_out 자체엔 series 없음)
+      const lastSwissLoss = [5, 4, 3, 2, 1]
+        .map(n => byStage.get(`worlds_swiss_r${n}`))
+        .find(s => s && s.series?.[0]?.win === false)
+      const swissOpp = lastSwissLoss?.series?.[0]?.opp
+      const swissDetail = swissOpp ? `스위스 탈락 — vs ${swissOpp}` : swissOut.label
+      entries.push({ stage: 'Worlds', status: 'lose', detail: swissDetail })
     } else {
       entries.push({ stage: 'Worlds', status: 'out', detail: '미진출' })
     }
