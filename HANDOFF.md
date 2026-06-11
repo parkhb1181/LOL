@@ -4,7 +4,7 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D1 (2026-06-11) / 02-rosters.ts 백그라운드 실행 중 (b4ys0de8e)
+- 날짜 / Phase: D1-D2 (2026-06-11) / 03-results.ts 백그라운드 실행 중 (Leaguepedia 레이트 리밋)
 - 빌드 상태: scaffold 완료, TypeScript noEmit 통과 (빌드 미실행)
 - 브랜치: main
 
@@ -12,98 +12,64 @@
 - 스캐폴드: Next.js 15 + TypeScript + Tailwind, src/ 구조
 - `public/data/opponents-2026.json` 플레이스홀더 (regular 9팀 / intl 12팀)
 - `src/lib/prng.ts` mulberry32 구현
-- `scripts/00-discover.ts` Phase 0 전체 (A~G + S1~S4) 실행 완료
-- `scripts/00-final.ts` Phase 0 최종 마무리 (T1·S1잔여·SemVal) 실행 완료
-- `scripts/00-where-test.ts` 0-a~0-d WHERE 테스트 완료
+- Phase 0 전체 (A~G + S1~S4 + WHERE 테스트) 완료
 - `pipeline-cache/discovery.md` 갱신 완료 (gitignored)
-- CURSOR_GUIDE_1.md 삭제, CURSOR_GUIDE.md §5 항목1 SortDate→Tournament 연도 파싱 규칙으로 교체
+- Phase 1 스크립트 전체 구현 완료 (01~04, 07~10, lib/cargo.ts)
+- sim.ts / grade.ts / useDraftMachine / PlayerCard / draft page / i18n 구현 완료
+- **awards.csv v0.3** 확정 (WORLDS_MVP 11건·SEASON_MVP·FINALS_MVP·ALLPRO 교정 완료)
+- **01-tournaments.ts 버그 수정** (Worlds 2017+ `/Main Event` 필터 버그 — `includes('/')` → `endsWith('/Main Event')` 허용)
+- `pipeline-cache/tournaments.json` 재생성: LCK 52 / LPL 64 / LEC 77 / LCS 71 / WORLDS 21 / MSI 17 = 302건
 
 ### Phase 0 검증 결과 요약
 | 항목 | 결과 |
 |---|---|
-| LCK League 값 | `"LoL Champions Korea"` |
+| LCK League 값 | `"LoL Champions Korea"` (2016+만) |
 | LPL League 값 | `"Tencent LoL Pro League"` |
 | EU LCS League 값 | `"Europe League Championship Series"` |
 | LEC League 값 | `"LoL EMEA Championship"` |
 | LCS (2020) League 값 | `"League of Legends Championship Series"` |
 | LTA North (2025) League 값 | `"League of Legends Championship of The Americas North"` |
 | Worlds 2016 OverviewPage | `"2016 Season World Championship"` |
+| Worlds 2017+ OverviewPage | `"YYYY Season World Championship/Main Event"` |
 | MSI 2016 OverviewPage | `"2016 Mid-Season Invitational"` |
 | LCK 2016 Summer Playoffs OverviewPage | `"LCK/2016 Season/Summer Playoffs"` |
-| TournamentResults 0-b (OverviewPage 정확) | **성공** → Phase 1 착수 조건 충족 |
-| TournamentResults 0-d 정규시즌 | **성공 (TournamentResults 채택)** |
-| Standings 0-d 정규시즌 | 성공 (동일 데이터 — TournamentResults 우선) |
-| 0-c LCK/2016 Summer Playoffs Place=1 | ⚠️ 행 없음 (0-c LIKE 쿼리 20행 내 미포함 — limit 확대 필요) |
-| ScoreboardPlayers LIKE "LCK/2016%" | 성공 (채택) |
-| Players (Faker) | 성공, Image 공란 |
-| PlayerImages allimages Plan B | 성공 (`Faker2014.jpg`, `Faker_Summer_2016.png` 등) |
-| Special:Filepath | 403 — CDN 직접 URL 사용으로 대체 |
+| TournamentResults | **채택** |
 
-### 복합 순위 소스 최종 확정
-- **플옵·Worlds·MSI 순위** = TournamentResults (WHERE OverviewPage= 또는 LIKE)
-- **정규시즌 순위** = TournamentResults (WHERE OverviewPage=)
-- ⚠️ 0-c 참고: playoffs OverviewPage는 "LCK/2016 Season/Summer Playoffs" 형식 — LIKE 패턴이 20행 제한으로 미포함 가능성. 03-results.ts에서 `LIKE "LCK/2016%"` 대신 정확 OverviewPage로 조회해야 함.
-
-### 4리그 시대별 League 값 매핑 (확정)
-| 리그 상수 | Tournaments.League 실제 값 |
-|---|---|
-| LCK | `"LoL Champions Korea"` |
-| LPL | `"Tencent LoL Pro League"` |
-| EU_LCS | `"Europe League Championship Series"` |
-| LEC | `"LoL EMEA Championship"` |
-| LCS | `"League of Legends Championship Series"` (2020+), `"North America League Championship Series"` (초기) |
-| LTA_NORTH | `"League of Legends Championship of The Americas North"` |
-
-## 구현 완료 스크립트
-- `scripts/lib/cargo.ts` — 스로틀 5000ms / 백오프 6회 / 파일 캐시
-- `scripts/01-tournaments.ts` — 백그라운드 실행 중 (Worlds 2023 rate-limit, 캐시 62/~75개)
-- `scripts/02-rosters.ts` — 01 완료 후 실행 예정
-- `scripts/03-results.ts` — 02 완료 후 실행 예정
-- `scripts/04-ratings.ts` — 03 완료 후 실행 예정 (PROVISIONAL 모드)
-- `scripts/07-build.ts` — 04 완료 후 실행 예정 (PROVISIONAL)
-- `scripts/08-anchors.ts` — 07 완료 후 실행 (players.json 의존)
-- `scripts/09-montecarlo.ts` — Phase 4 구현 완료 (players.json 의존)
-- `scripts/10-photo-whitelist.ts` — 03 완료 후 실행 (Worlds 2013~2024 상위 4팀 화이트리스트, 2025 제외 수정 완료)
-- `scripts/11-photo-download.ts` — 호빈 승인 후 수동 실행 (승인 게이트: pipeline-cache/photo-whitelist-approved.txt 생성)
-- `src/lib/sim.ts` — Phase 4 구현 완료
-- `src/lib/grade.ts` — Phase 4 구현 완료
-- `src/lib/useDraftMachine.ts` — Phase 3 상태머신 훅 구현 완료
-- `src/app/draft/page.tsx` — Phase 3 draft 페이지 구현 완료
-- `src/components/PlayerCard.tsx` — Phase 3 PlayerCard (3 size) 구현 완료
-- `src/i18n/` — en/ko 딕셔너리 + LangContext 구현 완료
-
-## 오버나이트 실행 순서
-1. 01 완료 → 02-rosters.ts (백그라운드, 수십분 소요)
-2. 02 완료 → 03-results.ts
-3. 03 완료 → 04-ratings.ts + 10-photo-whitelist.ts (순차)
-4. 04 완료 → 07-build.ts (PROVISIONAL 빌드)
-5. 07 완료 → 08-anchors.ts + 09-montecarlo.ts
-6. 전체 완료 → §0 보고 + awards.csv 초안 생성 → 호빈 검수 대기
+## 진행 중
+- **03-results.ts** 백그라운드 실행 중 (신 03 — PIDs 52936/56836/45960, 8:06 PM 기동)
+  - WORLDS 2021 레이트 리밋 백오프 (60s) 대기 중 (`pipeline-cache/03-log.txt`)
+  - 캐시 현황: WORLDS 8건(2013~2020) / MSI 14건 / LCK 21건 / LPL 27건 / LEC 2건(Season3~2014) / LCS 0건
+  - 완료 후 worlds-results.json → results.json 순서로 자동 저장
+- **04→07→08 자동 실행 대기 스크립트** 동작 중 (`pipeline-cache/ratings-build-log.txt`)
+  - results.json 감지(30s 폴링) → 04-ratings → 07-build → 08-anchors 자동 실행
 
 ## 다음 작업
-- **02-rosters.ts 완료 대기** (b4ys0de8e 백그라운드 — LCK 2018 Summer rate-limit 통과 중, cargo 캐시 170/293+개)
-- 02 완료 → 03 → 10(whitelist) → 04(PROVISIONAL) → 07(PROVISIONAL) → 08 → 09 자동 연쇄
-- 아침: awards.csv 검수 + 앵커 가중치 → 04~07 정식 재실행
-- 아침: photo-whitelist.json 검수 → pipeline-cache/photo-whitelist-approved.txt 생성 → 11 수동 실행
+1. 03 완료 → 04→07→08 자동 실행 (대기 스크립트가 처리)
+2. **08-anchors 결과 확인** (앵커 5개 기준):
+   - Faker 2016, Canyon 2020, Chovy 2024, Ruler 2017: 데이터 있음
+   - Faker 2013: **데이터 없음** (LCK 2013-2015 갭 문제 → 아래 미해결 이슈)
+3. 10-photo-whitelist.ts 실행 (03 완료 후, worlds-results.json 의존)
+4. LCK 2013-2015 갭 해결 후 01→02→03 재실행 (호빈 게이트)
 
 ## 호빈 게이트 대기
-- **awards.csv 검수** (PROVISIONAL 빌드 후)
+- **awards.csv 검수** — v0.3 완료, 호빈 최종 확인 필요 (Appendix 잔여 `# ?` 항목: 2020 서머 ADC 1st, 일부 SEASON_MVP 2023년)
+- **LCK 2013-2015 데이터 갭 결정**:
+  - `getDomesticLeagueValues("LCK", 2013)` = `"LoL Champions Korea"` → Leaguepedia에 데이터 없음 (리그명 불일치)
+  - 실제 리그명 확인 필요 (`"Champions Korea"` 또는 `"OGN Champions"` 추정 — 레이트 리밋 해소 후 쿼리)
+  - 확인 후: 01-tournaments.ts `getDomesticLeagueValues` 수정 → 02-rosters 재실행 → 03 재실행 (2013-2015 LCK 추가)
+  - **이번 사이클에 포함할지 다음 사이클로 분리할지 호빈 결정 필요**
 - **photo-whitelist.json 검수** (10 실행 후) — 승인 후 사진 다운로드
-- 앵커 10개 D0 수기 계산 → 레이팅 가중치 확정 (PRD §6.2)
+- **opponents-2026.json 실값 교체** (D3 — 현재 플레이스홀더)
 
-## 호빈 게이트 대기
-- **awards.csv 검수** (Phase 1 완료 후)
-- 앵커 10개 D0 수기 계산 → 레이팅 가중치 확정 (PRD §6.2)
-
-## 미해결 이슈 / 결정 대기
-- 앵커 10개 D0 수기 계산 → 레이팅 가중치 확정 (PRD §6.2) — Phase 1 완료 후 필요
+## 미해결 이슈
+- **LCK 2013-2015 리그명 미확인** — `"LoL Champions Korea"` 쿼리 결과 0행, 실 리그명 미확인. Faker 2013~2015 포함 전체 초기 LCK 선수 누락. 레이트 리밋 해소 후 쿼리로 확인 가능.
+- **cargo-failures.json**: rate-limit 최대 재시도 실패 대회 목록 (07 완료 후 결손 확인 필요)
+- 앵커 가중치 미확정 (08 결과 후 PRD §6.2 기준 튜닝)
 - 네이밍/도메인 (PRD §13 Q1)
-- LCS 초기(2013~2018) = `"North America League Championship Series"`, 2019+ = `"League of Legends Championship Series"` (tournaments.json 확정)
-- cargo-failures.json: rate-limit 최대 재시도 실패한 대회 목록 (07 완료 후 결손 확인 필요)
 
 ## 세션 로그 (최근 5개만 유지)
-- 2026-06-11 (세션5): 10-photo-whitelist.ts 2025 제외 수정, 11-photo-download.ts 신규 (승인 게이트 포함). 01-tournaments.ts 재실행 — MSI rate-limit 대기 중
+- 2026-06-11 (세션7): awards.csv v0.3 확정, 01-tournaments.ts Worlds 2017+ 버그 수정, tournaments.json 재생성(302건), 03 재실행. 레이트 리밋으로 지연 중, 04→07→08 자동 대기 스크립트 기동.
+- 2026-06-11 (세션6): awards.csv v0.2(split 컬럼 추가·WORLDS/FINALS MVP 1차 교정) + v0.3(2차 교정) 커밋. worlds-results.json 임시 생성. Worlds 2017+ 수집 버그 발견.
+- 2026-06-11 (세션5): 10-photo-whitelist.ts 2025 제외 수정, 11-photo-download.ts 신규 (승인 게이트 포함). 01-tournaments.ts 재실행
 - 2026-06-10 (세션4): Phase 1 스크립트 전체 구현 완료 + sim.ts/grade.ts/09-montecarlo.ts (Phase 4) 커밋. useDraftMachine/PlayerCard/draft page/i18n 구현 완료
 - 2026-06-10 (세션3): long→main 개명, CURSOR_GUIDE_1.md 삭제, §5 항목1 SortDate 규칙 교체, WHERE 테스트 결과 반영, Phase 1 착수
-- 2026-06-10 (세션2): 호빈 판단(intl-results.csv 기각·복합 순위 소스) 반영, 0-a~0-d WHERE 테스트 완료·커밋
-- 2026-06-10 (세션1): CURSOR_GUIDE v2.2 + CLAUDE.md docs 커밋, Phase 0 최종 마무리(T1·S1잔여·SemVal) 완료, discovery.md 갱신
