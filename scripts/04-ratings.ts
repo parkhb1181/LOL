@@ -268,8 +268,8 @@ async function main() {
           ? zK * 0.25 + zP * 0.25 + zG * 0.30 + zD * 0.20
           : zK * 0.25 + zP * 0.25 + zG * 0.25 + zD * 0.25  // MID/JGL/ADC
 
-        // z=±1 → bonus≈±3, z=±1.65 → bonus≈±5 (scale 3.0) — 에이스가 약팀에서도 튀도록
-        individualBonus = Math.max(-5, Math.min(5, Math.round(composite * 3.0)))
+        // z=±1 → bonus≈±2, z=±1.5 → bonus≈±3 (scale 2.0) — 우승팀 주전 추락 방지
+        individualBonus = Math.max(-3, Math.min(3, Math.round(composite * 2.0)))
       }
     }
 
