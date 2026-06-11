@@ -166,12 +166,24 @@ export type DraftData = {
 
 // ── 가중 추첨 헬퍼 ─────────────────────────────────────────────────────────
 
-function weightedDraw(pool: string[], teamMap: Map<string, TeamYear>, rng: () => number): string {
+// 같은 판에서 이미 선수를 뽑은 팀 → 이 배수로 가중치 감소 (0은 아님 — 드림팀 가능성 유지)
+const REPEAT_PENALTY = 0.05
+
+function weightedDraw(
+  pool: string[],
+  teamMap: Map<string, TeamYear>,
+  rng: () => number,
+  penalizedKeys?: Set<string>  // 이미 픽된 팀 → weight * REPEAT_PENALTY
+): string {
   let total = 0
-  for (const k of pool) total += teamMap.get(k)?.weight ?? 1
+  for (const k of pool) {
+    const w = teamMap.get(k)?.weight ?? 1
+    total += penalizedKeys?.has(k) ? w * REPEAT_PENALTY : w
+  }
   let r = rng() * total
   for (const k of pool) {
-    r -= teamMap.get(k)?.weight ?? 1
+    const w = teamMap.get(k)?.weight ?? 1
+    r -= penalizedKeys?.has(k) ? w * REPEAT_PENALTY : w
     if (r <= 0) return k
   }
   return pool[pool.length - 1]
@@ -243,7 +255,8 @@ export function useDraftMachine(data: DraftData | null) {
     const rng = mulberry32(seed)
     const emptyRoles = [...ROLES]
     const pool = buildSpinPool(emptyRoles, new Set(), data.spinIndex as SpinIndex, teamMap, playersByTeam)
-    const teamKey = weightedDraw(pool, teamMap, rng)
+    // 첫 스핀: 픽 없음 → penalty 없음
+    const teamKey = weightedDraw(pool, teamMap, rng, new Set())
     const spunTeam = teamMap.get(teamKey)!
     dispatch({ type: 'START', seed, spunTeam })
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -252,23 +265,27 @@ export function useDraftMachine(data: DraftData | null) {
   // 다음 라운드 스핀 (PICK → SPIN 전이 후 즉시 호출 — useEffect에서 구동)
   const spinNext = useCallback((round: number, pickedPlayerIds: Set<string>, emptyRoles: Role[]) => {
     if (!data) return
+    // 이미 픽된 팀 키 → REPEAT_PENALTY 적용
+    const pickedTeamKeys = new Set(state.picks.filter(Boolean).map(p => p!.teamYear.key))
     const rng = getRng(round)
     const pool = buildSpinPool(emptyRoles, pickedPlayerIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
-    const teamKey = weightedDraw(pool, teamMap, rng)
+    const teamKey = weightedDraw(pool, teamMap, rng, pickedTeamKeys)
     const spunTeam = teamMap.get(teamKey)!
     dispatch({ type: 'SPIN_DONE', spunTeam })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, state.seed])
+  }, [data, state.seed, state.picks])
 
   // 팀 전체 재추첨 (GAME_SPEC §2) — 현재 라운드 풀에서 완전 재추첨
   const fullReroll = useCallback(() => {
     if (!data || state.rerollLeft <= 0) return
     const emptyRoles = ROLES.filter((_, i) => state.picks[i] === null)
     const pickedIds = new Set(state.picks.filter(Boolean).map(p => p!.player.playerId))
+    // 이미 픽된 팀 키 → REPEAT_PENALTY 적용 (리롤도 동일)
+    const pickedTeamKeys = new Set(state.picks.filter(Boolean).map(p => p!.teamYear.key))
     const rng = getRng(state.round)
     rng() // 첫 spin draw 소비 자리 스킵
     const pool = buildSpinPool(emptyRoles, pickedIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
-    const teamKey = weightedDraw(pool, teamMap, rng)
+    const teamKey = weightedDraw(pool, teamMap, rng, pickedTeamKeys)
     const spunTeam = teamMap.get(teamKey)!
     dispatch({ type: 'FULL_REROLL', spunTeam })
   // eslint-disable-next-line react-hooks/exhaustive-deps
