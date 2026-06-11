@@ -113,21 +113,24 @@ function PickScreen({
         </button>
       </div>
 
-      {/* 로스터 그리드 — 모바일 390px에서 가로 스크롤 없음 (flex-wrap) */}
+      {/* 로스터 그리드 — TOP→JGL→MID→ADC→SUP 순 정렬 (포지션 잠금 후 위치 고정) */}
       <div className="flex flex-wrap gap-2 justify-center">
-        {roster.map(p => {
-          const isFilled = !emptyRoles.includes(p.role)
-          const isPicked = pickedPlayerIds.has(p.playerId)
-          return (
-            <PlayerCard
-              key={p.id}
-              player={p}
-              size="pick"
-              disabled={isFilled || isPicked}
-              onClick={() => !isFilled && !isPicked && onPick(p)}
-            />
-          )
-        })}
+        {[...roster]
+          .sort((a, b) => ROLES.indexOf(a.role as (typeof ROLES)[number]) - ROLES.indexOf(b.role as (typeof ROLES)[number]))
+          .map(p => {
+            const isFilled = !emptyRoles.includes(p.role)
+            const isPicked = pickedPlayerIds.has(p.playerId)
+            return (
+              <PlayerCard
+                key={p.id}
+                player={p}
+                size="pick"
+                disabled={isFilled || isPicked}
+                onClick={() => !isFilled && !isPicked && onPick(p)}
+              />
+            )
+          })
+        }
       </div>
     </div>
   )

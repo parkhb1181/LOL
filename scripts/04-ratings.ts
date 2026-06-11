@@ -112,6 +112,25 @@ function compressOvr(raw: number): number {
   return Math.max(75, Math.min(99, Math.round(75 + (clamped - 60) * 24 / 39)))
 }
 
+// 개인 성능 지표 (pipeline-cache/stats.json에서 로드)
+type PlayerStats = {
+  gameCount: number
+  avgKda: number
+  avgKp: number
+  avgGoldShare: number
+  avgDmg: number       // raw AVG(DamageToChampions) — 포지션별 정규화로 비교
+  hasStats: boolean
+}
+
+function mean(arr: number[]): number {
+  return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0
+}
+function stdev(arr: number[], mu?: number): number {
+  if (arr.length < 2) return 1
+  const m = mu ?? mean(arr)
+  return Math.sqrt(arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length) || 1
+}
+
 async function main() {
   const outPath = path.join(process.cwd(), 'pipeline-cache', 'ratings.json')
   if (fs.existsSync(outPath)) {
@@ -130,6 +149,49 @@ async function main() {
   const results: ResultEntry[] = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
   const awardsCsv = fs.existsSync(awardsPath) ? fs.readFileSync(awardsPath, 'utf-8') : ''
   const allAwards = parseAwardsCsv(awardsCsv)
+
+  // 개인 성능 지표 로드 (04b-stats.ts 미실행 시 보정 없이 진행)
+  const statsPath = path.join(process.cwd(), 'pipeline-cache', 'stats.json')
+  const statsFile: Record<string, PlayerStats> = fs.existsSync(statsPath)
+    ? JSON.parse(fs.readFileSync(statsPath, 'utf-8'))
+    : {}
+  const hasIndivStats = Object.keys(statsFile).length > 0
+  if (!hasIndivStats) {
+    console.warn('stats.json 없음 — 개인 보정 없이 진행 (04b-stats.ts 먼저 실행 권장)')
+  }
+
+  // 포지션별 지표 분포 수집 (포지션 정규화 z-score용)
+  // entries를 순회하며 실값 있는 선수만 포함 (gameCount >= 3)
+  const roleBufs: Record<string, { kdas: number[]; kps: number[]; golds: number[]; dmgs: number[] }> = {
+    TOP: { kdas: [], kps: [], golds: [], dmgs: [] },
+    JGL: { kdas: [], kps: [], golds: [], dmgs: [] },
+    MID: { kdas: [], kps: [], golds: [], dmgs: [] },
+    ADC: { kdas: [], kps: [], golds: [], dmgs: [] },
+    SUP: { kdas: [], kps: [], golds: [], dmgs: [] },
+  }
+  for (const e of entries) {
+    const sk = `${e.playerId.toLowerCase()}|${e.year}|${e.team}`
+    const s = statsFile[sk]
+    if (!s?.hasStats || s.gameCount < 3) continue
+    const buf = roleBufs[e.role]
+    if (!buf) continue
+    buf.kdas.push(s.avgKda)
+    buf.kps.push(s.avgKp)
+    buf.golds.push(s.avgGoldShare)
+    buf.dmgs.push(s.avgDmg)
+  }
+
+  type RoleNorm = { mk: number; sk: number; mp: number; sp: number; mg: number; sg: number; md: number; sd: number }
+  const roleNorm: Record<string, RoleNorm> = {}
+  for (const [role, buf] of Object.entries(roleBufs)) {
+    const mk = mean(buf.kdas), mp = mean(buf.kps), mg = mean(buf.golds), md = mean(buf.dmgs)
+    roleNorm[role] = {
+      mk, sk: stdev(buf.kdas, mk),
+      mp, sp: stdev(buf.kps, mp),
+      mg, sg: stdev(buf.golds, mg),
+      md, sd: stdev(buf.dmgs, md),
+    }
+  }
 
   // 빠른 조회를 위한 인덱스
   // resultsByTeamYear: `${team}|${year}|${leagueCode}` → 플옵/Worlds/MSI 결과 배열
@@ -185,7 +247,36 @@ async function main() {
 
     const awards = awardsByPY.get(`${playerId}|${year}`) ?? []
     const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards })
-    const ovr = compressOvr(rawOvr)
+    const baseOvr = compressOvr(rawOvr)
+
+    // 개인 성능 보정: 포지션 z-score → ±3 (99 희소성 보호: 기존 99 불변, 非99 상한 98)
+    let individualBonus = 0
+    const sk = `${playerId.toLowerCase()}|${year}|${team}`
+    const s = statsFile[sk]
+    if (s?.hasStats && s.gameCount >= 3) {
+      const n = roleNorm[role]
+      if (n) {
+        const zK = (s.avgKda - n.mk) / n.sk
+        const zP = (s.avgKp - n.mp) / n.sp
+        const zG = (s.avgGoldShare - n.mg) / n.sg
+        const zD = (s.avgDmg - n.md) / n.sd
+
+        // 포지션별 가중치 — SUP은 KDA·KP 중심(딜·골드 낮아도 불이익 최소화)
+        const composite = role === 'SUP'
+          ? zK * 0.35 + zP * 0.45 + zG * 0.10 + zD * 0.10
+          : role === 'TOP'
+          ? zK * 0.25 + zP * 0.25 + zG * 0.30 + zD * 0.20
+          : zK * 0.25 + zP * 0.25 + zG * 0.25 + zD * 0.25  // MID/JGL/ADC
+
+        // z=±1 → bonus≈±3, z=±1.65 → bonus≈±5 (scale 3.0) — 에이스가 약팀에서도 튀도록
+        individualBonus = Math.max(-5, Math.min(5, Math.round(composite * 3.0)))
+      }
+    }
+
+    // 99 희소성 보호: baseOvr===99(EDITORIAL/WORLDS_MVP 산출)이면 보너스 무시
+    const ovr = baseOvr === 99
+      ? 99
+      : Math.max(75, Math.min(98, baseOvr + individualBonus))
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'

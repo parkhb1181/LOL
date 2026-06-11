@@ -149,16 +149,16 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* 하단: 아이콘 + 이름 + 팀·연도 */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
-        {/* 우승 아이콘 — Worlds(팀) + MSI(팀) 나란히. 위치는 이름 위 */}
+        {/* 우승 아이콘 — Worlds(팀) + MSI(팀) 나란히. Worlds가 MSI보다 명확히 크게 */}
         {(isWorlds || hasMsi) && (
           <div className="flex justify-center items-end gap-1 mb-0.5">
             {isWorlds && (
-              <div className="relative" style={{ width: size === 'slot' ? 10 : 13, height: size === 'slot' ? 14 : 18 }}>
+              <div className="relative flex-shrink-0" style={{ width: size === 'slot' ? 12 : 16, height: size === 'slot' ? 16 : 22 }}>
                 <Image src="/img/world.png" alt="Worlds" fill className="object-contain drop-shadow" />
               </div>
             )}
             {hasMsi && (
-              <div className="relative" style={{ width: size === 'slot' ? 9 : 12, height: size === 'slot' ? 14 : 18 }}>
+              <div className="relative flex-shrink-0" style={{ width: size === 'slot' ? 9 : 11, height: size === 'slot' ? 12 : 15 }}>
                 <Image src="/img/msi.png" alt="MSI" fill className="object-contain drop-shadow" />
               </div>
             )}
