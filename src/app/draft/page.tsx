@@ -682,7 +682,7 @@ export default function DraftPage() {
   }, [state.phase])
 
   return (
-    <div className="min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+    <div className="min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white md:flex md:flex-col" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       {/* Header — PC: 로고+슬롯, 모바일: 최소 링크만 (슬롯은 main 상단으로) */}
       <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--card-border,#2a2a4a)]">
         <Link href="/" className="font-black text-lg tracking-tight hidden md:inline">GRANDSLAM</Link>
@@ -696,7 +696,7 @@ export default function DraftPage() {
 
       {/* Main content */}
       {/* Expand to max-w-3xl at RESULT — fits 5 cards (5×128px+gap) in one row */}
-      <main className={`mx-auto px-4 py-8 ${state.phase === 'RESULT' ? 'max-w-3xl' : 'max-w-2xl'}`}>
+      <main className={`mx-auto px-4 py-8 w-full md:flex-1 md:flex md:flex-col md:justify-center ${state.phase === 'RESULT' ? 'max-w-3xl' : 'max-w-2xl'}`}>
 
         {/* IDLE: loading or waiting for auto-spin — rarely visible in practice */}
         {state.phase === 'IDLE' && (

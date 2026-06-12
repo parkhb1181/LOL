@@ -32,6 +32,18 @@ const OVR_SIZE: Record<CardSize, string> = {
   result: 'text-3xl',
 }
 
+// Desktop (md+): one step up from mobile; slot stays compact (header use)
+const NAME_SIZE_CLS: Record<CardSize, string> = {
+  pick:   'text-[11px] md:text-[12px]',
+  slot:   'text-[9px]',
+  result: 'text-[11px] md:text-[13px]',
+}
+const META_SIZE_CLS: Record<CardSize, string> = {
+  pick:   'text-[8px] md:text-[9px]',
+  slot:   'text-[8px]',
+  result: 'text-[8px] md:text-[10px]',
+}
+
 const ROLE_ABBR: Record<string, string> = {
   TOP: 'TOP', JGL: 'JGL', MID: 'MID', ADC: 'ADC', SUP: 'SUP',
 }
@@ -164,10 +176,10 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* Bottom: name + team · year */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
-        <p className="text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight" style={{ fontSize: size === 'slot' ? '9px' : '11px' }}>
+        <p className={`text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight ${NAME_SIZE_CLS[size]}`}>
           {name}
         </p>
-        <p className="text-center text-[var(--card-meta,#9090b8)] truncate" style={{ fontSize: '8px' }}>
+        <p className={`text-center text-[var(--card-meta,#9090b8)] truncate ${META_SIZE_CLS[size]}`}>
           {player.team} · {player.year}
         </p>
       </div>
