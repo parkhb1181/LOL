@@ -106,10 +106,15 @@ function PickScreen({
         <button
           onClick={onFullReroll}
           disabled={rerollLeft <= 0}
-          className="text-sm px-4 py-2 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 disabled:opacity-30 transition-colors"
+          className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 disabled:opacity-30 transition-colors"
           title="팀 전체 재스핀"
         >
-          🎲 재스핀 ({rerollLeft})
+          <svg className="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 4v6h-6"/>
+            <path d="M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          재스핀 ({rerollLeft})
         </button>
       </div>
 
@@ -463,8 +468,8 @@ function ResultScreen({
         </div>
       )}
 
-      {/* 5인 카드 */}
-      <div className="flex flex-wrap gap-2 justify-center">
+      {/* 5인 카드 — PC(md+): 1줄 flex-nowrap, 모바일: wrap */}
+      <div className="flex flex-wrap md:flex-nowrap gap-2 justify-center w-full overflow-x-auto pb-1">
         {ROLES.map((_, i) => picks[i] && (
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
         ))}
@@ -632,7 +637,8 @@ export default function DraftPage() {
       </header>
 
       {/* 메인 콘텐츠 */}
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      {/* RESULT 때 max-w-3xl로 확장 — 5인 카드(5×144px+gap=752px)를 한 줄에 담기 위해 */}
+      <main className={`mx-auto px-4 py-8 ${state.phase === 'RESULT' ? 'max-w-3xl' : 'max-w-2xl'}`}>
 
         {/* IDLE: 로딩 중이거나 자동 스핀 대기 — 일반적으로 거의 안 보임 */}
         {state.phase === 'IDLE' && (
