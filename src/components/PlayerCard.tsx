@@ -105,7 +105,10 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* Top-left: OVR + role */}
       <div className="absolute top-1 left-1.5 z-20 flex flex-col leading-none">
-        <span className={`${OVR_SIZE[size]} font-black drop-shadow text-[var(--card-ovr,#f0f0f0)]`}>
+        <span
+          className={`${OVR_SIZE[size]} font-black text-[var(--card-ovr,#f0f0f0)]`}
+          style={{ textShadow: '0 1px 6px rgba(0,0,0,0.95), 0 0 12px rgba(0,0,0,0.8)' }}
+        >
           {player.ovr}
         </span>
         <span className="text-[10px] font-semibold text-[var(--card-role,#a0a0c0)] uppercase tracking-wider">
@@ -143,6 +146,12 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
+        {/* 하단 스크림 — 사진 색상과 무관하게 하단 텍스트 가독성 보장 */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{ background: 'linear-gradient(180deg, transparent 40%, rgba(10,14,26,.85) 95%)' }}
+          aria-hidden
+        />
         {/* MVP overlay — WORLDS MVP만 표시 (FINALS MVP 배지 없음) */}
         {isWorldsMvp && (
           <div className="absolute bottom-0 inset-x-0 z-20 flex justify-center pb-0.5">
