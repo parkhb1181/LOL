@@ -11,7 +11,7 @@
 playerId,year,league,award,value,split
 
 # ═══════════════════════════════════════════════════
-# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 30건)
+# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 60건)
 # ═══════════════════════════════════════════════════
 # Faker 2015: 역대 최고 MID 피크. Worlds+MSI 동시 제패 + FINALS_MVP에도 OVR 97 → 99 보정
 # SEASON_MVP 2015는 Duke(Spring)/Ssumday(Summer) 수상으로 Faker 미포함 — 팀 성적 대비 개인 공헌 보완
@@ -618,3 +618,22 @@ Yike,2023,LEC,EDITORIAL,-5,NONE
 Caps,2023,LEC,EDITORIAL,-5,NONE
 Hans Sama,2023,LEC,EDITORIAL,-5,NONE
 Mikyx,2023,LEC,EDITORIAL,-5,NONE
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL 동률 해소 — B그룹 5팀 에이스 차등
+# ═══════════════════════════════════════════════════
+Chovy,2025,LCK,EDITORIAL,2,NONE
+Canyon,2025,LCK,EDITORIAL,1,NONE
+Ruler,2025,LCK,EDITORIAL,1,NONE
+Uzi (Jian Zi-Hao),2016,LPL,EDITORIAL,2,NONE
+Mata,2016,LPL,EDITORIAL,1,NONE
+xiaohu,2016,LPL,EDITORIAL,1,NONE
+Zeka (Kim Geon-woo),2024,LCK,EDITORIAL,2,NONE
+Viper (Park Do-hyeon),2024,LCK,EDITORIAL,1,NONE
+Peanut,2024,LCK,EDITORIAL,1,NONE
+Caps,2025,LEC,EDITORIAL,2,NONE
+BrokenBlade,2025,LEC,EDITORIAL,1,NONE
+Hans Sama,2025,LEC,EDITORIAL,1,NONE
+Tarzan (Lee Seung-yong),2025,LPL,EDITORIAL,2,NONE
+Hope (Wang Jie),2025,LPL,EDITORIAL,1,NONE
+Shanks,2025,LPL,EDITORIAL,1,NONE
