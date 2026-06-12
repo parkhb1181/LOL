@@ -112,16 +112,6 @@ function compressOvr(raw: number): number {
   return Math.max(75, Math.min(99, Math.round(75 + (clamped - 60) * 24 / 39)))
 }
 
-// 개인 성능 지표 (pipeline-cache/stats.json에서 로드)
-type PlayerStats = {
-  gameCount: number
-  avgKda: number
-  avgKp: number
-  avgGoldShare: number
-  avgDmg: number       // raw AVG(DamageToChampions) — 포지션별 정규화로 비교
-  hasStats: boolean
-}
-
 function mean(arr: number[]): number {
   return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0
 }
@@ -150,47 +140,57 @@ async function main() {
   const awardsCsv = fs.existsSync(awardsPath) ? fs.readFileSync(awardsPath, 'utf-8') : ''
   const allAwards = parseAwardsCsv(awardsCsv)
 
-  // 개인 성능 지표 로드 (04b-stats.ts 미실행 시 보정 없이 진행)
-  const statsPath = path.join(process.cwd(), 'pipeline-cache', 'stats.json')
-  const statsFile: Record<string, PlayerStats> = fs.existsSync(statsPath)
-    ? JSON.parse(fs.readFileSync(statsPath, 'utf-8'))
-    : {}
-  const hasIndivStats = Object.keys(statsFile).length > 0
-  if (!hasIndivStats) {
-    console.warn('stats.json 없음 — 개인 보정 없이 진행 (04b-stats.ts 먼저 실행 권장)')
-  }
+  // ─── stats_agg 로드 (2013~2020 KDA, 재수집 불요) ──────────────────────────
+  // key: `${playerId}|${team}|${year}` → kda
+  const CARGO_DIR = path.join(process.cwd(), 'pipeline-cache', 'cargo')
+  const aggByKey = new Map<string, number>()
 
-  // 포지션별 지표 분포 수집 (포지션 정규화 z-score용)
-  // entries를 순회하며 실값 있는 선수만 포함 (gameCount >= 3)
-  const roleBufs: Record<string, { kdas: number[]; kps: number[]; golds: number[]; dmgs: number[] }> = {
-    TOP: { kdas: [], kps: [], golds: [], dmgs: [] },
-    JGL: { kdas: [], kps: [], golds: [], dmgs: [] },
-    MID: { kdas: [], kps: [], golds: [], dmgs: [] },
-    ADC: { kdas: [], kps: [], golds: [], dmgs: [] },
-    SUP: { kdas: [], kps: [], golds: [], dmgs: [] },
-  }
-  for (const e of entries) {
-    const sk = `${e.playerId.toLowerCase()}|${e.year}|${e.team}`
-    const s = statsFile[sk]
-    if (!s?.hasStats || s.gameCount < 3) continue
-    const buf = roleBufs[e.role]
-    if (!buf) continue
-    buf.kdas.push(s.avgKda)
-    buf.kps.push(s.avgKp)
-    buf.golds.push(s.avgGoldShare)
-    buf.dmgs.push(s.avgDmg)
-  }
-
-  type RoleNorm = { mk: number; sk: number; mp: number; sp: number; mg: number; sg: number; md: number; sd: number }
-  const roleNorm: Record<string, RoleNorm> = {}
-  for (const [role, buf] of Object.entries(roleBufs)) {
-    const mk = mean(buf.kdas), mp = mean(buf.kps), mg = mean(buf.golds), md = mean(buf.dmgs)
-    roleNorm[role] = {
-      mk, sk: stdev(buf.kdas, mk),
-      mp, sp: stdev(buf.kps, mp),
-      mg, sg: stdev(buf.golds, mg),
-      md, sd: stdev(buf.dmgs, md),
+  if (fs.existsSync(CARGO_DIR)) {
+    const aggFiles = fs.readdirSync(CARGO_DIR).filter(f => f.startsWith('stats_agg_'))
+    for (const f of aggFiles) {
+      const m = f.match(/^stats_agg_\w+_(\d+)\.json$/)
+      if (!m) continue
+      const yr = parseInt(m[1])
+      const rows = JSON.parse(fs.readFileSync(path.join(CARGO_DIR, f), 'utf-8')) as Record<string, string>[]
+      for (const r of rows) {
+        const pid = r.Link?.trim()
+        const tm = r.Team?.trim()
+        if (!pid || !tm) continue
+        const n = parseInt(r.N || '0')
+        if (n < 3) continue
+        const avgK = parseFloat(r.AvgK || '0')
+        const avgD = parseFloat(r.AvgD || '0')
+        const avgA = parseFloat(r.AvgA || '0')
+        const kda = (avgK + avgA) / Math.max(1, avgD)
+        const key = `${pid}|${tm}|${yr}`
+        if (!aggByKey.has(key)) aggByKey.set(key, kda)
+      }
     }
+    console.log(`stats_agg 로드: ${aggByKey.size}건`)
+  }
+
+  // ─── role × year 정규화 버킷 (2013~2020 KDA 정규화용) ─────────────────────
+  const normBuckets = new Map<string, number[]>()  // key: `${role}|${year}`
+  for (const e of entries) {
+    if (e.year > 2020) continue
+    const kda = aggByKey.get(`${e.playerId}|${e.team}|${e.year}`)
+    if (kda === undefined) continue
+    const bk = `${e.role}|${e.year}`
+    if (!normBuckets.has(bk)) normBuckets.set(bk, [])
+    normBuckets.get(bk)!.push(kda)
+  }
+  const normStats = new Map<string, { mu: number; sd: number }>()
+  for (const [k, vals] of normBuckets) {
+    const mu = mean(vals)
+    const sd = stdev(vals, mu)
+    normStats.set(k, { mu, sd })
+  }
+
+  // ─── 팀-연도별 최대 gameCount (주전/서브 기준선) ─────────────────────────
+  const teamMaxGames = new Map<string, number>()  // key: `${team}|${year}`
+  for (const e of entries) {
+    const k = `${e.team}|${e.year}`
+    teamMaxGames.set(k, Math.max(teamMaxGames.get(k) ?? 0, e.gameCount))
   }
 
   // 빠른 조회를 위한 인덱스
@@ -249,31 +249,33 @@ async function main() {
     const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards })
     const baseOvr = compressOvr(rawOvr)
 
-    // 개인 성능 보정: 포지션 z-score → ±3 (99 희소성 보호: 기존 99 불변, 非99 상한 98)
+    // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
     let individualBonus = 0
-    const sk = `${playerId.toLowerCase()}|${year}|${team}`
-    const s = statsFile[sk]
-    if (s?.hasStats && s.gameCount >= 3) {
-      const n = roleNorm[role]
-      if (n) {
-        const zK = (s.avgKda - n.mk) / n.sk
-        const zP = (s.avgKp - n.mp) / n.sp
-        const zG = (s.avgGoldShare - n.mg) / n.sg
-        const zD = (s.avgDmg - n.md) / n.sd
 
-        // 포지션별 가중치 — SUP은 KDA·KP 중심(딜·골드 낮아도 불이익 최소화)
-        const composite = role === 'SUP'
-          ? zK * 0.35 + zP * 0.45 + zG * 0.10 + zD * 0.10
-          : role === 'TOP'
-          ? zK * 0.25 + zP * 0.25 + zG * 0.30 + zD * 0.20
-          : zK * 0.25 + zP * 0.25 + zG * 0.25 + zD * 0.25  // MID/JGL/ADC
-
-        // z=±1 → bonus≈±2, z=±1.5 → bonus≈±3 (scale 2.0) — 우승팀 주전 추락 방지
-        individualBonus = Math.max(-3, Math.min(3, Math.round(composite * 2.0)))
+    // KDA 보정 — 2013~2020만 적용 (stats_agg 수집 구간)
+    // 2021~2025: KDA 부재 → 보정 0 (패널티 없음, 시대 간 형평성 유지)
+    if (year <= 2020) {
+      const kda = aggByKey.get(`${playerId}|${team}|${year}`)
+      if (kda !== undefined) {
+        const norm = normStats.get(`${role}|${year}`)
+        if (norm && norm.sd > 0) {
+          const z = (kda - norm.mu) / norm.sd
+          // z=±1.5 → ±3, scale=2.0 — 우승팀 주전 급락 방지
+          individualBonus += Math.max(-3, Math.min(3, Math.round(z * 2.0)))
+        }
       }
     }
 
-    // 99 희소성 보호: baseOvr===99(EDITORIAL/WORLDS_MVP 산출)이면 보너스 무시
+    // 주전/서브 구분 — 전 시대 공통 (gameCount 커버리지 100%)
+    const maxGames = teamMaxGames.get(`${team}|${year}`) ?? entry.gameCount
+    if (entry.gameCount < maxGames * 0.8) {
+      individualBonus -= 1  // 서브 소폭 감점
+    }
+
+    // 총 차등 폭 ±3 클램프 (우승팀 주전 추락 방지)
+    individualBonus = Math.max(-3, Math.min(3, individualBonus))
+
+    // 99 희소성 보호: baseOvr===99이면 보정 무시
     const ovr = baseOvr === 99
       ? 99
       : Math.max(75, Math.min(98, baseOvr + individualBonus))
