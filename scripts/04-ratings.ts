@@ -53,6 +53,15 @@ function parseAwardsCsv(csv: string): AwardRow[] {
   }).filter(r => r.playerId && r.year > 0 && r.award)
 }
 
+// §9 리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
+// LCK/LPL: 1.0 / LEC: 0.95 / LCS: 0.85
+const LEAGUE_COEFF: Record<string, number> = {
+  LCK: 1.0,
+  LPL: 1.0,
+  LEC: 0.95,
+  LCS: 0.85,
+}
+
 // §4.3 레이팅 공식 (§6.1 룰 패치 반영)
 // Rule 1: 연내 복수 스플릿 가점 합산 — 최고 1회 아님
 // Rule 4: AllPro 2020+ 시즌만 (제도 부재 이전 미적용)
@@ -61,16 +70,20 @@ function calcOvr(params: {
   msiPlace: number | null
   worldsPlace: number | null
   awards: AwardRow[]
+  leagueCode: string        // 리그 계수 적용용
 }): number {
   let score = 60
+  const coeff = LEAGUE_COEFF[params.leagueCode] ?? 1.0
 
-  // 국내 플옵 — 스플릿별 합산 (Rule 1)
+  // 국내 플옵 — 스플릿별 합산 + 리그 계수 (Rule 1)
   for (const p of params.playoffPlaces) {
-    if (p === 1) score += 8
-    else if (p === 2) score += 5
-    else if (p <= 4) score += 2
-    else if (p <= 6) score += 1
-    else score += 1
+    let pts = 0
+    if (p === 1) pts = 8
+    else if (p === 2) pts = 5
+    else if (p <= 4) pts = 2
+    else if (p <= 6) pts = 1
+    else pts = 1
+    score += pts * coeff
   }
 
   // MSI
@@ -246,7 +259,7 @@ async function main() {
     const msiPlace = msiByTeamYear.get(teamYearKey) ?? null
 
     const awards = awardsByPY.get(`${playerId}|${year}`) ?? []
-    const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards })
+    const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards, leagueCode })
     const baseOvr = compressOvr(rawOvr)
 
     // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
