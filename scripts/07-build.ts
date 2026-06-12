@@ -87,9 +87,10 @@ async function main() {
     const isLECorLCS = entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS'
 
     if (isLECorLCS) {
-      // LEC/LCS는 국내 결과 미수집 → Worlds/MSI 진출팀만 포함 (국내 중하위권 서구팀 제외)
+      // LEC/LCS: 국내 플옵 진출 OR Worlds·MSI 진출 (국내 결과가 없는 엣지케이스 보완)
+      const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
       const hasIntl = worldsIndex.has(cardTeamKey) || msiIndex.has(cardTeamKey)
-      if (!hasIntl) continue
+      if (teamPlayoffPlace === undefined && !hasIntl) continue
     } else {
       // LCK/LPL: 2013=결승진출(≤2위)만 / 2014+=플옵 진출 이상
       const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
@@ -240,7 +241,7 @@ async function main() {
       console.log(`  ${league}: 전 연도 커버`)
     }
   }
-  console.log('  LEC/LCS: Worlds·MSI 진출 시즌만 포함 (국내 결과 미수집 → 국제대회 기준 컷)')
+  console.log('  LEC/LCS: 국내 플옵 진출 기준 (Worlds·MSI 진출 시즌 포함)')
 
   // 서브 선수 N경기 기준 후보 제시
   const rostersPath = path.join(process.cwd(), 'pipeline-cache', 'rosters.json')

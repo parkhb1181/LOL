@@ -5254,6 +5254,50 @@
     "weight": 4
   },
   {
+    "key": "copenhagen-wolves_2013",
+    "team": "Copenhagen Wolves",
+    "teamSlug": "copenhagen-wolves",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "bjergsen_2013_copenhagen-wolves",
+      "deficio_2013_copenhagen-wolves",
+      "neegodbro_2013_copenhagen-wolves",
+      "svenskeren_2013_copenhagen-wolves",
+      "thetess_2013_copenhagen-wolves"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "sk-gaming_2013",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "candypanda_2013_sk-gaming",
+      "hyrqbot_2013_sk-gaming",
+      "kev1n_2013_sk-gaming",
+      "nyph_2013_sk-gaming",
+      "ocelote_2013_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2013",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -5274,6 +5318,94 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "against-all-authority_2013",
+    "team": "against All authority",
+    "teamSlug": "against-all-authority",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "fredy122_2013_against-all-authority",
+      "karalius_2013_against-all-authority",
+      "nono_2013_against-all-authority",
+      "shlaya_2013_against-all-authority",
+      "virtu4l_2013_against-all-authority"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "evil-geniuses-eu_2013",
+    "team": "Evil Geniuses.EU",
+    "teamSlug": "evil-geniuses-eu",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "froggen_2013_evil-geniuses-eu",
+      "krepo_2013_evil-geniuses-eu",
+      "snoopeh_2013_evil-geniuses-eu",
+      "wickd_2013_evil-geniuses-eu",
+      "yellowpete_2013_evil-geniuses-eu"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-alternate_2013",
+    "team": "Team ALTERNATE",
+    "teamSlug": "team-alternate",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "araneae_2013_team-alternate",
+      "creaton_2013_team-alternate",
+      "forellenlord_2013_team-alternate",
+      "jree_2013_team-alternate",
+      "kerp_2013_team-alternate"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "ninjas-in-pyjamas_2013",
+    "team": "Ninjas in Pyjamas",
+    "teamSlug": "ninjas-in-pyjamas",
+    "year": 2013,
+    "league": "LEC",
+    "roster": [
+      "bjergsen_2013_ninjas-in-pyjamas",
+      "deficio_2013_ninjas-in-pyjamas",
+      "freeze_2013_ninjas-in-pyjamas",
+      "malunoo_2013_ninjas-in-pyjamas",
+      "mimer_2013_ninjas-in-pyjamas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "lemondogs_2013",
@@ -5298,6 +5430,72 @@
     "weight": 4
   },
   {
+    "key": "gambit-gaming_2014",
+    "team": "Gambit Gaming",
+    "teamSlug": "gambit-gaming",
+    "year": 2014,
+    "league": "LEC",
+    "roster": [
+      "alex-ich_2014_gambit-gaming",
+      "darien_2014_gambit-gaming",
+      "diamond-danil-reshetnikov_2014_gambit-gaming",
+      "edward_2014_gambit-gaming",
+      "genja_2014_gambit-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "copenhagen-wolves_2014",
+    "team": "Copenhagen Wolves",
+    "teamSlug": "copenhagen-wolves",
+    "year": 2014,
+    "league": "LEC",
+    "roster": [
+      "amazing-maurice-st-ckenschneider_2014_copenhagen-wolves",
+      "cowtard_2014_copenhagen-wolves",
+      "forg1ven_2014_copenhagen-wolves",
+      "unlimited-petar-georgiev_2014_copenhagen-wolves",
+      "youngbuck_2014_copenhagen-wolves"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "millenium_2014",
+    "team": "Millenium",
+    "teamSlug": "millenium",
+    "year": 2014,
+    "league": "LEC",
+    "roster": [
+      "creaton_2014_millenium",
+      "jree_2014_millenium",
+      "kerp_2014_millenium",
+      "kev1n_2014_millenium",
+      "kottenx_2014_millenium"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "sk-gaming_2014",
     "team": "SK Gaming",
     "teamSlug": "sk-gaming",
@@ -5318,6 +5516,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "team-roccat_2014",
+    "team": "Team ROCCAT",
+    "teamSlug": "team-roccat",
+    "year": 2014,
+    "league": "LEC",
+    "roster": [
+      "celaver_2014_team-roccat",
+      "jankos_2014_team-roccat",
+      "overpow_2014_team-roccat",
+      "vander_2014_team-roccat",
+      "xaxus_2014_team-roccat"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "fnatic_2014",
@@ -5364,6 +5584,94 @@
     "weight": 4
   },
   {
+    "key": "supa-hot-crew_2014",
+    "team": "SUPA HOT CREW",
+    "teamSlug": "supa-hot-crew",
+    "year": 2014,
+    "league": "LEC",
+    "roster": [
+      "impaler_2014_supa-hot-crew",
+      "migxa_2014_supa-hot-crew",
+      "mimer_2014_supa-hot-crew",
+      "mrrallez_2014_supa-hot-crew",
+      "selfie_2014_supa-hot-crew"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "giants-gaming_2015",
+    "team": "Giants Gaming",
+    "teamSlug": "giants-gaming",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "adryh-adri-n-p-rez_2015_giants-gaming",
+      "fr3deric_2015_giants-gaming",
+      "pepiinero_2015_giants-gaming",
+      "rydle_2015_giants-gaming",
+      "werlyb_2015_giants-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "copenhagen-wolves_2015",
+    "team": "Copenhagen Wolves",
+    "teamSlug": "copenhagen-wolves",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "airwaks_2015_copenhagen-wolves",
+      "freeze_2015_copenhagen-wolves",
+      "soren-s-ren-frederiksen_2015_copenhagen-wolves",
+      "unlimited-petar-georgiev_2015_copenhagen-wolves",
+      "youngbuck_2015_copenhagen-wolves"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "gambit-gaming_2015",
+    "team": "Gambit Gaming",
+    "teamSlug": "gambit-gaming",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "betsy_2015_gambit-gaming",
+      "cabochard_2015_gambit-gaming",
+      "diamond-danil-reshetnikov_2015_gambit-gaming",
+      "edward_2015_gambit-gaming",
+      "p1noy_2015_gambit-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2015",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -5384,6 +5692,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "sk-gaming_2015",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "forg1vengre_2015_sk-gaming",
+      "fox-hampus-myhre_2015_sk-gaming",
+      "fredy122_2015_sk-gaming",
+      "nrated_2015_sk-gaming",
+      "svenskeren_2015_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "h2k-gaming_2015",
@@ -5408,6 +5738,50 @@
     "weight": 4
   },
   {
+    "key": "unicorns-of-love_2015",
+    "team": "Unicorns of Love",
+    "teamSlug": "unicorns-of-love",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "hylissang_2015_unicorns-of-love",
+      "kikis_2015_unicorns-of-love",
+      "powerofevil_2015_unicorns-of-love",
+      "vardags_2015_unicorns-of-love",
+      "vizicsacsi_2015_unicorns-of-love"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-roccat_2015",
+    "team": "Team ROCCAT",
+    "teamSlug": "team-roccat",
+    "year": 2015,
+    "league": "LEC",
+    "roster": [
+      "jankos_2015_team-roccat",
+      "nukeduck_2015_team-roccat",
+      "steve-etienne-michels_2015_team-roccat",
+      "vander_2015_team-roccat",
+      "woolite_2015_team-roccat"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "origen_2015",
     "team": "Origen",
     "teamSlug": "origen",
@@ -5430,6 +5804,94 @@
     "weight": 4
   },
   {
+    "key": "giants-gaming_2016",
+    "team": "Giants Gaming",
+    "teamSlug": "giants-gaming",
+    "year": 2016,
+    "league": "LEC",
+    "roster": [
+      "hustlin_2016_giants-gaming",
+      "maxlore_2016_giants-gaming",
+      "night-na-gun-woo_2016_giants-gaming",
+      "s0nstar_2016_giants-gaming",
+      "smittyj_2016_giants-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "origen_2016",
+    "team": "Origen",
+    "teamSlug": "origen",
+    "year": 2016,
+    "league": "LEC",
+    "roster": [
+      "amazing-maurice-st-ckenschneider_2016_origen",
+      "hybrid-glenn-doornenbal_2016_origen",
+      "powerofevil_2016_origen",
+      "soaz_2016_origen",
+      "zven_2016_origen"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2016",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2016,
+    "league": "LEC",
+    "roster": [
+      "cabochard_2016_team-vitality",
+      "kasing_2016_team-vitality",
+      "nukeduck_2016_team-vitality",
+      "police-park-hyeong-gi_2016_team-vitality",
+      "shook_2016_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "unicorns-of-love_2016",
+    "team": "Unicorns of Love",
+    "teamSlug": "unicorns-of-love",
+    "year": 2016,
+    "league": "LEC",
+    "roster": [
+      "exileh_2016_unicorns-of-love",
+      "hylissang_2016_unicorns-of-love",
+      "move_2016_unicorns-of-love",
+      "veritas_2016_unicorns-of-love",
+      "vizicsacsi_2016_unicorns-of-love"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "g2-esports_2016",
     "team": "G2 Esports",
     "teamSlug": "g2-esports",
@@ -5450,6 +5912,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "fnatic_2016",
+    "team": "Fnatic",
+    "teamSlug": "fnatic",
+    "year": 2016,
+    "league": "LEC",
+    "roster": [
+      "febiven_2016_fnatic",
+      "gamsu_2016_fnatic",
+      "rekkles_2016_fnatic",
+      "spirit_2016_fnatic",
+      "yellowstar_2016_fnatic"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "h2k-gaming_2016",
@@ -5540,6 +6024,50 @@
     "weight": 4
   },
   {
+    "key": "h2k-gaming_2017",
+    "team": "H2k-Gaming",
+    "teamSlug": "h2k-gaming",
+    "year": 2017,
+    "league": "LEC",
+    "roster": [
+      "chei_2017_h2k-gaming",
+      "febiven_2017_h2k-gaming",
+      "jankos_2017_h2k-gaming",
+      "nuclear_2017_h2k-gaming",
+      "odoamne_2017_h2k-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "unicorns-of-love_2017",
+    "team": "Unicorns of Love",
+    "teamSlug": "unicorns-of-love",
+    "year": 2017,
+    "league": "LEC",
+    "roster": [
+      "exileh_2017_unicorns-of-love",
+      "hylissang_2017_unicorns-of-love",
+      "samux_2017_unicorns-of-love",
+      "vizicsacsi_2017_unicorns-of-love",
+      "xerxe_2017_unicorns-of-love"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "g2-esports_2017",
     "team": "G2 Esports",
     "teamSlug": "g2-esports",
@@ -5560,6 +6088,94 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "splyce_2017",
+    "team": "Splyce",
+    "teamSlug": "splyce",
+    "year": 2017,
+    "league": "LEC",
+    "roster": [
+      "kobbe_2017_splyce",
+      "mikyx_2017_splyce",
+      "sencux_2017_splyce",
+      "trashy_2017_splyce",
+      "wunder_2017_splyce"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "misfits-gaming_2018",
+    "team": "Misfits Gaming",
+    "teamSlug": "misfits-gaming",
+    "year": 2018,
+    "league": "LEC",
+    "roster": [
+      "alphari_2018_misfits-gaming",
+      "hans-sama_2018_misfits-gaming",
+      "maxlore_2018_misfits-gaming",
+      "mikyx_2018_misfits-gaming",
+      "sencux_2018_misfits-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-roccat_2018",
+    "team": "Team ROCCAT",
+    "teamSlug": "team-roccat",
+    "year": 2018,
+    "league": "LEC",
+    "roster": [
+      "blanc-jin-seong-min_2018_team-roccat",
+      "heaq_2018_team-roccat",
+      "memento_2018_team-roccat",
+      "norskeren_2018_team-roccat",
+      "profit_2018_team-roccat"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "fc-schalke-04-esports_2018",
+    "team": "FC Schalke 04 Esports",
+    "teamSlug": "fc-schalke-04-esports",
+    "year": 2018,
+    "league": "LEC",
+    "roster": [
+      "amazing-maurice-st-ckenschneider_2018_fc-schalke-04-esports",
+      "nukeduck_2018_fc-schalke-04-esports",
+      "upset_2018_fc-schalke-04-esports",
+      "vander_2018_fc-schalke-04-esports",
+      "vizicsacsi_2018_fc-schalke-04-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "fnatic_2018",
@@ -5606,6 +6222,28 @@
     "weight": 4
   },
   {
+    "key": "h2k-gaming_2018",
+    "team": "H2k-Gaming",
+    "teamSlug": "h2k-gaming",
+    "year": 2018,
+    "league": "LEC",
+    "roster": [
+      "promisq_2018_h2k-gaming",
+      "selfie_2018_h2k-gaming",
+      "sheriff_2018_h2k-gaming",
+      "shook_2018_h2k-gaming",
+      "smittyj_2018_h2k-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "g2-esports_2018",
     "team": "G2 Esports",
     "teamSlug": "g2-esports",
@@ -5626,6 +6264,94 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "splyce_2018",
+    "team": "Splyce",
+    "teamSlug": "splyce",
+    "year": 2018,
+    "league": "LEC",
+    "roster": [
+      "kasing_2018_splyce",
+      "kobbe_2018_splyce",
+      "nisqy_2018_splyce",
+      "odoamne_2018_splyce",
+      "xerxe_2018_splyce"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "fc-schalke-04-esports_2019",
+    "team": "FC Schalke 04 Esports",
+    "teamSlug": "fc-schalke-04-esports",
+    "year": 2019,
+    "league": "LEC",
+    "roster": [
+      "abbedagge_2019_fc-schalke-04-esports",
+      "ignar_2019_fc-schalke-04-esports",
+      "odoamne_2019_fc-schalke-04-esports",
+      "trick_2019_fc-schalke-04-esports",
+      "upset_2019_fc-schalke-04-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "origen_2019",
+    "team": "Origen",
+    "teamSlug": "origen",
+    "year": 2019,
+    "league": "LEC",
+    "roster": [
+      "alphari_2019_origen",
+      "kold_2019_origen",
+      "mithy_2019_origen",
+      "nukeduck_2019_origen",
+      "patrik_2019_origen"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2019",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2019,
+    "league": "LEC",
+    "roster": [
+      "attila_2019_team-vitality",
+      "cabochard_2019_team-vitality",
+      "jactroll_2019_team-vitality",
+      "jiizuke_2019_team-vitality",
+      "mowgli_2019_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "fnatic_2019",
@@ -5672,6 +6398,50 @@
     "weight": 4
   },
   {
+    "key": "sk-gaming_2019",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2019,
+    "league": "LEC",
+    "roster": [
+      "crownshot_2019_sk-gaming",
+      "dreams-han-min-kook_2019_sk-gaming",
+      "pirean_2019_sk-gaming",
+      "selfmade_2019_sk-gaming",
+      "werlyb_2019_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "rogue-european-team_2019",
+    "team": "Rogue (European Team)",
+    "teamSlug": "rogue-european-team",
+    "year": 2019,
+    "league": "LEC",
+    "roster": [
+      "inspired_2019_rogue-european-team",
+      "larssen_2019_rogue-european-team",
+      "profit_2019_rogue-european-team",
+      "vander_2019_rogue-european-team",
+      "woolite_2019_rogue-european-team"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "splyce_2019",
     "team": "Splyce",
     "teamSlug": "splyce",
@@ -5692,6 +6462,72 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "fc-schalke-04-esports_2020",
+    "team": "FC Schalke 04 Esports",
+    "teamSlug": "fc-schalke-04-esports",
+    "year": 2020,
+    "league": "LEC",
+    "roster": [
+      "abbedagge_2020_fc-schalke-04-esports",
+      "dreams-han-min-kook_2020_fc-schalke-04-esports",
+      "gilius_2020_fc-schalke-04-esports",
+      "neon-mat-jakub-k_2020_fc-schalke-04-esports",
+      "odoamne_2020_fc-schalke-04-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "origen_2020",
+    "team": "Origen",
+    "teamSlug": "origen",
+    "year": 2020,
+    "league": "LEC",
+    "roster": [
+      "alphari_2020_origen",
+      "destiny-mitchell-shaw_2020_origen",
+      "nukeduck_2020_origen",
+      "upset_2020_origen",
+      "xerxe_2020_origen"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "misfits-gaming_2020",
+    "team": "Misfits Gaming",
+    "teamSlug": "misfits-gaming",
+    "year": 2020,
+    "league": "LEC",
+    "roster": [
+      "bvoy_2020_misfits-gaming",
+      "dan-dan_2020_misfits-gaming",
+      "denyk_2020_misfits-gaming",
+      "febiven_2020_misfits-gaming",
+      "razork_2020_misfits-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "fnatic_2020",
@@ -5760,6 +6596,28 @@
     "weight": 4
   },
   {
+    "key": "sk-gaming_2020",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2020,
+    "league": "LEC",
+    "roster": [
+      "crownshot_2020_sk-gaming",
+      "jenax_2020_sk-gaming",
+      "limit-dino-tot_2020_sk-gaming",
+      "trick_2020_sk-gaming",
+      "zazee_2020_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "rogue-european-team_2020",
     "team": "Rogue (European Team)",
     "teamSlug": "rogue-european-team",
@@ -5780,6 +6638,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "fc-schalke-04-esports_2021",
+    "team": "FC Schalke 04 Esports",
+    "teamSlug": "fc-schalke-04-esports",
+    "year": 2021,
+    "league": "LEC",
+    "roster": [
+      "abbedagge_2021_fc-schalke-04-esports",
+      "brokenblade_2021_fc-schalke-04-esports",
+      "gilius_2021_fc-schalke-04-esports",
+      "limit-dino-tot_2021_fc-schalke-04-esports",
+      "neon-mat-jakub-k_2021_fc-schalke-04-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "mad-lions_2021",
@@ -5804,6 +6684,28 @@
     "weight": 4
   },
   {
+    "key": "sk-gaming_2021",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2021,
+    "league": "LEC",
+    "roster": [
+      "blue-ersin-g-ren_2021_sk-gaming",
+      "jenax_2021_sk-gaming",
+      "jezu_2021_sk-gaming",
+      "treatz_2021_sk-gaming",
+      "tynx_2021_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2021",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -5826,6 +6728,50 @@
     "weight": 4
   },
   {
+    "key": "g2-esports_2021",
+    "team": "G2 Esports",
+    "teamSlug": "g2-esports",
+    "year": 2021,
+    "league": "LEC",
+    "roster": [
+      "caps_2021_g2-esports",
+      "jankos_2021_g2-esports",
+      "mikyx_2021_g2-esports",
+      "rekkles_2021_g2-esports",
+      "wunder_2021_g2-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2021",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2021,
+    "league": "LEC",
+    "roster": [
+      "crownshot_2021_team-vitality",
+      "labrov_2021_team-vitality",
+      "lider_2021_team-vitality",
+      "selfmade_2021_team-vitality",
+      "szygenda_2021_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "rogue-european-team_2021",
     "team": "Rogue (European Team)",
     "teamSlug": "rogue-european-team",
@@ -5846,6 +6792,72 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "misfits-gaming_2021",
+    "team": "Misfits Gaming",
+    "teamSlug": "misfits-gaming",
+    "year": 2021,
+    "league": "LEC",
+    "roster": [
+      "hirit_2021_misfits-gaming",
+      "kobbe_2021_misfits-gaming",
+      "razork_2021_misfits-gaming",
+      "vander_2021_misfits-gaming",
+      "vetheo_2021_misfits-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "excel-esports_2022",
+    "team": "Excel Esports",
+    "teamSlug": "excel-esports",
+    "year": 2022,
+    "league": "LEC",
+    "roster": [
+      "finn_2022_excel-esports",
+      "markoon_2022_excel-esports",
+      "mikyx_2022_excel-esports",
+      "nukeduck_2022_excel-esports",
+      "patrik_2022_excel-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2022",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2022,
+    "league": "LEC",
+    "roster": [
+      "alphari_2022_team-vitality",
+      "carzzy_2022_team-vitality",
+      "labrov_2022_team-vitality",
+      "perkz_2022_team-vitality",
+      "selfmade_2022_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "mad-lions_2022",
@@ -5914,6 +6926,28 @@
     "weight": 4
   },
   {
+    "key": "misfits-gaming_2022",
+    "team": "Misfits Gaming",
+    "teamSlug": "misfits-gaming",
+    "year": 2022,
+    "league": "LEC",
+    "roster": [
+      "irrelevant_2022_misfits-gaming",
+      "mersa_2022_misfits-gaming",
+      "neon-mat-jakub-k_2022_misfits-gaming",
+      "shlatan_2022_misfits-gaming",
+      "vetheo_2022_misfits-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2022",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -5934,6 +6968,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "excel-esports_2023",
+    "team": "Excel Esports",
+    "teamSlug": "excel-esports",
+    "year": 2023,
+    "league": "LEC",
+    "roster": [
+      "abbedagge_2023_excel-esports",
+      "limit-dino-tot_2023_excel-esports",
+      "odoamne_2023_excel-esports",
+      "patrik_2023_excel-esports",
+      "peach_2023_excel-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "team-bds_2023",
@@ -6002,6 +7058,28 @@
     "weight": 4
   },
   {
+    "key": "sk-gaming_2023",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2023,
+    "league": "LEC",
+    "roster": [
+      "doss_2023_sk-gaming",
+      "exakick_2023_sk-gaming",
+      "irrelevant_2023_sk-gaming",
+      "markoon_2023_sk-gaming",
+      "sertuss_2023_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2023",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -6022,6 +7100,94 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "team-vitality_2023",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2023,
+    "league": "LEC",
+    "roster": [
+      "bo_2023_team-vitality",
+      "kaiser_2023_team-vitality",
+      "perkz_2023_team-vitality",
+      "photon_2023_team-vitality",
+      "upset_2023_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "koi-spanish-team_2023",
+    "team": "KOI (Spanish Team)",
+    "teamSlug": "koi-spanish-team",
+    "year": 2023,
+    "league": "LEC",
+    "roster": [
+      "comp_2023_koi-spanish-team",
+      "larssen_2023_koi-spanish-team",
+      "malrang_2023_koi-spanish-team",
+      "szygenda_2023_koi-spanish-team",
+      "trymbi_2023_koi-spanish-team"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-heretics_2023",
+    "team": "Team Heretics",
+    "teamSlug": "team-heretics",
+    "year": 2023,
+    "league": "LEC",
+    "roster": [
+      "evi_2023_team-heretics",
+      "jackspektra_2023_team-heretics",
+      "jankos_2023_team-heretics",
+      "mersa_2023_team-heretics",
+      "ruby-lee-sol-min_2023_team-heretics"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-bds_2024",
+    "team": "Team BDS",
+    "teamSlug": "team-bds",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "adam-adam-maanane_2024_team-bds",
+      "ice-yoon-sang-hoon_2024_team-bds",
+      "labrov_2024_team-bds",
+      "nuc_2024_team-bds",
+      "sheo_2024_team-bds"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "mad-lions-koi_2024",
@@ -6090,6 +7256,138 @@
     "weight": 4
   },
   {
+    "key": "giantx_2024",
+    "team": "GIANTX",
+    "teamSlug": "giantx",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "ignar_2024_giantx",
+      "jackies_2024_giantx",
+      "odoamne_2024_giantx",
+      "patrik_2024_giantx",
+      "peach_2024_giantx"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "sk-gaming_2024",
+    "team": "SK Gaming",
+    "teamSlug": "sk-gaming",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "doss_2024_sk-gaming",
+      "exakick_2024_sk-gaming",
+      "irrelevant_2024_sk-gaming",
+      "isma_2024_sk-gaming",
+      "nisqy_2024_sk-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "karmine-corp_2024",
+    "team": "Karmine Corp",
+    "teamSlug": "karmine-corp",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "canna_2024_karmine-corp",
+      "closer-can-elik_2024_karmine-corp",
+      "targamas_2024_karmine-corp",
+      "upset_2024_karmine-corp",
+      "vladi_2024_karmine-corp"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2024",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "carzzy_2024_team-vitality",
+      "daglas_2024_team-vitality",
+      "hylissang_2024_team-vitality",
+      "photon_2024_team-vitality",
+      "vetheo_2024_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-heretics_2024",
+    "team": "Team Heretics",
+    "teamSlug": "team-heretics",
+    "year": 2024,
+    "league": "LEC",
+    "roster": [
+      "flakked_2024_team-heretics",
+      "jankos_2024_team-heretics",
+      "trymbi_2024_team-heretics",
+      "wunder_2024_team-heretics",
+      "zwyroo_2024_team-heretics"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-bds_2025",
+    "team": "Team BDS",
+    "teamSlug": "team-bds",
+    "year": 2025,
+    "league": "LEC",
+    "roster": [
+      "113_2025_team-bds",
+      "ice-yoon-sang-hoon_2025_team-bds",
+      "irrelevant_2025_team-bds",
+      "nuc_2025_team-bds",
+      "parus_2025_team-bds"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "movistar-koi_2025",
     "team": "Movistar KOI",
     "teamSlug": "movistar-koi",
@@ -6134,6 +7432,72 @@
     "weight": 4
   },
   {
+    "key": "karmine-corp_2025",
+    "team": "Karmine Corp",
+    "teamSlug": "karmine-corp",
+    "year": 2025,
+    "league": "LEC",
+    "roster": [
+      "caliste_2025_karmine-corp",
+      "canna_2025_karmine-corp",
+      "targamas_2025_karmine-corp",
+      "vladi_2025_karmine-corp",
+      "yike_2025_karmine-corp"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 4
+  },
+  {
+    "key": "team-heretics_2025",
+    "team": "Team Heretics",
+    "teamSlug": "team-heretics",
+    "year": 2025,
+    "league": "LEC",
+    "roster": [
+      "carlsen_2025_team-heretics",
+      "flakked_2025_team-heretics",
+      "kamiloo_2025_team-heretics",
+      "sheo_2025_team-heretics",
+      "stend_2025_team-heretics"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-vitality_2025",
+    "team": "Team Vitality",
+    "teamSlug": "team-vitality",
+    "year": 2025,
+    "league": "LEC",
+    "roster": [
+      "carzzy_2025_team-vitality",
+      "czajek_2025_team-vitality",
+      "lyncas_2025_team-vitality",
+      "naak-nako_2025_team-vitality",
+      "nisqy_2025_team-vitality"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "fnatic_2025",
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -6154,6 +7518,72 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "giantx_2025",
+    "team": "GIANTX",
+    "teamSlug": "giantx",
+    "year": 2025,
+    "league": "LEC",
+    "roster": [
+      "isma_2025_giantx",
+      "jackies_2025_giantx",
+      "jun-yoon-se-jun_2025_giantx",
+      "lot_2025_giantx",
+      "noah-oh-hyeon-taek_2025_giantx"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2013",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2013,
+    "league": "LCS",
+    "roster": [
+      "bigfatlp_2013_counter-logic-gaming",
+      "chauster_2013_counter-logic-gaming",
+      "doublelift_2013_counter-logic-gaming",
+      "hotshotgg_2013_counter-logic-gaming",
+      "link_2013_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "good-game-university_2013",
+    "team": "Good Game University",
+    "teamSlug": "good-game-university",
+    "year": 2013,
+    "league": "LCS",
+    "roster": [
+      "daydreamin_2013_good-game-university",
+      "dontmashme_2013_good-game-university",
+      "jintae_2013_good-game-university",
+      "nintendudex_2013_good-game-university",
+      "zionspartan_2013_good-game-university"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "team-vulcun_2013",
@@ -6200,6 +7630,50 @@
     "weight": 4
   },
   {
+    "key": "team-curse_2013",
+    "team": "Team Curse",
+    "teamSlug": "team-curse",
+    "year": 2013,
+    "league": "LCS",
+    "roster": [
+      "cop_2013_team-curse",
+      "edward_2013_team-curse",
+      "nyjacky_2013_team-curse",
+      "saintvicious_2013_team-curse",
+      "voyboy_2013_team-curse"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "dignitas_2013",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2013,
+    "league": "LCS",
+    "roster": [
+      "crumbz_2013_dignitas",
+      "imaqtpie_2013_dignitas",
+      "kiwikid_2013_dignitas",
+      "patoy_2013_dignitas",
+      "scarra_2013_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "cloud9_2013",
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -6220,6 +7694,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "counter-logic-gaming_2014",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2014,
+    "league": "LCS",
+    "roster": [
+      "aphromoo_2014_counter-logic-gaming",
+      "dexter_2014_counter-logic-gaming",
+      "doublelift_2014_counter-logic-gaming",
+      "link_2014_counter-logic-gaming",
+      "nien_2014_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "cloud9_2014",
@@ -6266,6 +7762,72 @@
     "weight": 4
   },
   {
+    "key": "team-curse_2014",
+    "team": "Team Curse",
+    "teamSlug": "team-curse",
+    "year": 2014,
+    "league": "LCS",
+    "roster": [
+      "cop_2014_team-curse",
+      "iwdominate_2014_team-curse",
+      "quas_2014_team-curse",
+      "voyboy_2014_team-curse",
+      "xpecial_2014_team-curse"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "dignitas_2014",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2014,
+    "league": "LCS",
+    "roster": [
+      "crumbzz_2014_dignitas",
+      "imaqtpie_2014_dignitas",
+      "kiwikid_2014_dignitas",
+      "shiphtur_2014_dignitas",
+      "zionspartan_2014_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-coast_2014",
+    "team": "Team Coast",
+    "teamSlug": "team-coast",
+    "year": 2014,
+    "league": "LCS",
+    "roster": [
+      "daydreamin_2014_team-coast",
+      "nintendudex_2014_team-coast",
+      "shiphtur_2014_team-coast",
+      "wizfujiin_2014_team-coast",
+      "zionspartan_2014_team-coast"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "lmq_2014",
     "team": "LMQ",
     "teamSlug": "lmq",
@@ -6288,6 +7850,28 @@
     "weight": 4
   },
   {
+    "key": "team-impulse_2015",
+    "team": "Team Impulse",
+    "teamSlug": "team-impulse",
+    "year": 2015,
+    "league": "LCS",
+    "roster": [
+      "adrian-adrian-ma_2015_team-impulse",
+      "apollo-apollo-price_2015_team-impulse",
+      "impact_2015_team-impulse",
+      "rush_2015_team-impulse",
+      "xiaoweixiao_2015_team-impulse"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "counter-logic-gaming_2015",
     "team": "Counter Logic Gaming",
     "teamSlug": "counter-logic-gaming",
@@ -6308,6 +7892,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "dignitas_2015",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2015,
+    "league": "LCS",
+    "roster": [
+      "corejj_2015_dignitas",
+      "gamsu_2015_dignitas",
+      "helios-shin-dong-jin_2015_dignitas",
+      "kiwikid_2015_dignitas",
+      "shiphtur_2015_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "cloud9_2015",
@@ -6352,6 +7958,94 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "gravity-north-american-team_2015",
+    "team": "Gravity (North American Team)",
+    "teamSlug": "gravity-north-american-team",
+    "year": 2015,
+    "league": "LCS",
+    "roster": [
+      "altec_2015_gravity-north-american-team",
+      "bunny-fufuu_2015_gravity-north-american-team",
+      "hauntzer_2015_gravity-north-american-team",
+      "keane_2015_gravity-north-american-team",
+      "move_2015_gravity-north-american-team"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-liquid_2015",
+    "team": "Team Liquid",
+    "teamSlug": "team-liquid",
+    "year": 2015,
+    "league": "LCS",
+    "roster": [
+      "fenix_2015_team-liquid",
+      "iwdominate_2015_team-liquid",
+      "piglet_2015_team-liquid",
+      "quas_2015_team-liquid",
+      "xpecial_2015_team-liquid"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "immortals_2016",
+    "team": "Immortals",
+    "teamSlug": "immortals",
+    "year": 2016,
+    "league": "LCS",
+    "roster": [
+      "adrian-adrian-ma_2016_immortals",
+      "huni_2016_immortals",
+      "pobelter_2016_immortals",
+      "reignover_2016_immortals",
+      "wildturtle_2016_immortals"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "nrg-esports_2016",
+    "team": "NRG Esports",
+    "teamSlug": "nrg-esports",
+    "year": 2016,
+    "league": "LCS",
+    "roster": [
+      "gbm_2016_nrg-esports",
+      "kiwikid_2016_nrg-esports",
+      "ohq_2016_nrg-esports",
+      "quas_2016_nrg-esports",
+      "santorin_2016_nrg-esports"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "counter-logic-gaming_2016",
@@ -6420,6 +8114,138 @@
     "weight": 4
   },
   {
+    "key": "team-liquid_2016",
+    "team": "Team Liquid",
+    "teamSlug": "team-liquid",
+    "year": 2016,
+    "league": "LCS",
+    "roster": [
+      "dardoch_2016_team-liquid",
+      "fenix_2016_team-liquid",
+      "lourlo_2016_team-liquid",
+      "matt-matthew-elento_2016_team-liquid",
+      "piglet_2016_team-liquid"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-envyus_2016",
+    "team": "Team EnVyUs",
+    "teamSlug": "team-envyus",
+    "year": 2016,
+    "league": "LCS",
+    "roster": [
+      "hakuho_2016_team-envyus",
+      "lod_2016_team-envyus",
+      "ninja_2016_team-envyus",
+      "procxin_2016_team-envyus",
+      "seraph_2016_team-envyus"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "phoenix1_2017",
+    "team": "Phoenix1",
+    "teamSlug": "phoenix1",
+    "year": 2017,
+    "league": "LCS",
+    "roster": [
+      "arrow_2017_phoenix1",
+      "inori_2017_phoenix1",
+      "ryu_2017_phoenix1",
+      "xpecial_2017_phoenix1",
+      "zig_2017_phoenix1"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-envyus_2017",
+    "team": "Team EnVyUs",
+    "teamSlug": "team-envyus",
+    "year": 2017,
+    "league": "LCS",
+    "roster": [
+      "apollo-apollo-price_2017_team-envyus",
+      "hakuho_2017_team-envyus",
+      "lira_2017_team-envyus",
+      "ninja_2017_team-envyus",
+      "seraph_2017_team-envyus"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "flyquest_2017",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2017,
+    "league": "LCS",
+    "roster": [
+      "altec_2017_flyquest",
+      "balls_2017_flyquest",
+      "hai_2017_flyquest",
+      "lemonnation_2017_flyquest",
+      "moon-galen-holgate_2017_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2017",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2017,
+    "league": "LCS",
+    "roster": [
+      "aphromoo_2017_counter-logic-gaming",
+      "darshan_2017_counter-logic-gaming",
+      "huhi_2017_counter-logic-gaming",
+      "stixxay_2017_counter-logic-gaming",
+      "xmithie_2017_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "tsm_2017",
     "team": "TSM",
     "teamSlug": "tsm",
@@ -6440,6 +8266,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "dignitas_2017",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2017,
+    "league": "LCS",
+    "roster": [
+      "keane_2017_dignitas",
+      "lod_2017_dignitas",
+      "shrimp_2017_dignitas",
+      "ssumday_2017_dignitas",
+      "xpecial_2017_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "immortals_2017",
@@ -6486,6 +8334,50 @@
     "weight": 4
   },
   {
+    "key": "echo-fox_2018",
+    "team": "Echo Fox",
+    "teamSlug": "echo-fox",
+    "year": 2018,
+    "league": "LCS",
+    "roster": [
+      "adrian-adrian-ma_2018_echo-fox",
+      "altec_2018_echo-fox",
+      "dardoch_2018_echo-fox",
+      "fenix_2018_echo-fox",
+      "huni_2018_echo-fox"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "flyquest_2018",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2018,
+    "league": "LCS",
+    "roster": [
+      "flame_2018_flyquest",
+      "jayj_2018_flyquest",
+      "keane_2018_flyquest",
+      "santorin_2018_flyquest",
+      "wildturtle_2018_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "100-thieves_2018",
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -6506,6 +8398,50 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "clutch-gaming_2018",
+    "team": "Clutch Gaming",
+    "teamSlug": "clutch-gaming",
+    "year": 2018,
+    "league": "LCS",
+    "roster": [
+      "apollo-apollo-price_2018_clutch-gaming",
+      "febiven_2018_clutch-gaming",
+      "hakuho_2018_clutch-gaming",
+      "lira_2018_clutch-gaming",
+      "solo-colin-earnest_2018_clutch-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "tsm_2018",
+    "team": "TSM",
+    "teamSlug": "tsm",
+    "year": 2018,
+    "league": "LCS",
+    "roster": [
+      "bjergsen_2018_tsm",
+      "grig_2018_tsm",
+      "hauntzer_2018_tsm",
+      "mithy_2018_tsm",
+      "zven_2018_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "team-liquid_2018",
@@ -6552,6 +8488,94 @@
     "weight": 4
   },
   {
+    "key": "tsm_2019",
+    "team": "TSM",
+    "teamSlug": "tsm",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "akaadian_2019_tsm",
+      "bjergsen_2019_tsm",
+      "broken-blade_2019_tsm",
+      "smoothie_2019_tsm",
+      "zven_2019_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "optic-gaming_2019",
+    "team": "OpTic Gaming",
+    "teamSlug": "optic-gaming",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "arrow_2019_optic-gaming",
+      "big_2019_optic-gaming",
+      "crown_2019_optic-gaming",
+      "dhokla_2019_optic-gaming",
+      "meteos_2019_optic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "echo-fox_2019",
+    "team": "Echo Fox",
+    "teamSlug": "echo-fox",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "apollo-apollo-price_2019_echo-fox",
+      "fenix_2019_echo-fox",
+      "hakuho_2019_echo-fox",
+      "rush_2019_echo-fox",
+      "solo-colin-earnest_2019_echo-fox"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2019",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "biofrost_2019_counter-logic-gaming",
+      "powerofevil_2019_counter-logic-gaming",
+      "ruin_2019_counter-logic-gaming",
+      "stixxay_2019_counter-logic-gaming",
+      "wiggily_2019_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "cloud9_2019",
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -6596,6 +8620,28 @@
     "weight": 4
   },
   {
+    "key": "golden-guardians_2019",
+    "team": "Golden Guardians",
+    "teamSlug": "golden-guardians",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "contractz_2019_golden-guardians",
+      "deftly_2019_golden-guardians",
+      "froggen_2019_golden-guardians",
+      "hauntzer_2019_golden-guardians",
+      "olleh_2019_golden-guardians"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "team-liquid_2019",
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -6618,6 +8664,72 @@
     "weight": 4
   },
   {
+    "key": "flyquest_2019",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2019,
+    "league": "LCS",
+    "roster": [
+      "jayj_2019_flyquest",
+      "pobelter_2019_flyquest",
+      "santorin_2019_flyquest",
+      "v1per_2019_flyquest",
+      "wildturtle_2019_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "dignitas_2020",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2020,
+    "league": "LCS",
+    "roster": [
+      "aphromoo_2020_dignitas",
+      "dardoch_2020_dignitas",
+      "froggen_2020_dignitas",
+      "huni_2020_dignitas",
+      "johnsun_2020_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "evil-geniuses-na_2020",
+    "team": "Evil Geniuses.NA",
+    "teamSlug": "evil-geniuses-na",
+    "year": 2020,
+    "league": "LCS",
+    "roster": [
+      "bang_2020_evil-geniuses-na",
+      "jiizuke_2020_evil-geniuses-na",
+      "kumo_2020_evil-geniuses-na",
+      "svenskeren_2020_evil-geniuses-na",
+      "zeyzal_2020_evil-geniuses-na"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "tsm_2020",
     "team": "TSM",
     "teamSlug": "tsm",
@@ -6629,6 +8741,28 @@
       "broken-blade_2020_tsm",
       "doublelift_2020_tsm",
       "spica_2020_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 4
+  },
+  {
+    "key": "cloud9_2020",
+    "team": "Cloud9",
+    "teamSlug": "cloud9",
+    "year": 2020,
+    "league": "LCS",
+    "roster": [
+      "blaber_2020_cloud9",
+      "licorice_2020_cloud9",
+      "nisqy_2020_cloud9",
+      "vulcan-philippe-laflamme_2020_cloud9",
+      "zven_2020_cloud9"
     ],
     "rolesAvailable": [
       "ADC",
@@ -6660,6 +8794,50 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "golden-guardians_2020",
+    "team": "Golden Guardians",
+    "teamSlug": "golden-guardians",
+    "year": 2020,
+    "league": "LCS",
+    "roster": [
+      "closer-can-elik_2020_golden-guardians",
+      "damonte_2020_golden-guardians",
+      "fbi_2020_golden-guardians",
+      "hauntzer_2020_golden-guardians",
+      "huhi_2020_golden-guardians"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "100-thieves_2020",
+    "team": "100 Thieves",
+    "teamSlug": "100-thieves",
+    "year": 2020,
+    "league": "LCS",
+    "roster": [
+      "cody-sun_2020_100-thieves",
+      "meteos_2020_100-thieves",
+      "ryoma_2020_100-thieves",
+      "ssumday_2020_100-thieves",
+      "stunt_2020_100-thieves"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "flyquest_2020",
@@ -6706,6 +8884,50 @@
     "weight": 4
   },
   {
+    "key": "golden-guardians_2021",
+    "team": "Golden Guardians",
+    "teamSlug": "golden-guardians",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "ablazeolive_2021_golden-guardians",
+      "chime_2021_golden-guardians",
+      "iconic_2021_golden-guardians",
+      "niles-aiden-tidwell_2021_golden-guardians",
+      "stixxay_2021_golden-guardians"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "dignitas_2021",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "aphromoo_2021_dignitas",
+      "dardoch_2021_dignitas",
+      "fakegod_2021_dignitas",
+      "neo-to-n-tr-n_2021_dignitas",
+      "yusui_2021_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "team-liquid_2021",
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -6750,6 +8972,116 @@
     "weight": 4
   },
   {
+    "key": "evil-geniuses-na_2021",
+    "team": "Evil Geniuses.NA",
+    "teamSlug": "evil-geniuses-na",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "danny-kyle-sakamaki_2021_evil-geniuses-na",
+      "ignar_2021_evil-geniuses-na",
+      "impact_2021_evil-geniuses-na",
+      "jiizuke_2021_evil-geniuses-na",
+      "svenskeren_2021_evil-geniuses-na"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "immortals_2021",
+    "team": "Immortals",
+    "teamSlug": "immortals",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "destiny-mitchell-shaw_2021_immortals",
+      "insanity_2021_immortals",
+      "raes_2021_immortals",
+      "revenge-mohamed-kaddoura_2021_immortals",
+      "xerxe_2021_immortals"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "tsm_2021",
+    "team": "TSM",
+    "teamSlug": "tsm",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "huni_2021_tsm",
+      "lost-lawrence-hui_2021_tsm",
+      "powerofevil_2021_tsm",
+      "spica_2021_tsm",
+      "swordart_2021_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "flyquest_2021",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "diamond-david-b-rub_2021_flyquest",
+      "johnsun_2021_flyquest",
+      "josedeodo_2021_flyquest",
+      "licorice_2021_flyquest",
+      "palafox_2021_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2021",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2021,
+    "league": "LCS",
+    "roster": [
+      "broxah_2021_counter-logic-gaming",
+      "finn_2021_counter-logic-gaming",
+      "pobelter_2021_counter-logic-gaming",
+      "smoothie_2021_counter-logic-gaming",
+      "wildturtle_2021_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "100-thieves_2022",
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -6770,6 +9102,50 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "golden-guardians_2022",
+    "team": "Golden Guardians",
+    "teamSlug": "golden-guardians",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "ablazeolive_2022_golden-guardians",
+      "licorice_2022_golden-guardians",
+      "olleh_2022_golden-guardians",
+      "pridestalkr_2022_golden-guardians",
+      "stixxay_2022_golden-guardians"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "flyquest_2022",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "aphromoo_2022_flyquest",
+      "johnsun_2022_flyquest",
+      "josedeodo_2022_flyquest",
+      "kumo_2022_flyquest",
+      "toucouille_2022_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "cloud9_2022",
@@ -6794,6 +9170,72 @@
     "weight": 4
   },
   {
+    "key": "team-liquid_2022",
+    "team": "Team Liquid",
+    "teamSlug": "team-liquid",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "bjergsen_2022_team-liquid",
+      "bwipo_2022_team-liquid",
+      "corejj_2022_team-liquid",
+      "hans-sama_2022_team-liquid",
+      "santorin_2022_team-liquid"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 4
+  },
+  {
+    "key": "tsm_2022",
+    "team": "TSM",
+    "teamSlug": "tsm",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "chime_2022_tsm",
+      "huni_2022_tsm",
+      "maple-huang-yi-tang_2022_tsm",
+      "spica_2022_tsm",
+      "tactical_2022_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2022",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "contractz_2022_counter-logic-gaming",
+      "dhokla_2022_counter-logic-gaming",
+      "luger_2022_counter-logic-gaming",
+      "palafox_2022_counter-logic-gaming",
+      "poome_2022_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "evil-geniuses-na_2022",
     "team": "Evil Geniuses.NA",
     "teamSlug": "evil-geniuses-na",
@@ -6814,6 +9256,50 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "dignitas_2022",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "biofrost_2022_dignitas",
+      "blue-ersin-g-ren_2022_dignitas",
+      "fakegod_2022_dignitas",
+      "neo-to-n-tr-n_2022_dignitas",
+      "river-kim-dong-woo_2022_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "immortals_2022",
+    "team": "Immortals",
+    "teamSlug": "immortals",
+    "year": 2022,
+    "league": "LCS",
+    "roster": [
+      "destiny-mitchell-shaw_2022_immortals",
+      "lost-lawrence-hui_2022_immortals",
+      "powerofevil_2022_immortals",
+      "revenge-mohamed-kaddoura_2022_immortals",
+      "xerxe_2022_immortals"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "team-liquid_2023",
@@ -6838,6 +9324,28 @@
     "weight": 4
   },
   {
+    "key": "evil-geniuses-na_2023",
+    "team": "Evil Geniuses.NA",
+    "teamSlug": "evil-geniuses-na",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "eyla_2023_evil-geniuses-na",
+      "inspired_2023_evil-geniuses-na",
+      "jojopyun_2023_evil-geniuses-na",
+      "revenge-mohamed-kaddoura_2023_evil-geniuses-na",
+      "unf0rgiven_2023_evil-geniuses-na"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "cloud9_2023",
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -6858,6 +9366,50 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "tsm_2023",
+    "team": "TSM",
+    "teamSlug": "tsm",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "bugi_2023_tsm",
+      "chime_2023_tsm",
+      "hauntzer_2023_tsm",
+      "insanity_2023_tsm",
+      "wildturtle_2023_tsm"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "100-thieves_2023",
+    "team": "100 Thieves",
+    "teamSlug": "100-thieves",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "bjergsen_2023_100-thieves",
+      "busio_2023_100-thieves",
+      "closer-can-elik_2023_100-thieves",
+      "doublelift_2023_100-thieves",
+      "tenacity_2023_100-thieves"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "nrg_2023",
@@ -6904,6 +9456,72 @@
     "weight": 2
   },
   {
+    "key": "dignitas_2023",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "jensen_2023_dignitas",
+      "poome_2023_dignitas",
+      "rich-lee-jae-won_2023_dignitas",
+      "santorin_2023_dignitas",
+      "tomo_2023_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "counter-logic-gaming_2023",
+    "team": "Counter Logic Gaming",
+    "teamSlug": "counter-logic-gaming",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "contractz_2023_counter-logic-gaming",
+      "dhokla_2023_counter-logic-gaming",
+      "luger_2023_counter-logic-gaming",
+      "palafox_2023_counter-logic-gaming",
+      "poome_2023_counter-logic-gaming"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "flyquest_2023",
+    "team": "FlyQuest",
+    "teamSlug": "flyquest",
+    "year": 2023,
+    "league": "LCS",
+    "roster": [
+      "impact_2023_flyquest",
+      "prince-lee-chae-hwan_2023_flyquest",
+      "spica_2023_flyquest",
+      "vicla_2023_flyquest",
+      "vulcan-philippe-laflamme_2023_flyquest"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "team-liquid_2024",
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -6924,6 +9542,28 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "cloud9_2024",
+    "team": "Cloud9",
+    "teamSlug": "cloud9",
+    "year": 2024,
+    "league": "LCS",
+    "roster": [
+      "berserker-kim-min-cheol_2024_cloud9",
+      "blaber_2024_cloud9",
+      "jojopyun_2024_cloud9",
+      "thanatos-park-seung-kyu_2024_cloud9",
+      "vulcan-philippe-laflamme_2024_cloud9"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "flyquest_2024",
@@ -6948,6 +9588,28 @@
     "weight": 4
   },
   {
+    "key": "nrg_2024",
+    "team": "NRG",
+    "teamSlug": "nrg",
+    "year": 2024,
+    "league": "LCS",
+    "roster": [
+      "contractz_2024_nrg",
+      "dhokla_2024_nrg",
+      "fbi_2024_nrg",
+      "huhi_2024_nrg",
+      "palafox_2024_nrg"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "100-thieves_2024",
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -6968,6 +9630,72 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "dignitas_2024",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2024,
+    "league": "LCS",
+    "roster": [
+      "isles_2024_dignitas",
+      "jensen_2024_dignitas",
+      "licorice_2024_dignitas",
+      "spica_2024_dignitas",
+      "zven_2024_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "team-liquid_2025",
+    "team": "Team Liquid",
+    "teamSlug": "team-liquid",
+    "year": 2025,
+    "league": "LCS",
+    "roster": [
+      "apa-eain-stearns_2025_team-liquid",
+      "corejj_2025_team-liquid",
+      "impact_2025_team-liquid",
+      "yeon-sean-sung_2025_team-liquid",
+      "yuuji_2025_team-liquid"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
+    "key": "cloud9_2025",
+    "team": "Cloud9",
+    "teamSlug": "cloud9",
+    "year": 2025,
+    "league": "LCS",
+    "roster": [
+      "blaber_2025_cloud9",
+      "loki-lee-sang-min_2025_cloud9",
+      "thanatos-park-seung-kyu_2025_cloud9",
+      "vulcan-philippe-laflamme_2025_cloud9",
+      "zven_2025_cloud9"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   },
   {
     "key": "flyquest_2025",
@@ -6992,6 +9720,28 @@
     "weight": 4
   },
   {
+    "key": "shopify-rebellion_2025",
+    "team": "Shopify Rebellion",
+    "teamSlug": "shopify-rebellion",
+    "year": 2025,
+    "league": "LCS",
+    "roster": [
+      "bvoy_2025_shopify-rebellion",
+      "ceos_2025_shopify-rebellion",
+      "contractz_2025_shopify-rebellion",
+      "fudge_2025_shopify-rebellion",
+      "palafox_2025_shopify-rebellion"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
+  },
+  {
     "key": "100-thieves_2025",
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -7012,5 +9762,27 @@
       "TOP"
     ],
     "weight": 4
+  },
+  {
+    "key": "dignitas_2025",
+    "team": "Dignitas",
+    "teamSlug": "dignitas",
+    "year": 2025,
+    "league": "LCS",
+    "roster": [
+      "isles_2025_dignitas",
+      "keine_2025_dignitas",
+      "sheiden_2025_dignitas",
+      "srtty_2025_dignitas",
+      "tomo_2025_dignitas"
+    ],
+    "rolesAvailable": [
+      "ADC",
+      "JGL",
+      "MID",
+      "SUP",
+      "TOP"
+    ],
+    "weight": 2
   }
 ]
