@@ -4,12 +4,13 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D2 (2026-06-12) / Phase 1 파이프라인 완료 (03→04→07 재빌드)
-- 브랜치: main (최신 커밋: 15bbea9)
-- 빌드 상태: 07-build.ts zod 통과. Next.js build 미재실행 (pipeline-only 변경)
-- **복귀 후 재개 시작점**: ① 앵커 OVR 검토(아래 보고 참조) → ② opponents 실값 교체 → ③ Phase 2 이미지 파이프라인 승인 시
+- 날짜 / Phase: D2 (2026-06-12) / Phase 2 이미지 파이프라인 스크립트 완성, Vercel 배포 준비 완료
+- 브랜치: main (최신 커밋: 38cb5ea)
+- 빌드 상태: Next.js build ✓ 통과 (TypeScript noEmit 포함)
+- **복귀 후 재개 시작점**: ① Vercel env var 설정(NEXT_PUBLIC_R2_PUBLIC_BASE_URL) + git push → ② `npx tsx scripts/05-images.ts` 로컬 실행 → ③ `npx tsx scripts/06-upload-r2.ts` → ④ 사진 확인
 
 ## 완료 (최신)
+- **Phase 2 스크립트 완성 (38cb5ea)**: 05-images.ts (PlayerImages→imageinfo→sharp 256crop) + 06-upload-r2.ts (R2 업로드+photo 갱신) + robots.txt (크롤러 차단). 실행은 로컬에서 호빈이 직접.
 - **Phase 1 재빌드 완료 (15bbea9)**: LEC/LCS 국내 플옵 결과 포함, awards.csv playerId 28건 수정, Xiaohu 2022 FMVP 활성화, 07-build.ts LEC/LCS 필터 수정
   - players.json 2223건 / teams.json 445건 / OVR 75: 0명 (전원 플옵 컷 이상)
   - Bjergsen 81→89, G2 2019 83-87→93-97 (LEC domestic 반영 효과)
