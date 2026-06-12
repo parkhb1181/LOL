@@ -53,6 +53,14 @@ function parseAwardsCsv(csv: string): AwardRow[] {
   }).filter(r => r.playerId && r.year > 0 && r.award)
 }
 
+// G2 2024 월즈 광탈 반영 하드코딩 (raw 99 → 강제 95)
+// calc/compress/clamp/individualBonus 전부 끝난 최종 OVR을 덮어씀
+// key: `${playerId}|${year}|${leagueCode}`
+const OVR_OVERRIDES: Record<string, number> = {
+  'Caps|2024|LEC': 95,
+  'BrokenBlade|2024|LEC': 95,
+}
+
 // §9 리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
 // LCK/LPL: 1.0 / LEC: 0.95 / LCS: 0.85
 const LEAGUE_COEFF: Record<string, number> = {
@@ -289,9 +297,12 @@ async function main() {
     individualBonus = Math.max(-3, Math.min(3, individualBonus))
 
     // 99 희소성 보호: baseOvr===99이면 보정 무시
-    const ovr = baseOvr === 99
+    const calcOvr_ = baseOvr === 99
       ? 99
       : Math.max(75, Math.min(99, baseOvr + individualBonus))
+
+    // 하드오버라이드 — OVR_OVERRIDES 매칭 시 calc/compress/clamp 결과 전부 무시
+    const ovr = OVR_OVERRIDES[`${playerId}|${year}|${leagueCode}`] ?? calcOvr_
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'

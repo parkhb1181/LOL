@@ -689,3 +689,27 @@ Ning,2019,LPL,EDITORIAL,-1,NONE
 Razork,2024,LEC,EDITORIAL,2,NONE
 Humanoid,2024,LEC,EDITORIAL,1,NONE
 Noah (Oh Hyeon-taek),2024,LEC,EDITORIAL,-1,NONE
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL — G2 2024/2025 추가 하향 (g2_nerf, 8건)
+# BrokenBlade/Caps 2024: OVR 하드오버라이드 95 적용 (04-ratings.ts OVR_OVERRIDES) — EDITORIAL 불요
+# Yike/Hans/Mikyx 2024: 기존-5 + 추가-3 = 누적 -8
+# G2 2025: 추가 -3 (tiebreak +1/+2 상쇄 후 순 -2~-1)
+# ═══════════════════════════════════════════════════
+Yike,2024,LEC,EDITORIAL,-3,NONE
+Hans Sama,2024,LEC,EDITORIAL,-3,NONE
+Mikyx,2024,LEC,EDITORIAL,-3,NONE
+Caps,2025,LEC,EDITORIAL,-3,NONE
+BrokenBlade,2025,LEC,EDITORIAL,-3,NONE
+Hans Sama,2025,LEC,EDITORIAL,-3,NONE
+SkewMond,2025,LEC,EDITORIAL,-3,NONE
+Labrov,2025,LEC,EDITORIAL,-3,NONE
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL — Longzhu 2017 +4 (역대급 팀 강화)
+# ═══════════════════════════════════════════════════
+Khan,2017,LCK,EDITORIAL,4,NONE
+Cuzz,2017,LCK,EDITORIAL,4,NONE
+Bdd,2017,LCK,EDITORIAL,4,NONE
+PraY,2017,LCK,EDITORIAL,4,NONE
+GorillA,2017,LCK,EDITORIAL,4,NONE
