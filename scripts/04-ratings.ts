@@ -53,12 +53,32 @@ function parseAwardsCsv(csv: string): AwardRow[] {
   }).filter(r => r.playerId && r.year > 0 && r.award)
 }
 
-// G2 2024 월즈 광탈 반영 하드코딩 (raw 99 → 강제 95)
 // calc/compress/clamp/individualBonus 전부 끝난 최종 OVR을 덮어씀
 // key: `${playerId}|${year}|${leagueCode}`
 const OVR_OVERRIDES: Record<string, number> = {
+  // LCK
+  'Faker|2015|LCK': 99,
+  'MaRin|2015|LCK': 99,
+  'Canyon|2020|LCK': 98,
+  'ShowMaker|2020|LCK': 98,
+  'Zeus|2023|LCK': 97,
+  'Oner|2023|LCK': 94,
+  'Keria|2023|LCK': 94,
+  'Chovy|2024|LCK': 98,
+  // LPL
+  'Scout|2021|LPL': 97,
+  'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG), 호빈 목록 LCK는 오타
+  'Ruler|2023|LPL': 96,                  // Ruler 2023 실제 league=LPL (JDG), 호빈 목록 LCK는 오타
+  'knight (Zhuo Ding)|2024|LPL': 96,
+  '369|2023|LPL': 95,
+  'ON|2024|LPL': 93,
+  'Elk|2024|LPL': 96,
+  // LEC
+  'Jankos|2019|LEC': 97,
+  'Perkz|2019|LEC': 96,
+  'Caps|2019|LEC': 97,
   'Caps|2024|LEC': 95,
-  'BrokenBlade|2024|LEC': 95,
+  'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
 }
 
 // §9 리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
