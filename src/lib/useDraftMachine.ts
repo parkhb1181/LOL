@@ -135,14 +135,15 @@ function reducer(state: DraftState, action: Action): DraftState {
     // SIM_DONE: simulation complete → REVEAL (하이라이트 4스텝만)
     case 'SIM_DONE': {
       const revealSteps = highlightStepsFlat(pickHighlightSteps(action.result.steps))
-      return { ...state, phase: 'REVEAL', simResult: action.result, revealSteps, revealStep: 0 }
+      return { ...state, phase: 'REVEAL', simResult: action.result, revealSteps, revealStep: 1 }
     }
 
     // REVEAL_NEXT: 하이라이트 1스텝씩 (interval은 page.tsx)
     case 'REVEAL_NEXT': {
       if (!state.simResult) return state
       const next = state.revealStep + 1
-      if (next >= state.revealSteps.length) {
+      // next === length → 마지막(4번째 Worlds) 표시. length 초과일 때만 RESULT.
+      if (next > state.revealSteps.length) {
         return { ...state, phase: 'RESULT', revealStep: next }
       }
       return { ...state, revealStep: next }
