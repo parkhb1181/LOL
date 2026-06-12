@@ -3,15 +3,16 @@
 // 색·재질 토큰은 CSS 변수로만 수신 (DESIGN_GUIDE 토큰 확정 전 하드코딩 금지)
 // 사진: player.photo (players.json R2 URL) → onError 아바타 폴백
 // §5 킬스위치: NEXT_PUBLIC_PHOTOS_ENABLED=false 시 전원 아바타
+// photo 소스: players.json의 photo 필드 (R2 URL) — env var 불사용
 
 import Image from 'next/image'
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
 
-// §5 킬스위치 적용 후 photo 필드 반환
+// §5 킬스위치 적용 후 photo 필드 반환 — player.photo 직접 반환, env var 미사용
 function photoSrc(player: PlayerSeason): string | null {
   if (process.env.NEXT_PUBLIC_PHOTOS_ENABLED === 'false') return null
-  return player.photo  // 06-upload-r2.ts가 players.json에 기록한 R2 URL
+  return player.photo ?? null  // players.json R2 URL, 없으면 null
 }
 
 export type CardSize = 'pick' | 'slot' | 'result'
