@@ -53,6 +53,14 @@ async function main() {
   const rated: RatedEntry[] = JSON.parse(fs.readFileSync(ratingsPath, 'utf-8'))
   const results: ResultEntry[] = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
 
+  // 기존 photo URL 보존 — 06-upload-r2.ts가 채운 photo를 07 재실행이 덮어쓰지 않도록
+  const playersOutPath = path.join(dataDir, 'players.json')
+  const existingPhotos = new Map<string, string | null>()
+  if (fs.existsSync(playersOutPath)) {
+    const prev: PlayerSeason[] = JSON.parse(fs.readFileSync(playersOutPath, 'utf-8'))
+    for (const p of prev) existingPhotos.set(p.id, p.photo)
+  }
+
   // Worlds 참가/우승 인덱스: normalizeTeam 적용 (TournamentResults Worlds="SK Telecom T1")
   const worldsIndex = new Map<string, number>()
   for (const r of results) {
@@ -123,7 +131,7 @@ async function main() {
       frame: entry.frame,
       crown: entry.crown,
       msiWinner: entry.msiWinner,
-      photo: null,  // Phase 2에서 채움
+      photo: existingPhotos.get(id) ?? null,  // 기존 R2 URL 보존, 없으면 null
       badges: entry.badges,
     }
 
