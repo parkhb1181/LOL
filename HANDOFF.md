@@ -4,12 +4,18 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D2 (2026-06-12) / 파이프라인 02~08 완료, 실데이터 players.json 생성
-- 브랜치: main
-- 빌드 상태: 파이프라인 통과 (18896bd). Next.js build는 마지막 확인 67ffd0a 이후 미재실행 (API 변경 없으므로 통과 예상)
-- **복귀 후 재개 시작점**: Canyon/Chovy 앵커 조정 방향 결정 (아래 호빈 게이트 참조) → opponents-2026.json 실값 교체
+- 날짜 / Phase: D2 (2026-06-12) / Phase 1 파이프라인 완료 (03→04→07 재빌드)
+- 브랜치: main (최신 커밋: 15bbea9)
+- 빌드 상태: 07-build.ts zod 통과. Next.js build 미재실행 (pipeline-only 변경)
+- **복귀 후 재개 시작점**: ① 앵커 OVR 검토(아래 보고 참조) → ② opponents 실값 교체 → ③ Phase 2 이미지 파이프라인 승인 시
 
-## 완료
+## 완료 (최신)
+- **Phase 1 재빌드 완료 (15bbea9)**: LEC/LCS 국내 플옵 결과 포함, awards.csv playerId 28건 수정, Xiaohu 2022 FMVP 활성화, 07-build.ts LEC/LCS 필터 수정
+  - players.json 2223건 / teams.json 445건 / OVR 75: 0명 (전원 플옵 컷 이상)
+  - Bjergsen 81→89, G2 2019 83-87→93-97 (LEC domestic 반영 효과)
+  - stats(04b): v1.1 포기 결정 — stats_agg 캐시 37개 미완성 상태로 보존 (v1.1 재개용)
+
+## 완료 (이전)
 - 스캐폴드: Next.js 15 + TypeScript + Tailwind, src/ 구조
 - `public/data/opponents-2026.json` 플레이스홀더 (regular 9팀 / intl 12팀)
 - `src/lib/prng.ts` mulberry32 구현
@@ -80,6 +86,8 @@
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
+- 2026-06-12 (세션14): awards.csv playerId 28건 수정+Xiaohu 활성화+LEC/LCS 국내결과+07-build 필터 수정. players.json 2223건. Bjergsen 89, G2 2019 93-97.
+- 2026-06-12 (세션13): 3개 버그 수정 완료 (78384d5). Worlds frame 정확(13팀·연도), KT2015 5명(dedup), G2/FNC/C9/TL 포함 확인. players.json 1593건. ④사진은 Phase2 미구현으로 null 유지.
 - 2026-06-12 (세션12): 5가지 묶음 적용 완료 (18896bd). OVR 압축 78~99, 99→2명, 카드 풀 2999→1714명, Faker 닉네임/Faker2013 OVR 94 복구. Canyon 97/Chovy 99 구조적 한계 보고.
 - 2026-06-12 (세션11): OG 이미지 강화 (/api/og) + /r generateMetadata 완료 (67ffd0a). 6가지 UI 개선 완료. build 통과.
 - 2026-06-12 (세션10): GAME_SPEC v1 구현 — 자동스핀·fullReroll·S=20·타임라인. 더미 5팀 생성.
