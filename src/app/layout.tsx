@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { LangProvider } from '@/i18n'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'GRANDSLAM — LoL All-Time Draft',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             GRANDSLAM은 팬메이드 프로젝트입니다. Riot Games와 무관합니다.
           </footer>
         </LangProvider>
+        <Analytics />
       </body>
     </html>
   )
