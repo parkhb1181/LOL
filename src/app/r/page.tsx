@@ -165,7 +165,8 @@ export default async function ResultPage(
           <p className="text-white/25 text-sm mt-3">Team OVR {result.teamOvr}</p>
         </div>
 
-        {/* 5-player cards — server render (no PlayerCard client component) */}
+        {/* 카드 + 도메인 워터마크 — 스크린샷에 항상 포함 */}
+        <div className="flex flex-col items-center gap-2 w-full">
         <div className="flex flex-wrap gap-2 justify-center">
           {playerInfos.map((pi) => (
             <div
@@ -198,6 +199,10 @@ export default async function ResultPage(
               </div>
             </div>
           ))}
+        </div>
+        <p className="text-[11px] font-semibold tracking-[0.12em] text-white/40 select-none">
+          grandslamlol.vercel.app
+        </p>
         </div>
 
         {/* CTA: Start draft */}

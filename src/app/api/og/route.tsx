@@ -188,15 +188,16 @@ export async function GET(req: NextRequest) {
           </div>
         </div>
 
-        {/* ── Player strip ── */}
+        {/* ── Player strip + domain watermark ── */}
         <div
           style={{
-            height: 186,
             borderTop: '1px solid #1a2840',
             background: '#070d18',
             display: 'flex',
+            flexDirection: 'column',
           }}
         >
+        <div style={{ height: 186, display: 'flex' }}>
           {players.map((p, i) => (
             <div
               key={i}
@@ -251,6 +252,21 @@ export async function GET(req: NextRequest) {
               </span>
             </div>
           ))}
+        </div>
+        {/* 도메인 워터마크 */}
+        <div
+          style={{
+            height: 22,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderTop: '1px solid #0c1420',
+          }}
+        >
+          <span style={{ color: '#304560', fontSize: 11, fontWeight: 900, letterSpacing: '0.28em' }}>
+            GRANDSLAMLOL.VERCEL.APP
+          </span>
+        </div>
         </div>
       </div>
     ),

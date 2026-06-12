@@ -527,12 +527,17 @@ function ResultScreen({
         ))}
       </div>
 
-      {/* 5-player cards — PC (md+): grid-cols-5 single row, mobile: grid-cols-3 */}
-      {/* overflow-hidden: blocks hover:scale-105 transform from creating scrollbars */}
-      <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full overflow-hidden">
-        {ROLES.map((_, i) => picks[i] && (
-          <PlayerCard key={i} player={picks[i]!.player} size="result" />
-        ))}
+      {/* 카드 그리드 + 도메인 워터마크 — 함께 묶어 스크린샷에 항상 포함되게 */}
+      <div className="flex flex-col items-center gap-2 w-full">
+        {/* overflow-hidden: blocks hover:scale-105 transform from creating scrollbars */}
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full overflow-hidden">
+          {ROLES.map((_, i) => picks[i] && (
+            <PlayerCard key={i} player={picks[i]!.player} size="result" />
+          ))}
+        </div>
+        <p className="text-[11px] font-semibold tracking-[0.12em] text-white/40 select-none">
+          grandslamlol.vercel.app
+        </p>
       </div>
 
       {/* Buttons */}
