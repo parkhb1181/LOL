@@ -50,8 +50,6 @@ async function main() {
   const targets = tournaments.filter(t => {
     if (t.isQualifier) return false
     if (t.leagueCode === 'WORLDS' || t.leagueCode === 'MSI') return true
-    // LEC/LCS 국내 결과 v1 스킵 — 결과 없이 OVR 산출 불가 (v1.1에서 추가)
-    if (t.leagueCode === 'LEC' || t.leagueCode === 'LCS') return false
     return t.isPlayoffs
   }).sort((a, b) => (PRIORITY[a.leagueCode] ?? 9) - (PRIORITY[b.leagueCode] ?? 9))
 
