@@ -6,7 +6,7 @@
 // GAME_SPEC §2: single reroll button (fullReroll)
 // GAME_SPEC §7: RESULT 4-stage timeline
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import PlayerCard from '@/components/PlayerCard'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
@@ -85,19 +85,19 @@ function MobileSlotItem({ role, player }: { role: string; player: PlayerSeason |
   )
 }
 
-// 데스크톱 슬롯 — 참고 디자인 (md+ 전용)
+// 데스크톱 슬롯 — 픽 카드와 동일 열 너비(draft-pick-w), 높이만 낮게
 function DesktopDraftSlotItem({ role, player }: { role: string; player: PlayerSeason | null }) {
   const [imgErr, setImgErr] = useState(false)
   if (!player) {
     return (
-      <div className="draft-col-w aspect-[4/5] rounded-lg border border-dashed border-[#2a2a4a] flex items-center justify-center flex-shrink-0">
+      <div className="draft-pick-w aspect-[3/4] rounded-lg border border-dashed border-[#2a2a4a] flex items-center justify-center flex-shrink-0">
         <span className="text-xs text-[#a0a0c0] font-semibold">{role}</span>
       </div>
     )
   }
   const showPhoto = process.env.NEXT_PUBLIC_PHOTOS_ENABLED !== 'false' && !!player.photo && !imgErr
   return (
-    <div className="draft-col-w aspect-[4/5] rounded-lg overflow-hidden bg-[#1a1a2e] border border-[#2a2a4a] flex flex-col flex-shrink-0">
+    <div className="draft-pick-w aspect-[3/4] rounded-lg overflow-hidden bg-[#1a1a2e] border border-[#2a2a4a] flex flex-col flex-shrink-0">
       <div className="flex-1 relative overflow-hidden">
         {showPhoto ? (
           <img
@@ -160,8 +160,88 @@ function RosterSlots({ picks }: { picks: (ReturnType<typeof useDraftMachine>['st
   )
 }
 
-// ── PICK screen — GAME_SPEC §2: single reroll button ─────────────────────────
-function PickScreen({
+// ── PICK screen — 모바일(예전) / 데스크톱(참고 디자인) 분리 ─────────────────
+function PickScreenButtons({
+  onPlayAgain,
+  onFullReroll,
+  rerollLeft,
+  playAgainCls,
+  rerollCls,
+  rerollIcon,
+}: {
+  onPlayAgain: () => void
+  onFullReroll: () => void
+  rerollLeft: number
+  playAgainCls: string
+  rerollCls: string
+  rerollIcon: ReactNode
+}) {
+  return (
+    <>
+      <button onClick={onPlayAgain} className={`flex ${playAgainCls}`} title="Start a new draft">
+        Play Again
+      </button>
+      <button
+        onClick={onFullReroll}
+        disabled={rerollLeft <= 0}
+        className={`flex ${rerollCls}`}
+        title="Reroll team"
+      >
+        {rerollIcon}
+        Reroll ({rerollLeft})
+      </button>
+    </>
+  )
+}
+
+const REROLL_ICON = (
+  <svg className="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M23 4v6h-6"/>
+    <path d="M1 20v-6h6"/>
+    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+  </svg>
+)
+const REROLL_CLS = 'items-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-[var(--accent,#4a6aff)] text-white font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity'
+const PLAY_AGAIN_CLS = 'items-center text-sm px-4 py-2.5 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 transition-colors'
+
+function PickRosterGrid({
+  roster,
+  pickedPlayerIds,
+  emptyRoles,
+  onPick,
+  layout,
+}: {
+  roster: PlayerSeason[]
+  pickedPlayerIds: Set<string>
+  emptyRoles: string[]
+  onPick: (p: PlayerSeason) => void
+  layout: 'mobile' | 'desktop'
+}) {
+  const rowCls = layout === 'mobile'
+    ? 'flex flex-wrap gap-2 justify-center no-scrollbar'
+    : 'flex flex-nowrap gap-3 justify-center w-full no-scrollbar'
+  return (
+    <div className={rowCls}>
+      {[...roster]
+        .sort((a, b) => ROLES.indexOf(a.role as (typeof ROLES)[number]) - ROLES.indexOf(b.role as (typeof ROLES)[number]))
+        .map(p => {
+          const isFilled = !emptyRoles.includes(p.role)
+          const isPicked = pickedPlayerIds.has(p.playerId)
+          return (
+            <PlayerCard
+              key={p.id}
+              player={p}
+              size="pick"
+              disabled={isFilled || isPicked}
+              onClick={() => !isFilled && !isPicked && onPick(p)}
+            />
+          )
+        })}
+    </div>
+  )
+}
+
+function MobilePickScreen({
   roster,
   pickedPlayerIds,
   emptyRoles,
@@ -180,85 +260,71 @@ function PickScreen({
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
 }) {
-  // Reroll·Play Again 버튼 — 모바일(카드 아래)·PC(하단 중앙) 각각 렌더
-  const rerollIcon = (
-    <svg className="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M23 4v6h-6"/>
-      <path d="M1 20v-6h6"/>
-      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-    </svg>
-  )
-  const rerollCls = 'items-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-[var(--accent,#4a6aff)] text-white font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity'
-  // Play Again — 결과 화면과 동일 동작이나 드래프트에선 ghost/보조 스타일로 리롤(accent)과 구분
-  const playAgainCls = 'items-center text-sm px-4 py-2.5 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 transition-colors'
-
   const teamTitle = spunTeam ? `${spunTeam.team} (${spunTeam.year})` : 'Choose your player'
-
   return (
-    <div className="flex flex-col gap-4 md:items-center md:gap-4 w-full">
-      {/* 모바일: 팀명 왼쪽 (예전) */}
-      <h2 className="text-lg font-bold text-white md:hidden">{teamTitle}</h2>
-      {/* 데스크톱: 팀명 가운데 대형 (참고 디자인) */}
-      <h2 className="hidden md:block text-3xl font-bold text-white text-center">{teamTitle}</h2>
-
-      {/* 모바일: wrap + w-28 고정 / 데스크톱: 한 줄 + draft-pick-w */}
-      <div className="flex flex-wrap gap-2 justify-center no-scrollbar md:flex-nowrap md:gap-3 md:w-full">
-        {[...roster]
-          .sort((a, b) => ROLES.indexOf(a.role as (typeof ROLES)[number]) - ROLES.indexOf(b.role as (typeof ROLES)[number]))
-          .map(p => {
-            const isFilled = !emptyRoles.includes(p.role)
-            const isPicked = pickedPlayerIds.has(p.playerId)
-            return (
-              <PlayerCard
-                key={p.id}
-                player={p}
-                size="pick"
-                disabled={isFilled || isPicked}
-                onClick={() => !isFilled && !isPicked && onPick(p)}
-              />
-            )
-          })
-        }
+    <div className="flex flex-col gap-4 w-full">
+      <h2 className="text-lg font-bold text-white">{teamTitle}</h2>
+      <PickRosterGrid
+        roster={roster}
+        pickedPlayerIds={pickedPlayerIds}
+        emptyRoles={emptyRoles}
+        onPick={onPick}
+        layout="mobile"
+      />
+      <div className="flex justify-center gap-2">
+        <PickScreenButtons
+          onPlayAgain={onPlayAgain}
+          onFullReroll={onFullReroll}
+          rerollLeft={rerollLeft}
+          playAgainCls={PLAY_AGAIN_CLS}
+          rerollCls={REROLL_CLS}
+          rerollIcon={REROLL_ICON}
+        />
       </div>
+    </div>
+  )
+}
 
-      {/* 모바일: 카드 아래 버튼 (예전) */}
-      <div className="md:hidden flex justify-center gap-2">
-        <button
-          onClick={onPlayAgain}
-          className={`flex ${playAgainCls}`}
-          title="Start a new draft"
-        >
-          Play Again
-        </button>
-        <button
-          onClick={onFullReroll}
-          disabled={rerollLeft <= 0}
-          className={`flex ${rerollCls}`}
-          title="Reroll team"
-        >
-          {rerollIcon}
-          Reroll ({rerollLeft})
-        </button>
-      </div>
-
-      {/* 데스크톱: 하단 중앙 버튼 (참고 디자인) */}
-      <div className="hidden md:flex justify-center gap-3 pt-2">
-        <button
-          onClick={onPlayAgain}
-          className={`flex ${playAgainCls}`}
-          title="Start a new draft"
-        >
-          Play Again
-        </button>
-        <button
-          onClick={onFullReroll}
-          disabled={rerollLeft <= 0}
-          className={`flex ${rerollCls}`}
-          title="Reroll team"
-        >
-          {rerollIcon}
-          Reroll ({rerollLeft})
-        </button>
+// 참고 디자인: 팀명 가운데 → 긴 카드 5장 → 하단 버튼 (md+ 전용)
+function DesktopPickScreen({
+  roster,
+  pickedPlayerIds,
+  emptyRoles,
+  onPick,
+  onFullReroll,
+  onPlayAgain,
+  rerollLeft,
+  spunTeam,
+}: {
+  roster: PlayerSeason[]
+  pickedPlayerIds: Set<string>
+  emptyRoles: string[]
+  onPick: (p: PlayerSeason) => void
+  onFullReroll: () => void
+  onPlayAgain: () => void
+  rerollLeft: number
+  spunTeam: { team: string; year: number } | null
+}) {
+  const teamTitle = spunTeam ? `${spunTeam.team} (${spunTeam.year})` : 'Choose your player'
+  return (
+    <div className="flex flex-col items-center gap-4 w-full">
+      <h2 className="text-3xl font-bold text-white text-center">{teamTitle}</h2>
+      <PickRosterGrid
+        roster={roster}
+        pickedPlayerIds={pickedPlayerIds}
+        emptyRoles={emptyRoles}
+        onPick={onPick}
+        layout="desktop"
+      />
+      <div className="flex justify-center gap-3 pt-2">
+        <PickScreenButtons
+          onPlayAgain={onPlayAgain}
+          onFullReroll={onFullReroll}
+          rerollLeft={rerollLeft}
+          playAgainCls={PLAY_AGAIN_CLS}
+          rerollCls={REROLL_CLS}
+          rerollIcon={REROLL_ICON}
+        />
       </div>
     </div>
   )
@@ -792,8 +858,8 @@ export default function DraftPage() {
       className={`min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white md:flex md:flex-col ${isDraftScreen ? 'md:fixed md:inset-0 md:z-10 md:min-h-0 md:overflow-hidden' : ''}`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      {/* Header — 드래프트: 로고만(참고 디자인). 그 외: 로고+슬롯 */}
-      <header className={`flex items-center px-4 py-3 ${isDraftScreen ? 'md:justify-center md:border-0 md:py-2' : 'justify-between border-b border-[var(--card-border,#2a2a4a)]'}`}>
+      {/* Header — 드래프트 PC: 숨김(참고 디자인). 그 외: 로고+슬롯 */}
+      <header className={`flex items-center px-4 py-3 ${isDraftScreen ? 'md:hidden' : 'justify-between border-b border-[var(--card-border,#2a2a4a)]'}`}>
         <Link href="/" className="font-black text-lg tracking-tight hidden md:inline">GRANDSLAM</Link>
         <Link href="/" className="text-white/25 hover:text-white/60 text-xs transition-colors md:hidden">← GRANDSLAM</Link>
         {state.phase !== 'IDLE' && !isDraftScreen && (
@@ -824,40 +890,61 @@ export default function DraftPage() {
         )}
 
         {(state.phase === 'SPIN' || state.phase === 'PICK') && (
-          <div className="flex flex-col gap-4 md:gap-3 md:items-center w-full">
-            {/* 모바일: grid 슬롯 (예전) */}
-            <div className="md:hidden grid grid-cols-5 gap-1.5">
-              {ROLES.map((role, i) => (
-                <MobileSlotItem
-                  key={role}
-                  role={role}
-                  player={state.picks[i]?.player ?? null}
+          <>
+            {/* ── 모바일 (예전 UI) ── */}
+            <div className="md:hidden flex flex-col gap-4 w-full">
+              <div className="grid grid-cols-5 gap-1.5">
+                {ROLES.map((role, i) => (
+                  <MobileSlotItem
+                    key={role}
+                    role={role}
+                    player={state.picks[i]?.player ?? null}
+                  />
+                ))}
+              </div>
+              <p className="text-center text-sm text-[var(--card-role,#a0a0c0)]">
+                Round {state.round + 1} / 5
+              </p>
+              {state.phase === 'SPIN' && (
+                <p className="text-center text-white animate-pulse">Spinning...</p>
+              )}
+              {state.phase === 'PICK' && state.spunTeam && (
+                <MobilePickScreen
+                  roster={machine.currentRoster}
+                  pickedPlayerIds={machine.pickedPlayerIds}
+                  emptyRoles={machine.emptyRoles}
+                  onPick={(p) => machine.pick(p, state.spunTeam!)}
+                  onFullReroll={machine.fullReroll}
+                  onPlayAgain={handlePlayAgain}
+                  rerollLeft={state.rerollLeft}
+                  spunTeam={state.spunTeam}
                 />
-              ))}
+              )}
             </div>
-            {/* 데스크톱: flex 슬롯 (참고 디자인) */}
-            <div className="hidden md:block w-full">
+
+            {/* ── 데스크톱 (참고 디자인) ── */}
+            <div className="hidden md:flex md:flex-col md:items-center md:gap-4 md:w-full md:flex-1 md:justify-center">
               <DraftSlotRow picks={state.picks} />
+              <p className="text-center text-sm text-[var(--card-role,#a0a0c0)]">
+                Round {state.round + 1} / 5
+              </p>
+              {state.phase === 'SPIN' && (
+                <p className="text-center text-white animate-pulse">Spinning...</p>
+              )}
+              {state.phase === 'PICK' && state.spunTeam && (
+                <DesktopPickScreen
+                  roster={machine.currentRoster}
+                  pickedPlayerIds={machine.pickedPlayerIds}
+                  emptyRoles={machine.emptyRoles}
+                  onPick={(p) => machine.pick(p, state.spunTeam!)}
+                  onFullReroll={machine.fullReroll}
+                  onPlayAgain={handlePlayAgain}
+                  rerollLeft={state.rerollLeft}
+                  spunTeam={state.spunTeam}
+                />
+              )}
             </div>
-            <p className="text-center text-sm text-[var(--card-role,#a0a0c0)]">
-              Round {state.round + 1} / 5
-            </p>
-            {state.phase === 'SPIN' && (
-              <p className="text-center text-white animate-pulse">Spinning...</p>
-            )}
-            {state.phase === 'PICK' && state.spunTeam && (
-              <PickScreen
-                roster={machine.currentRoster}
-                pickedPlayerIds={machine.pickedPlayerIds}
-                emptyRoles={machine.emptyRoles}
-                onPick={(p) => machine.pick(p, state.spunTeam!)}
-                onFullReroll={machine.fullReroll}
-                onPlayAgain={handlePlayAgain}
-                rerollLeft={state.rerollLeft}
-                spunTeam={state.spunTeam}
-              />
-            )}
-          </div>
+          </>
         )}
 
         {state.phase === 'SIM' && (

@@ -29,14 +29,10 @@ body {
   -ms-overflow-style: none;
 }
 
-/* 데스크톱 드래프트 — 슬롯(0.7) / 선수 픽 카드(0.6) 열 너비 분리 */
+/* 데스크톱 드래프트 — 선수 픽 카드(0.6 배율, 9:16) */
 @media (min-width: 768px) {
-  .draft-col-w {
-    width: min(calc((100% - 3rem) / 5 * 0.7), calc((100dvh - 22rem) * 5 / 7 * 0.7));
-    flex-shrink: 0;
-  }
   .draft-pick-w {
-    width: min(calc((100% - 3rem) / 5 * 0.6), calc((100dvh - 22rem) * 5 / 8 * 0.6));
+    width: min(calc((100% - 3rem) / 5 * 0.6), calc((100dvh - 24rem) * 9 / 16 * 0.6));
     flex-shrink: 0;
   }
   .pc-pick { container-type: inline-size; }

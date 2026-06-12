@@ -20,9 +20,9 @@ type Props = {
   onClick?: () => void
 }
 
-// pick: 5:8 세로형(5:7보다 길게). 모바일 w-28, 데스크톱 .draft-pick-w
+// pick: 모바일 w-28 5:8. 데스크톱 9:16 세로형 + .draft-pick-w
 const SIZE_CLS: Record<CardSize, string> = {
-  pick:   'w-28 aspect-[5/8] md:flex-none draft-pick-w',
+  pick:   'w-28 aspect-[5/8] md:flex-none md:aspect-[9/16] draft-pick-w',
   slot:   'w-20 h-28',
   result: 'w-32 h-44',
 }
