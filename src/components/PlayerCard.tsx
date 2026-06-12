@@ -111,7 +111,7 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* 중앙 사진 / 아바타 */}
       {/* plain <img> 사용 — Next.js Image Optimizer 경유 시 R2 외부 URL onError 즉시 폴백 버그 회피 */}
-      <div className="flex-1 relative w-full">
+      <div className="flex-1 relative w-full" data-photo={player.photo ?? 'null'} data-photo-enabled={process.env.NEXT_PUBLIC_PHOTOS_ENABLED ?? 'unset'}>
         {photoSrc(player) && !imgError ? (
           <img
             src={photoSrc(player)!}
