@@ -68,7 +68,7 @@ const INITIAL_STATE: DraftState = {
   round: 0,
   picks: [null, null, null, null, null],
   spunTeam: null,
-  rerollLeft: 1,
+  rerollLeft: 2,
   revealStep: 0,
   simResult: null,
   error: null,
@@ -87,7 +87,7 @@ function reducer(state: DraftState, action: Action): DraftState {
         seed: action.seed,
         round: 0,
         spunTeam: action.spunTeam,
-        rerollLeft: 1,
+        rerollLeft: 2,
       }
 
     // SPIN_DONE: round-start spin result → PICK screen

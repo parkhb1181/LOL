@@ -415,11 +415,6 @@ function ResultScreen({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const handleShare = async () => {
-    if (!navigator.share || !shareUrl) return
-    await navigator.share({ url: shareUrl, title: `GRANDSLAM — ${simResult.grade}` })
-  }
-
   const timeline = buildTimeline(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-white'
 
@@ -486,7 +481,7 @@ function ResultScreen({
         <div className="w-full max-w-sm">
           <button
             onClick={() => setShowDetail(v => !v)}
-            className="w-full text-xs text-white/25 hover:text-white/50 transition-colors py-2 text-center tracking-wider"
+            className="w-full text-xs text-white/50 hover:text-white/90 transition-colors py-2.5 text-center tracking-widest border border-white/10 hover:border-white/30 rounded-lg"
           >
             {showDetail ? '▲ Hide Details' : '▼ Match Details'}
           </button>
@@ -557,14 +552,6 @@ function ResultScreen({
         >
           {copied ? 'Copied!' : 'Copy Link'}
         </button>
-        {typeof navigator !== 'undefined' && 'share' in navigator && (
-          <button
-            onClick={handleShare}
-            className="px-5 py-2.5 rounded-lg bg-[var(--card-bg,#1a1a2e)] border border-[var(--card-border,#2a2a4a)] text-[var(--card-name,#e8e8f0)] hover:border-white/40 transition-colors text-sm"
-          >
-            Share
-          </button>
-        )}
         <button
           onClick={onReset}
           className="px-5 py-2.5 rounded-lg bg-[var(--accent,#4a6aff)] text-white font-bold hover:opacity-90 transition-opacity text-sm"

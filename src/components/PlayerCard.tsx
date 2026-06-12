@@ -143,12 +143,18 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* FINALS MVP overlay — photo bottom edge, all sizes */}
+        {/* MVP overlay — bottom edge: WORLDS MVP (blue) vs FINALS MVP (yellow) */}
         {hasCrown && (
           <div className="absolute bottom-0 inset-x-0 z-20 flex justify-center pb-0.5">
-            <span className="text-[7px] font-black text-yellow-300 tracking-[0.12em] uppercase bg-black/60 px-1.5 py-0.5 rounded-sm leading-none">
-              FINALS MVP
-            </span>
+            {isWorlds ? (
+              <span className="text-[7px] font-black text-sky-200 tracking-[0.12em] uppercase bg-sky-900/80 px-1.5 py-0.5 rounded-sm leading-none">
+                WORLDS MVP
+              </span>
+            ) : (
+              <span className="text-[7px] font-black text-yellow-300 tracking-[0.12em] uppercase bg-black/60 px-1.5 py-0.5 rounded-sm leading-none">
+                FINALS MVP
+              </span>
+            )}
           </div>
         )}
       </div>
