@@ -6,22 +6,31 @@ import './globals.css'
 
 const BASE_URL = 'https://grandslamlol.vercel.app'
 
+const SEO_TITLE = 'GRANDSLAM — All-Time Pro Roster Builder'
+const SEO_DESCRIPTION =
+  'Unofficial fan project — not affiliated with Riot Games. Build your all-time pro roster from LCK, LPL, LEC & LCS and play through Spring, MSI, Summer, and Worlds.'
+
 export const metadata: Metadata = {
-  title: 'GRANDSLAM',
-  description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+  title: SEO_TITLE,
+  description: SEO_DESCRIPTION,
   metadataBase: new URL(BASE_URL),
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
-    title: 'GRANDSLAM — LoL All-Time Draft Simulator',
-    description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
     url: BASE_URL,
     siteName: 'GRANDSLAM',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GRANDSLAM' }],
     type: 'website',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'GRANDSLAM — LoL All-Time Draft Simulator',
-    description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
     images: ['/og-image.png'],
   },
   verification: {
