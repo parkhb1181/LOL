@@ -142,7 +142,8 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* Center: photo / avatar */}
       {/* Plain <img> — avoids Next.js Image Optimizer R2 onError fallback bug */}
-      <div className="flex-1 relative w-full" data-photo={player.photo ?? 'null'}>
+      {/* overflow-hidden: clips group-hover:scale-110 within photo area (button has it too, but intermediate div breaks compositing clip) */}
+      <div className="flex-1 relative w-full overflow-hidden" data-photo={player.photo ?? 'null'}>
         {photoSrc(player) && !imgError ? (
           <img
             src={photoSrc(player)!}
