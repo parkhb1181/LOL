@@ -153,7 +153,7 @@ type OpponentsFile = { regular: Opponent[]; intl: Opponent[] };
 // pipeline-input/awards.csv 컬럼 (헤더 고정)
 // playerId,year,league,award,value,split
 // award ∈ SEASON_MVP|FINALS_MVP|WORLDS_MVP|ALLPRO_1ST|ALLPRO_2ND|ALLPRO_3RD|EDITORIAL
-// value는 EDITORIAL 전용(±1~5 정수, 앵커 보정 한정·최대 10건), 그 외 award는 공란
+// value는 EDITORIAL 전용(±1~5 정수, 앵커 보정 한정·최대 30건), 그 외 award는 공란
 // split: SPRING/SUMMER/WINTER/NONE — 04-ratings 행별 합산 (복수 행 = 누적 가산)
 // MSI_MVP는 가점 대상 아님 — awards.csv에 주석 보존만
 ```

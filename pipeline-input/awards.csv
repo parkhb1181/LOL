@@ -11,11 +11,24 @@
 playerId,year,league,award,value,split
 
 # ═══════════════════════════════════════════════════
-# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 10건)
+# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 30건)
 # ═══════════════════════════════════════════════════
 # Faker 2015: 역대 최고 MID 피크. Worlds+MSI 동시 제패 + FINALS_MVP에도 OVR 97 → 99 보정
 # SEASON_MVP 2015는 Duke(Spring)/Ssumday(Summer) 수상으로 Faker 미포함 — 팀 성적 대비 개인 공헌 보완
 Faker,2015,LCK,EDITORIAL,4,NONE
+# Samsung White 2014: 국내 무관이나 역대 최강급 우승팀 (결승 미진출로 FINALS_MVP 미수령)
+Looper,2014,LCK,EDITORIAL,3,NONE
+DanDy,2014,LCK,EDITORIAL,3,NONE
+PawN,2014,LCK,EDITORIAL,3,NONE
+imp,2014,LCK,EDITORIAL,3,NONE
+Mata,2014,LCK,EDITORIAL,3,NONE
+# HLE 2021 8강: Chovy·Deft 하드캐리 공식 지표 미포착
+Chovy,2021,LCK,EDITORIAL,5,NONE
+Deft,2021,LCK,EDITORIAL,4,NONE
+# MAD Lions 2021: Elyoya 데뷔 시즌 LEC 우승 정규 압도 / Humanoid 팀 내 에이스 / Armut 월즈 부진
+Elyoya,2021,LEC,EDITORIAL,2,NONE
+Humanoid,2021,LEC,EDITORIAL,1,NONE
+Armut,2021,LEC,EDITORIAL,-1,NONE
 
 # ═══════════════════════════════════════════════════
 # WORLDS_MVP (2014~2024) — 2013 제도 미시상
@@ -423,3 +436,21 @@ Tian,2024,LPL,ALLPRO_1ST,,SUMMER
 knight (Zhuo Ding),2024,LPL,ALLPRO_1ST,,SUMMER
 GALA,2024,LPL,ALLPRO_1ST,,SUMMER
 Meiko,2024,LPL,ALLPRO_1ST,,SUMMER
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL_OVERRIDES — 개별 보정 (±1~5, §4.3 EDITORIAL)
+# 컬럼: playerId,year,league,award,delta,split,reason
+# (reason은 7번째 컬럼 — 파서 무시, 추적용 기록)
+# ═══════════════════════════════════════════════════
+# 2021
+Chovy,2021,LCK,EDITORIAL,5,NONE,HLE 8강 하드캐리 공식 미포착
+Deft,2021,LCK,EDITORIAL,4,NONE,HLE 8강 하드캐리 공식 미포착
+Armut,2021,LEC,EDITORIAL,-1,NONE,서머 클러치 MVP이나 월즈 부진으로 평가 하락
+Elyoya,2021,LEC,EDITORIAL,2,NONE,데뷔 시즌 LEC 우승 정규 압도
+Humanoid,2021,LEC,EDITORIAL,1,NONE,팀 내 에이스 평가
+# 2014 Samsung White — 국내 무관이나 역대 최강급 평가
+Looper,2014,LCK,EDITORIAL,3,NONE,국내 무관이나 역대 최강급 평가
+DanDy,2014,LCK,EDITORIAL,3,NONE,국내 무관이나 역대 최강급 평가
+PawN,2014,LCK,EDITORIAL,3,NONE,국내 무관이나 역대 최강급 평가
+imp,2014,LCK,EDITORIAL,3,NONE,국내 무관이나 역대 최강급 평가
+Mata,2014,LCK,EDITORIAL,3,NONE,국내 무관이나 역대 최강급 평가
