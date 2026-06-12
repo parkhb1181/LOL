@@ -143,19 +143,21 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
+        {/* FINALS MVP overlay — photo bottom edge, all sizes */}
+        {hasCrown && (
+          <div className="absolute bottom-0 inset-x-0 z-20 flex justify-center pb-0.5">
+            <span className="text-[7px] font-black text-yellow-300 tracking-[0.12em] uppercase bg-black/60 px-1.5 py-0.5 rounded-sm leading-none">
+              FINALS MVP
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Bottom: name + (FINALS MVP) + team · year */}
+      {/* Bottom: name + team · year */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
         <p className="text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight" style={{ fontSize: size === 'slot' ? '9px' : '11px' }}>
           {name}
         </p>
-        {/* FINALS MVP badge — excluded from slot size (not enough space) */}
-        {hasCrown && size !== 'slot' && (
-          <p className="text-center text-[7px] font-bold text-yellow-400/80 tracking-[0.12em] leading-tight uppercase mt-0.5">
-            Finals MVP
-          </p>
-        )}
         <p className="text-center text-[var(--card-meta,#9090b8)] truncate" style={{ fontSize: '8px' }}>
           {player.team} · {player.year}
         </p>
