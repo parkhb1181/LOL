@@ -323,6 +323,31 @@ async function main() {
     })
   }
 
+  // ─── 동률 해시 분산 후처리 ────────────────────────────────────────────────
+  // 조건: 같은 team|year 5명 전원 OVR 동률 AND OVR < 85 AND Worlds 진출X
+  // playerId 문자코드 합 % 3 → +0/+1/+2 (결정론, 재현성 유지, EDITORIAL 행 불요)
+  {
+    const tieGroups = new Map<string, typeof rated>()
+    for (const r of rated) {
+      const k = `${r.team}|${r.year}`
+      if (!tieGroups.has(k)) tieGroups.set(k, [])
+      tieGroups.get(k)!.push(r)
+    }
+    for (const [key, group] of tieGroups) {
+      if (group.length < 5) continue
+      const baseOvr = group[0].ovr
+      if (!group.every(r => r.ovr === baseOvr)) continue  // 동률 아님
+      if (baseOvr >= 85) continue                          // 고티어 보존
+      const [team, yearStr] = key.split('|')
+      const wKey = `${normalizeTeam(team)}|${yearStr}`
+      if (worldsByTeamYear.has(wKey)) continue             // Worlds 진출 팀 보존
+      for (const r of group) {
+        const hash = Array.from(r.playerId).reduce((s, c) => s + c.charCodeAt(0), 0) % 3
+        r.ovr = Math.max(75, Math.min(99, r.ovr + hash))
+      }
+    }
+  }
+
   fs.writeFileSync(outPath, JSON.stringify(rated, null, 2), 'utf-8')
 
   console.log(`\nratings.json 저장: ${rated.length}건`)
