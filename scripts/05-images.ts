@@ -138,20 +138,11 @@ async function main() {
     fs.readFileSync(path.join(process.cwd(), 'pipeline-cache', 'results.json'), 'utf-8')
   )
 
-  // ── 2. Worlds/MSI 화이트리스트 ──
-  const ALIASES: Record<string, string> = { 'SK Telecom T1 2': 'SK Telecom T1' }
-  const norm = (t: string) => ALIASES[t] ?? t
-
-  const intlTeams = new Set<string>()
-  for (const r of results) {
-    if (r.leagueCode === 'WORLDS' || r.leagueCode === 'MSI') {
-      intlTeams.add(`${norm(r.team)}|${r.year}`)
-    }
-  }
-
-  const whitelistPS = players.filter(p => intlTeams.has(`${norm(p.team)}|${p.year}`))
+  // 전체 players.json 대상 (카드 풀 컷 이후 모든 선수에 사진 필요)
+  // photo 이미 있는 PlayerSeason은 webp 캐시 존재 여부로 스킵됨
+  const whitelistPS = players
   const uniquePlayerIds = [...new Set(whitelistPS.map(p => p.playerId))]
-  console.log(`화이트리스트: ${whitelistPS.length} PlayerSeason / ${uniquePlayerIds.length} 선수`)
+  console.log(`대상: ${whitelistPS.length} PlayerSeason / ${uniquePlayerIds.length} 선수`)
 
   // ── 3. PlayerImages 쿼리 (배치 30, cargo 5s throttle) ──
   const CARGO_BATCH = 30

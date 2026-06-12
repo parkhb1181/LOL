@@ -72,6 +72,15 @@ async function main() {
     if (ex === undefined || r.place < ex) worldsIndex.set(k, r.place)
   }
 
+  // 2017 이하 Worlds 진출 팀 집합 — 카드 풀 컷 기준
+  const worldsCutSet = new Set<string>()
+  for (const r of results) {
+    if (r.leagueCode !== 'WORLDS') continue
+    if (!r.overviewPage.includes('World Championship')) continue
+    if (r.year > 2017) continue
+    worldsCutSet.add(`${normalizeTeam(r.team)}|${r.year}`)
+  }
+
   // 국내 플옵 인덱스: normalizeTeam 적용 — 인덱스와 조회 모두 정규화해야 일관성 유지
   const playoffIndex = new Map<string, number>()
   for (const r of results) {
@@ -95,23 +104,21 @@ async function main() {
   const errors: string[] = []
 
   for (const entry of rated) {
-    // 카드 풀 컷 — LCK/LPL: 국내 플옵 기준 / LEC/LCS: Worlds·MSI 진출 기준
     const cardTeamKey = `${normalizeTeam(entry.team)}|${entry.year}`
     const isLECorLCS = entry.leagueCode === 'LEC' || entry.leagueCode === 'LCS'
 
-    if (isLECorLCS) {
-      // LEC/LCS: 국내 플옵 진출 OR Worlds·MSI 진출 (국내 결과가 없는 엣지케이스 보완)
+    // 2017 이하: 리그 무관, Worlds 진출 팀만 유지
+    if (entry.year <= 2017) {
+      if (!worldsCutSet.has(cardTeamKey)) continue
+    } else if (isLECorLCS) {
+      // 2018+ LEC/LCS: 국내 플옵 진출 OR Worlds·MSI 진출
       const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
       const hasIntl = worldsIndex.has(cardTeamKey) || msiIndex.has(cardTeamKey)
       if (teamPlayoffPlace === undefined && !hasIntl) continue
     } else {
-      // LCK/LPL: 2013=결승진출(≤2위)만 / 2014+=플옵 진출 이상
+      // 2018+ LCK/LPL: 플옵 진출 이상
       const teamPlayoffPlace = playoffIndex.get(cardTeamKey)
-      if (entry.year <= 2013) {
-        if (teamPlayoffPlace === undefined || teamPlayoffPlace > 2) continue
-      } else {
-        if (teamPlayoffPlace === undefined) continue
-      }
+      if (teamPlayoffPlace === undefined) continue
     }
 
     const teamSlug = slugify(entry.team)
