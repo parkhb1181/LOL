@@ -1,17 +1,42 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
+const BASE_URL = 'https://grandslamlol.vercel.app'
+
 export const metadata: Metadata = {
-  title: 'GRANDSLAM — LoL All-Time Draft',
-  description: 'Build your all-time LoL roster and simulate a season.',
+  title: 'GRANDSLAM',
+  description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    title: 'GRANDSLAM — LoL All-Time Draft Simulator',
+    description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+    url: BASE_URL,
+    siteName: 'GRANDSLAM',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GRANDSLAM' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GRANDSLAM — LoL All-Time Draft Simulator',
+    description: 'Draft the greatest League of Legends players of all time and compete for the World Championship.',
+    images: ['/og-image.png'],
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#0a0a0f',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-[#0d0d1a]">
         {children}
-        {/* §10 면책 — 전 페이지 공통 */}
+        {/* §10 Disclaimer — all pages */}
         <footer className="border-t border-[#2a2a4a] mt-12 px-4 py-5 text-center text-[10px] text-[#6868a0] leading-relaxed">
           Unofficial fan project · Images:{' '}
           <a href="https://lol.fandom.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/40 transition-colors">
@@ -23,6 +48,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Legal
           </a>
         </footer>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
