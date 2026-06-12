@@ -56,8 +56,7 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
   const name = player.nameEn
   const isWorlds = player.frame === 'WORLDS'
   const hasMsi = player.msiWinner
-  const hasCrown = player.crown
-  const isWorldsMvp = player.worldsMvp  // awards.csv WORLDS_MVP 기준 — frame 추론 아님
+  const isWorldsMvp = player.worldsMvp  // awards.csv WORLDS_MVP 기준
   const badges = player.badges
 
   // Card background gradient: Worlds → blue, MSI → gold, default → dark
@@ -144,18 +143,12 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* MVP overlay — WORLDS MVP(blue): awards.csv 기준, FINALS MVP(yellow): 국내/MSI */}
-        {hasCrown && (
+        {/* MVP overlay — WORLDS MVP만 표시 (FINALS MVP 배지 없음) */}
+        {isWorldsMvp && (
           <div className="absolute bottom-0 inset-x-0 z-20 flex justify-center pb-0.5">
-            {isWorldsMvp ? (
-              <span className="text-[7px] font-black text-sky-200 tracking-[0.12em] uppercase bg-sky-900/80 px-1.5 py-0.5 rounded-sm leading-none">
-                WORLDS MVP
-              </span>
-            ) : (
-              <span className="text-[7px] font-black text-yellow-300 tracking-[0.12em] uppercase bg-black/60 px-1.5 py-0.5 rounded-sm leading-none">
-                FINALS MVP
-              </span>
-            )}
+            <span className="text-[7px] font-black text-sky-200 tracking-[0.12em] uppercase bg-sky-900/80 px-1.5 py-0.5 rounded-sm leading-none">
+              WORLDS MVP
+            </span>
           </div>
         )}
       </div>
