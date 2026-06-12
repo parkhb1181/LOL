@@ -40,9 +40,8 @@ const ROLE_WEIGHT: Record<string, number> = {
   MID: 1.10, JGL: 1.10, ADC: 1.00, TOP: 0.95, SUP: 0.85,
 }
 
-// §9 Elo scale (tuning parameter) — 기본 14 (2026-06 montecarlo 채택). 하니스는 setEloScale로 스윕.
-// 데이터 플로우: 모듈 전역 _eloScale를 winProb가 읽음 → 시뮬 시작 전 setEloScale로 주입, 미주입 시 기본값 사용.
-let _eloScale = 14
+// §9 Elo scale — 기본 10 (2026-06 v2: 90 OVR 트로피 확률 ~2×, S=14 대비)
+let _eloScale = 10
 export function setEloScale(s: number): void { _eloScale = s }
 export function getEloScale(): number { return _eloScale }
 

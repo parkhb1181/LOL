@@ -455,11 +455,11 @@ function main() {
   )
   console.log('[확정] 표 확인 후 호빈이 S·intl cap 채택 — 스크립트는 값을 자동 적용하지 않음')
 
-  // ── 5단계: 확정 파라미터(S=14, opponents intl cap=89, grade.ts GRADE_CUT) 그리디 검증 ──
+  // ── 5단계: 확정 파라미터(S=10, opponents intl cap=86, grade.ts GRADE_CUT) 그리디 검증 ──
   console.log('\n══════════ 5단계: 확정 파라미터 그리디 검증 ══════════')
-  console.log(`[sim] S=${getEloScale()} (기본값) | [opponents] intl rating cap=89 (파일 반영) | [grade] GRADE_CUT:`)
+  console.log(`[sim] S=${getEloScale()} (기본값) | [opponents] MSI/Worlds 레이팅 20%↓ | [grade] GRADE_CUT:`)
   console.log(`  ${JSON.stringify(GRADE_CUT)}`)
-  setEloScale(14)
+  setEloScale(10)
   const greedyFinal = runPolicy('greedy', N, spinIndex, teamMap, playerMap, opponents)
   printVerify('그리디 픽 — 확정 파라미터', greedyFinal, N)
 }

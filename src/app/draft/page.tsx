@@ -4,7 +4,7 @@
 // §13.5 Hydration guard: initial render matches server, fetch after mount
 // GAME_SPEC §1: auto-spin immediately when data loads (skip IDLE screen)
 // GAME_SPEC §2: single reroll button (fullReroll)
-// GAME_SPEC §7: RESULT 4-stage timeline
+// GAME_SPEC §7: RESULT — 섹션별 마지막 경기 4줄
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
@@ -13,6 +13,13 @@ import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
+import { highlightRoundLabel, highlightSummary, pickHighlightSteps, type HighlightStep } from '@/lib/simHighlight'
+
+function sectionShort(h: HighlightStep): string {
+  if (h.section === 'Spring Split') return 'Spring'
+  if (h.section === 'Summer Split') return 'Summer'
+  return h.section
+}
 
 // ── Data load hook ────────────────────────────────────────────────────────────
 // §13.5: fetch only after mount (no window/fetch needed in SSR)
@@ -177,10 +184,7 @@ function PickScreenButtons({
   rerollIcon: ReactNode
 }) {
   return (
-    <>
-      <button onClick={onPlayAgain} className={`flex ${playAgainCls}`} title="Start a new draft">
-        Play Again
-      </button>
+    <div className="flex flex-col items-center w-full">
       <button
         onClick={onFullReroll}
         disabled={rerollLeft <= 0}
@@ -190,7 +194,14 @@ function PickScreenButtons({
         {rerollIcon}
         Reroll ({rerollLeft})
       </button>
-    </>
+      <button
+        onClick={onPlayAgain}
+        className={`flex mt-12 md:mt-14 ${playAgainCls}`}
+        title="Start a new draft"
+      >
+        Play Again
+      </button>
+    </div>
   )
 }
 
@@ -202,7 +213,7 @@ const REROLL_ICON = (
   </svg>
 )
 const REROLL_CLS = 'items-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-[var(--accent,#4a6aff)] text-white font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity'
-const PLAY_AGAIN_CLS = 'items-center text-sm px-4 py-2.5 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 transition-colors'
+const PLAY_AGAIN_CLS = 'items-center text-xs px-3 py-1.5 rounded-md border border-transparent text-[var(--card-role,#a0a0c0)] hover:text-white/80 hover:border-[var(--card-border,#2a2a4a)] transition-colors'
 
 function PickRosterGrid({
   roster,
@@ -271,7 +282,7 @@ function MobilePickScreen({
         onPick={onPick}
         layout="mobile"
       />
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center pt-1">
         <PickScreenButtons
           onPlayAgain={onPlayAgain}
           onFullReroll={onFullReroll}
@@ -316,7 +327,7 @@ function DesktopPickScreen({
         onPick={onPick}
         layout="desktop"
       />
-      <div className="flex justify-center gap-3 pt-2">
+      <div className="flex justify-center pt-2">
         <PickScreenButtons
           onPlayAgain={onPlayAgain}
           onFullReroll={onFullReroll}
@@ -330,46 +341,38 @@ function DesktopPickScreen({
   )
 }
 
-// ── REVEAL screen — 1000ms interval, game circle visualization ───────────────
+// ── REVEAL — 섹션별 마지막 경기 4개만, 1.8s 간격 ─────────────────────────────
 function RevealScreen({
-  steps,
+  highlights,
   revealStep,
   onSkip,
 }: {
-  steps: SimStep[]
+  highlights: HighlightStep[]
   revealStep: number
   onSkip: () => void
 }) {
-  const visible = steps.slice(0, revealStep)
-  const current = visible[visible.length - 1]
-  const past = visible.slice(0, -1)
+  const current = revealStep > 0 ? highlights[revealStep - 1] : null
+  const step = current?.step
 
-  // Current step outcome (W/L/neutral)
-  function stepResult(step: SimStep): 'win' | 'lose' | 'neutral' {
-    if (step.stage.endsWith('_missed') || step.stage === 'worlds_swiss_out') return 'lose'
-    if (step.stage.endsWith('win') || step.stage.endsWith('_out')) return 'neutral'
-    const s0 = step.series?.[0]
+  function stepResult(s: SimStep): 'win' | 'lose' | 'neutral' {
+    if (s.stage.endsWith('_missed') || s.stage === 'worlds_swiss_out' || s.stage === 'msi_out') return 'lose'
+    if (s.stage.endsWith('win')) return 'win'
+    const s0 = s.series?.[0]
     if (s0) return s0.win ? 'win' : 'lose'
     return 'neutral'
   }
 
-  const cur = current ? stepResult(current) : 'neutral'
-  const isRegular = current?.stage.includes('_regular') ?? false
-  const isMissed  = current?.stage.includes('_missed') || current?.stage === 'worlds_swiss_out'
-
-  // stage key → section label (tiny header)
-  function sectionLabel(stage: string): string {
-    if (stage.startsWith('Spring')) return 'Spring Split'
-    if (stage.startsWith('Summer')) return 'Summer Split'
-    if (stage.startsWith('msi'))    return 'MSI'
-    if (stage.startsWith('worlds')) return 'Worlds'
-    return stage.replace(/_/g, ' ')
-  }
+  const cur = step ? stepResult(step) : 'neutral'
+  const isMissed = step && (
+    step.stage.includes('_missed') ||
+    step.stage === 'worlds_swiss_out' ||
+    step.stage === 'msi_out'
+  )
+  const ser = step?.series?.[0]
 
   return (
-    <div className="flex flex-col" style={{ minHeight: '70vh' }}>
-      {/* Skip */}
-      <div className="flex justify-end mb-4">
+    <div className="flex flex-col items-center" style={{ minHeight: '55vh' }}>
+      <div className="w-full max-w-sm flex justify-end mb-2">
         <button
           onClick={onSkip}
           className="text-xs px-3 py-1.5 rounded border border-white/10 text-white/30 hover:text-white/60 transition-colors"
@@ -378,54 +381,34 @@ function RevealScreen({
         </button>
       </div>
 
-      {/* Previous steps — compact summary */}
-      {past.length > 0 && (
-        <div className="flex flex-col gap-1 mb-6 opacity-40">
-          {past.map((step, i) => {
-            const r = stepResult(step)
-            return (
-              <div key={i} className={`text-xs flex items-center gap-2 ${r === 'win' ? 'text-green-400' : r === 'lose' ? 'text-red-400' : 'text-white/50'}`}>
-                <span className="w-3 text-center">{r === 'win' ? '✓' : r === 'lose' ? '✗' : '·'}</span>
-                <span className="truncate">{step.label}</span>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Current step — hero */}
-      {current && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-8">
-          <p className="text-[10px] tracking-[0.35em] text-white/20 uppercase">
-            {sectionLabel(current.stage)}
+      {current && step && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center py-6 w-full max-w-sm">
+          <p className="text-[10px] tracking-[0.35em] text-white/25 uppercase">
+            {current.section}
           </p>
-          <h2 className={`text-2xl font-bold leading-snug ${
-            cur === 'win'  ? 'text-green-300' :
-            cur === 'lose' ? 'text-red-300' :
-            isMissed       ? 'text-white/40' : 'text-white'
+          <p className={`text-2xl font-black tracking-wide ${
+            cur === 'win' ? 'text-white/90' :
+            cur === 'lose' ? 'text-white/70' :
+            'text-white/50'
           }`}>
-            {current.label}
+            {highlightRoundLabel(current)}
+          </p>
+          <h2 className={`text-xl font-bold leading-snug px-2 ${
+            cur === 'win' ? 'text-green-300' :
+            cur === 'lose' ? 'text-red-300' :
+            'text-white/70'
+          }`}>
+            {ser ? `${ser.win ? 'WIN' : 'LOSS'} vs ${ser.opp}` : step.label}
           </h2>
 
-          {/* DNQ indicator */}
-          {isMissed && (
-            <div className="flex items-center gap-2 mt-1">
-              <div className="w-4 h-4 rounded-full bg-white/15" />
-              <span className="text-white/30 text-base font-bold tracking-[0.2em]">DNQ</span>
-            </div>
-          )}
-
-          {/* Series result: large score + per-game W/L circles */}
-          {!isRegular && !isMissed && current.series?.[0] && (
-            <div className="flex flex-col items-center gap-3 mt-2">
-              <div className={`text-5xl font-black tabular-nums ${
-                current.series[0].win ? 'text-green-400' : 'text-red-400'
-              }`}>
-                {current.series[0].score}
+          {ser && (
+            <div className="flex flex-col items-center gap-3">
+              <div className={`text-5xl font-black tabular-nums ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+                {ser.score}
               </div>
-              {current.series[0].games && current.series[0].games.length > 0 && (
+              {ser.games && ser.games.length > 0 && (
                 <div className="flex gap-2.5">
-                  {current.series[0].games.map((gWin, idx) => (
+                  {ser.games.map((gWin, idx) => (
                     <div
                       key={idx}
                       className={`w-4 h-4 rounded-full ${gWin ? 'bg-green-400' : 'bg-red-400/80'}`}
@@ -436,136 +419,28 @@ function RevealScreen({
             </div>
           )}
 
-          {/* Regular season: W/L dot grid */}
-          {isRegular && current.series && current.series.length > 0 && (
-            <div className="flex flex-wrap gap-1 justify-center max-w-[200px] mt-2">
-              {current.series.map((s, j) => (
-                <div key={j} className={`w-2 h-2 rounded-full ${s.win ? 'bg-green-400' : 'bg-red-400/60'}`} />
-              ))}
-            </div>
+          {isMissed && !ser && (
+            <span className="text-white/30 text-sm tracking-widest">DNQ</span>
           )}
         </div>
       )}
 
-      {/* Progress indicator */}
-      <div className="flex justify-center gap-1.5 mt-4 pb-2">
-        {steps.map((_, i) => (
+      <div className="flex justify-center gap-2 mt-6 pb-2">
+        {highlights.map((h, i) => (
           <div
-            key={i}
+            key={h.section}
+            title={h.section}
             className={`rounded-full transition-all duration-300 ${
-              i < revealStep ? 'w-3 h-1.5 bg-white/50' : 'w-1.5 h-1.5 bg-white/15'
+              i < revealStep ? 'w-8 h-2 bg-white/50' : 'w-2 h-2 bg-white/15'
             }`}
           />
         ))}
       </div>
+      <p className="text-[10px] text-white/20 mt-2 tabular-nums">
+        {Math.min(revealStep, highlights.length)} / {highlights.length}
+      </p>
     </div>
   )
-}
-
-// ── GAME_SPEC §7 — extract 4-stage result timeline ───────────────────────────
-
-type TLEntry = {
-  stage: string
-  status: 'win' | 'lose' | 'out'
-  detail: string
-}
-
-function buildTimeline(steps: SimStep[]): TLEntry[] {
-  const byStage = new Map(steps.map(s => [s.stage, s]))
-  const entries: TLEntry[] = []
-
-  // Spring Split
-  {
-    const fin    = byStage.get('Spring_final')
-    const sf     = byStage.get('Spring_sf')
-    const missed = byStage.get('Spring_missed')
-    if (fin) {
-      const win = fin.series?.[0]?.win ?? false
-      const opp = fin.series?.[0]?.opp ?? '?'
-      entries.push({
-        stage: 'Spring',
-        status: win ? 'win' : 'lose',
-        detail: win ? `Champions — def. ${opp}` : `Runner-up — lost to ${opp}`,
-      })
-    } else if (sf && !(sf.series?.[0]?.win)) {
-      entries.push({
-        stage: 'Spring',
-        status: 'lose',
-        detail: `SF Eliminated — lost to ${sf.series?.[0]?.opp ?? '?'}`,
-      })
-    } else if (missed) {
-      entries.push({ stage: 'Spring', status: 'out', detail: 'Playoffs DNQ' })
-    }
-  }
-
-  // MSI
-  {
-    const win = byStage.get('msi_win')
-    const out = byStage.get('msi_out')
-    if (win) {
-      entries.push({ stage: 'MSI', status: 'win', detail: 'Champions' })
-    } else if (out) {
-      const roundLabel = byStage.has('msi_r3') ? 'Finals' : byStage.has('msi_r2') ? 'SF' : 'QF'
-      const lastRound  = byStage.get('msi_r3') ?? byStage.get('msi_r2') ?? byStage.get('msi_r1')
-      const opp        = lastRound?.series?.[0]?.opp ?? '?'
-      entries.push({ stage: 'MSI', status: 'lose', detail: `${roundLabel} Eliminated — lost to ${opp}` })
-    } else {
-      entries.push({ stage: 'MSI', status: 'out', detail: 'DNQ' })
-    }
-  }
-
-  // Summer Split
-  {
-    const fin    = byStage.get('Summer_final')
-    const sf     = byStage.get('Summer_sf')
-    const missed = byStage.get('Summer_missed')
-    if (fin) {
-      const win = fin.series?.[0]?.win ?? false
-      const opp = fin.series?.[0]?.opp ?? '?'
-      entries.push({
-        stage: 'Summer',
-        status: win ? 'win' : 'lose',
-        detail: win ? `Champions — def. ${opp}` : `Runner-up — lost to ${opp}`,
-      })
-    } else if (sf && !(sf.series?.[0]?.win)) {
-      entries.push({
-        stage: 'Summer',
-        status: 'lose',
-        detail: `SF Eliminated — lost to ${sf.series?.[0]?.opp ?? '?'}`,
-      })
-    } else if (missed) {
-      entries.push({ stage: 'Summer', status: 'out', detail: 'Playoffs DNQ' })
-    }
-  }
-
-  // Worlds
-  {
-    const win      = byStage.get('worlds_win')
-    const fin      = byStage.get('worlds_final')
-    const sf       = byStage.get('worlds_sf')
-    const qf       = byStage.get('worlds_qf')
-    const swissOut = byStage.get('worlds_swiss_out')
-    if (win) {
-      const finOpp = fin?.series?.[0]?.opp ?? '?'
-      entries.push({ stage: 'Worlds', status: 'win', detail: `Champions — def. ${finOpp}` })
-    } else if (fin && !(fin.series?.[0]?.win)) {
-      entries.push({ stage: 'Worlds', status: 'lose', detail: `Finals — lost to ${fin.series?.[0]?.opp ?? '?'}` })
-    } else if (sf && !(sf.series?.[0]?.win)) {
-      entries.push({ stage: 'Worlds', status: 'lose', detail: `SF Eliminated — lost to ${sf.series?.[0]?.opp ?? '?'}` })
-    } else if (qf && !(qf.series?.[0]?.win)) {
-      entries.push({ stage: 'Worlds', status: 'lose', detail: `QF Eliminated — lost to ${qf.series?.[0]?.opp ?? '?'}` })
-    } else if (swissOut) {
-      const lastSwissLoss = [5, 4, 3, 2, 1]
-        .map(n => byStage.get(`worlds_swiss_r${n}`))
-        .find(s => s && s.series?.[0]?.win === false)
-      const swissOpp = lastSwissLoss?.series?.[0]?.opp
-      entries.push({ stage: 'Worlds', status: 'lose', detail: swissOpp ? `Swiss Eliminated — lost to ${swissOpp}` : swissOut.label })
-    } else {
-      entries.push({ stage: 'Worlds', status: 'out', detail: 'DNQ' })
-    }
-  }
-
-  return entries
 }
 
 // Grade accent colors (display-only)
@@ -578,22 +453,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':     'text-[#6868a0]',
 }
 
-const TL_ICON: Record<TLEntry['status'], string> = { win: '●', lose: '●', out: '○' }
-const TL_COLOR: Record<TLEntry['status'], string> = {
-  win: 'text-green-400',
-  lose: 'text-red-400',
-  out: 'text-white/25',
-}
-
-// Match detail: stage prefix → section label
-const DETAIL_SECTIONS = [
-  { prefix: 'Spring', label: 'Spring Split' },
-  { prefix: 'msi',    label: 'MSI' },
-  { prefix: 'Summer', label: 'Summer Split' },
-  { prefix: 'worlds', label: 'Worlds' },
-]
-
-// ── RESULT screen — GAME_SPEC §7: 5-player cards + 4-stage timeline + grade ──
+// ── RESULT screen — 등급 + 섹션별 마지막 경기 4줄 + 픽 카드 ─────────────────
 function ResultScreen({
   simResult,
   picks,
@@ -606,7 +466,6 @@ function ResultScreen({
   onReset: () => void
 }) {
   const [copied, setCopied] = useState(false)
-  const [showDetail, setShowDetail] = useState(false)
 
   const pIds = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
   const shareUrl = typeof window !== 'undefined'
@@ -620,13 +479,17 @@ function ResultScreen({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const timeline = buildTimeline(simResult.steps)
+  const highlights = pickHighlightSteps(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-white'
 
-  // Match detail: grouped by section
-  const detailSections = DETAIL_SECTIONS
-    .map(s => ({ label: s.label, steps: simResult.steps.filter(st => st.stage.startsWith(s.prefix)) }))
-    .filter(s => s.steps.length > 0)
+  function rowTone(h: HighlightStep): string {
+    const s = h.step
+    if (s.stage.endsWith('_missed') || s.stage === 'msi_out' || s.stage === 'worlds_swiss_out') {
+      return 'text-white/25'
+    }
+    const win = s.series?.[0]?.win ?? s.stage.endsWith('win')
+    return win ? 'text-green-300/90' : 'text-red-300/90'
+  }
 
   return (
     <div className="flex flex-col gap-8 items-center">
@@ -652,26 +515,17 @@ function ResultScreen({
         </p>
       </div>
 
-      {/* GAME_SPEC §7: 4-stage result timeline */}
-      {timeline.length > 0 && (
-        <div className="w-full max-w-xs flex flex-col gap-2.5">
-          {timeline.map((entry, i) => (
-            <div key={i} className="flex items-baseline gap-3">
-              <span className={`text-[10px] ${TL_COLOR[entry.status]} flex-shrink-0`}>{TL_ICON[entry.status]}</span>
-              <div className="flex items-baseline gap-2 min-w-0">
-                <span className="text-xs font-bold text-white/70 flex-shrink-0 w-14">{entry.stage}</span>
-                <span className={`text-xs truncate ${
-                  entry.status === 'win'  ? 'text-green-300/80' :
-                  entry.status === 'lose' ? 'text-red-300/80' :
-                  'text-white/25'
-                }`}>
-                  {entry.detail}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* 섹션별 마지막 경기 — 2열 고정 (라운드+경기 한 줄) */}
+      <div className="w-full max-w-md flex flex-col gap-2.5">
+        {highlights.map((h, i) => (
+          <div key={i} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-4 items-baseline">
+            <span className="text-xs font-bold text-white/50">{sectionShort(h)}</span>
+            <span className={`text-xs tabular-nums whitespace-nowrap overflow-hidden text-ellipsis ${rowTone(h)}`}>
+              {highlightSummary(h)}
+            </span>
+          </div>
+        ))}
+      </div>
 
       {/* 5-player cards — PC (md+): grid-cols-5 single row, mobile: grid-cols-3 */}
       {/* overflow-hidden: blocks hover:scale-105 transform from creating scrollbars */}
@@ -680,74 +534,6 @@ function ResultScreen({
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
         ))}
       </div>
-
-      {/* Match detail toggle — grouped by section */}
-      {detailSections.length > 0 && (
-        <div className="w-full max-w-sm">
-          <button
-            onClick={() => setShowDetail(v => !v)}
-            className="w-full text-xs text-white/50 hover:text-white/90 transition-colors py-2.5 text-center tracking-widest border border-white/10 hover:border-white/30 rounded-lg"
-          >
-            {showDetail ? '▲ Hide Details' : '▼ Match Details'}
-          </button>
-          {showDetail && (
-            <div className="bg-[var(--card-bg,#1a1a2e)] rounded-xl border border-[var(--card-border,#2a2a4a)] p-4 flex flex-col gap-5 mt-1">
-              {detailSections.map((section, si) => (
-                <div key={si}>
-                  <p className="text-[9px] tracking-[0.4em] uppercase text-white/20 mb-2">{section.label}</p>
-                  {section.steps.map((step, i) => {
-                    const ser = step.series
-                    const isReg = step.stage.includes('_regular')
-                    const noSeries = !ser || ser.length === 0
-
-                    if (isReg && ser && ser.length > 0) {
-                      const wins = ser.filter(s => s.win).length
-                      return (
-                        <div key={i} className="mb-3">
-                          <div className="text-xs text-white/40 mb-1.5">
-                            Regular Season <span className="text-green-400/70">{wins}W</span> <span className="text-red-400/50">{ser.length - wins}L</span>
-                          </div>
-                          <div className="flex flex-wrap gap-0.5">
-                            {ser.map((s, j) => (
-                              <div key={j} className={`w-2.5 h-2.5 rounded-sm ${s.win ? 'bg-green-500/60' : 'bg-red-500/30'}`} title={`vs ${s.opp} ${s.score}`} />
-                            ))}
-                          </div>
-                        </div>
-                      )
-                    }
-
-                    if (noSeries) {
-                      return (
-                        <div key={i} className={`text-xs mb-1 ${step.stage.endsWith('win') ? 'text-yellow-400/60' : 'text-white/20'}`}>
-                          {step.label}
-                        </div>
-                      )
-                    }
-
-                    // Series match — score + per-game circles
-                    return ser!.map((s, j) => (
-                      <div key={`${i}-${j}`} className="mb-3">
-                        <div className={`flex items-center gap-2 text-xs mb-1 ${s.win ? 'text-green-400/90' : 'text-red-400/90'}`}>
-                          <span className="font-mono font-bold tabular-nums min-w-[28px]">{s.score}</span>
-                          <span className="text-white/25">vs</span>
-                          <span className="flex-1 text-white/70 truncate">{s.opp}</span>
-                        </div>
-                        {s.games && s.games.length > 0 && (
-                          <div className="flex gap-1.5 ml-8">
-                            {s.games.map((gWin, gi) => (
-                              <div key={gi} className={`w-3 h-3 rounded-full ${gWin ? 'bg-green-500/70' : 'bg-red-500/50'}`} />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  })}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Buttons */}
       <div className="flex gap-3 flex-wrap justify-center">
@@ -828,8 +614,7 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
-  // REVEAL phase: sequential step display at 1000ms interval
-  // Creates interval when phase is REVEAL, cleaned up by effect return
+  // REVEAL phase: 섹션별 마지막 경기 4개, 1.8s 간격
   const revealIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(() => {
     if (state.phase !== 'REVEAL') {
@@ -841,7 +626,7 @@ export default function DraftPage() {
     }
     revealIntervalRef.current = setInterval(() => {
       machine.revealNext()
-    }, 1000)
+    }, 1800)
     return () => {
       if (revealIntervalRef.current) clearInterval(revealIntervalRef.current)
     }
@@ -858,10 +643,16 @@ export default function DraftPage() {
       className={`min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white md:flex md:flex-col ${isDraftScreen ? 'md:fixed md:inset-0 md:z-10 md:min-h-0 md:overflow-hidden' : ''}`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      {/* Header — 드래프트 PC: 숨김(참고 디자인). 그 외: 로고+슬롯 */}
-      <header className={`flex items-center px-4 py-3 ${isDraftScreen ? 'md:hidden' : 'justify-between border-b border-[var(--card-border,#2a2a4a)]'}`}>
-        <Link href="/" className="font-black text-lg tracking-tight hidden md:inline">GRANDSLAM</Link>
-        <Link href="/" className="text-white/25 hover:text-white/60 text-xs transition-colors md:hidden">← GRANDSLAM</Link>
+      {/* Header — GRANDSLAM → 홈 (드래프트 포함 전 phase) */}
+      <header
+        className={`flex items-center shrink-0 px-4 md:px-10 py-3 border-b border-[var(--card-border,#2a2a4a)] ${
+          !isDraftScreen ? 'justify-between' : ''
+        }`}
+        style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}
+      >
+        <Link href="/" className="font-black text-lg tracking-tight hover:text-white/80 transition-colors">
+          GRANDSLAM
+        </Link>
         {state.phase !== 'IDLE' && !isDraftScreen && (
           <div className="hidden md:block">
             <RosterSlots picks={state.picks} />
@@ -953,7 +744,7 @@ export default function DraftPage() {
 
         {state.phase === 'REVEAL' && state.simResult && (
           <RevealScreen
-            steps={state.simResult.steps}
+            highlights={pickHighlightSteps(state.simResult.steps)}
             revealStep={state.revealStep}
             onSkip={machine.revealSkip}
           />
@@ -967,12 +758,6 @@ export default function DraftPage() {
             onReset={machine.reset}
           />
         )}
-        {/* 모바일 전용: 하단 GRANDSLAM 로고 */}
-        <div className="md:hidden text-center pt-8 pb-2">
-          <Link href="/" className="text-white/15 hover:text-white/30 text-[10px] font-black tracking-[0.4em] uppercase transition-colors">
-            GRANDSLAM
-          </Link>
-        </div>
       </main>
 
       {/* Footer is global in layout.tsx §10 */}
