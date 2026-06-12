@@ -1,18 +1,17 @@
 'use client'
 // §6.2 PlayerCard — size variant: 'pick' | 'slot' | 'result'
 // 색·재질 토큰은 CSS 변수로만 수신 (DESIGN_GUIDE 토큰 확정 전 하드코딩 금지)
-// 사진: 결정론적 R2 URL(NEXT_PUBLIC_R2_PUBLIC_BASE_URL/players/{id}.webp) → onError 아바타 폴백
-// players.json photo 필드 불사용 — R2에 파일이 올라오는 대로 자동 반영
+// 사진: player.photo (players.json R2 URL) → onError 아바타 폴백
+// §5 킬스위치: NEXT_PUBLIC_PHOTOS_ENABLED=false 시 전원 아바타
 
 import Image from 'next/image'
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
 
-// 결정론적 R2 URL 생성 — 환경변수 미설정 또는 NEXT_PUBLIC_PHOTOS_ENABLED=false 시 null
-function photoUrl(id: string): string | null {
+// §5 킬스위치 적용 후 photo 필드 반환
+function photoSrc(player: PlayerSeason): string | null {
   if (process.env.NEXT_PUBLIC_PHOTOS_ENABLED === 'false') return null
-  const base = process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL
-  return base ? `${base}/players/${id}.webp` : null
+  return player.photo  // 06-upload-r2.ts가 players.json에 기록한 R2 URL
 }
 
 export type CardSize = 'pick' | 'slot' | 'result'
@@ -111,10 +110,9 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
 
       {/* 중앙 사진 / 아바타 */}
       <div className="flex-1 relative w-full">
-        {photoUrl(player.id) && !imgError ? (
+        {photoSrc(player) && !imgError ? (
           <Image
-            // 결정론적 URL: R2에 파일이 있으면 즉시 표시, 없으면 onError → 아바타
-            src={photoUrl(player.id)!}
+            src={photoSrc(player)!}
             alt={player.nameEn}
             fill
             className="object-cover object-top"
