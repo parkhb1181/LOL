@@ -62,13 +62,16 @@ type Action =
 
 // ── Initial state ─────────────────────────────────────────────────────────────
 
+// 라운드당 풀팀 리롤 최대 횟수 (GAME_SPEC §2)
+const REROLL_MAX = 2
+
 const INITIAL_STATE: DraftState = {
   phase: 'IDLE',
   seed: 0,
   round: 0,
   picks: [null, null, null, null, null],
   spunTeam: null,
-  rerollLeft: 2,
+  rerollLeft: REROLL_MAX,
   revealStep: 0,
   simResult: null,
   error: null,
@@ -80,18 +83,22 @@ function reducer(state: DraftState, action: Action): DraftState {
   switch (action.type) {
 
     // START: store seed, receive first spin result → PICK
+    // Phase guard prevents StrictMode double-dispatch (only valid from IDLE)
     case 'START':
+      if (state.phase !== 'IDLE') return state
       return {
         ...INITIAL_STATE,
         phase: 'PICK',
         seed: action.seed,
         round: 0,
         spunTeam: action.spunTeam,
-        rerollLeft: 2,
+        rerollLeft: REROLL_MAX,
       }
 
     // SPIN_DONE: round-start spin result → PICK screen
+    // Phase guard prevents StrictMode double-dispatch (only valid from SPIN)
     case 'SPIN_DONE':
+      if (state.phase !== 'SPIN') return state
       return { ...state, phase: 'PICK', spunTeam: action.spunTeam, error: null }
 
     // FULL_REROLL: full team re-draw (GAME_SPEC §2) — new team + new year
@@ -283,7 +290,11 @@ export function useDraftMachine(data: DraftData | null) {
     // Already-picked team keys → REPEAT_PENALTY (same for reroll)
     const pickedTeamKeys = new Set(state.picks.filter(Boolean).map(p => p!.teamYear.key))
     const rng = getRng(state.round)
-    rng() // skip slot for first spin draw
+    // getRng(round)는 매 호출마다 동일 시드로 재생성된다. 같은 라운드에서 리롤을 여러 번 눌러도
+    // 매번 같은 결과가 나오던 버그를 방지하기 위해, 이미 소비한 리롤 수만큼 스트림을 추가로 건너뛴다.
+    // 원본 스핀이 index 0을 소비하므로 1번째 리롤은 index 1, 2번째 리롤은 index 2를 사용한다.
+    const rerollsUsed = REROLL_MAX - state.rerollLeft
+    for (let i = 0; i <= rerollsUsed; i++) rng()
     const pool = buildSpinPool(emptyRoles, pickedIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
     const teamKey = weightedDraw(pool, teamMap, rng, pickedTeamKeys)
     const spunTeam = teamMap.get(teamKey)!

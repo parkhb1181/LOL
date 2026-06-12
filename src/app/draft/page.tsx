@@ -632,19 +632,35 @@ export default function DraftPage() {
   const machine = useDraftMachine(data)
   const { state } = machine
 
+  // StrictMode fires effects twice (setup→cleanup→setup). These refs guard against
+  // double invocation: once fired for the current phase/round, subsequent calls are ignored.
+  const startFiredRef = useRef(false)
+  const spinFiredRoundRef = useRef(-1)
+
   // GAME_SPEC §1: auto-spin immediately when data loads — skip IDLE screen
   // Triggers when both data (loaded) and phase (IDLE) are satisfied
   useEffect(() => {
-    if (data && state.phase === 'IDLE') {
-      machine.start()
+    if (!data || state.phase !== 'IDLE') {
+      // Reset guard when leaving IDLE so Play Again (RESET→IDLE) works correctly
+      if (state.phase !== 'IDLE') startFiredRef.current = false
+      return
     }
+    if (startFiredRef.current) return   // Already fired; ignore StrictMode re-invocation
+    startFiredRef.current = true
+    machine.start()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.phase])
 
   // SPIN phase: automatically call spinNext
   // Triggers when phase transitions to SPIN
   useEffect(() => {
-    if (state.phase !== 'SPIN' || !data) return
+    if (state.phase !== 'SPIN' || !data) {
+      // Reset guard when leaving SPIN phase
+      if (state.phase !== 'SPIN') spinFiredRoundRef.current = -1
+      return
+    }
+    if (spinFiredRoundRef.current === state.round) return  // Already fired for this round
+    spinFiredRoundRef.current = state.round
     const emptyRoles = ROLES.filter((_, i) => state.picks[i] === null)
     const pickedIds = new Set(
       state.picks.filter(Boolean).map(p => p!.player.playerId)
