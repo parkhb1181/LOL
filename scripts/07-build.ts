@@ -239,7 +239,7 @@ async function main() {
   // §4.5 DoD 보고
   console.log('\n=== Phase 1 DoD 검증 ===')
   console.log(`players.json: ${playerSeasons.length}건 (LCK/LPL 플옵 + LEC/LCS Worlds·MSI 진출)`)
-  console.log(`teams.json: ${teamYears.length}건 (목표 ≥ 550)`)
+  console.log(`teams.json: ${teamYears.length}건 (목표 ≥ 300, 컷 반영 하향)`)
 
   const roles5 = Object.keys(spinIndex).length === 5
   const rolesNonEmpty = Object.values(spinIndex).every(v => v.length > 0)

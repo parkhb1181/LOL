@@ -291,7 +291,7 @@ async function main() {
     // 99 희소성 보호: baseOvr===99이면 보정 무시
     const ovr = baseOvr === 99
       ? 99
-      : Math.max(75, Math.min(98, baseOvr + individualBonus))
+      : Math.max(75, Math.min(99, baseOvr + individualBonus))
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'
