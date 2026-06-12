@@ -79,13 +79,13 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
       disabled={disabled}
       className={[
         SIZE_CLS[size],
-        'relative flex flex-col rounded-lg overflow-hidden select-none transition-transform',
+        'group relative flex flex-col rounded-lg overflow-hidden select-none',
         cardBg,
         'border',
         cardBorder,
         disabled
           ? 'opacity-40 cursor-not-allowed'
-          : 'cursor-pointer hover:scale-105 active:scale-95',
+          : 'cursor-pointer active:scale-95 transition-transform',
       ].join(' ')}
       aria-label={`${player.nameEn} ${player.year} ${player.team}`}
     >
@@ -132,12 +132,12 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
           <img
             src={photoSrc(player)!}
             alt={player.nameEn}
-            className="absolute inset-0 w-full h-full object-cover object-top"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110 origin-top"
             onError={() => setImgError(true)}
           />
         ) : (
           <div
-            className="absolute inset-0 flex items-center justify-center text-white/80 font-black text-2xl"
+            className="absolute inset-0 flex items-center justify-center text-white/80 font-black text-2xl transition-transform duration-300 group-hover:scale-110"
             style={{ background: avatarBg(player.teamSlug) }}
           >
             {player.nameEn.charAt(0).toUpperCase()}
