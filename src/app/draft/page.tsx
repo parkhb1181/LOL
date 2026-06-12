@@ -113,6 +113,7 @@ function PickScreen({
   emptyRoles,
   onPick,
   onFullReroll,
+  onPlayAgain,
   rerollLeft,
   spunTeam,
 }: {
@@ -121,6 +122,7 @@ function PickScreen({
   emptyRoles: string[]
   onPick: (p: PlayerSeason) => void
   onFullReroll: () => void
+  onPlayAgain: () => void
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
 }) {
@@ -133,6 +135,8 @@ function PickScreen({
     </svg>
   )
   const rerollCls = 'items-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-[var(--accent,#4a6aff)] text-white font-semibold hover:opacity-90 disabled:opacity-30 transition-opacity'
+  // Play Again — 결과 화면과 동일 동작이나 드래프트에선 ghost/보조 스타일로 리롤(accent)과 구분
+  const playAgainCls = 'items-center text-sm px-4 py-2.5 rounded-lg border border-[var(--card-border,#2a2a4a)] text-[var(--card-role,#a0a0c0)] hover:text-white hover:border-white/40 transition-colors'
 
   return (
     <div className="flex flex-col gap-4">
@@ -140,20 +144,30 @@ function PickScreen({
         <h2 className="text-lg font-bold text-white">
           {spunTeam ? `${spunTeam.team} (${spunTeam.year})` : 'Choose your player'}
         </h2>
-        {/* GAME_SPEC §2: PC — 팀명 옆 Reroll */}
-        <button
-          onClick={onFullReroll}
-          disabled={rerollLeft <= 0}
-          className={`hidden md:flex ${rerollCls}`}
-          title="Reroll team"
-        >
-          {rerollIcon}
-          Reroll ({rerollLeft})
-        </button>
+        {/* PC — 팀명 옆: Play Again(ghost) + Reroll(accent) (GAME_SPEC §2) */}
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            onClick={onPlayAgain}
+            className={`flex ${playAgainCls}`}
+            title="Start a new draft"
+          >
+            Play Again
+          </button>
+          <button
+            onClick={onFullReroll}
+            disabled={rerollLeft <= 0}
+            className={`flex ${rerollCls}`}
+            title="Reroll team"
+          >
+            {rerollIcon}
+            Reroll ({rerollLeft})
+          </button>
+        </div>
       </div>
 
       {/* Roster grid — sorted TOP→JGL→MID→ADC→SUP */}
-      <div className="flex flex-wrap gap-2 justify-center no-scrollbar">
+      {/* 데스크톱: 한 줄 고정(nowrap)+gap-3, 카드 폭의 (100%-3rem)/5 계산과 일치 */}
+      <div className="flex flex-wrap gap-2 justify-center no-scrollbar md:flex-nowrap md:gap-3 md:w-full">
         {[...roster]
           .sort((a, b) => ROLES.indexOf(a.role as (typeof ROLES)[number]) - ROLES.indexOf(b.role as (typeof ROLES)[number]))
           .map(p => {
@@ -172,8 +186,15 @@ function PickScreen({
         }
       </div>
 
-      {/* 모바일: 카드 아래 Reroll */}
-      <div className="md:hidden flex justify-center">
+      {/* 모바일: 카드 아래 — Play Again(ghost) + Reroll(accent) */}
+      <div className="md:hidden flex justify-center gap-2">
+        <button
+          onClick={onPlayAgain}
+          className={`flex ${playAgainCls}`}
+          title="Start a new draft"
+        >
+          Play Again
+        </button>
         <button
           onClick={onFullReroll}
           disabled={rerollLeft <= 0}
@@ -632,6 +653,15 @@ export default function DraftPage() {
   const machine = useDraftMachine(data)
   const { state } = machine
 
+  // Play Again 공통 초기화: machine.reset → IDLE → auto-spin이 새 시드 생성(라운드·리롤 초기화).
+  // 드래프트 화면에선 픽이 1개 이상이면 진행 손실 방지를 위해 확인 1회 후 실행.
+  // 결과 화면(ResultScreen)은 확인 없이 machine.reset을 직접 호출한다.
+  const handlePlayAgain = () => {
+    const hasPicks = state.picks.some(Boolean)
+    if (hasPicks && !window.confirm('Start over?')) return
+    machine.reset()
+  }
+
   // StrictMode fires effects twice (setup→cleanup→setup). These refs guard against
   // double invocation: once fired for the current phase/round, subsequent calls are ignored.
   const startFiredRef = useRef(false)
@@ -697,8 +727,16 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
+  // 드래프트(SPIN·PICK) 화면만 데스크톱에서 1화면 고정 — 세로 스크롤 제거.
+  // md:fixed inset-0 로 뷰포트를 덮어 전역 footer(layout.tsx)를 가려 body 스크롤 자체를 없앤다.
+  // 모바일은 기존 min-h-[100dvh] 흐름 유지 (footer 정상 노출).
+  const isDraftScreen = state.phase === 'SPIN' || state.phase === 'PICK'
+
   return (
-    <div className="min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white md:flex md:flex-col" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+    <div
+      className={`min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white md:flex md:flex-col ${isDraftScreen ? 'md:fixed md:inset-0 md:z-10 md:min-h-0 md:overflow-hidden' : ''}`}
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
       {/* Header — PC: 로고+슬롯, 모바일: 최소 링크만 (슬롯은 main 상단으로) */}
       <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--card-border,#2a2a4a)]">
         <Link href="/" className="font-black text-lg tracking-tight hidden md:inline">GRANDSLAM</Link>
@@ -711,8 +749,15 @@ export default function DraftPage() {
       </header>
 
       {/* Main content */}
-      {/* Expand to max-w-3xl at RESULT — fits 5 cards (5×128px+gap) in one row */}
-      <main className={`mx-auto px-4 py-8 w-full md:flex-1 md:flex md:flex-col md:justify-center ${state.phase === 'RESULT' ? 'max-w-3xl' : 'max-w-2xl'}`}>
+      {/* RESULT: max-w-3xl (5×128px 한 줄). 드래프트: 데스크톱에서 폭을 넓혀(카드 확대용)
+          세로 패딩 축소 + min-h-0 으로 flex 자식이 줄어들 수 있게 하고 중앙 균형 배치. */}
+      <main className={`mx-auto px-4 py-8 w-full md:flex-1 md:flex md:flex-col md:justify-center ${
+        state.phase === 'RESULT'
+          ? 'max-w-3xl'
+          : isDraftScreen
+          ? 'max-w-2xl md:max-w-[1800px] md:px-10 md:py-4 md:min-h-0'
+          : 'max-w-2xl'
+      }`}>
 
         {/* IDLE: loading or waiting for auto-spin — rarely visible in practice */}
         {state.phase === 'IDLE' && (
@@ -748,6 +793,7 @@ export default function DraftPage() {
                 emptyRoles={machine.emptyRoles}
                 onPick={(p) => machine.pick(p, state.spunTeam!)}
                 onFullReroll={machine.fullReroll}
+                onPlayAgain={handlePlayAgain}
                 rerollLeft={state.rerollLeft}
                 spunTeam={state.spunTeam}
               />
