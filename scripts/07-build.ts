@@ -137,6 +137,7 @@ async function main() {
       ovr: entry.ovr,
       frame: entry.frame,
       crown: entry.crown,
+      worldsMvp: entry.worldsMvp,
       msiWinner: entry.msiWinner,
       photo: existingPhotos.get(id) ?? null,  // 기존 R2 URL 보존, 없으면 null
       badges: entry.badges,

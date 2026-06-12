@@ -25,6 +25,7 @@ export type RatedEntry = {
   ovr: number
   frame: 'WORLDS' | 'NORMAL'
   crown: boolean
+  worldsMvp: boolean
   msiWinner: boolean
   badges: ('LEAGUE_CHAMP' | 'ALLPRO_1ST')[]
 }
@@ -330,6 +331,9 @@ async function main() {
     // crown: 해당 시즌 FINALS_MVP 또는 WORLDS_MVP 수상 시만 (SEASON_MVP 제외 — 호빈 확정)
     const crown = awards.some(a => a.award === 'FINALS_MVP' || a.award === 'WORLDS_MVP')
 
+    // worldsMvp: awards.csv WORLDS_MVP 행 기준 — frame 추론 금지 (Faker 2015/Nuguri 2020 오분류 방지)
+    const worldsMvp = awards.some(a => a.award === 'WORLDS_MVP')
+
     // msiWinner: MSI Place=1
     const msiWinner = msiPlace === 1
 
@@ -349,6 +353,7 @@ async function main() {
       ovr,
       frame,
       crown,
+      worldsMvp,
       msiWinner,
       badges,
     })
