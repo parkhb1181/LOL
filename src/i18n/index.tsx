@@ -1,12 +1,12 @@
 'use client'
-// English-only — i18n 제거, ko 토글 삭제
+// English-only — i18n removed, KO toggle removed
 import { en } from './en'
 
 export function useLang() {
   return { t: en }
 }
 
-// Passthrough — layout.tsx import 호환용
+// Passthrough — retained for layout.tsx import compatibility
 export function LangProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }

@@ -1,12 +1,12 @@
-// §8.2 동적 OG 이미지 — edge runtime, 타이포+도형 전용 (이미지·한글폰트 금지)
-// /r의 generateMetadata가 compute 후 표시값만 쿼리로 전달:
+// §8.2 Dynamic OG image — edge runtime, typography+shapes only (no images, no Korean fonts)
+// /r generateMetadata computes and passes display values only via query:
 // ?g={grade}&t={SPLIT1|MSI|...}&ovr={teamOvr}&l1..l5={name|ROLE|OVR}
 export const runtime = 'edge'
 
 import { ImageResponse } from 'next/og'
 import type { NextRequest } from 'next/server'
 
-// 등급별 강조 색상 (draft/page.tsx와 동일)
+// Grade accent colors (same as draft/page.tsx)
 const GRADE_COLOR: Record<string, string> = {
   'GRAND SLAM':   '#ffd700',
   'LEGENDARY':    '#c090ff',
@@ -16,7 +16,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':      '#5a6070',
 }
 
-// 폰트 크기 — 글자 수에 따라 조정
+// Font size — adjusted by character count
 const GRADE_FONT_SIZE: Record<string, number> = {
   'GRAND SLAM':   100,
   'LEGENDARY':    118,
@@ -26,7 +26,7 @@ const GRADE_FONT_SIZE: Record<string, number> = {
   'REBUILD':      132,
 }
 
-// 역할 레이블 색상
+// Role label colors
 const ROLE_COLOR: Record<string, string> = {
   TOP: '#ef9090',
   JGL: '#80e880',
@@ -35,7 +35,7 @@ const ROLE_COLOR: Record<string, string> = {
   SUP: '#c888f0',
 }
 
-// 트로피 표기 (영문 고정 — §8.2)
+// Trophy labels (English only — §8.2)
 const TROPHY_LABEL: Record<string, string> = {
   SPLIT1: 'SPRING',
   MSI:    'MSI',
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
   const gradeColor    = GRADE_COLOR[grade]    ?? '#d0d8e8'
   const gradeFontSize = GRADE_FONT_SIZE[grade] ?? 100
 
-  // Inter Black 900 — edge CDN 캐시 (Latin 서브셋, ~60KB)
+  // Inter Black 900 — edge CDN cache (Latin subset, ~60KB)
   let fontData: ArrayBuffer | null = null
   try {
     fontData = await fetch(
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
       { cache: 'force-cache' }
     ).then(r => r.arrayBuffer())
   } catch {
-    // 로드 실패 시 기본 sans-serif 폴백 (텍스트는 표시됨)
+    // On load failure, fall back to default sans-serif (text still visible)
   }
 
   const fonts = fontData
@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
           fontFamily: '"Inter", system-ui, sans-serif',
         }}
       >
-        {/* ── 헤더 바 ── */}
+        {/* ── Header bar ── */}
         <div
           style={{
             height: 52,
@@ -110,7 +110,7 @@ export async function GET(req: NextRequest) {
           </span>
         </div>
 
-        {/* ── 중앙 섹션: 등급 + 트로피 + OVR ── */}
+        {/* ── Center section: grade + trophies + OVR ── */}
         <div
           style={{
             flex: 1,
@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
             paddingBottom: 8,
           }}
         >
-          {/* 등급 */}
+          {/* Grade */}
           <div
             style={{
               fontSize: gradeFontSize,
@@ -134,7 +134,7 @@ export async function GET(req: NextRequest) {
             {grade}
           </div>
 
-          {/* 트로피 라인 */}
+          {/* Trophy line */}
           {trophyLine ? (
             <div
               style={{
@@ -188,7 +188,7 @@ export async function GET(req: NextRequest) {
           </div>
         </div>
 
-        {/* ── 플레이어 스트립 ── */}
+        {/* ── Player strip ── */}
         <div
           style={{
             height: 186,
@@ -209,7 +209,7 @@ export async function GET(req: NextRequest) {
                 borderRight: i < 4 ? '1px solid #111c2c' : 'none',
               }}
             >
-              {/* 역할 */}
+              {/* Role */}
               <span
                 style={{
                   color: ROLE_COLOR[p.role] ?? '#3a5060',
@@ -235,7 +235,7 @@ export async function GET(req: NextRequest) {
                 {p.ovr}
               </span>
 
-              {/* 선수명 */}
+              {/* Player name */}
               <span
                 style={{
                   color: '#4a6080',

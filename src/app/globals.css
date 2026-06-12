@@ -2,18 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 다크 테마 배경 — 모바일 하단 흰 여백 방지 */
-html, body {
+/* Dark theme background — prevents overscroll/bottom white gap */
+html {
   background-color: #0d0d1a;
+  min-height: 100%;
+  overscroll-behavior: none;
+}
+body {
+  background-color: #0d0d1a;
+  min-height: 100dvh;
+  overscroll-behavior: none;
 }
 
-/* WORLDS 카드 시머 스윕 — PlayerCard.tsx animate-[shimmer_...] 전용 */
+/* WORLDS card shimmer sweep — for PlayerCard.tsx animate-[shimmer_...] */
 @keyframes shimmer {
   0%   { transform: translateX(-120%) skewX(-12deg); }
   100% { transform: translateX(220%)  skewX(-12deg); }
 }
 
-/* 스크롤바 숨김 유틸리티 */
+/* Scrollbar hide utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

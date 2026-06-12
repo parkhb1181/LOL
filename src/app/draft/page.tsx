@@ -1,10 +1,10 @@
 'use client'
-// §6.1 드래프트 게임 본체 — IDLE→SPIN→PICK→SIM→REVEAL→RESULT
-// §13.4 데이터 플로우 주석 의무 (호빈: React 첫 경험)
-// §13.5 Hydration 방어: 초기 렌더 서버와 동일 상태, mount 후 fetch
-// GAME_SPEC §1: 데이터 로드 완료 즉시 자동 스핀 (IDLE 화면 skip)
-// GAME_SPEC §2: 리롤 단일 버튼 (fullReroll)
-// GAME_SPEC §7: RESULT 4단계 타임라인
+// §6.1 Draft game body — IDLE→SPIN→PICK→SIM→REVEAL→RESULT
+// §13.4 Data flow comments required (first React project)
+// §13.5 Hydration guard: initial render matches server, fetch after mount
+// GAME_SPEC §1: auto-spin immediately when data loads (skip IDLE screen)
+// GAME_SPEC §2: single reroll button (fullReroll)
+// GAME_SPEC §7: RESULT 4-stage timeline
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
@@ -14,15 +14,15 @@ import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
 
-// ── 데이터 로드 훅 ────────────────────────────────────────────────────────────
-// §13.5: fetch는 mount 후에만 (SSR에서 window/fetch 불요)
+// ── Data load hook ────────────────────────────────────────────────────────────
+// §13.5: fetch only after mount (no window/fetch needed in SSR)
 function useDraftData() {
   const [data, setData] = useState<DraftData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // mount 후 JSON 4종 병렬 로드
+    // Parallel load of 4 JSON files after mount
     Promise.all([
       fetch('/data/players.json').then(r => r.json()),
       fetch('/data/teams.json').then(r => r.json()),
@@ -35,12 +35,12 @@ function useDraftData() {
       setError(String(e))
       setLoading(false)
     })
-  }, []) // mount 1회만 — 데이터는 빌드 타임 고정
+  }, []) // run once on mount — data is build-time fixed
 
   return { data, loading, error }
 }
 
-// ── 픽슬롯 행 — 1줄 수평, 스크롤바 숨김 ────────────────────────────────────
+// ── Roster slot row — 1 horizontal line, scrollbar hidden ────────────────────
 function RosterSlots({ picks }: { picks: (ReturnType<typeof useDraftMachine>['state']['picks'][0])[] }) {
   return (
     <div className="flex gap-1.5 justify-center flex-nowrap overflow-x-auto no-scrollbar">
@@ -62,7 +62,7 @@ function RosterSlots({ picks }: { picks: (ReturnType<typeof useDraftMachine>['st
   )
 }
 
-// ── PICK 화면 — GAME_SPEC §2: 리롤 단일 버튼 ──────────────────────────────────
+// ── PICK screen — GAME_SPEC §2: single reroll button ─────────────────────────
 function PickScreen({
   roster,
   pickedPlayerIds,
@@ -86,7 +86,7 @@ function PickScreen({
         <h2 className="text-lg font-bold text-white">
           {spunTeam ? `${spunTeam.team} (${spunTeam.year})` : 'Choose your player'}
         </h2>
-        {/* GAME_SPEC §2: 팀 전체 재스핀 — Primary CTA 스타일 */}
+        {/* GAME_SPEC §2: full team re-spin — Primary CTA style */}
         <button
           onClick={onFullReroll}
           disabled={rerollLeft <= 0}
@@ -102,7 +102,7 @@ function PickScreen({
         </button>
       </div>
 
-      {/* 로스터 그리드 — TOP→JGL→MID→ADC→SUP 순 정렬 */}
+      {/* Roster grid — sorted TOP→JGL→MID→ADC→SUP */}
       <div className="flex flex-wrap gap-2 justify-center no-scrollbar">
         {[...roster]
           .sort((a, b) => ROLES.indexOf(a.role as (typeof ROLES)[number]) - ROLES.indexOf(b.role as (typeof ROLES)[number]))
@@ -125,7 +125,7 @@ function PickScreen({
   )
 }
 
-// ── REVEAL 화면 — 1000ms 인터벌, 게임 서클 시각화 ────────────────────────────
+// ── REVEAL screen — 1000ms interval, game circle visualization ───────────────
 function RevealScreen({
   steps,
   revealStep,
@@ -139,7 +139,7 @@ function RevealScreen({
   const current = visible[visible.length - 1]
   const past = visible.slice(0, -1)
 
-  // 현재 step의 핵심 판정 (W/L/중립)
+  // Current step outcome (W/L/neutral)
   function stepResult(step: SimStep): 'win' | 'lose' | 'neutral' {
     if (step.stage.endsWith('_missed') || step.stage === 'worlds_swiss_out') return 'lose'
     if (step.stage.endsWith('win') || step.stage.endsWith('_out')) return 'neutral'
@@ -152,7 +152,7 @@ function RevealScreen({
   const isRegular = current?.stage.includes('_regular') ?? false
   const isMissed  = current?.stage.includes('_missed') || current?.stage === 'worlds_swiss_out'
 
-  // stage key → 섹션 레이블 (tiny header)
+  // stage key → section label (tiny header)
   function sectionLabel(stage: string): string {
     if (stage.startsWith('Spring')) return 'Spring Split'
     if (stage.startsWith('Summer')) return 'Summer Split'
@@ -163,7 +163,7 @@ function RevealScreen({
 
   return (
     <div className="flex flex-col" style={{ minHeight: '70vh' }}>
-      {/* 건너뛰기 */}
+      {/* Skip */}
       <div className="flex justify-end mb-4">
         <button
           onClick={onSkip}
@@ -173,7 +173,7 @@ function RevealScreen({
         </button>
       </div>
 
-      {/* 이전 단계 — 소형 요약 */}
+      {/* Previous steps — compact summary */}
       {past.length > 0 && (
         <div className="flex flex-col gap-1 mb-6 opacity-40">
           {past.map((step, i) => {
@@ -188,7 +188,7 @@ function RevealScreen({
         </div>
       )}
 
-      {/* 현재 단계 — 히어로 */}
+      {/* Current step — hero */}
       {current && (
         <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-8">
           <p className="text-[10px] tracking-[0.35em] text-white/20 uppercase">
@@ -202,7 +202,7 @@ function RevealScreen({
             {current.label}
           </h2>
 
-          {/* DNQ 표시 */}
+          {/* DNQ indicator */}
           {isMissed && (
             <div className="flex items-center gap-2 mt-1">
               <div className="w-4 h-4 rounded-full bg-white/15" />
@@ -210,7 +210,7 @@ function RevealScreen({
             </div>
           )}
 
-          {/* 시리즈 결과: 스코어 크게 + 게임별 승패 서클 */}
+          {/* Series result: large score + per-game W/L circles */}
           {!isRegular && !isMissed && current.series?.[0] && (
             <div className="flex flex-col items-center gap-3 mt-2">
               <div className={`text-5xl font-black tabular-nums ${
@@ -231,7 +231,7 @@ function RevealScreen({
             </div>
           )}
 
-          {/* 정규시즌: W/L 점 그리드 */}
+          {/* Regular season: W/L dot grid */}
           {isRegular && current.series && current.series.length > 0 && (
             <div className="flex flex-wrap gap-1 justify-center max-w-[200px] mt-2">
               {current.series.map((s, j) => (
@@ -242,7 +242,7 @@ function RevealScreen({
         </div>
       )}
 
-      {/* 진행 표시 */}
+      {/* Progress indicator */}
       <div className="flex justify-center gap-1.5 mt-4 pb-2">
         {steps.map((_, i) => (
           <div
@@ -257,7 +257,7 @@ function RevealScreen({
   )
 }
 
-// ── GAME_SPEC §7 — 4단계 결과 타임라인 추출 ─────────────────────────────────
+// ── GAME_SPEC §7 — extract 4-stage result timeline ───────────────────────────
 
 type TLEntry = {
   stage: string
@@ -363,7 +363,7 @@ function buildTimeline(steps: SimStep[]): TLEntry[] {
   return entries
 }
 
-// 등급별 강조 색상 (display-only)
+// Grade accent colors (display-only)
 const GRADE_COLOR: Record<string, string> = {
   'GRAND SLAM':  'text-[#ffd700]',
   'LEGENDARY':   'text-[#c080ff]',
@@ -380,7 +380,7 @@ const TL_COLOR: Record<TLEntry['status'], string> = {
   out: 'text-white/25',
 }
 
-// 경기 상세: stage prefix → 섹션 레이블
+// Match detail: stage prefix → section label
 const DETAIL_SECTIONS = [
   { prefix: 'Spring', label: 'Spring Split' },
   { prefix: 'msi',    label: 'MSI' },
@@ -388,7 +388,7 @@ const DETAIL_SECTIONS = [
   { prefix: 'worlds', label: 'Worlds' },
 ]
 
-// ── RESULT 화면 — GAME_SPEC §7: 5인 카드 + 4단계 타임라인 + 등급 ──────────────
+// ── RESULT screen — GAME_SPEC §7: 5-player cards + 4-stage timeline + grade ──
 function ResultScreen({
   simResult,
   picks,
@@ -423,14 +423,14 @@ function ResultScreen({
   const timeline = buildTimeline(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-white'
 
-  // 경기 상세: 섹션별 그룹
+  // Match detail: grouped by section
   const detailSections = DETAIL_SECTIONS
     .map(s => ({ label: s.label, steps: simResult.steps.filter(st => st.stage.startsWith(s.prefix)) }))
     .filter(s => s.steps.length > 0)
 
   return (
     <div className="flex flex-col gap-8 items-center">
-      {/* 트로피 뱃지 */}
+      {/* Trophy badges */}
       {simResult.trophies.length > 0 && (
         <div className="flex gap-2 flex-wrap justify-center">
           {simResult.trophies.map(tr => (
@@ -441,7 +441,7 @@ function ResultScreen({
         </div>
       )}
 
-      {/* 등급 — 색상 강조 + 크게 */}
+      {/* Grade — colored accent + large */}
       <div className="text-center">
         <p className="text-[10px] tracking-[0.5em] text-white/20 uppercase mb-2">Season Result</p>
         <h2 className={`text-5xl font-black leading-none ${gradeColor}`}>
@@ -452,7 +452,7 @@ function ResultScreen({
         </p>
       </div>
 
-      {/* GAME_SPEC §7: 4단계 결과 타임라인 */}
+      {/* GAME_SPEC §7: 4-stage result timeline */}
       {timeline.length > 0 && (
         <div className="w-full max-w-xs flex flex-col gap-2.5">
           {timeline.map((entry, i) => (
@@ -473,14 +473,14 @@ function ResultScreen({
         </div>
       )}
 
-      {/* 5인 카드 — PC(md+): grid-cols-5 1줄, 모바일: grid-cols-3 */}
+      {/* 5-player cards — PC (md+): grid-cols-5 single row, mobile: grid-cols-3 */}
       <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full">
         {ROLES.map((_, i) => picks[i] && (
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
         ))}
       </div>
 
-      {/* 경기 상세 토글 — 섹션별 그룹화 */}
+      {/* Match detail toggle — grouped by section */}
       {detailSections.length > 0 && (
         <div className="w-full max-w-sm">
           <button
@@ -523,7 +523,7 @@ function ResultScreen({
                       )
                     }
 
-                    // 시리즈 매치 — 스코어 + 게임별 서클
+                    // Series match — score + per-game circles
                     return ser!.map((s, j) => (
                       <div key={`${i}-${j}`} className="mb-3">
                         <div className={`flex items-center gap-2 text-xs mb-1 ${s.win ? 'text-green-400/90' : 'text-red-400/90'}`}>
@@ -548,7 +548,7 @@ function ResultScreen({
         </div>
       )}
 
-      {/* 버튼 */}
+      {/* Buttons */}
       <div className="flex gap-3 flex-wrap justify-center">
         <button
           onClick={handleCopy}
@@ -575,14 +575,14 @@ function ResultScreen({
   )
 }
 
-// ── 메인 페이지 ───────────────────────────────────────────────────────────────
+// ── Main page ─────────────────────────────────────────────────────────────────
 export default function DraftPage() {
   const { data, loading } = useDraftData()
   const machine = useDraftMachine(data)
   const { state } = machine
 
-  // GAME_SPEC §1: 데이터 로드 완료 즉시 자동 스핀 — IDLE 화면 skip
-  // 의존: data(로드 완료)와 phase(IDLE) 양쪽이 충족될 때 1회 실행
+  // GAME_SPEC §1: auto-spin immediately when data loads — skip IDLE screen
+  // Triggers when both data (loaded) and phase (IDLE) are satisfied
   useEffect(() => {
     if (data && state.phase === 'IDLE') {
       machine.start()
@@ -590,8 +590,8 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.phase])
 
-  // SPIN 단계: 자동으로 spinNext 호출
-  // 의존: phase가 SPIN으로 전이될 때 1회 실행
+  // SPIN phase: automatically call spinNext
+  // Triggers when phase transitions to SPIN
   useEffect(() => {
     if (state.phase !== 'SPIN' || !data) return
     const emptyRoles = ROLES.filter((_, i) => state.picks[i] === null)
@@ -602,16 +602,16 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase, state.round])
 
-  // SIM 단계: 동기 시뮬 실행 (사실상 즉시)
-  // 의존: phase가 SIM으로 전이될 때 1회 실행
+  // SIM phase: run synchronous simulation (near-instant)
+  // Triggers when phase transitions to SIM
   useEffect(() => {
     if (state.phase !== 'SIM') return
     machine.runSim()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
-  // REVEAL 단계: 1000ms 인터벌로 step 순차 표시 (§8: 속도 조정)
-  // 의존: phase가 REVEAL일 때 interval 생성, 해제는 클린업 함수
+  // REVEAL phase: sequential step display at 1000ms interval
+  // Creates interval when phase is REVEAL, cleaned up by effect return
   const revealIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(() => {
     if (state.phase !== 'REVEAL') {
@@ -632,7 +632,7 @@ export default function DraftPage() {
 
   return (
     <div className="min-h-[100dvh] bg-[var(--page-bg,#0d0d1a)] text-white" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      {/* 헤더 */}
+      {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 border-b border-[var(--card-border,#2a2a4a)]">
         <Link href="/" className="font-black text-lg tracking-tight">GRANDSLAM</Link>
         {state.phase !== 'IDLE' && (
@@ -640,11 +640,11 @@ export default function DraftPage() {
         )}
       </header>
 
-      {/* 메인 콘텐츠 */}
-      {/* RESULT 때 max-w-3xl로 확장 — 5인 카드(5×144px+gap)를 한 줄에 담기 위해 */}
+      {/* Main content */}
+      {/* Expand to max-w-3xl at RESULT — fits 5 cards (5×128px+gap) in one row */}
       <main className={`mx-auto px-4 py-8 ${state.phase === 'RESULT' ? 'max-w-3xl' : 'max-w-2xl'}`}>
 
-        {/* IDLE: 로딩 중이거나 자동 스핀 대기 — 일반적으로 거의 안 보임 */}
+        {/* IDLE: loading or waiting for auto-spin — rarely visible in practice */}
         {state.phase === 'IDLE' && (
           <div className="flex flex-col items-center justify-center gap-4 py-16">
             <p className="text-[var(--card-role,#a0a0c0)] animate-pulse">
@@ -697,7 +697,7 @@ export default function DraftPage() {
         )}
       </main>
 
-      {/* 푸터는 layout.tsx 전역 §10 */}
+      {/* Footer is global in layout.tsx §10 */}
     </div>
   )
 }

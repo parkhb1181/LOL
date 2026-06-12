@@ -1,7 +1,7 @@
 'use client'
 // §6.2 PlayerCard — size variant: 'pick' | 'slot' | 'result'
-// 색·재질 토큰은 CSS 변수로만 수신 (DESIGN_GUIDE 토큰 확정 전 하드코딩 금지)
-// §5 킬스위치: NEXT_PUBLIC_PHOTOS_ENABLED=false 시 전원 아바타
+// Colors/materials via CSS variables only (no hardcoding until DESIGN_GUIDE tokens finalized)
+// §5 kill-switch: NEXT_PUBLIC_PHOTOS_ENABLED=false → all avatar fallback
 
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
@@ -23,7 +23,7 @@ type Props = {
 const SIZE_CLS: Record<CardSize, string> = {
   pick:   'w-28 h-40',
   slot:   'w-20 h-28',
-  result: 'w-36 h-52',
+  result: 'w-32 h-44',
 }
 
 const OVR_SIZE: Record<CardSize, string> = {
@@ -36,7 +36,7 @@ const ROLE_ABBR: Record<string, string> = {
   TOP: 'TOP', JGL: 'JGL', MID: 'MID', ADC: 'ADC', SUP: 'SUP',
 }
 
-// 리그별 배지 색상 — 식별 우선
+// League badge colors — prioritize quick recognition
 const LEAGUE_BADGE: Record<string, string> = {
   LCK: 'bg-red-900/70 text-red-300',
   LPL: 'bg-blue-900/70 text-blue-300',
@@ -59,14 +59,14 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
   const hasCrown = player.crown   // FINALS MVP / WORLDS MVP
   const badges = player.badges
 
-  // 배경 그라디언트: Worlds → 파랑, MSI → 골드, 기본 → 다크
+  // Card background gradient: Worlds → blue, MSI → gold, default → dark
   const cardBg = isWorlds
     ? 'bg-gradient-to-b from-[#0a1a3a] to-[#1a1a2e]'
     : hasMsi
     ? 'bg-gradient-to-b from-[#251800] to-[#1a1a2e]'
     : 'bg-[var(--card-bg,#1a1a2e)]'
 
-  // 보더: Worlds → 골드, MSI → 앰버, 기본
+  // Border: Worlds → gold, MSI → amber, default
   const cardBorder = isWorlds
     ? 'border-[var(--card-worlds-border,#c0a060)] shadow-[0_0_12px_var(--card-worlds-glow,#c0a06055)]'
     : hasMsi
@@ -89,21 +89,21 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
       ].join(' ')}
       aria-label={`${player.nameEn} ${player.year} ${player.team}`}
     >
-      {/* WORLDS 시머 스윕 */}
+      {/* WORLDS shimmer sweep */}
       {isWorlds && (
         <span className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg" aria-hidden>
           <span className="absolute inset-y-0 w-full animate-[shimmer_2.5s_linear_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </span>
       )}
 
-      {/* MSI 골드 반짝이 */}
+      {/* MSI gold shimmer */}
       {hasMsi && !isWorlds && (
         <span className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg" aria-hidden>
           <span className="absolute inset-y-0 w-full animate-[shimmer_3.5s_linear_infinite] bg-gradient-to-r from-transparent via-[#ffd70020] to-transparent" />
         </span>
       )}
 
-      {/* 좌상단: OVR + 역할 */}
+      {/* Top-left: OVR + role */}
       <div className="absolute top-1 left-1.5 z-20 flex flex-col leading-none">
         <span className={`${OVR_SIZE[size]} font-black drop-shadow text-[var(--card-ovr,#f0f0f0)]`}>
           {player.ovr}
@@ -113,7 +113,7 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
         </span>
       </div>
 
-      {/* 우상단: 리그 뱃지(항상) + All-Pro 배지(해당자만) */}
+      {/* Top-right: league badge (always) + All-Pro badge (if applicable) */}
       <div className="absolute top-1 right-1 z-20 flex flex-col gap-0.5">
         <span className={`text-[7px] font-bold px-1 py-0.5 rounded-sm uppercase leading-none ${LEAGUE_BADGE[player.league] ?? 'bg-[var(--card-badge-bg,#2a4a8a)] text-[var(--card-badge-text,#80aaff)]'}`}>
           {player.league}
@@ -125,8 +125,8 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
         )}
       </div>
 
-      {/* 중앙 사진 / 아바타 */}
-      {/* plain <img> 사용 — Next.js Image Optimizer 경유 시 R2 onError 폴백 버그 회피 */}
+      {/* Center: photo / avatar */}
+      {/* Plain <img> — avoids Next.js Image Optimizer R2 onError fallback bug */}
       <div className="flex-1 relative w-full" data-photo={player.photo ?? 'null'}>
         {photoSrc(player) && !imgError ? (
           <img
@@ -145,12 +145,12 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
         )}
       </div>
 
-      {/* 하단: 이름 + (FINALS MVP) + 팀·연도 */}
+      {/* Bottom: name + (FINALS MVP) + team · year */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
         <p className="text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight" style={{ fontSize: size === 'slot' ? '9px' : '11px' }}>
           {name}
         </p>
-        {/* FINALS MVP 배지 — slot 크기 제외 (공간 부족) */}
+        {/* FINALS MVP badge — excluded from slot size (not enough space) */}
         {hasCrown && size !== 'slot' && (
           <p className="text-center text-[7px] font-bold text-yellow-400/80 tracking-[0.12em] leading-tight uppercase mt-0.5">
             Finals MVP

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// §3 스키마 — 변경 금지
+// §3 schema — do not modify
 
 const RoleSchema = z.enum(['TOP', 'JGL', 'MID', 'ADC', 'SUP'])
 const LeagueCodeSchema = z.enum(['LCK', 'LPL', 'LEC', 'LCS'])

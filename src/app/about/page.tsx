@@ -9,7 +9,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-[#0d0d1a] text-white px-6 py-14">
       <div className="max-w-lg mx-auto flex flex-col gap-10">
 
-        {/* 헤더 */}
+        {/* Header */}
         <div>
           <Link href="/" className="text-xs text-white/30 hover:text-white/60 transition-colors">
             ← GRANDSLAM

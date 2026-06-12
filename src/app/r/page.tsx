@@ -1,6 +1,6 @@
-// §8.1 공유 결과 페이지 — URL 파라미터로 picks 복원 → simulate() 재계산
-// §8.2 generateMetadata: Node 런타임에서 compute → /api/og에 표시값 전달
-// 잘못된 id/seed → 홈 리다이렉트
+// §8.1 Shared result page — restore picks from URL params → simulate() recompute
+// §8.2 generateMetadata: compute in Node runtime → pass display values to /api/og
+// Invalid id/seed → redirect to home
 import fs from 'fs'
 import path from 'path'
 import { redirect } from 'next/navigation'
@@ -12,7 +12,7 @@ import type { SimPlayer } from '@/lib/sim'
 const ROLES = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
 type Role = typeof ROLES[number]
 
-// 등급 색상 (draft/page.tsx와 동일)
+// Grade colors (same as draft/page.tsx)
 const GRADE_COLOR: Record<string, string> = {
   'GRAND SLAM':   '#ffd700',
   'LEGENDARY':    '#c080ff',
@@ -22,7 +22,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':      '#6868a0',
 }
 
-// 역할 색상
+// Role colors
 const ROLE_COLOR: Record<Role, string> = {
   TOP: '#ef9090',
   JGL: '#80e880',
@@ -36,7 +36,7 @@ type PlayerRow = {
   team: string; year: number; ovr: number; role: string
 }
 
-// 공통 데이터 로더 — generateMetadata와 page 양쪽에서 사용
+// Shared data loader — used by both generateMetadata and page
 function loadAndCompute(p: string, s: string) {
   const ids = p.split('.')
   const seed = parseInt(s, 10)
@@ -78,7 +78,7 @@ function loadAndCompute(p: string, s: string) {
   }
 }
 
-// ── generateMetadata — §8.2 OG 이미지 생성 ───────────────────────────────────
+// ── generateMetadata — §8.2 OG image generation ──────────────────────────────
 export async function generateMetadata(
   { searchParams }: { searchParams: Promise<{ p?: string; s?: string }> }
 ): Promise<Metadata> {
@@ -89,7 +89,7 @@ export async function generateMetadata(
   const { result, playerInfos } = computed
   const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'
 
-  // §8.2: URLSearchParams로 직렬화 — 공백·특수문자 인코딩 누락 방지
+  // §8.2: serialize via URLSearchParams — prevents missing encoding for spaces/special chars
   const params = new URLSearchParams({
     g:   result.grade,
     t:   result.trophies.join('|'),
@@ -117,14 +117,14 @@ export async function generateMetadata(
   }
 }
 
-// ── 페이지 컴포넌트 ──────────────────────────────────────────────────────────
+// ── Page component ────────────────────────────────────────────────────────────
 export default async function ResultPage(
   { searchParams }: { searchParams: Promise<{ p?: string; s?: string }> }
 ) {
   const { p = '', s = '' } = await searchParams
   const computed = loadAndCompute(p, s)
 
-  // §8.1: 잘못된 id/seed → 홈 리다이렉트
+  // §8.1: invalid id/seed → redirect to home
   if (!computed) redirect('/')
 
   const { result, playerInfos } = computed
@@ -136,7 +136,7 @@ export default async function ResultPage(
 
   return (
     <main className="min-h-screen bg-[#0d0d1a] text-white">
-      {/* 헤더 */}
+      {/* Header */}
       <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
         <Link href="/" className="font-black text-base tracking-tight text-white/80 hover:text-white transition-colors">
           GRANDSLAM
@@ -144,8 +144,8 @@ export default async function ResultPage(
         <span className="text-xs text-white/20 tracking-widest">SHARED RESULT</span>
       </header>
 
-      <div className="max-w-lg mx-auto px-6 py-14 flex flex-col items-center gap-8">
-        {/* 트로피 뱃지 */}
+      <div className="max-w-2xl mx-auto px-6 py-14 flex flex-col items-center gap-8">
+        {/* Trophy badges */}
         {result.trophies.length > 0 && (
           <div className="flex gap-2 flex-wrap justify-center">
             {result.trophies.map(tr => (
@@ -156,7 +156,7 @@ export default async function ResultPage(
           </div>
         )}
 
-        {/* 등급 */}
+        {/* Grade */}
         <div className="text-center">
           <p className="text-[10px] tracking-[0.5em] text-white/20 uppercase mb-3">Season Result</p>
           <h1 style={{ color: gradeColor }} className="text-5xl font-black leading-none">
@@ -165,14 +165,14 @@ export default async function ResultPage(
           <p className="text-white/25 text-sm mt-3">Team OVR {result.teamOvr}</p>
         </div>
 
-        {/* 5인 카드 — 서버 렌더 (PlayerCard 클라이언트 컴포넌트 미사용) */}
+        {/* 5-player cards — server render (no PlayerCard client component) */}
         <div className="flex flex-wrap gap-2 justify-center">
           {playerInfos.map((pi) => (
             <div
               key={pi.id}
               className="w-28 h-40 flex flex-col rounded-lg overflow-hidden border border-[#2a2a4a] bg-[#1a1a2e]"
             >
-              {/* OVR + 역할 */}
+              {/* OVR + role */}
               <div className="px-1.5 pt-1.5 flex flex-col leading-none">
                 <span className="text-2xl font-black text-[#f0f0f0]">{pi.ovr}</span>
                 <span
@@ -183,7 +183,7 @@ export default async function ResultPage(
                 </span>
               </div>
 
-              {/* 아바타 영역 */}
+              {/* Avatar area */}
               <div
                 className="flex-1 flex items-center justify-center font-black text-2xl text-white/60"
                 style={{ background: `hsl(${[...pi.name].reduce((a, c) => a + c.charCodeAt(0), 0) % 360}, 35%, 28%)` }}
@@ -191,7 +191,7 @@ export default async function ResultPage(
                 {pi.name.charAt(0).toUpperCase()}
               </div>
 
-              {/* 이름 + 팀·연도 */}
+              {/* Name + team · year */}
               <div className="px-1.5 pb-1.5 pt-1 bg-[#0d0d1a]">
                 <p className="text-center text-[11px] font-semibold text-[#e8e8f0] truncate">{pi.name}</p>
                 <p className="text-center text-[8px] text-[#6868a0] truncate">{pi.team} · {pi.year}</p>
@@ -200,7 +200,7 @@ export default async function ResultPage(
           ))}
         </div>
 
-        {/* 내 드래프트 하기 CTA */}
+        {/* CTA: Start draft */}
         <Link
           href="/draft"
           className="mt-2 inline-block w-full max-w-xs py-3.5 bg-white text-[#0d0d1a] font-black text-sm tracking-[0.15em] uppercase rounded-xl text-center hover:bg-white/90 active:scale-95 transition-all"

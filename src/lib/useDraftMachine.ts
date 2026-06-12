@@ -1,7 +1,7 @@
 'use client'
-// §6.1 드래프트 상태머신 훅
+// §6.1 Draft state machine hook
 // IDLE → SPIN(roundN) → PICK(roundN) → [round<5? SPIN(round+1) : SIM] → REVEAL → RESULT
-// GAME_SPEC §2: 리롤은 팀 전체 1회 (fullReroll) — 팀/연도 개별 리롤 대신 단일 버튼
+// GAME_SPEC §2: single full-team reroll (fullReroll) instead of per-team/year buttons
 
 import { useReducer, useCallback } from 'react'
 import { mulberry32 } from './prng'
@@ -13,15 +13,15 @@ import type { Opponent } from './sim'
 export const ROLES = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
 export type Role = typeof ROLES[number]
 
-// ── 상태 타입 ────────────────────────────────────────────────────────────────
+// ── State types ───────────────────────────────────────────────────────────────
 
 export type DraftPhase =
   | 'IDLE'
-  | 'SPIN'      // 현재 라운드 팀 추첨 중
-  | 'PICK'      // 추첨된 팀 로스터에서 선수 선택
-  | 'SIM'       // 5픽 완료 → 시뮬 실행 중 (사실상 동기라 거의 즉시)
-  | 'REVEAL'    // SimResult.steps 순차 표시 중
-  | 'RESULT'    // 최종 결과 화면
+  | 'SPIN'      // Spinning team for current round
+  | 'PICK'      // Picking player from spun team roster
+  | 'SIM'       // 5 picks done → running simulation (synchronous, nearly instant)
+  | 'REVEAL'    // Displaying SimResult.steps sequentially
+  | 'RESULT'    // Final result screen
 
 export type PickedPlayer = {
   player: PlayerSeason
@@ -32,35 +32,35 @@ export type DraftState = {
   phase: DraftPhase
   seed: number
   round: number           // 0-based (0~4)
-  picks: (PickedPlayer | null)[]   // 길이 5, 순서: TOP/JGL/MID/ADC/SUP
+  picks: (PickedPlayer | null)[]   // length 5, order: TOP/JGL/MID/ADC/SUP
 
-  // SPIN 단계에서 추첨된 TeamYear
+  // TeamYear drawn during SPIN phase
   spunTeam: TeamYear | null
 
-  // 리롤 잔여 — GAME_SPEC §2: 팀 전체 1회 (fullReroll)
+  // Reroll remaining — GAME_SPEC §2: full-team 1x (fullReroll)
   rerollLeft: number
 
-  // REVEAL 진행
-  revealStep: number       // 현재까지 표시된 step 인덱스
+  // REVEAL progress
+  revealStep: number       // index of last displayed step
   simResult: SimResult | null
 
-  // 에러 메시지
+  // Error message
   error: string | null
 }
 
-// ── 액션 타입 ────────────────────────────────────────────────────────────────
+// ── Action types ──────────────────────────────────────────────────────────────
 
 type Action =
   | { type: 'START'; seed: number; spunTeam: TeamYear }          // IDLE → PICK
-  | { type: 'SPIN_DONE'; spunTeam: TeamYear }                    // 스핀 결과 확정 → PICK
-  | { type: 'FULL_REROLL'; spunTeam: TeamYear }                  // 팀 전체 재추첨 (GAME_SPEC §2)
-  | { type: 'PICK'; player: PlayerSeason; teamYear: TeamYear }   // 선수 선택 → 다음 SPIN or SIM
+  | { type: 'SPIN_DONE'; spunTeam: TeamYear }                    // Spin result confirmed → PICK
+  | { type: 'FULL_REROLL'; spunTeam: TeamYear }                  // Full team re-draw (GAME_SPEC §2)
+  | { type: 'PICK'; player: PlayerSeason; teamYear: TeamYear }   // Player selected → next SPIN or SIM
   | { type: 'SIM_DONE'; result: SimResult }                      // SIM → REVEAL
-  | { type: 'REVEAL_NEXT' }                                      // step 1개 표시
-  | { type: 'REVEAL_SKIP' }                                      // 즉시 RESULT
+  | { type: 'REVEAL_NEXT' }                                      // Show 1 step
+  | { type: 'REVEAL_SKIP' }                                      // Jump to RESULT immediately
   | { type: 'RESET' }                                            // RESULT → IDLE
 
-// ── 초기 상태 ────────────────────────────────────────────────────────────────
+// ── Initial state ─────────────────────────────────────────────────────────────
 
 const INITIAL_STATE: DraftState = {
   phase: 'IDLE',
@@ -74,12 +74,12 @@ const INITIAL_STATE: DraftState = {
   error: null,
 }
 
-// ── 리듀서 ──────────────────────────────────────────────────────────────────
+// ── Reducer ───────────────────────────────────────────────────────────────────
 
 function reducer(state: DraftState, action: Action): DraftState {
   switch (action.type) {
 
-    // START: seed 저장, 첫 스핀 결과 수신 → PICK
+    // START: store seed, receive first spin result → PICK
     case 'START':
       return {
         ...INITIAL_STATE,
@@ -90,11 +90,11 @@ function reducer(state: DraftState, action: Action): DraftState {
         rerollLeft: 1,
       }
 
-    // SPIN_DONE: 라운드 시작 스핀 결과 → PICK 화면
+    // SPIN_DONE: round-start spin result → PICK screen
     case 'SPIN_DONE':
       return { ...state, phase: 'PICK', spunTeam: action.spunTeam, error: null }
 
-    // FULL_REROLL: 팀 전체 재추첨 (GAME_SPEC §2) — 팀·연도 모두 새로 뽑음
+    // FULL_REROLL: full team re-draw (GAME_SPEC §2) — new team + new year
     case 'FULL_REROLL':
       return {
         ...state,
@@ -103,7 +103,7 @@ function reducer(state: DraftState, action: Action): DraftState {
         error: null,
       }
 
-    // PICK: 선수 선택 → picks 배열 갱신 후 다음 라운드 or SIM
+    // PICK: player selected → update picks array, then next round or SIM
     case 'PICK': {
       const roleIdx = ROLES.indexOf(action.player.role as Role)
       const newPicks = [...state.picks]
@@ -122,11 +122,11 @@ function reducer(state: DraftState, action: Action): DraftState {
       }
     }
 
-    // SIM_DONE: 시뮬 완료 → REVEAL 시작
+    // SIM_DONE: simulation complete → start REVEAL
     case 'SIM_DONE':
       return { ...state, phase: 'REVEAL', simResult: action.result, revealStep: 0 }
 
-    // REVEAL_NEXT: step 1개씩 표시 (600ms 인터벌)
+    // REVEAL_NEXT: show 1 step at a time (1000ms interval)
     case 'REVEAL_NEXT': {
       if (!state.simResult) return state
       const next = state.revealStep + 1
@@ -136,7 +136,7 @@ function reducer(state: DraftState, action: Action): DraftState {
       return { ...state, revealStep: next }
     }
 
-    // REVEAL_SKIP: Skip 버튼 → 즉시 RESULT
+    // REVEAL_SKIP: Skip button → jump to RESULT immediately
     case 'REVEAL_SKIP':
       return {
         ...state,
@@ -144,7 +144,7 @@ function reducer(state: DraftState, action: Action): DraftState {
         revealStep: state.simResult?.steps.length ?? 0,
       }
 
-    // RESET: 다시 하기
+    // RESET: play again
     case 'RESET':
       return { ...INITIAL_STATE }
 
@@ -153,7 +153,7 @@ function reducer(state: DraftState, action: Action): DraftState {
   }
 }
 
-// ── spin-index + 데이터 로드 타입 ────────────────────────────────────────────
+// ── spin-index + data load types ──────────────────────────────────────────────
 
 export type SpinIndex = Record<Role, string[]>
 
@@ -164,16 +164,16 @@ export type DraftData = {
   opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] }
 }
 
-// ── 가중 추첨 헬퍼 ─────────────────────────────────────────────────────────
+// ── Weighted draw helper ───────────────────────────────────────────────────────
 
-// 같은 판에서 이미 선수를 뽑은 팀 → 이 배수로 가중치 감소 (0은 아님 — 드림팀 가능성 유지)
+// Teams already picked in this game → weight reduced by this factor (not zero — keeps dream team possible)
 const REPEAT_PENALTY = 0.05
 
 function weightedDraw(
   pool: string[],
   teamMap: Map<string, TeamYear>,
   rng: () => number,
-  penalizedKeys?: Set<string>  // 이미 픽된 팀 → weight * REPEAT_PENALTY
+  penalizedKeys?: Set<string>  // already-picked teams → weight * REPEAT_PENALTY
 ): string {
   let total = 0
   for (const k of pool) {
@@ -189,7 +189,7 @@ function weightedDraw(
   return pool[pool.length - 1]
 }
 
-// ── §6.1 2단 필터 스핀 풀 계산 ────────────────────────────────────────────
+// ── §6.1 Two-stage spin pool filter ───────────────────────────────────────────
 
 function buildSpinPool(
   emptyRoles: Role[],
@@ -198,13 +198,13 @@ function buildSpinPool(
   teamMap: Map<string, TeamYear>,
   playersByTeam: Map<string, PlayerSeason[]>
 ): string[] {
-  // 1단: 빈 역할 보유 TeamYear 합집합
+  // Stage 1: union of TeamYear that have any empty role
   const base = new Set<string>()
   for (const role of emptyRoles) {
     for (const k of (spinIndex[role] ?? [])) base.add(k)
   }
 
-  // 2단: 빈 슬롯 포지션에 미픽 선수가 있는 팀만 (소프트락 방지)
+  // Stage 2: only teams with at least one un-picked player in an empty slot position (soft-lock prevention)
   const valid = [...base].filter(key => {
     const roster = playersByTeam.get(key) ?? []
     return roster.some(
@@ -215,12 +215,12 @@ function buildSpinPool(
   return valid.length > 0 ? valid : [...base]
 }
 
-// ── 훅 공개 인터페이스 ────────────────────────────────────────────────────────
+// ── Hook public interface ─────────────────────────────────────────────────────
 
 /**
  * useDraftMachine
- * §6.1 상태머신을 useReducer로 관리.
- * data: DraftPage가 마운트 후 fetch한 JSON 4종 (players/teams/spin-index/opponents)
+ * Manages §6.1 state machine via useReducer.
+ * data: 4 JSON files fetched after mount by DraftPage (players/teams/spin-index/opponents)
  */
 export function useDraftMachine(data: DraftData | null) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -241,31 +241,31 @@ export function useDraftMachine(data: DraftData | null) {
       })()
     : new Map<string, PlayerSeason[]>()
 
-  // 라운드별 rng 인스턴스 — round × salt로 고유 시드 생성 (결정론 유지)
+  // Per-round rng instance — unique seed via round × salt (determinism)
   const getRng = (round: number) =>
     mulberry32(((state.seed ^ (round * 0x9E3779B9)) >>> 0))
 
-  // ── 핸들러 ─────────────────────────────────────────────────────────────
+  // ── Handlers ──────────────────────────────────────────────────────────────
 
-  // 시작: seed 생성 → 첫 스핀 → PICK
+  // start: generate seed → first spin → PICK
   const start = useCallback(() => {
     if (!data) return
-    // §6.1, §13.5: 클릭 핸들러에서만 crypto 접근
+    // §6.1, §13.5: crypto access only inside click handler
     const seed = crypto.getRandomValues(new Uint32Array(1))[0]
     const rng = mulberry32(seed)
     const emptyRoles = [...ROLES]
     const pool = buildSpinPool(emptyRoles, new Set(), data.spinIndex as SpinIndex, teamMap, playersByTeam)
-    // 첫 스핀: 픽 없음 → penalty 없음
+    // First spin: no picks yet → no penalty
     const teamKey = weightedDraw(pool, teamMap, rng, new Set())
     const spunTeam = teamMap.get(teamKey)!
     dispatch({ type: 'START', seed, spunTeam })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  // 다음 라운드 스핀 (PICK → SPIN 전이 후 즉시 호출 — useEffect에서 구동)
+  // spinNext: next round spin (called immediately after PICK → SPIN via useEffect)
   const spinNext = useCallback((round: number, pickedPlayerIds: Set<string>, emptyRoles: Role[]) => {
     if (!data) return
-    // 이미 픽된 팀 키 → REPEAT_PENALTY 적용
+    // Already-picked team keys → apply REPEAT_PENALTY
     const pickedTeamKeys = new Set(state.picks.filter(Boolean).map(p => p!.teamYear.key))
     const rng = getRng(round)
     const pool = buildSpinPool(emptyRoles, pickedPlayerIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
@@ -275,15 +275,15 @@ export function useDraftMachine(data: DraftData | null) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.seed, state.picks])
 
-  // 팀 전체 재추첨 (GAME_SPEC §2) — 현재 라운드 풀에서 완전 재추첨
+  // fullReroll: full team re-draw (GAME_SPEC §2)
   const fullReroll = useCallback(() => {
     if (!data || state.rerollLeft <= 0) return
     const emptyRoles = ROLES.filter((_, i) => state.picks[i] === null)
     const pickedIds = new Set(state.picks.filter(Boolean).map(p => p!.player.playerId))
-    // 이미 픽된 팀 키 → REPEAT_PENALTY 적용 (리롤도 동일)
+    // Already-picked team keys → REPEAT_PENALTY (same for reroll)
     const pickedTeamKeys = new Set(state.picks.filter(Boolean).map(p => p!.teamYear.key))
     const rng = getRng(state.round)
-    rng() // 첫 spin draw 소비 자리 스킵
+    rng() // skip slot for first spin draw
     const pool = buildSpinPool(emptyRoles, pickedIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
     const teamKey = weightedDraw(pool, teamMap, rng, pickedTeamKeys)
     const spunTeam = teamMap.get(teamKey)!
@@ -291,12 +291,12 @@ export function useDraftMachine(data: DraftData | null) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.rerollLeft, state.round, state.picks, state.seed])
 
-  // 선수 픽
+  // pick: player selection
   const pick = useCallback((player: PlayerSeason, teamYear: TeamYear) => {
     dispatch({ type: 'PICK', player, teamYear })
   }, [])
 
-  // 시뮬 실행 (SIM 단계 진입 시 useEffect에서 호출)
+  // runSim: run simulation (called from useEffect when SIM phase starts)
   const runSim = useCallback(() => {
     if (!data || state.simResult) return
     const filledPicks = state.picks.filter(Boolean) as PickedPlayer[]
@@ -310,20 +310,20 @@ export function useDraftMachine(data: DraftData | null) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.picks, state.seed, state.simResult])
 
-  // REVEAL step 진행
+  // REVEAL step advance
   const revealNext = useCallback(() => dispatch({ type: 'REVEAL_NEXT' }), [])
   const revealSkip = useCallback(() => dispatch({ type: 'REVEAL_SKIP' }), [])
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [])
 
-  // 현재 빈 역할 목록
+  // Current empty roles
   const emptyRoles = ROLES.filter((_, i) => state.picks[i] === null)
 
-  // 현재 픽된 playerId 집합
+  // Current picked playerId set
   const pickedPlayerIds = new Set(
     state.picks.filter(Boolean).map(p => p!.player.playerId)
   )
 
-  // 현재 spunTeam 로스터 (픽 화면 표시용)
+  // Current spunTeam roster (for pick screen display)
   const currentRoster: PlayerSeason[] = state.spunTeam
     ? (playersByTeam.get(state.spunTeam.key) ?? [])
     : []
