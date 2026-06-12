@@ -148,7 +148,7 @@
   {
     "id": "helios-shin-dong-jin_2013_cj-entus-blaze",
     "playerId": "Helios (Shin Dong-jin)",
-    "nameEn": "Helios (Shin Dong-jin)",
+    "nameEn": "Helios",
     "nameKo": null,
     "team": "CJ Entus Blaze",
     "teamSlug": "cj-entus-blaze",
@@ -525,7 +525,7 @@
   {
     "id": "woong-jang-gun-woong_2013_azubu-frost",
     "playerId": "Woong (Jang Gun-woong)",
-    "nameEn": "Woong (Jang Gun-woong)",
+    "nameEn": "Woong",
     "nameKo": null,
     "team": "Azubu Frost",
     "teamSlug": "azubu-frost",
@@ -860,7 +860,7 @@
   {
     "id": "emperor-kim-jin-hyun_2014_cj-entus-blaze",
     "playerId": "Emperor (Kim Jin-hyun)",
-    "nameEn": "Emperor (Kim Jin-hyun)",
+    "nameEn": "Emperor",
     "nameKo": null,
     "team": "CJ Entus Blaze",
     "teamSlug": "cj-entus-blaze",
@@ -1193,7 +1193,7 @@
   {
     "id": "frozen-kim-tae-il_2014_incredible-miracle-2",
     "playerId": "Frozen (Kim Tae-il)",
-    "nameEn": "Frozen (Kim Tae-il)",
+    "nameEn": "Frozen",
     "nameKo": null,
     "team": "Incredible Miracle 2",
     "teamSlug": "incredible-miracle-2",
@@ -1244,7 +1244,7 @@
   {
     "id": "lilac-jeon-ho-jin_2014_incredible-miracle-1",
     "playerId": "Lilac (Jeon Ho-jin)",
-    "nameEn": "Lilac (Jeon Ho-jin)",
+    "nameEn": "Lilac",
     "nameKo": null,
     "team": "Incredible Miracle 1",
     "teamSlug": "incredible-miracle-1",
@@ -1261,7 +1261,7 @@
   {
     "id": "duke-lee-ho-seong_2014_najin-black-sword",
     "playerId": "Duke (Lee Ho-seong)",
-    "nameEn": "Duke (Lee Ho-seong)",
+    "nameEn": "Duke",
     "nameKo": null,
     "team": "NaJin Black Sword",
     "teamSlug": "najin-black-sword",
@@ -1448,7 +1448,7 @@
   {
     "id": "nexus-lee-jun-woo_2014_midas-fio",
     "playerId": "Nexus (Lee Jun-woo)",
-    "nameEn": "Nexus (Lee Jun-woo)",
+    "nameEn": "Nexus",
     "nameKo": null,
     "team": "Midas FIO",
     "teamSlug": "midas-fio",
@@ -1724,7 +1724,7 @@
   {
     "id": "space-seon-ho-san_2014_cj-entus-frost",
     "playerId": "Space (Seon Ho-san)",
-    "nameEn": "Space (Seon Ho-san)",
+    "nameEn": "Space",
     "nameKo": null,
     "team": "CJ Entus Frost",
     "teamSlug": "cj-entus-frost",
@@ -1864,7 +1864,7 @@
   {
     "id": "wolf-lee-jae-wan_2014_sk-telecom-t1-s",
     "playerId": "Wolf (Lee Jae-wan)",
-    "nameEn": "Wolf (Lee Jae-wan)",
+    "nameEn": "Wolf",
     "nameKo": null,
     "team": "SK Telecom T1 S",
     "teamSlug": "sk-telecom-t1-s",
@@ -1915,7 +1915,7 @@
   {
     "id": "beast-kim-joo-hyun_2014_bigfile-miracle",
     "playerId": "Beast (Kim Joo-hyun)",
-    "nameEn": "Beast (Kim Joo-hyun)",
+    "nameEn": "Beast",
     "nameKo": null,
     "team": "Bigfile Miracle",
     "teamSlug": "bigfile-miracle",
@@ -2034,7 +2034,7 @@
   {
     "id": "fly-song-yong-jun_2014_jin-air-green-wings-stealths",
     "playerId": "Fly (Song Yong-jun)",
-    "nameEn": "Fly (Song Yong-jun)",
+    "nameEn": "Fly",
     "nameKo": null,
     "team": "Jin Air Green Wings Stealths",
     "teamSlug": "jin-air-green-wings-stealths",
@@ -2238,7 +2238,7 @@
   {
     "id": "violet-lim-doo-sung_2014_mkz",
     "playerId": "Violet (Lim Doo-sung)",
-    "nameEn": "Violet (Lim Doo-sung)",
+    "nameEn": "Violet",
     "nameKo": null,
     "team": "MKZ",
     "teamSlug": "mkz",
@@ -2255,7 +2255,7 @@
   {
     "id": "asd-lee-seok-hyun_2014_team-nb",
     "playerId": "asd (Lee Seok-hyun)",
-    "nameEn": "asd (Lee Seok-hyun)",
+    "nameEn": "asd",
     "nameKo": null,
     "team": "Team NB",
     "teamSlug": "team-nb",
@@ -2306,7 +2306,7 @@
   {
     "id": "jelly-gwak-seok-ho_2014_alienware-arena",
     "playerId": "Jelly (Gwak Seok-ho)",
-    "nameEn": "Jelly (Gwak Seok-ho)",
+    "nameEn": "Jelly",
     "nameKo": null,
     "team": "Alienware Arena",
     "teamSlug": "alienware-arena",
@@ -2340,7 +2340,7 @@
   {
     "id": "kite-kim-yong-yeon_2014_alienware-arena",
     "playerId": "Kite (Kim Yong-yeon)",
-    "nameEn": "Kite (Kim Yong-yeon)",
+    "nameEn": "Kite",
     "nameKo": null,
     "team": "Alienware Arena",
     "teamSlug": "alienware-arena",
@@ -2408,7 +2408,7 @@
   {
     "id": "nova-kim-dong-hyeon_2014_alienware-arena",
     "playerId": "Nova (Kim Dong-hyeon)",
-    "nameEn": "Nova (Kim Dong-hyeon)",
+    "nameEn": "Nova",
     "nameKo": null,
     "team": "Alienware Arena",
     "teamSlug": "alienware-arena",
@@ -2582,7 +2582,7 @@
   {
     "id": "pilot-na-woo-hyung_2015_jin-air-green-wings",
     "playerId": "Pilot (Na Woo-hyung)",
-    "nameEn": "Pilot (Na Woo-hyung)",
+    "nameEn": "Pilot",
     "nameKo": null,
     "team": "Jin Air Green Wings",
     "teamSlug": "jin-air-green-wings",
@@ -2599,7 +2599,7 @@
   {
     "id": "duke-lee-ho-seong_2015_najin-e-mfire",
     "playerId": "Duke (Lee Ho-seong)",
-    "nameEn": "Duke (Lee Ho-seong)",
+    "nameEn": "Duke",
     "nameKo": null,
     "team": "NaJin e-mFire",
     "teamSlug": "najin-e-mfire",
@@ -2824,7 +2824,7 @@
   {
     "id": "wolf-lee-jae-wan_2015_sk-telecom-t1",
     "playerId": "Wolf (Lee Jae-wan)",
-    "nameEn": "Wolf (Lee Jae-wan)",
+    "nameEn": "Wolf",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -2911,7 +2911,7 @@
   {
     "id": "space-seon-ho-san_2015_cj-entus",
     "playerId": "Space (Seon Ho-san)",
-    "nameEn": "Space (Seon Ho-san)",
+    "nameEn": "Space",
     "nameKo": null,
     "team": "CJ Entus",
     "teamSlug": "cj-entus",
@@ -3100,7 +3100,7 @@
   {
     "id": "blank-kang-sun-gu_2016_sk-telecom-t1",
     "playerId": "Blank (Kang Sun-gu)",
-    "nameEn": "Blank (Kang Sun-gu)",
+    "nameEn": "Blank",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -3187,7 +3187,7 @@
   {
     "id": "duke-lee-ho-seong_2016_sk-telecom-t1",
     "playerId": "Duke (Lee Ho-seong)",
-    "nameEn": "Duke (Lee Ho-seong)",
+    "nameEn": "Duke",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -3225,7 +3225,7 @@
   {
     "id": "fly-song-yong-jun_2016_kt-rolster",
     "playerId": "Fly (Song Yong-jun)",
-    "nameEn": "Fly (Song Yong-jun)",
+    "nameEn": "Fly",
     "nameKo": null,
     "team": "KT Rolster",
     "teamSlug": "kt-rolster",
@@ -3348,7 +3348,7 @@
   {
     "id": "mickey-son-young-min_2016_afreeca-freecs",
     "playerId": "Mickey (Son Young-min)",
-    "nameEn": "Mickey (Son Young-min)",
+    "nameEn": "Mickey",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -3384,7 +3384,7 @@
   {
     "id": "pilot-na-woo-hyung_2016_jin-air-green-wings",
     "playerId": "Pilot (Na Woo-hyung)",
-    "nameEn": "Pilot (Na Woo-hyung)",
+    "nameEn": "Pilot",
     "nameKo": null,
     "team": "Jin Air Green Wings",
     "teamSlug": "jin-air-green-wings",
@@ -3541,7 +3541,7 @@
   {
     "id": "wolf-lee-jae-wan_2016_sk-telecom-t1",
     "playerId": "Wolf (Lee Jae-wan)",
-    "nameEn": "Wolf (Lee Jae-wan)",
+    "nameEn": "Wolf",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -3613,7 +3613,7 @@
   {
     "id": "beyond-kim-kyu-seok_2017_mvp",
     "playerId": "Beyond (Kim Kyu-seok)",
-    "nameEn": "Beyond (Kim Kyu-seok)",
+    "nameEn": "Beyond",
     "nameKo": null,
     "team": "MVP",
     "teamSlug": "mvp",
@@ -3933,7 +3933,7 @@
   {
     "id": "max-jeong-jong-bin_2017_mvp",
     "playerId": "Max (Jeong Jong-bin)",
-    "nameEn": "Max (Jeong Jong-bin)",
+    "nameEn": "Max",
     "nameKo": null,
     "team": "MVP",
     "teamSlug": "mvp",
@@ -4071,7 +4071,7 @@
   {
     "id": "wolf-lee-jae-wan_2017_sk-telecom-t1",
     "playerId": "Wolf (Lee Jae-wan)",
-    "nameEn": "Wolf (Lee Jae-wan)",
+    "nameEn": "Wolf",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -4160,7 +4160,7 @@
   {
     "id": "blank-kang-sun-gu_2018_sk-telecom-t1",
     "playerId": "Blank (Kang Sun-gu)",
-    "nameEn": "Blank (Kang Sun-gu)",
+    "nameEn": "Blank",
     "nameKo": null,
     "team": "SK Telecom T1",
     "teamSlug": "sk-telecom-t1",
@@ -4586,7 +4586,7 @@
   {
     "id": "fly-song-yong-jun_2018_gen-g",
     "playerId": "Fly (Song Yong-jun)",
-    "nameEn": "Fly (Song Yong-jun)",
+    "nameEn": "Fly",
     "nameKo": null,
     "team": "Gen.G",
     "teamSlug": "gen-g",
@@ -4654,7 +4654,7 @@
   {
     "id": "sword-choi-sung-won_2018_griffin-korean-team",
     "playerId": "Sword (Choi Sung-won)",
-    "nameEn": "Sword (Choi Sung-won)",
+    "nameEn": "Sword",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -4671,7 +4671,7 @@
   {
     "id": "tarzan-lee-seung-yong_2018_griffin-korean-team",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -4688,7 +4688,7 @@
   {
     "id": "viper-park-do-hyeon_2018_griffin-korean-team",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -4722,7 +4722,7 @@
   {
     "id": "dread-lee-jin-hyeok_2019_afreeca-freecs",
     "playerId": "Dread (Lee Jin-hyeok)",
-    "nameEn": "Dread (Lee Jin-hyeok)",
+    "nameEn": "Dread",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -4947,7 +4947,7 @@
   {
     "id": "ghost-jang-yong-jun_2019_sandbox-gaming",
     "playerId": "Ghost (Jang Yong-jun)",
-    "nameEn": "Ghost (Jang Yong-jun)",
+    "nameEn": "Ghost",
     "nameKo": null,
     "team": "SANDBOX Gaming",
     "teamSlug": "sandbox-gaming",
@@ -4981,7 +4981,7 @@
   {
     "id": "joker-cho-jae-eup_2019_sandbox-gaming",
     "playerId": "Joker (Cho Jae-eup)",
-    "nameEn": "Joker (Cho Jae-eup)",
+    "nameEn": "Joker",
     "nameKo": null,
     "team": "SANDBOX Gaming",
     "teamSlug": "sandbox-gaming",
@@ -5138,7 +5138,7 @@
   {
     "id": "sword-choi-sung-won_2019_griffin-korean-team",
     "playerId": "Sword (Choi Sung-won)",
-    "nameEn": "Sword (Choi Sung-won)",
+    "nameEn": "Sword",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -5155,7 +5155,7 @@
   {
     "id": "tarzan-lee-seung-yong_2019_griffin-korean-team",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -5208,7 +5208,7 @@
   {
     "id": "viper-park-do-hyeon_2019_griffin-korean-team",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "Griffin (Korean Team)",
     "teamSlug": "griffin-korean-team",
@@ -5242,7 +5242,7 @@
   {
     "id": "fly-song-yong-jun_2020_afreeca-freecs",
     "playerId": "Fly (Song Yong-jun)",
-    "nameEn": "Fly (Song Yong-jun)",
+    "nameEn": "Fly",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -5313,7 +5313,7 @@
   {
     "id": "bono-kim-gi-beom_2020_kt-rolster",
     "playerId": "bonO (Kim Gi-beom)",
-    "nameEn": "bonO (Kim Gi-beom)",
+    "nameEn": "bonO",
     "nameKo": null,
     "team": "KT Rolster",
     "teamSlug": "kt-rolster",
@@ -5386,7 +5386,7 @@
   {
     "id": "doran-choi-hyeon-joon_2020_dragonx",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "DragonX",
     "teamSlug": "dragonx",
@@ -5511,7 +5511,7 @@
   {
     "id": "ghost-jang-yong-jun_2020_damwon-gaming",
     "playerId": "Ghost (Jang Yong-jun)",
-    "nameEn": "Ghost (Jang Yong-jun)",
+    "nameEn": "Ghost",
     "nameKo": null,
     "team": "DAMWON Gaming",
     "teamSlug": "damwon-gaming",
@@ -5793,7 +5793,7 @@
   {
     "id": "doran-choi-hyeon-joon_2020_drx",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "DRX",
     "teamSlug": "drx",
@@ -5844,7 +5844,7 @@
   {
     "id": "arthur-park-mi-reu_2021_hanwha-life-esports",
     "playerId": "Arthur (Park Mi-reu)",
-    "nameEn": "Arthur (Park Mi-reu)",
+    "nameEn": "Arthur",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -5861,7 +5861,7 @@
   {
     "id": "leo-han-gyeo-re_2021_afreeca-freecs",
     "playerId": "Leo (Han Gyeo-re)",
-    "nameEn": "Leo (Han Gyeo-re)",
+    "nameEn": "Leo",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -5878,7 +5878,7 @@
   {
     "id": "bao-jeong-hyeon-woo_2021_drx",
     "playerId": "BAO (Jeong Hyeon-woo)",
-    "nameEn": "BAO (Jeong Hyeon-woo)",
+    "nameEn": "BAO",
     "nameKo": null,
     "team": "DRX",
     "teamSlug": "drx",
@@ -5929,7 +5929,7 @@
   {
     "id": "becca-son-min-woo_2021_drx",
     "playerId": "Becca (Son Min-woo)",
-    "nameEn": "Becca (Son Min-woo)",
+    "nameEn": "Becca",
     "nameKo": null,
     "team": "DRX",
     "teamSlug": "drx",
@@ -6123,7 +6123,7 @@
   {
     "id": "dread-lee-jin-hyeok_2021_afreeca-freecs",
     "playerId": "Dread (Lee Jin-hyeok)",
-    "nameEn": "Dread (Lee Jin-hyeok)",
+    "nameEn": "Dread",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -6174,7 +6174,7 @@
   {
     "id": "fate-yoo-su-hyeok_2021_liiv-sandbox",
     "playerId": "FATE (Yoo Su-hyeok)",
-    "nameEn": "FATE (Yoo Su-hyeok)",
+    "nameEn": "FATE",
     "nameKo": null,
     "team": "Liiv SANDBOX",
     "teamSlug": "liiv-sandbox",
@@ -6191,7 +6191,7 @@
   {
     "id": "fly-song-yong-jun_2021_afreeca-freecs",
     "playerId": "Fly (Song Yong-jun)",
-    "nameEn": "Fly (Song Yong-jun)",
+    "nameEn": "Fly",
     "nameKo": null,
     "team": "Afreeca Freecs",
     "teamSlug": "afreeca-freecs",
@@ -6208,7 +6208,7 @@
   {
     "id": "ghost-jang-yong-jun_2021_dwg-kia",
     "playerId": "Ghost (Jang Yong-jun)",
-    "nameEn": "Ghost (Jang Yong-jun)",
+    "nameEn": "Ghost",
     "nameKo": null,
     "team": "DWG KIA",
     "teamSlug": "dwg-kia",
@@ -6350,7 +6350,7 @@
   {
     "id": "prince-lee-chae-hwan_2021_liiv-sandbox",
     "playerId": "Prince (Lee Chae-hwan)",
-    "nameEn": "Prince (Lee Chae-hwan)",
+    "nameEn": "Prince",
     "nameKo": null,
     "team": "Liiv SANDBOX",
     "teamSlug": "liiv-sandbox",
@@ -6435,7 +6435,7 @@
   {
     "id": "rich-lee-jae-won_2021_nongshim-redforce",
     "playerId": "Rich (Lee Jae-won)",
-    "nameEn": "Rich (Lee Jae-won)",
+    "nameEn": "Rich",
     "nameKo": null,
     "team": "Nongshim RedForce",
     "teamSlug": "nongshim-redforce",
@@ -6764,7 +6764,7 @@
   {
     "id": "doran-choi-hyeon-joon_2022_gen-g",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "Gen.G",
     "teamSlug": "gen-g",
@@ -6817,7 +6817,7 @@
   {
     "id": "prince-lee-chae-hwan_2022_liiv-sandbox",
     "playerId": "Prince (Lee Chae-hwan)",
-    "nameEn": "Prince (Lee Chae-hwan)",
+    "nameEn": "Prince",
     "nameKo": null,
     "team": "Liiv SANDBOX",
     "teamSlug": "liiv-sandbox",
@@ -6854,7 +6854,7 @@
   {
     "id": "fate-yoo-su-hyeok_2022_kwangdong-freecs",
     "playerId": "FATE (Yoo Su-hyeok)",
-    "nameEn": "FATE (Yoo Su-hyeok)",
+    "nameEn": "FATE",
     "nameKo": null,
     "team": "Kwangdong Freecs",
     "teamSlug": "kwangdong-freecs",
@@ -6942,7 +6942,7 @@
   {
     "id": "kael-kim-jin-hong_2022_liiv-sandbox",
     "playerId": "Kael (Kim Jin-hong)",
-    "nameEn": "Kael (Kim Jin-hong)",
+    "nameEn": "Kael",
     "nameKo": null,
     "team": "Liiv SANDBOX",
     "teamSlug": "liiv-sandbox",
@@ -7174,7 +7174,7 @@
   {
     "id": "zeka-kim-geon-woo_2022_drx",
     "playerId": "Zeka (Kim Geon-woo)",
-    "nameEn": "Zeka (Kim Geon-woo)",
+    "nameEn": "Zeka",
     "nameKo": null,
     "team": "DRX",
     "teamSlug": "drx",
@@ -7487,7 +7487,7 @@
   {
     "id": "doran-choi-hyeon-joon_2023_gen-g",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "Gen.G",
     "teamSlug": "gen-g",
@@ -7542,7 +7542,7 @@
   {
     "id": "fate-yoo-su-hyeok_2023_drx",
     "playerId": "FATE (Yoo Su-hyeok)",
-    "nameEn": "FATE (Yoo Su-hyeok)",
+    "nameEn": "FATE",
     "nameKo": null,
     "team": "DRX",
     "teamSlug": "drx",
@@ -7578,7 +7578,7 @@
   {
     "id": "kael-kim-jin-hong_2023_liiv-sandbox",
     "playerId": "Kael (Kim Jin-hong)",
-    "nameEn": "Kael (Kim Jin-hong)",
+    "nameEn": "Kael",
     "nameKo": null,
     "team": "Liiv SANDBOX",
     "teamSlug": "liiv-sandbox",
@@ -7790,7 +7790,7 @@
   {
     "id": "viper-park-do-hyeon_2023_hanwha-life-esports",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -7824,7 +7824,7 @@
   {
     "id": "zeka-kim-geon-woo_2023_hanwha-life-esports",
     "playerId": "ZEKA (Kim Geon-woo)",
-    "nameEn": "ZEKA (Kim Geon-woo)",
+    "nameEn": "ZEKA",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -7945,7 +7945,7 @@
   {
     "id": "bulldog-lee-tae-young_2024_kwangdong-freecs",
     "playerId": "BuLLDoG (Lee Tae-young)",
-    "nameEn": "BuLLDoG (Lee Tae-young)",
+    "nameEn": "BuLLDoG",
     "nameKo": null,
     "team": "Kwangdong Freecs",
     "teamSlug": "kwangdong-freecs",
@@ -8055,7 +8055,7 @@
   {
     "id": "doran-choi-hyeon-joon_2024_hanwha-life-esports",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -8074,7 +8074,7 @@
   {
     "id": "dudu-lee-dong-ju_2024_kwangdong-freecs",
     "playerId": "DuDu (Lee Dong-ju)",
-    "nameEn": "DuDu (Lee Dong-ju)",
+    "nameEn": "DuDu",
     "nameKo": null,
     "team": "Kwangdong Freecs",
     "teamSlug": "kwangdong-freecs",
@@ -8231,7 +8231,7 @@
   {
     "id": "lucid-choi-yong-hyeok_2024_dplus-kia",
     "playerId": "Lucid (Choi Yong-hyeok)",
-    "nameEn": "Lucid (Choi Yong-hyeok)",
+    "nameEn": "Lucid",
     "nameKo": null,
     "team": "Dplus Kia",
     "teamSlug": "dplus-kia",
@@ -8267,7 +8267,7 @@
   {
     "id": "perfect-lee-seung-min_2024_kt-rolster",
     "playerId": "PerfecT (Lee Seung-min)",
-    "nameEn": "PerfecT (Lee Seung-min)",
+    "nameEn": "PerfecT",
     "nameKo": null,
     "team": "KT Rolster",
     "teamSlug": "kt-rolster",
@@ -8338,7 +8338,7 @@
   {
     "id": "viper-park-do-hyeon_2024_hanwha-life-esports",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -8357,7 +8357,7 @@
   {
     "id": "zeka-kim-geon-woo_2024_hanwha-life-esports",
     "playerId": "Zeka (Kim Geon-woo)",
-    "nameEn": "Zeka (Kim Geon-woo)",
+    "nameEn": "Zeka",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -8393,7 +8393,7 @@
   {
     "id": "clear-song-hyeon-min_2024_bnk-fearx",
     "playerId": "Clear (Song Hyeon-min)",
-    "nameEn": "Clear (Song Hyeon-min)",
+    "nameEn": "Clear",
     "nameKo": null,
     "team": "BNK FEARX",
     "teamSlug": "bnk-fearx",
@@ -8461,7 +8461,7 @@
   {
     "id": "raptor-jeon-eo-jin_2024_bnk-fearx",
     "playerId": "Raptor (Jeon Eo-jin)",
-    "nameEn": "Raptor (Jeon Eo-jin)",
+    "nameEn": "Raptor",
     "nameKo": null,
     "team": "BNK FEARX",
     "teamSlug": "bnk-fearx",
@@ -8529,7 +8529,7 @@
   {
     "id": "calix-syun-hyun-bin_2025_nongshim-redforce",
     "playerId": "Calix (Syun Hyun-bin)",
-    "nameEn": "Calix (Syun Hyun-bin)",
+    "nameEn": "Calix",
     "nameKo": null,
     "team": "Nongshim RedForce",
     "teamSlug": "nongshim-redforce",
@@ -8635,7 +8635,7 @@
   {
     "id": "doran-choi-hyeon-joon_2025_t1",
     "playerId": "Doran (Choi Hyeon-joon)",
-    "nameEn": "Doran (Choi Hyeon-joon)",
+    "nameEn": "Doran",
     "nameKo": null,
     "team": "T1",
     "teamSlug": "t1",
@@ -8809,7 +8809,7 @@
   {
     "id": "lucid-choi-yong-hyeok_2025_dplus-kia",
     "playerId": "Lucid (Choi Yong-hyeok)",
-    "nameEn": "Lucid (Choi Yong-hyeok)",
+    "nameEn": "Lucid",
     "nameKo": null,
     "team": "Dplus Kia",
     "teamSlug": "dplus-kia",
@@ -8860,7 +8860,7 @@
   {
     "id": "perfect-lee-seung-min_2025_kt-rolster",
     "playerId": "PerfecT (Lee Seung-min)",
-    "nameEn": "PerfecT (Lee Seung-min)",
+    "nameEn": "PerfecT",
     "nameKo": null,
     "team": "KT Rolster",
     "teamSlug": "kt-rolster",
@@ -8877,7 +8877,7 @@
   {
     "id": "peter-jeong-yoon-su_2025_kt-rolster",
     "playerId": "Peter (Jeong Yoon-su)",
-    "nameEn": "Peter (Jeong Yoon-su)",
+    "nameEn": "Peter",
     "nameKo": null,
     "team": "KT Rolster",
     "teamSlug": "kt-rolster",
@@ -8947,7 +8947,7 @@
   {
     "id": "viper-park-do-hyeon_2025_hanwha-life-esports",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -8964,7 +8964,7 @@
   {
     "id": "zeka-kim-geon-woo_2025_hanwha-life-esports",
     "playerId": "Zeka (Kim Geon-woo)",
-    "nameEn": "Zeka (Kim Geon-woo)",
+    "nameEn": "Zeka",
     "nameKo": null,
     "team": "Hanwha Life Esports",
     "teamSlug": "hanwha-life-esports",
@@ -8998,7 +8998,7 @@
   {
     "id": "hype-byeon-jeong-hyeon_2025_oksavingsbank-brion",
     "playerId": "Hype (Byeon Jeong-hyeon)",
-    "nameEn": "Hype (Byeon Jeong-hyeon)",
+    "nameEn": "Hype",
     "nameKo": null,
     "team": "OKSavingsBank BRION",
     "teamSlug": "oksavingsbank-brion",
@@ -9015,7 +9015,7 @@
   {
     "id": "clear-song-hyeon-min_2025_bnk-fearx",
     "playerId": "Clear (Song Hyeon-min)",
-    "nameEn": "Clear (Song Hyeon-min)",
+    "nameEn": "Clear",
     "nameKo": null,
     "team": "BNK FEARX",
     "teamSlug": "bnk-fearx",
@@ -9159,7 +9159,7 @@
   {
     "id": "raptor-jeon-eo-jin_2025_bnk-fearx",
     "playerId": "Raptor (Jeon Eo-jin)",
-    "nameEn": "Raptor (Jeon Eo-jin)",
+    "nameEn": "Raptor",
     "nameKo": null,
     "team": "BNK FEARX",
     "teamSlug": "bnk-fearx",
@@ -9254,7 +9254,7 @@
   {
     "id": "jing-rao-jing_2013_positive-energy",
     "playerId": "Jing (Rao Jing)",
-    "nameEn": "Jing (Rao Jing)",
+    "nameEn": "Jing",
     "nameKo": null,
     "team": "Positive Energy",
     "teamSlug": "positive-energy",
@@ -9273,7 +9273,7 @@
   {
     "id": "jojo-kan-yiu-tou_2013_positive-energy",
     "playerId": "JoJo (Kan Yiu-Tou)",
-    "nameEn": "JoJo (Kan Yiu-Tou)",
+    "nameEn": "JoJo",
     "nameKo": null,
     "team": "Positive Energy",
     "teamSlug": "positive-energy",
@@ -9330,7 +9330,7 @@
   {
     "id": "san-guo-jun-liang_2013_oh-my-god",
     "playerId": "san (Guo Jun-Liang)",
-    "nameEn": "san (Guo Jun-Liang)",
+    "nameEn": "san",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -9368,7 +9368,7 @@
   {
     "id": "allen-yin-le_2014_oh-my-god",
     "playerId": "Allen (Yin Le)",
-    "nameEn": "Allen (Yin Le)",
+    "nameEn": "Allen",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -9510,7 +9510,7 @@
   {
     "id": "illusion-chen-xin-lin_2014_invictus-gaming",
     "playerId": "illuSioN (Chen Xin-Lin)",
-    "nameEn": "illuSioN (Chen Xin-Lin)",
+    "nameEn": "illuSioN",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -9614,7 +9614,7 @@
   {
     "id": "pyl-chen-bo_2014_lgd-gaming",
     "playerId": "Pyl (Chen Bo)",
-    "nameEn": "Pyl (Chen Bo)",
+    "nameEn": "Pyl",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -9665,7 +9665,7 @@
   {
     "id": "ruo-teng-yang-tian-xia_2014_team-we",
     "playerId": "Ruo (Teng Yang-Tian-Xia)",
-    "nameEn": "Ruo (Teng Yang-Tian-Xia)",
+    "nameEn": "Ruo",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -9682,7 +9682,7 @@
   {
     "id": "san-guo-jun-liang_2014_oh-my-god",
     "playerId": "San (Guo Jun-Liang)",
-    "nameEn": "San (Guo Jun-Liang)",
+    "nameEn": "San",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -9803,7 +9803,7 @@
   {
     "id": "cola-jiang-nan_2014_star-horn-royal-club",
     "playerId": "Cola (Jiang Nan)",
-    "nameEn": "Cola (Jiang Nan)",
+    "nameEn": "Cola",
     "nameKo": null,
     "team": "Star Horn Royal Club",
     "teamSlug": "star-horn-royal-club",
@@ -9820,7 +9820,7 @@
   {
     "id": "corn-lei-wen_2014_star-horn-royal-club",
     "playerId": "corn (Lei Wen)",
-    "nameEn": "corn (Lei Wen)",
+    "nameEn": "corn",
     "nameKo": null,
     "team": "Star Horn Royal Club",
     "teamSlug": "star-horn-royal-club",
@@ -9854,7 +9854,7 @@
   {
     "id": "uzi-jian-zi-hao_2014_star-horn-royal-club",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Star Horn Royal Club",
     "teamSlug": "star-horn-royal-club",
@@ -9871,7 +9871,7 @@
   {
     "id": "zero-yoon-kyung-sup_2014_star-horn-royal-club",
     "playerId": "Zero (Yoon Kyung-sup)",
-    "nameEn": "Zero (Yoon Kyung-sup)",
+    "nameEn": "Zero",
     "nameKo": null,
     "team": "Star Horn Royal Club",
     "teamSlug": "star-horn-royal-club",
@@ -9941,7 +9941,7 @@
   {
     "id": "baka-lu-fan_2015_snake-esports",
     "playerId": "BAKA (Lu Fan)",
-    "nameEn": "BAKA (Lu Fan)",
+    "nameEn": "BAKA",
     "nameKo": null,
     "team": "Snake Esports",
     "teamSlug": "snake-esports",
@@ -9958,7 +9958,7 @@
   {
     "id": "beast-kim-joo-hyun_2015_snake-esports",
     "playerId": "Beast (Kim Joo-hyun)",
-    "nameEn": "Beast (Kim Joo-hyun)",
+    "nameEn": "Beast",
     "nameKo": null,
     "team": "Snake Esports",
     "teamSlug": "snake-esports",
@@ -10011,7 +10011,7 @@
   {
     "id": "carry-wang-zu-jing_2015_vici-gaming",
     "playerId": "Carry (Wang Zu-Jing)",
-    "nameEn": "Carry (Wang Zu-Jing)",
+    "nameEn": "Carry",
     "nameKo": null,
     "team": "Vici Gaming",
     "teamSlug": "vici-gaming",
@@ -10028,7 +10028,7 @@
   {
     "id": "amazing-liu-shi-yu_2015_oh-my-god",
     "playerId": "Amazing (Liu Shi-Yu)",
-    "nameEn": "Amazing (Liu Shi-Yu)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -10514,7 +10514,7 @@
   {
     "id": "pyl-chen-bo_2015_lgd-gaming",
     "playerId": "Pyl (Chen Bo)",
-    "nameEn": "Pyl (Chen Bo)",
+    "nameEn": "Pyl",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -10550,7 +10550,7 @@
   {
     "id": "uzi-jian-zi-hao_2015_oh-my-god",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -10637,7 +10637,7 @@
   {
     "id": "godv-wei-zhen_2015_lgd-gaming",
     "playerId": "GODV (Wei Zhen)",
-    "nameEn": "GODV (Wei Zhen)",
+    "nameEn": "GODV",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -10951,7 +10951,7 @@
   {
     "id": "pyl-chen-bo_2016_lgd-gaming",
     "playerId": "Pyl (Chen Bo)",
-    "nameEn": "Pyl (Chen Bo)",
+    "nameEn": "Pyl",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -10985,7 +10985,7 @@
   {
     "id": "endless-xu-hao_2016_vici-gaming",
     "playerId": "Endless (Xu Hao)",
-    "nameEn": "Endless (Xu Hao)",
+    "nameEn": "Endless",
     "nameKo": null,
     "team": "Vici Gaming",
     "teamSlug": "vici-gaming",
@@ -11108,7 +11108,7 @@
   {
     "id": "martin-tan-qi_2016_snake-esports",
     "playerId": "Martin (Tan Qi)",
-    "nameEn": "Martin (Tan Qi)",
+    "nameEn": "Martin",
     "nameKo": null,
     "team": "Snake Esports",
     "teamSlug": "snake-esports",
@@ -11233,7 +11233,7 @@
   {
     "id": "uzi-jian-zi-hao_2016_royal-never-give-up",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -11252,7 +11252,7 @@
   {
     "id": "peco-yu-rui_2016_qiao-gu-reapers",
     "playerId": "Peco (Yu Rui)",
-    "nameEn": "Peco (Yu Rui)",
+    "nameEn": "Peco",
     "nameKo": null,
     "team": "Qiao Gu Reapers",
     "teamSlug": "qiao-gu-reapers",
@@ -11269,7 +11269,7 @@
   {
     "id": "rain-an-hyeon-guk_2016_invictus-gaming",
     "playerId": "Rain (An Hyeon-guk)",
-    "nameEn": "Rain (An Hyeon-guk)",
+    "nameEn": "Rain",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -11407,7 +11407,7 @@
   {
     "id": "zero-yoon-kyung-sup_2016_team-we",
     "playerId": "Zero (Yoon Kyung-sup)",
-    "nameEn": "Zero (Yoon Kyung-sup)",
+    "nameEn": "Zero",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -11594,7 +11594,7 @@
   {
     "id": "road-yun-han-gil_2016_i-may",
     "playerId": "Road (Yun Han-gil)",
-    "nameEn": "Road (Yun Han-gil)",
+    "nameEn": "Road",
     "nameKo": null,
     "team": "I May",
     "teamSlug": "i-may",
@@ -11647,7 +11647,7 @@
   {
     "id": "uzi-jian-zi-hao_2017_royal-never-give-up",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -11664,7 +11664,7 @@
   {
     "id": "ali-liu-xu-dong_2017_qg-reapers",
     "playerId": "Ali (Liu Xu-Dong)",
-    "nameEn": "Ali (Liu Xu-Dong)",
+    "nameEn": "Ali",
     "nameKo": null,
     "team": "QG Reapers",
     "teamSlug": "qg-reapers",
@@ -11681,7 +11681,7 @@
   {
     "id": "alone-wang-zi-jun_2017_qg-reapers",
     "playerId": "Alone (Wang Zi-Jun)",
-    "nameEn": "Alone (Wang Zi-Jun)",
+    "nameEn": "Alone",
     "nameKo": null,
     "team": "QG Reapers",
     "teamSlug": "qg-reapers",
@@ -11874,7 +11874,7 @@
   {
     "id": "duke-lee-ho-seong_2017_invictus-gaming",
     "playerId": "Duke (Lee Ho-seong)",
-    "nameEn": "Duke (Lee Ho-seong)",
+    "nameEn": "Duke",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -12150,7 +12150,7 @@
   {
     "id": "ming-shi-sen-ming_2017_royal-never-give-up",
     "playerId": "ming (Shi Sen-Ming)",
-    "nameEn": "ming (Shi Sen-Ming)",
+    "nameEn": "ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -12220,7 +12220,7 @@
   {
     "id": "road-yun-han-gil_2017_i-may",
     "playerId": "Road (Yun Han-gil)",
-    "nameEn": "Road (Yun Han-gil)",
+    "nameEn": "Road",
     "nameKo": null,
     "team": "I May",
     "teamSlug": "i-may",
@@ -12430,7 +12430,7 @@
   {
     "id": "fury-lee-jin-yong_2017_suning",
     "playerId": "Fury (Lee Jin-yong)",
-    "nameEn": "Fury (Lee Jin-yong)",
+    "nameEn": "Fury",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -12515,7 +12515,7 @@
   {
     "id": "uzi-jian-zi-hao_2018_royal-never-give-up",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -12619,7 +12619,7 @@
   {
     "id": "cat-wu-yao_2018_topsports-gaming",
     "playerId": "Cat (Wu Yao)",
-    "nameEn": "Cat (Wu Yao)",
+    "nameEn": "Cat",
     "nameKo": null,
     "team": "Topsports Gaming",
     "teamSlug": "topsports-gaming",
@@ -12806,7 +12806,7 @@
   {
     "id": "fury-lee-jin-yong_2018_suning",
     "playerId": "Fury (Lee Jin-yong)",
-    "nameEn": "Fury (Lee Jin-yong)",
+    "nameEn": "Fury",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -12942,7 +12942,7 @@
   {
     "id": "xx-xiong-yu-long_2018_topsports-gaming",
     "playerId": "Xx (Xiong Yu-Long)",
-    "nameEn": "Xx (Xiong Yu-Long)",
+    "nameEn": "Xx",
     "nameKo": null,
     "team": "Topsports Gaming",
     "teamSlug": "topsports-gaming",
@@ -13012,7 +13012,7 @@
   {
     "id": "knight-zhuo-ding_2018_suning",
     "playerId": "Knight (Zhuo Ding)",
-    "nameEn": "Knight (Zhuo Ding)",
+    "nameEn": "Knight",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -13150,7 +13150,7 @@
   {
     "id": "ming-shi-sen-ming_2018_royal-never-give-up",
     "playerId": "Ming (Shi Sen-Ming)",
-    "nameEn": "Ming (Shi Sen-Ming)",
+    "nameEn": "Ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -13203,7 +13203,7 @@
   {
     "id": "pepper-hu-zhi-wei_2018_funplus-phoenix",
     "playerId": "Pepper (Hu Zhi-Wei)",
-    "nameEn": "Pepper (Hu Zhi-Wei)",
+    "nameEn": "Pepper",
     "nameKo": null,
     "team": "FunPlus Phoenix",
     "teamSlug": "funplus-phoenix",
@@ -13220,7 +13220,7 @@
   {
     "id": "qiuqiu-zhang-ming_2018_topsports-gaming",
     "playerId": "QiuQiu (Zhang Ming)",
-    "nameEn": "QiuQiu (Zhang Ming)",
+    "nameEn": "QiuQiu",
     "nameKo": null,
     "team": "Topsports Gaming",
     "teamSlug": "topsports-gaming",
@@ -13254,7 +13254,7 @@
   {
     "id": "road-yun-han-gil_2018_bilibili-gaming",
     "playerId": "Road (Yun Han-gil)",
-    "nameEn": "Road (Yun Han-gil)",
+    "nameEn": "Road",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -13477,7 +13477,7 @@
   {
     "id": "maple-huang-yi-tang_2019_suning",
     "playerId": "Maple (Huang Yi-Tang)",
-    "nameEn": "Maple (Huang Yi-Tang)",
+    "nameEn": "Maple",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -13950,7 +13950,7 @@
   {
     "id": "mark-ling-xu_2019_sinodragon-gaming",
     "playerId": "Mark (Ling Xu)",
-    "nameEn": "Mark (Ling Xu)",
+    "nameEn": "Mark",
     "nameKo": null,
     "team": "SinoDragon Gaming",
     "teamSlug": "sinodragon-gaming",
@@ -14001,7 +14001,7 @@
   {
     "id": "ming-shi-sen-ming_2019_royal-never-give-up",
     "playerId": "Ming (Shi Sen-Ming)",
-    "nameEn": "Ming (Shi Sen-Ming)",
+    "nameEn": "Ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -14194,7 +14194,7 @@
   {
     "id": "uzi-jian-zi-hao_2019_royal-never-give-up",
     "playerId": "Uzi (Jian Zi-Hao)",
-    "nameEn": "Uzi (Jian Zi-Hao)",
+    "nameEn": "Uzi",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -14245,7 +14245,7 @@
   {
     "id": "xx-xiong-yu-long_2019_topsports-gaming",
     "playerId": "Xx (Xiong Yu-Long)",
-    "nameEn": "Xx (Xiong Yu-Long)",
+    "nameEn": "Xx",
     "nameKo": null,
     "team": "Topsports Gaming",
     "teamSlug": "topsports-gaming",
@@ -14313,7 +14313,7 @@
   {
     "id": "xx-xiong-yu-long_2019_top-esports",
     "playerId": "Xx (Xiong Yu-Long)",
-    "nameEn": "Xx (Xiong Yu-Long)",
+    "nameEn": "Xx",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -14330,7 +14330,7 @@
   {
     "id": "asura-lu-qi_2019_lng-esports",
     "playerId": "Asura (Lu Qi)",
-    "nameEn": "Asura (Lu Qi)",
+    "nameEn": "Asura",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -14381,7 +14381,7 @@
   {
     "id": "plex-bae-ho-young_2019_lng-esports",
     "playerId": "Plex (Bae Ho-young)",
-    "nameEn": "Plex (Bae Ho-young)",
+    "nameEn": "Plex",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -14521,7 +14521,7 @@
   {
     "id": "angel-xiang-tao_2020_suning",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -14606,7 +14606,7 @@
   {
     "id": "bin-chen-ze-bin_2020_suning",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -14623,7 +14623,7 @@
   {
     "id": "mark-ling-xu_2020_lgd-gaming",
     "playerId": "Mark (Ling Xu)",
-    "nameEn": "Mark (Ling Xu)",
+    "nameEn": "Mark",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -14778,7 +14778,7 @@
   {
     "id": "hope-wang-jie_2020_edward-gaming",
     "playerId": "Hope (Wang Jie)",
-    "nameEn": "Hope (Wang Jie)",
+    "nameEn": "Hope",
     "nameKo": null,
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -14905,7 +14905,7 @@
   {
     "id": "knight-zhuo-ding_2020_top-esports",
     "playerId": "knight (Zhuo Ding)",
-    "nameEn": "knight (Zhuo Ding)",
+    "nameEn": "knight",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -15049,7 +15049,7 @@
   {
     "id": "ming-shi-sen-ming_2020_royal-never-give-up",
     "playerId": "Ming (Shi Sen-Ming)",
-    "nameEn": "Ming (Shi Sen-Ming)",
+    "nameEn": "Ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -15134,7 +15134,7 @@
   {
     "id": "puff-ding-wang_2020_invictus-gaming",
     "playerId": "Puff (Ding Wang)",
-    "nameEn": "Puff (Ding Wang)",
+    "nameEn": "Puff",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -15310,7 +15310,7 @@
   {
     "id": "wei-yan-yang-wei_2020_estar-chinese-team",
     "playerId": "Wei (Yan Yang-Wei)",
-    "nameEn": "Wei (Yan Yang-Wei)",
+    "nameEn": "Wei",
     "nameKo": null,
     "team": "eStar (Chinese Team)",
     "teamSlug": "estar-chinese-team",
@@ -15482,7 +15482,7 @@
   {
     "id": "aki-mao-an_2021_oh-my-god",
     "playerId": "Aki (Mao An)",
-    "nameEn": "Aki (Mao An)",
+    "nameEn": "Aki",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -15533,7 +15533,7 @@
   {
     "id": "angel-xiang-tao_2021_suning",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -15550,7 +15550,7 @@
   {
     "id": "lucas-li-tan-pan-ao_2021_invictus-gaming",
     "playerId": "Lucas (Li Tan-Pan-Ao)",
-    "nameEn": "Lucas (Li Tan-Pan-Ao)",
+    "nameEn": "Lucas",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -15601,7 +15601,7 @@
   {
     "id": "bin-chen-ze-bin_2021_suning",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Suning",
     "teamSlug": "suning",
@@ -15705,7 +15705,7 @@
   {
     "id": "cube-dai-yi_2021_rare-atom",
     "playerId": "Cube (Dai Yi)",
-    "nameEn": "Cube (Dai Yi)",
+    "nameEn": "Cube",
     "nameKo": null,
     "team": "Rare Atom",
     "teamSlug": "rare-atom",
@@ -16002,7 +16002,7 @@
   {
     "id": "knight-zhuo-ding_2021_top-esports",
     "playerId": "knight (Zhuo Ding)",
-    "nameEn": "knight (Zhuo Ding)",
+    "nameEn": "knight",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -16019,7 +16019,7 @@
   {
     "id": "light-wang-guang-yu_2021_lng-esports",
     "playerId": "Light (Wang Guang-Yu)",
-    "nameEn": "Light (Wang Guang-Yu)",
+    "nameEn": "Light",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -16123,7 +16123,7 @@
   {
     "id": "ming-shi-sen-ming_2021_royal-never-give-up",
     "playerId": "Ming (Shi Sen-Ming)",
-    "nameEn": "Ming (Shi Sen-Ming)",
+    "nameEn": "Ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -16282,7 +16282,7 @@
   {
     "id": "tarzan-lee-seung-yong_2021_lng-esports",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -16318,7 +16318,7 @@
   {
     "id": "viper-park-do-hyeon_2021_edward-gaming",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -16338,7 +16338,7 @@
   {
     "id": "wei-yan-yang-wei_2021_royal-never-give-up",
     "playerId": "Wei (Yan Yang-Wei)",
-    "nameEn": "Wei (Yan Yang-Wei)",
+    "nameEn": "Wei",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -16429,7 +16429,7 @@
   {
     "id": "zeka-kim-geon-woo_2021_bilibili-gaming",
     "playerId": "Zeka (Kim Geon-woo)",
-    "nameEn": "Zeka (Kim Geon-woo)",
+    "nameEn": "Zeka",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -16517,7 +16517,7 @@
   {
     "id": "aki-mao-an_2022_oh-my-god",
     "playerId": "Aki (Mao An)",
-    "nameEn": "Aki (Mao An)",
+    "nameEn": "Aki",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -16551,7 +16551,7 @@
   {
     "id": "angel-xiang-tao_2022_weibo-gaming",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "Weibo Gaming",
     "teamSlug": "weibo-gaming",
@@ -16585,7 +16585,7 @@
   {
     "id": "bin-chen-ze-bin_2022_royal-never-give-up",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -16689,7 +16689,7 @@
   {
     "id": "cube-dai-yi_2022_rare-atom",
     "playerId": "Cube (Dai Yi)",
-    "nameEn": "Cube (Dai Yi)",
+    "nameEn": "Cube",
     "nameKo": null,
     "team": "Rare Atom",
     "teamSlug": "rare-atom",
@@ -16810,7 +16810,7 @@
   {
     "id": "hope-wang-jie_2022_jd-gaming",
     "playerId": "Hope (Wang Jie)",
-    "nameEn": "Hope (Wang Jie)",
+    "nameEn": "Hope",
     "nameKo": null,
     "team": "JD Gaming",
     "teamSlug": "jd-gaming",
@@ -16863,7 +16863,7 @@
   {
     "id": "rich-lee-jae-won_2022_victory-five",
     "playerId": "Rich (Lee Jae-won)",
-    "nameEn": "Rich (Lee Jae-won)",
+    "nameEn": "Rich",
     "nameKo": null,
     "team": "Victory Five",
     "teamSlug": "victory-five",
@@ -16972,7 +16972,7 @@
   {
     "id": "knight-zhuo-ding_2022_top-esports",
     "playerId": "knight (Zhuo Ding)",
-    "nameEn": "knight (Zhuo Ding)",
+    "nameEn": "knight",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -17006,7 +17006,7 @@
   {
     "id": "light-wang-guang-yu_2022_lng-esports",
     "playerId": "Light (Wang Guang-Yu)",
-    "nameEn": "Light (Wang Guang-Yu)",
+    "nameEn": "Light",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -17040,7 +17040,7 @@
   {
     "id": "mark-ling-xu_2022_top-esports",
     "playerId": "Mark (Ling Xu)",
-    "nameEn": "Mark (Ling Xu)",
+    "nameEn": "Mark",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -17074,7 +17074,7 @@
   {
     "id": "ming-shi-sen-ming_2022_royal-never-give-up",
     "playerId": "Ming (Shi Sen-Ming)",
-    "nameEn": "Ming (Shi Sen-Ming)",
+    "nameEn": "Ming",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -17253,7 +17253,7 @@
   {
     "id": "tarzan-lee-seung-yong_2022_lng-esports",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -17306,7 +17306,7 @@
   {
     "id": "viper-park-do-hyeon_2022_edward-gaming",
     "playerId": "Viper (Park Do-hyeon)",
-    "nameEn": "Viper (Park Do-hyeon)",
+    "nameEn": "Viper",
     "nameKo": null,
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -17340,7 +17340,7 @@
   {
     "id": "wei-yan-yang-wei_2022_royal-never-give-up",
     "playerId": "Wei (Yan Yang-Wei)",
-    "nameEn": "Wei (Yan Yang-Wei)",
+    "nameEn": "Wei",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -17486,7 +17486,7 @@
   {
     "id": "aki-mao-an_2023_oh-my-god",
     "playerId": "Aki (Mao An)",
-    "nameEn": "Aki (Mao An)",
+    "nameEn": "Aki",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -17554,7 +17554,7 @@
   {
     "id": "bin-chen-ze-bin_2023_bilibili-gaming",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -17658,7 +17658,7 @@
   {
     "id": "angel-xiang-tao_2023_ninjas-in-pyjamas-cn",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "Ninjas in Pyjamas.CN",
     "teamSlug": "ninjas-in-pyjamas-cn",
@@ -17760,7 +17760,7 @@
   {
     "id": "hope-wang-jie_2023_team-we",
     "playerId": "Hope (Wang Jie)",
-    "nameEn": "Hope (Wang Jie)",
+    "nameEn": "Hope",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -17935,7 +17935,7 @@
   {
     "id": "knight-zhuo-ding_2023_jd-gaming",
     "playerId": "knight (Zhuo Ding)",
-    "nameEn": "knight (Zhuo Ding)",
+    "nameEn": "knight",
     "nameKo": null,
     "team": "JD Gaming",
     "teamSlug": "jd-gaming",
@@ -17972,7 +17972,7 @@
   {
     "id": "light-wang-guang-yu_2023_weibo-gaming",
     "playerId": "Light (Wang Guang-Yu)",
-    "nameEn": "Light (Wang Guang-Yu)",
+    "nameEn": "Light",
     "nameKo": null,
     "team": "Weibo Gaming",
     "teamSlug": "weibo-gaming",
@@ -18006,7 +18006,7 @@
   {
     "id": "mark-ling-xu_2023_top-esports",
     "playerId": "Mark (Ling Xu)",
-    "nameEn": "Mark (Ling Xu)",
+    "nameEn": "Mark",
     "nameKo": null,
     "team": "Top Esports",
     "teamSlug": "top-esports",
@@ -18221,7 +18221,7 @@
   {
     "id": "tarzan-lee-seung-yong_2023_lng-esports",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "LNG Esports",
     "teamSlug": "lng-esports",
@@ -18289,7 +18289,7 @@
   {
     "id": "wei-yan-yang-wei_2023_royal-never-give-up",
     "playerId": "Wei (Yan Yang-Wei)",
-    "nameEn": "Wei (Yan Yang-Wei)",
+    "nameEn": "Wei",
     "nameKo": null,
     "team": "Royal Never Give Up",
     "teamSlug": "royal-never-give-up",
@@ -18459,7 +18459,7 @@
   {
     "id": "ahn-an-shan-ye_2024_invictus-gaming",
     "playerId": "Ahn (An Shan-Ye)",
-    "nameEn": "Ahn (An Shan-Ye)",
+    "nameEn": "Ahn",
     "nameKo": null,
     "team": "Invictus Gaming",
     "teamSlug": "invictus-gaming",
@@ -18476,7 +18476,7 @@
   {
     "id": "aki-mao-an_2024_ninjas-in-pyjamas-cn",
     "playerId": "Aki (Mao An)",
-    "nameEn": "Aki (Mao An)",
+    "nameEn": "Aki",
     "nameKo": null,
     "team": "Ninjas in Pyjamas.CN",
     "teamSlug": "ninjas-in-pyjamas-cn",
@@ -18493,7 +18493,7 @@
   {
     "id": "angel-xiang-tao_2024_oh-my-god",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -18544,7 +18544,7 @@
   {
     "id": "bin-chen-ze-bin_2024_bilibili-gaming",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -18666,7 +18666,7 @@
   {
     "id": "cube-dai-yi_2024_oh-my-god",
     "playerId": "Cube (Dai Yi)",
-    "nameEn": "Cube (Dai Yi)",
+    "nameEn": "Cube",
     "nameKo": null,
     "team": "Oh My God",
     "teamSlug": "oh-my-god",
@@ -18841,7 +18841,7 @@
   {
     "id": "hope-wang-jie_2024_anyone-s-legend",
     "playerId": "Hope (Wang Jie)",
-    "nameEn": "Hope (Wang Jie)",
+    "nameEn": "Hope",
     "nameKo": null,
     "team": "Anyone's Legend",
     "teamSlug": "anyone-s-legend",
@@ -18926,7 +18926,7 @@
   {
     "id": "kael-kim-jin-hong_2024_anyone-s-legend",
     "playerId": "Kael (Kim Jin-hong)",
-    "nameEn": "Kael (Kim Jin-hong)",
+    "nameEn": "Kael",
     "nameKo": null,
     "team": "Anyone's Legend",
     "teamSlug": "anyone-s-legend",
@@ -18979,7 +18979,7 @@
   {
     "id": "knight-zhuo-ding_2024_bilibili-gaming",
     "playerId": "knight (Zhuo Ding)",
-    "nameEn": "knight (Zhuo Ding)",
+    "nameEn": "knight",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -19033,7 +19033,7 @@
   {
     "id": "light-wang-guang-yu_2024_weibo-gaming",
     "playerId": "Light (Wang Guang-Yu)",
-    "nameEn": "Light (Wang Guang-Yu)",
+    "nameEn": "Light",
     "nameKo": null,
     "team": "Weibo Gaming",
     "teamSlug": "weibo-gaming",
@@ -19191,7 +19191,7 @@
   {
     "id": "stay-guo-yi-yang_2024_team-we",
     "playerId": "Stay (Guo Yi-Yang)",
-    "nameEn": "Stay (Guo Yi-Yang)",
+    "nameEn": "Stay",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -19208,7 +19208,7 @@
   {
     "id": "qiuqiu-zhang-ming_2024_thundertalk-gaming",
     "playerId": "QiuQiu (Zhang Ming)",
-    "nameEn": "QiuQiu (Zhang Ming)",
+    "nameEn": "QiuQiu",
     "nameKo": null,
     "team": "ThunderTalk Gaming",
     "teamSlug": "thundertalk-gaming",
@@ -19465,7 +19465,7 @@
   {
     "id": "tarzan-lee-seung-yong_2024_weibo-gaming",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "Weibo Gaming",
     "teamSlug": "weibo-gaming",
@@ -19656,7 +19656,7 @@
   {
     "id": "ahn-an-shan-ye_2025_edward-gaming",
     "playerId": "Ahn (An Shan-Ye)",
-    "nameEn": "Ahn (An Shan-Ye)",
+    "nameEn": "Ahn",
     "nameKo": null,
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -19673,7 +19673,7 @@
   {
     "id": "angel-xiang-tao_2025_edward-gaming",
     "playerId": "Angel (Xiang Tao)",
-    "nameEn": "Angel (Xiang Tao)",
+    "nameEn": "Angel",
     "nameKo": null,
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -19726,7 +19726,7 @@
   {
     "id": "bin-chen-ze-bin_2025_bilibili-gaming",
     "playerId": "Bin (Chen Ze-Bin)",
-    "nameEn": "Bin (Chen Ze-Bin)",
+    "nameEn": "Bin",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -19832,7 +19832,7 @@
   {
     "id": "cube-dai-yi_2025_team-we",
     "playerId": "Cube (Dai Yi)",
-    "nameEn": "Cube (Dai Yi)",
+    "nameEn": "Cube",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -19940,7 +19940,7 @@
   {
     "id": "hope-wang-jie_2025_anyone-s-legend",
     "playerId": "Hope (Wang Jie)",
-    "nameEn": "Hope (Wang Jie)",
+    "nameEn": "Hope",
     "nameKo": null,
     "team": "Anyone's Legend",
     "teamSlug": "anyone-s-legend",
@@ -20046,7 +20046,7 @@
   {
     "id": "kael-kim-jin-hong_2025_anyone-s-legend",
     "playerId": "Kael (Kim Jin-hong)",
-    "nameEn": "Kael (Kim Jin-hong)",
+    "nameEn": "Kael",
     "nameKo": null,
     "team": "Anyone's Legend",
     "teamSlug": "anyone-s-legend",
@@ -20101,7 +20101,7 @@
   {
     "id": "knight-zhuo-ding_2025_bilibili-gaming",
     "playerId": "Knight (Zhuo Ding)",
-    "nameEn": "Knight (Zhuo Ding)",
+    "nameEn": "Knight",
     "nameKo": null,
     "team": "Bilibili Gaming",
     "teamSlug": "bilibili-gaming",
@@ -20137,7 +20137,7 @@
   {
     "id": "light-wang-guang-yu_2025_weibo-gaming",
     "playerId": "Light (Wang Guang-Yu)",
-    "nameEn": "Light (Wang Guang-Yu)",
+    "nameEn": "Light",
     "nameKo": null,
     "team": "Weibo Gaming",
     "teamSlug": "weibo-gaming",
@@ -20188,7 +20188,7 @@
   {
     "id": "aki-mao-an_2025_ninjas-in-pyjamas-cn",
     "playerId": "Aki (Mao An)",
-    "nameEn": "Aki (Mao An)",
+    "nameEn": "Aki",
     "nameKo": null,
     "team": "Ninjas in Pyjamas.CN",
     "teamSlug": "ninjas-in-pyjamas-cn",
@@ -20292,7 +20292,7 @@
   {
     "id": "saber-song-dai-lin_2025_ultra-prime",
     "playerId": "Saber (Song Dai-Lin)",
-    "nameEn": "Saber (Song Dai-Lin)",
+    "nameEn": "Saber",
     "nameKo": null,
     "team": "Ultra Prime",
     "teamSlug": "ultra-prime",
@@ -20309,7 +20309,7 @@
   {
     "id": "sasi-yan-rui_2025_lgd-gaming",
     "playerId": "sasi (Yan Rui)",
-    "nameEn": "sasi (Yan Rui)",
+    "nameEn": "sasi",
     "nameKo": null,
     "team": "LGD Gaming",
     "teamSlug": "lgd-gaming",
@@ -20413,7 +20413,7 @@
   {
     "id": "taeyoon-kim-tae-yoon_2025_team-we",
     "playerId": "Taeyoon (Kim Tae-yoon)",
-    "nameEn": "Taeyoon (Kim Tae-yoon)",
+    "nameEn": "Taeyoon",
     "nameKo": null,
     "team": "Team WE",
     "teamSlug": "team-we",
@@ -20430,7 +20430,7 @@
   {
     "id": "tarzan-lee-seung-yong_2025_anyone-s-legend",
     "playerId": "Tarzan (Lee Seung-yong)",
-    "nameEn": "Tarzan (Lee Seung-yong)",
+    "nameEn": "Tarzan",
     "nameKo": null,
     "team": "Anyone's Legend",
     "teamSlug": "anyone-s-legend",
@@ -21547,7 +21547,7 @@
   {
     "id": "amazing-maurice-st-ckenschneider_2014_copenhagen-wolves",
     "playerId": "Amazing (Maurice Stückenschneider)",
-    "nameEn": "Amazing (Maurice Stückenschneider)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "Copenhagen Wolves",
     "teamSlug": "copenhagen-wolves",
@@ -21685,7 +21685,7 @@
   {
     "id": "diamond-danil-reshetnikov_2014_gambit-gaming",
     "playerId": "Diamond (Danil Reshetnikov)",
-    "nameEn": "Diamond (Danil Reshetnikov)",
+    "nameEn": "Diamond",
     "nameKo": null,
     "team": "Gambit Gaming",
     "teamSlug": "gambit-gaming",
@@ -22105,7 +22105,7 @@
   {
     "id": "unlimited-petar-georgiev_2014_copenhagen-wolves",
     "playerId": "Unlimited (Petar Georgiev)",
-    "nameEn": "Unlimited (Petar Georgiev)",
+    "nameEn": "Unlimited",
     "nameKo": null,
     "team": "Copenhagen Wolves",
     "teamSlug": "copenhagen-wolves",
@@ -22230,7 +22230,7 @@
   {
     "id": "adryh-adri-n-p-rez_2015_giants-gaming",
     "playerId": "Adryh (Adrián Pérez)",
-    "nameEn": "Adryh (Adrián Pérez)",
+    "nameEn": "Adryh",
     "nameKo": null,
     "team": "Giants Gaming",
     "teamSlug": "giants-gaming",
@@ -22298,7 +22298,7 @@
   {
     "id": "diamond-danil-reshetnikov_2015_gambit-gaming",
     "playerId": "Diamond (Danil Reshetnikov)",
-    "nameEn": "Diamond (Danil Reshetnikov)",
+    "nameEn": "Diamond",
     "nameKo": null,
     "team": "Gambit Gaming",
     "teamSlug": "gambit-gaming",
@@ -22368,7 +22368,7 @@
   {
     "id": "fox-hampus-myhre_2015_sk-gaming",
     "playerId": "Fox (Hampus Myhre)",
-    "nameEn": "Fox (Hampus Myhre)",
+    "nameEn": "Fox",
     "nameKo": null,
     "team": "SK Gaming",
     "teamSlug": "sk-gaming",
@@ -22608,7 +22608,7 @@
   {
     "id": "steve-etienne-michels_2015_team-roccat",
     "playerId": "Steve (Etienne Michels)",
-    "nameEn": "Steve (Etienne Michels)",
+    "nameEn": "Steve",
     "nameKo": null,
     "team": "Team ROCCAT",
     "teamSlug": "team-roccat",
@@ -22729,7 +22729,7 @@
   {
     "id": "soren-s-ren-frederiksen_2015_copenhagen-wolves",
     "playerId": "Soren (Søren Frederiksen)",
-    "nameEn": "Soren (Søren Frederiksen)",
+    "nameEn": "Soren",
     "nameKo": null,
     "team": "Copenhagen Wolves",
     "teamSlug": "copenhagen-wolves",
@@ -22782,7 +22782,7 @@
   {
     "id": "unlimited-petar-georgiev_2015_copenhagen-wolves",
     "playerId": "Unlimited (Petar Georgiev)",
-    "nameEn": "Unlimited (Petar Georgiev)",
+    "nameEn": "Unlimited",
     "nameKo": null,
     "team": "Copenhagen Wolves",
     "teamSlug": "copenhagen-wolves",
@@ -22920,7 +22920,7 @@
   {
     "id": "amazing-maurice-st-ckenschneider_2015_origen",
     "playerId": "Amazing (Maurice Stückenschneider)",
-    "nameEn": "Amazing (Maurice Stückenschneider)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "Origen",
     "teamSlug": "origen",
@@ -23022,7 +23022,7 @@
   {
     "id": "amazing-maurice-st-ckenschneider_2016_origen",
     "playerId": "Amazing (Maurice Stückenschneider)",
-    "nameEn": "Amazing (Maurice Stückenschneider)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "Origen",
     "teamSlug": "origen",
@@ -23211,7 +23211,7 @@
   {
     "id": "police-park-hyeong-gi_2016_team-vitality",
     "playerId": "Police (Park Hyeong-gi)",
-    "nameEn": "Police (Park Hyeong-gi)",
+    "nameEn": "Police",
     "nameKo": null,
     "team": "Team Vitality",
     "teamSlug": "team-vitality",
@@ -23351,7 +23351,7 @@
   {
     "id": "hybrid-glenn-doornenbal_2016_origen",
     "playerId": "Hybrid (Glenn Doornenbal)",
-    "nameEn": "Hybrid (Glenn Doornenbal)",
+    "nameEn": "Hybrid",
     "nameKo": null,
     "team": "Origen",
     "teamSlug": "origen",
@@ -23661,7 +23661,7 @@
   {
     "id": "night-na-gun-woo_2016_giants-gaming",
     "playerId": "Night (Na Gun-woo)",
-    "nameEn": "Night (Na Gun-woo)",
+    "nameEn": "Night",
     "nameKo": null,
     "team": "Giants Gaming",
     "teamSlug": "giants-gaming",
@@ -24232,7 +24232,7 @@
   {
     "id": "blanc-jin-seong-min_2018_team-roccat",
     "playerId": "Blanc (Jin Seong-min)",
-    "nameEn": "Blanc (Jin Seong-min)",
+    "nameEn": "Blanc",
     "nameKo": null,
     "team": "Team ROCCAT",
     "teamSlug": "team-roccat",
@@ -24699,7 +24699,7 @@
   {
     "id": "amazing-maurice-st-ckenschneider_2018_fc-schalke-04-esports",
     "playerId": "Amazing (Maurice Stückenschneider)",
-    "nameEn": "Amazing (Maurice Stückenschneider)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "FC Schalke 04 Esports",
     "teamSlug": "fc-schalke-04-esports",
@@ -25043,7 +25043,7 @@
   {
     "id": "dreams-han-min-kook_2019_sk-gaming",
     "playerId": "Dreams (Han Min-kook)",
-    "nameEn": "Dreams (Han Min-kook)",
+    "nameEn": "Dreams",
     "nameKo": null,
     "team": "SK Gaming",
     "teamSlug": "sk-gaming",
@@ -25753,7 +25753,7 @@
   {
     "id": "destiny-mitchell-shaw_2020_origen",
     "playerId": "Destiny (Mitchell Shaw)",
-    "nameEn": "Destiny (Mitchell Shaw)",
+    "nameEn": "Destiny",
     "nameKo": null,
     "team": "Origen",
     "teamSlug": "origen",
@@ -25770,7 +25770,7 @@
   {
     "id": "dreams-han-min-kook_2020_fc-schalke-04-esports",
     "playerId": "Dreams (Han Min-kook)",
-    "nameEn": "Dreams (Han Min-kook)",
+    "nameEn": "Dreams",
     "nameKo": null,
     "team": "FC Schalke 04 Esports",
     "teamSlug": "fc-schalke-04-esports",
@@ -25821,7 +25821,7 @@
   {
     "id": "neon-mat-jakub-k_2020_fc-schalke-04-esports",
     "playerId": "Neon (Matúš Jakubčík)",
-    "nameEn": "Neon (Matúš Jakubčík)",
+    "nameEn": "Neon",
     "nameKo": null,
     "team": "FC Schalke 04 Esports",
     "teamSlug": "fc-schalke-04-esports",
@@ -25996,7 +25996,7 @@
   {
     "id": "limit-dino-tot_2020_sk-gaming",
     "playerId": "LIMIT (Dino Tot)",
-    "nameEn": "LIMIT (Dino Tot)",
+    "nameEn": "LIMIT",
     "nameKo": null,
     "team": "SK Gaming",
     "teamSlug": "sk-gaming",
@@ -26333,7 +26333,7 @@
   {
     "id": "blue-ersin-g-ren_2021_sk-gaming",
     "playerId": "Blue (Ersin Gören)",
-    "nameEn": "Blue (Ersin Gören)",
+    "nameEn": "Blue",
     "nameKo": null,
     "team": "SK Gaming",
     "teamSlug": "sk-gaming",
@@ -26687,7 +26687,7 @@
   {
     "id": "limit-dino-tot_2021_fc-schalke-04-esports",
     "playerId": "LIMIT (Dino Tot)",
-    "nameEn": "LIMIT (Dino Tot)",
+    "nameEn": "LIMIT",
     "nameKo": null,
     "team": "FC Schalke 04 Esports",
     "teamSlug": "fc-schalke-04-esports",
@@ -26740,7 +26740,7 @@
   {
     "id": "neon-mat-jakub-k_2021_fc-schalke-04-esports",
     "playerId": "Neon (Matúš Jakubčík)",
-    "nameEn": "Neon (Matúš Jakubčík)",
+    "nameEn": "Neon",
     "nameKo": null,
     "team": "FC Schalke 04 Esports",
     "teamSlug": "fc-schalke-04-esports",
@@ -26984,7 +26984,7 @@
   {
     "id": "adam-adam-maanane_2021_fnatic",
     "playerId": "Adam (Adam Maanane)",
-    "nameEn": "Adam (Adam Maanane)",
+    "nameEn": "Adam",
     "nameKo": null,
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -27363,7 +27363,7 @@
   {
     "id": "neon-mat-jakub-k_2022_misfits-gaming",
     "playerId": "Neon (Matúš Jakubčík)",
-    "nameEn": "Neon (Matúš Jakubčík)",
+    "nameEn": "Neon",
     "nameKo": null,
     "team": "Misfits Gaming",
     "teamSlug": "misfits-gaming",
@@ -27650,7 +27650,7 @@
   {
     "id": "adam-adam-maanane_2023_team-bds",
     "playerId": "Adam (Adam Maanane)",
-    "nameEn": "Adam (Adam Maanane)",
+    "nameEn": "Adam",
     "nameKo": null,
     "team": "Team BDS",
     "teamSlug": "team-bds",
@@ -27910,7 +27910,7 @@
   {
     "id": "limit-dino-tot_2023_excel-esports",
     "playerId": "LIMIT (Dino Tot)",
-    "nameEn": "LIMIT (Dino Tot)",
+    "nameEn": "LIMIT",
     "nameKo": null,
     "team": "Excel Esports",
     "teamSlug": "excel-esports",
@@ -27984,7 +27984,7 @@
   {
     "id": "noah-oh-hyeon-taek_2023_fnatic",
     "playerId": "Noah (Oh Hyeon-taek)",
-    "nameEn": "Noah (Oh Hyeon-taek)",
+    "nameEn": "Noah",
     "nameKo": null,
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -28414,7 +28414,7 @@
   {
     "id": "ruby-lee-sol-min_2023_team-heretics",
     "playerId": "Ruby (Lee Sol-min)",
-    "nameEn": "Ruby (Lee Sol-min)",
+    "nameEn": "Ruby",
     "nameKo": null,
     "team": "Team Heretics",
     "teamSlug": "team-heretics",
@@ -28431,7 +28431,7 @@
   {
     "id": "adam-adam-maanane_2024_team-bds",
     "playerId": "Adam (Adam Maanane)",
-    "nameEn": "Adam (Adam Maanane)",
+    "nameEn": "Adam",
     "nameKo": null,
     "team": "Team BDS",
     "teamSlug": "team-bds",
@@ -28448,7 +28448,7 @@
   {
     "id": "alvaro-lvaro-fern-ndez_2024_mad-lions-koi",
     "playerId": "Alvaro (Álvaro Fernández)",
-    "nameEn": "Alvaro (Álvaro Fernández)",
+    "nameEn": "Alvaro",
     "nameKo": null,
     "team": "MAD Lions KOI",
     "teamSlug": "mad-lions-koi",
@@ -28576,7 +28576,7 @@
   {
     "id": "ice-yoon-sang-hoon_2024_team-bds",
     "playerId": "Ice (Yoon Sang-hoon)",
-    "nameEn": "Ice (Yoon Sang-hoon)",
+    "nameEn": "Ice",
     "nameKo": null,
     "team": "Team BDS",
     "teamSlug": "team-bds",
@@ -28678,7 +28678,7 @@
   {
     "id": "jun-yoon-se-jun_2024_fnatic",
     "playerId": "Jun (Yoon Se-jun)",
-    "nameEn": "Jun (Yoon Se-jun)",
+    "nameEn": "Jun",
     "nameKo": null,
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -28783,7 +28783,7 @@
   {
     "id": "noah-oh-hyeon-taek_2024_fnatic",
     "playerId": "Noah (Oh Hyeon-taek)",
-    "nameEn": "Noah (Oh Hyeon-taek)",
+    "nameEn": "Noah",
     "nameKo": null,
     "team": "Fnatic",
     "teamSlug": "fnatic",
@@ -28958,7 +28958,7 @@
   {
     "id": "closer-can-elik_2024_karmine-corp",
     "playerId": "Closer (Can Çelik)",
-    "nameEn": "Closer (Can Çelik)",
+    "nameEn": "Closer",
     "nameKo": null,
     "team": "Karmine Corp",
     "teamSlug": "karmine-corp",
@@ -29230,7 +29230,7 @@
   {
     "id": "alvaro-lvaro-fern-ndez_2025_movistar-koi",
     "playerId": "Alvaro (Álvaro Fernández)",
-    "nameEn": "Alvaro (Álvaro Fernández)",
+    "nameEn": "Alvaro",
     "nameKo": null,
     "team": "Movistar KOI",
     "teamSlug": "movistar-koi",
@@ -29448,7 +29448,7 @@
   {
     "id": "ice-yoon-sang-hoon_2025_team-bds",
     "playerId": "Ice (Yoon Sang-hoon)",
-    "nameEn": "Ice (Yoon Sang-hoon)",
+    "nameEn": "Ice",
     "nameKo": null,
     "team": "Team BDS",
     "teamSlug": "team-bds",
@@ -29535,7 +29535,7 @@
   {
     "id": "jun-yoon-se-jun_2025_giantx",
     "playerId": "Jun (Yoon Se-jun)",
-    "nameEn": "Jun (Yoon Se-jun)",
+    "nameEn": "Jun",
     "nameKo": null,
     "team": "GIANTX",
     "teamSlug": "giantx",
@@ -29692,7 +29692,7 @@
   {
     "id": "noah-oh-hyeon-taek_2025_giantx",
     "playerId": "Noah (Oh Hyeon-taek)",
-    "nameEn": "Noah (Oh Hyeon-taek)",
+    "nameEn": "Noah",
     "nameKo": null,
     "team": "GIANTX",
     "teamSlug": "giantx",
@@ -30960,7 +30960,7 @@
   {
     "id": "amazing-maurice-st-ckenschneider_2014_tsm",
     "playerId": "Amazing (Maurice Stückenschneider)",
-    "nameEn": "Amazing (Maurice Stückenschneider)",
+    "nameEn": "Amazing",
     "nameKo": null,
     "team": "TSM",
     "teamSlug": "tsm",
@@ -31068,7 +31068,7 @@
   {
     "id": "ackerman-xiao-wang_2014_lmq",
     "playerId": "ackerman (Xiao Wang)",
-    "nameEn": "ackerman (Xiao Wang)",
+    "nameEn": "ackerman",
     "nameKo": null,
     "team": "LMQ",
     "teamSlug": "lmq",
@@ -31102,7 +31102,7 @@
   {
     "id": "noname-zhou-qi-lin_2014_lmq",
     "playerId": "NoName (Zhou Qi-Lin)",
-    "nameEn": "NoName (Zhou Qi-Lin)",
+    "nameEn": "NoName",
     "nameKo": null,
     "team": "LMQ",
     "teamSlug": "lmq",
@@ -31153,7 +31153,7 @@
   {
     "id": "adrian-adrian-ma_2015_team-impulse",
     "playerId": "Adrian (Adrian Ma)",
-    "nameEn": "Adrian (Adrian Ma)",
+    "nameEn": "Adrian",
     "nameKo": null,
     "team": "Team Impulse",
     "teamSlug": "team-impulse",
@@ -31189,7 +31189,7 @@
   {
     "id": "apollo-apollo-price_2015_team-impulse",
     "playerId": "Apollo (Apollo Price)",
-    "nameEn": "Apollo (Apollo Price)",
+    "nameEn": "Apollo",
     "nameKo": null,
     "team": "Team Impulse",
     "teamSlug": "team-impulse",
@@ -31206,7 +31206,7 @@
   {
     "id": "helios-shin-dong-jin_2015_dignitas",
     "playerId": "Helios (Shin Dong-jin)",
-    "nameEn": "Helios (Shin Dong-jin)",
+    "nameEn": "Helios",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -31768,7 +31768,7 @@
   {
     "id": "adrian-adrian-ma_2016_immortals",
     "playerId": "Adrian (Adrian Ma)",
-    "nameEn": "Adrian (Adrian Ma)",
+    "nameEn": "Adrian",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -32086,7 +32086,7 @@
   {
     "id": "matt-matthew-elento_2016_team-liquid",
     "playerId": "Matt (Matthew Elento)",
-    "nameEn": "Matt (Matthew Elento)",
+    "nameEn": "Matt",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -32468,7 +32468,7 @@
   {
     "id": "apollo-apollo-price_2017_team-envyus",
     "playerId": "Apollo (Apollo Price)",
-    "nameEn": "Apollo (Apollo Price)",
+    "nameEn": "Apollo",
     "nameKo": null,
     "team": "Team EnVyUs",
     "teamSlug": "team-envyus",
@@ -32848,7 +32848,7 @@
   {
     "id": "moon-galen-holgate_2017_flyquest",
     "playerId": "Moon (Galen Holgate)",
-    "nameEn": "Moon (Galen Holgate)",
+    "nameEn": "Moon",
     "nameKo": null,
     "team": "FlyQuest",
     "teamSlug": "flyquest",
@@ -33073,7 +33073,7 @@
   {
     "id": "adrian-adrian-ma_2018_echo-fox",
     "playerId": "Adrian (Adrian Ma)",
-    "nameEn": "Adrian (Adrian Ma)",
+    "nameEn": "Adrian",
     "nameKo": null,
     "team": "Echo Fox",
     "teamSlug": "echo-fox",
@@ -33141,7 +33141,7 @@
   {
     "id": "apollo-apollo-price_2018_clutch-gaming",
     "playerId": "Apollo (Apollo Price)",
-    "nameEn": "Apollo (Apollo Price)",
+    "nameEn": "Apollo",
     "nameKo": null,
     "team": "Clutch Gaming",
     "teamSlug": "clutch-gaming",
@@ -33574,7 +33574,7 @@
   {
     "id": "solo-colin-earnest_2018_clutch-gaming",
     "playerId": "Solo (Colin Earnest)",
-    "nameEn": "Solo (Colin Earnest)",
+    "nameEn": "Solo",
     "nameKo": null,
     "team": "Clutch Gaming",
     "teamSlug": "clutch-gaming",
@@ -33712,7 +33712,7 @@
   {
     "id": "apollo-apollo-price_2019_echo-fox",
     "playerId": "Apollo (Apollo Price)",
-    "nameEn": "Apollo (Apollo Price)",
+    "nameEn": "Apollo",
     "nameKo": null,
     "team": "Echo Fox",
     "teamSlug": "echo-fox",
@@ -34349,7 +34349,7 @@
   {
     "id": "solo-colin-earnest_2019_echo-fox",
     "playerId": "Solo (Colin Earnest)",
-    "nameEn": "Solo (Colin Earnest)",
+    "nameEn": "Solo",
     "nameKo": null,
     "team": "Echo Fox",
     "teamSlug": "echo-fox",
@@ -34383,7 +34383,7 @@
   {
     "id": "vulcan-philippe-laflamme_2019_clutch-gaming",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "Clutch Gaming",
     "teamSlug": "clutch-gaming",
@@ -34599,7 +34599,7 @@
   {
     "id": "closer-can-elik_2020_golden-guardians",
     "playerId": "Closer (Can Çelik)",
-    "nameEn": "Closer (Can Çelik)",
+    "nameEn": "Closer",
     "nameKo": null,
     "team": "Golden Guardians",
     "teamSlug": "golden-guardians",
@@ -35019,7 +35019,7 @@
   {
     "id": "solo-colin-earnest_2020_flyquest",
     "playerId": "Solo (Colin Earnest)",
-    "nameEn": "Solo (Colin Earnest)",
+    "nameEn": "Solo",
     "nameKo": null,
     "team": "FlyQuest",
     "teamSlug": "flyquest",
@@ -35087,7 +35087,7 @@
   {
     "id": "vulcan-philippe-laflamme_2020_cloud9",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -35288,7 +35288,7 @@
   {
     "id": "closer-can-elik_2021_100-thieves",
     "playerId": "Closer (Can Çelik)",
-    "nameEn": "Closer (Can Çelik)",
+    "nameEn": "Closer",
     "nameKo": null,
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -35344,7 +35344,7 @@
   {
     "id": "danny-kyle-sakamaki_2021_evil-geniuses-na",
     "playerId": "Danny (Kyle Sakamaki)",
-    "nameEn": "Danny (Kyle Sakamaki)",
+    "nameEn": "Danny",
     "nameKo": null,
     "team": "Evil Geniuses.NA",
     "teamSlug": "evil-geniuses-na",
@@ -35361,7 +35361,7 @@
   {
     "id": "destiny-mitchell-shaw_2021_immortals",
     "playerId": "Destiny (Mitchell Shaw)",
-    "nameEn": "Destiny (Mitchell Shaw)",
+    "nameEn": "Destiny",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -35577,7 +35577,7 @@
   {
     "id": "niles-aiden-tidwell_2021_golden-guardians",
     "playerId": "Niles (Aiden Tidwell)",
-    "nameEn": "Niles (Aiden Tidwell)",
+    "nameEn": "Niles",
     "nameKo": null,
     "team": "Golden Guardians",
     "teamSlug": "golden-guardians",
@@ -35594,7 +35594,7 @@
   {
     "id": "lost-lawrence-hui_2021_tsm",
     "playerId": "Lost (Lawrence Hui)",
-    "nameEn": "Lost (Lawrence Hui)",
+    "nameEn": "Lost",
     "nameKo": null,
     "team": "TSM",
     "teamSlug": "tsm",
@@ -35611,7 +35611,7 @@
   {
     "id": "neo-to-n-tr-n_2021_dignitas",
     "playerId": "Neo (Toàn Trần)",
-    "nameEn": "Neo (Toàn Trần)",
+    "nameEn": "Neo",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -35682,7 +35682,7 @@
   {
     "id": "revenge-mohamed-kaddoura_2021_immortals",
     "playerId": "Revenge (Mohamed Kaddoura)",
-    "nameEn": "Revenge (Mohamed Kaddoura)",
+    "nameEn": "Revenge",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -35809,7 +35809,7 @@
   {
     "id": "vulcan-philippe-laflamme_2021_cloud9",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -35882,7 +35882,7 @@
   {
     "id": "diamond-david-b-rub_2021_flyquest",
     "playerId": "Diamond (David Bérubé)",
-    "nameEn": "Diamond (David Bérubé)",
+    "nameEn": "Diamond",
     "nameKo": null,
     "team": "FlyQuest",
     "teamSlug": "flyquest",
@@ -36103,7 +36103,7 @@
   {
     "id": "berserker-kim-min-cheol_2022_cloud9",
     "playerId": "Berserker (Kim Min-cheol)",
-    "nameEn": "Berserker (Kim Min-cheol)",
+    "nameEn": "Berserker",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -36198,7 +36198,7 @@
   {
     "id": "closer-can-elik_2022_100-thieves",
     "playerId": "Closer (Can Çelik)",
-    "nameEn": "Closer (Can Çelik)",
+    "nameEn": "Closer",
     "nameKo": null,
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -36252,7 +36252,7 @@
   {
     "id": "danny-kyle-sakamaki_2022_evil-geniuses-na",
     "playerId": "Danny (Kyle Sakamaki)",
-    "nameEn": "Danny (Kyle Sakamaki)",
+    "nameEn": "Danny",
     "nameKo": null,
     "team": "Evil Geniuses.NA",
     "teamSlug": "evil-geniuses-na",
@@ -36505,7 +36505,7 @@
   {
     "id": "maple-huang-yi-tang_2022_tsm",
     "playerId": "Maple (Huang Yi-Tang)",
-    "nameEn": "Maple (Huang Yi-Tang)",
+    "nameEn": "Maple",
     "nameKo": null,
     "team": "TSM",
     "teamSlug": "tsm",
@@ -36713,7 +36713,7 @@
   {
     "id": "vulcan-philippe-laflamme_2022_evil-geniuses-na",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "Evil Geniuses.NA",
     "teamSlug": "evil-geniuses-na",
@@ -36769,7 +36769,7 @@
   {
     "id": "blue-ersin-g-ren_2022_dignitas",
     "playerId": "Blue (Ersin Gören)",
-    "nameEn": "Blue (Ersin Gören)",
+    "nameEn": "Blue",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -36806,7 +36806,7 @@
   {
     "id": "destiny-mitchell-shaw_2022_immortals",
     "playerId": "Destiny (Mitchell Shaw)",
-    "nameEn": "Destiny (Mitchell Shaw)",
+    "nameEn": "Destiny",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -36823,7 +36823,7 @@
   {
     "id": "river-kim-dong-woo_2022_dignitas",
     "playerId": "River (Kim Dong-woo)",
-    "nameEn": "River (Kim Dong-woo)",
+    "nameEn": "River",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -36857,7 +36857,7 @@
   {
     "id": "neo-to-n-tr-n_2022_dignitas",
     "playerId": "Neo (Toàn Trần)",
-    "nameEn": "Neo (Toàn Trần)",
+    "nameEn": "Neo",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -36891,7 +36891,7 @@
   {
     "id": "revenge-mohamed-kaddoura_2022_immortals",
     "playerId": "Revenge (Mohamed Kaddoura)",
-    "nameEn": "Revenge (Mohamed Kaddoura)",
+    "nameEn": "Revenge",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -36908,7 +36908,7 @@
   {
     "id": "lost-lawrence-hui_2022_immortals",
     "playerId": "Lost (Lawrence Hui)",
-    "nameEn": "Lost (Lawrence Hui)",
+    "nameEn": "Lost",
     "nameKo": null,
     "team": "Immortals",
     "teamSlug": "immortals",
@@ -36942,7 +36942,7 @@
   {
     "id": "apa-eain-stearns_2023_team-liquid",
     "playerId": "APA (Eain Stearns)",
-    "nameEn": "APA (Eain Stearns)",
+    "nameEn": "APA",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -36976,7 +36976,7 @@
   {
     "id": "berserker-kim-min-cheol_2023_cloud9",
     "playerId": "Berserker (Kim Min-cheol)",
-    "nameEn": "Berserker (Kim Min-cheol)",
+    "nameEn": "Berserker",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -37067,7 +37067,7 @@
   {
     "id": "closer-can-elik_2023_100-thieves",
     "playerId": "Closer (Can Çelik)",
-    "nameEn": "Closer (Can Çelik)",
+    "nameEn": "Closer",
     "nameKo": null,
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -37447,7 +37447,7 @@
   {
     "id": "revenge-mohamed-kaddoura_2023_evil-geniuses-na",
     "playerId": "Revenge (Mohamed Kaddoura)",
-    "nameEn": "Revenge (Mohamed Kaddoura)",
+    "nameEn": "Revenge",
     "nameKo": null,
     "team": "Evil Geniuses.NA",
     "teamSlug": "evil-geniuses-na",
@@ -37464,7 +37464,7 @@
   {
     "id": "rich-lee-jae-won_2023_dignitas",
     "playerId": "Rich (Lee Jae-won)",
-    "nameEn": "Rich (Lee Jae-won)",
+    "nameEn": "Rich",
     "nameKo": null,
     "team": "Dignitas",
     "teamSlug": "dignitas",
@@ -37481,7 +37481,7 @@
   {
     "id": "river-kim-dong-woo_2023_golden-guardians",
     "playerId": "River (Kim Dong-woo)",
-    "nameEn": "River (Kim Dong-woo)",
+    "nameEn": "River",
     "nameKo": null,
     "team": "Golden Guardians",
     "teamSlug": "golden-guardians",
@@ -37617,7 +37617,7 @@
   {
     "id": "yeon-sean-sung_2023_team-liquid",
     "playerId": "Yeon (Sean Sung)",
-    "nameEn": "Yeon (Sean Sung)",
+    "nameEn": "Yeon",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -37687,7 +37687,7 @@
   {
     "id": "vulcan-philippe-laflamme_2023_flyquest",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "FlyQuest",
     "teamSlug": "flyquest",
@@ -37774,7 +37774,7 @@
   {
     "id": "prince-lee-chae-hwan_2023_flyquest",
     "playerId": "Prince (Lee Chae-hwan)",
-    "nameEn": "Prince (Lee Chae-hwan)",
+    "nameEn": "Prince",
     "nameKo": null,
     "team": "FlyQuest",
     "teamSlug": "flyquest",
@@ -37825,7 +37825,7 @@
   {
     "id": "apa-eain-stearns_2024_team-liquid",
     "playerId": "APA (Eain Stearns)",
-    "nameEn": "APA (Eain Stearns)",
+    "nameEn": "APA",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -37844,7 +37844,7 @@
   {
     "id": "berserker-kim-min-cheol_2024_cloud9",
     "playerId": "Berserker (Kim Min-cheol)",
-    "nameEn": "Berserker (Kim Min-cheol)",
+    "nameEn": "Berserker",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38206,7 +38206,7 @@
   {
     "id": "river-kim-dong-woo_2024_100-thieves",
     "playerId": "River (Kim Dong-woo)",
-    "nameEn": "River (Kim Dong-woo)",
+    "nameEn": "River",
     "nameKo": null,
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -38257,7 +38257,7 @@
   {
     "id": "thanatos-park-seung-kyu_2024_cloud9",
     "playerId": "Thanatos (Park Seung-kyu)",
-    "nameEn": "Thanatos (Park Seung-kyu)",
+    "nameEn": "Thanatos",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38310,7 +38310,7 @@
   {
     "id": "vulcan-philippe-laflamme_2024_cloud9",
     "playerId": "VULCAN (Philippe Laflamme)",
-    "nameEn": "VULCAN (Philippe Laflamme)",
+    "nameEn": "VULCAN",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38327,7 +38327,7 @@
   {
     "id": "yeon-sean-sung_2024_team-liquid",
     "playerId": "Yeon (Sean Sung)",
-    "nameEn": "Yeon (Sean Sung)",
+    "nameEn": "Yeon",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -38363,7 +38363,7 @@
   {
     "id": "apa-eain-stearns_2025_team-liquid",
     "playerId": "APA (Eain Stearns)",
-    "nameEn": "APA (Eain Stearns)",
+    "nameEn": "APA",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",
@@ -38624,7 +38624,7 @@
   {
     "id": "loki-lee-sang-min_2025_cloud9",
     "playerId": "Loki (Lee Sang-min)",
-    "nameEn": "Loki (Lee Sang-min)",
+    "nameEn": "Loki",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38713,7 +38713,7 @@
   {
     "id": "river-kim-dong-woo_2025_100-thieves",
     "playerId": "River (Kim Dong-woo)",
-    "nameEn": "River (Kim Dong-woo)",
+    "nameEn": "River",
     "nameKo": null,
     "team": "100 Thieves",
     "teamSlug": "100-thieves",
@@ -38764,7 +38764,7 @@
   {
     "id": "thanatos-park-seung-kyu_2025_cloud9",
     "playerId": "Thanatos (Park Seung-kyu)",
-    "nameEn": "Thanatos (Park Seung-kyu)",
+    "nameEn": "Thanatos",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38815,7 +38815,7 @@
   {
     "id": "vulcan-philippe-laflamme_2025_cloud9",
     "playerId": "Vulcan (Philippe Laflamme)",
-    "nameEn": "Vulcan (Philippe Laflamme)",
+    "nameEn": "Vulcan",
     "nameKo": null,
     "team": "Cloud9",
     "teamSlug": "cloud9",
@@ -38832,7 +38832,7 @@
   {
     "id": "yeon-sean-sung_2025_team-liquid",
     "playerId": "Yeon (Sean Sung)",
-    "nameEn": "Yeon (Sean Sung)",
+    "nameEn": "Yeon",
     "nameKo": null,
     "team": "Team Liquid",
     "teamSlug": "team-liquid",

@@ -15,6 +15,11 @@ const TEAM_ALIASES: Record<string, string> = {
 }
 function normalizeTeam(t: string): string { return TEAM_ALIASES[t] ?? t }
 
+// 닉네임만 추출 — "Blank (Kang Sun-gu)" → "Blank", "knight (Zhuo Ding)" → "knight"
+function cleanNickname(name: string): string {
+  return name.replace(/\s*\([^)]*\).*$/, '').trim()
+}
+
 // §3 slugify: 소문자화 → 영숫자 외 하이픈 → 연속 하이픈 축약 → 양끝 제거
 function slugify(s: string): string {
   return s.toLowerCase()
@@ -107,7 +112,7 @@ async function main() {
     const ps: PlayerSeason = {
       id,
       playerId: entry.playerId,
-      nameEn: entry.nameEn,
+      nameEn: cleanNickname(entry.nameEn),
       nameKo: entry.nameKo,
       team: entry.team,
       teamSlug,
