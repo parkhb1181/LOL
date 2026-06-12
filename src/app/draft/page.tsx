@@ -474,7 +474,8 @@ function ResultScreen({
       )}
 
       {/* 5-player cards — PC (md+): grid-cols-5 single row, mobile: grid-cols-3 */}
-      <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full">
+      {/* overflow-hidden: blocks hover:scale-105 transform from creating scrollbars */}
+      <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full overflow-hidden">
         {ROLES.map((_, i) => picks[i] && (
           <PlayerCard key={i} player={picks[i]!.player} size="result" />
         ))}
