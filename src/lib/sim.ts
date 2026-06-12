@@ -107,7 +107,7 @@ function buildStandings(
   const botWins = botExpectedWins(regular, userWinsPerBot)
   const rows: Standing[] = [
     { name: 'My Team', wins: userWinsTotal, rating: myOvr, isUser: true },
-    ...regular.map((opp, i) => ({ name: opp.name, wins: botWins[i], rating: opp.rating, isUser: false })),
+    ...regular.map((opp, i) => ({ name: opp.label, wins: botWins[i], rating: opp.rating, isUser: false })),
   ]
   // 동률: 승수 내림차순 → rating 내림차순
   rows.sort((a, b) => b.wins - a.wins || b.rating - a.rating)
@@ -136,7 +136,7 @@ function runDomesticSplit(
     for (let g = 0; g < 2; g++) {
       const ser = playSeries('bo3', myOvr, opp.rating, rng)
       if (ser.win) { userWinsTotal++; winsVsThis++ }
-      regularSeries.push({ opp: opp.name, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games })
+      regularSeries.push({ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games })
     }
     userWinsPerBot.push(winsVsThis)
   }
@@ -223,8 +223,8 @@ export function simulate(
       const ser = playSeries('bo5', myOvr, opp.rating, rng)
       steps.push({
         stage: `msi_r${r + 1}`,
-        label: `${msiRoundLabels[r]} vs ${opp.name}`,
-        series: [{ opp: opp.name, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+        label: `${msiRoundLabels[r]} vs ${opp.label}`,
+        series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
       })
       if (!ser.win) {
         msiAlive = false
@@ -260,8 +260,8 @@ export function simulate(
       const ser = playSeries('bo3', myOvr, opp.rating, rng)
       steps.push({
         stage: `worlds_swiss_r${r + 1}`,
-        label: `Worlds Swiss R${r + 1} vs ${opp.name}`,
-        series: [{ opp: opp.name, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+        label: `Worlds Swiss R${r + 1} vs ${opp.label}`,
+        series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
       })
       if (ser.win) swissWins++
       else swissLosses++
@@ -286,8 +286,8 @@ export function simulate(
         const ser = playSeries('bo5', myOvr, opp.rating, rng)
         steps.push({
           stage: kr.stage,
-          label: `${kr.label} vs ${opp.name}`,
-          series: [{ opp: opp.name, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+          label: `${kr.label} vs ${opp.label}`,
+          series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
         })
         if (!ser.win) {
           worldsAlive = false
