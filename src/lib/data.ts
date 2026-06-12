@@ -47,6 +47,7 @@ export type Opponent = z.infer<typeof OpponentSchema>
 
 export const OpponentsFileSchema = z.object({
   regular: z.array(OpponentSchema).length(9),
-  intl: z.array(OpponentSchema).min(12),
+  msi: z.array(OpponentSchema).min(12),
+  worlds: z.array(OpponentSchema).min(12),
 })
 export type OpponentsFile = z.infer<typeof OpponentsFileSchema>

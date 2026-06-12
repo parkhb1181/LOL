@@ -161,7 +161,7 @@ export type DraftData = {
   players: PlayerSeason[]
   teams: TeamYear[]
   spinIndex: SpinIndex
-  opponents: { regular: Opponent[]; intl: Opponent[] }
+  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] }
 }
 
 // ── 가중 추첨 헬퍼 ─────────────────────────────────────────────────────────

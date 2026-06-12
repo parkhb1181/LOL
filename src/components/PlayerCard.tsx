@@ -3,7 +3,6 @@
 // 색·재질 토큰은 CSS 변수로만 수신 (DESIGN_GUIDE 토큰 확정 전 하드코딩 금지)
 // §5 킬스위치: NEXT_PUBLIC_PHOTOS_ENABLED=false 시 전원 아바타
 
-import Image from 'next/image'
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
 
@@ -53,17 +52,26 @@ function avatarBg(teamSlug: string): string {
 
 export default function PlayerCard({ player, size = 'pick', disabled = false, onClick }: Props) {
   const [imgError, setImgError] = useState(false)
-  const [crownError, setCrownError] = useState(false)
 
   const name = player.nameEn
   const isWorlds = player.frame === 'WORLDS'
-  const hasCrown = player.crown
   const hasMsi = player.msiWinner
+  const hasCrown = player.crown   // FINALS MVP / WORLDS MVP
   const badges = player.badges
 
-  // 트로피 크기 — 1.5배 (기존 대비)
-  const trophyW = { worlds: size === 'slot' ? 18 : 24, msi: size === 'slot' ? 14 : 17 }
-  const trophyH = { worlds: size === 'slot' ? 24 : 33, msi: size === 'slot' ? 19 : 23 }
+  // 배경 그라디언트: Worlds → 파랑, MSI → 골드, 기본 → 다크
+  const cardBg = isWorlds
+    ? 'bg-gradient-to-b from-[#0a1a3a] to-[#1a1a2e]'
+    : hasMsi
+    ? 'bg-gradient-to-b from-[#251800] to-[#1a1a2e]'
+    : 'bg-[var(--card-bg,#1a1a2e)]'
+
+  // 보더: Worlds → 골드, MSI → 앰버, 기본
+  const cardBorder = isWorlds
+    ? 'border-[var(--card-worlds-border,#c0a060)] shadow-[0_0_12px_var(--card-worlds-glow,#c0a06055)]'
+    : hasMsi
+    ? 'border-[#a07820] shadow-[0_0_8px_#a0782030]'
+    : 'border-[var(--card-border,#2a2a4a)]'
 
   return (
     <button
@@ -72,10 +80,9 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
       className={[
         SIZE_CLS[size],
         'relative flex flex-col rounded-lg overflow-hidden select-none transition-transform',
-        'bg-[var(--card-bg,#1a1a2e)] border',
-        isWorlds
-          ? 'border-[var(--card-worlds-border,#c0a060)] shadow-[0_0_12px_var(--card-worlds-glow,#c0a06055)]'
-          : 'border-[var(--card-border,#2a2a4a)]',
+        cardBg,
+        'border',
+        cardBorder,
         disabled
           ? 'opacity-40 cursor-not-allowed'
           : 'cursor-pointer hover:scale-105 active:scale-95',
@@ -89,6 +96,13 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
         </span>
       )}
 
+      {/* MSI 골드 반짝이 */}
+      {hasMsi && !isWorlds && (
+        <span className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg" aria-hidden>
+          <span className="absolute inset-y-0 w-full animate-[shimmer_3.5s_linear_infinite] bg-gradient-to-r from-transparent via-[#ffd70020] to-transparent" />
+        </span>
+      )}
+
       {/* 좌상단: OVR + 역할 */}
       <div className="absolute top-1 left-1.5 z-20 flex flex-col leading-none">
         <span className={`${OVR_SIZE[size]} font-black drop-shadow text-[var(--card-ovr,#f0f0f0)]`}>
@@ -99,14 +113,14 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
         </span>
       </div>
 
-      {/* 우상단: 리그 뱃지(항상) + All-Pro 뱃지(해당자만) */}
+      {/* 우상단: 리그 뱃지(항상) + All-Pro 배지(해당자만) */}
       <div className="absolute top-1 right-1 z-20 flex flex-col gap-0.5">
         <span className={`text-[7px] font-bold px-1 py-0.5 rounded-sm uppercase leading-none ${LEAGUE_BADGE[player.league] ?? 'bg-[var(--card-badge-bg,#2a4a8a)] text-[var(--card-badge-text,#80aaff)]'}`}>
           {player.league}
         </span>
         {badges.includes('ALLPRO_1ST') && (
-          <span className="text-[7px] font-bold bg-yellow-900/70 text-yellow-300 px-1 py-0.5 rounded-sm leading-none">
-            ALL-PRO
+          <span className="text-[7px] font-bold bg-yellow-900/70 text-yellow-300 px-1 py-0.5 rounded-sm leading-none text-center">
+            1st
           </span>
         )}
       </div>
@@ -129,44 +143,20 @@ export default function PlayerCard({ player, size = 'pick', disabled = false, on
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-
-        {/* 왕관 오버레이 — 사진 좌상단 (CURSOR_GUIDE §6.2 — 에셋 수정 금지) */}
-        {hasCrown && !crownError && (
-          <div className="absolute top-2 left-1.5 z-20 w-7 h-7 -rotate-12 pointer-events-none">
-            <Image
-              src="/img/crown.png"
-              alt="crown"
-              width={28}
-              height={28}
-              className="object-contain drop-shadow"
-              onError={() => setCrownError(true)}
-            />
-          </div>
-        )}
-
-        {/* 트로피 오버레이 — 사진 우하단 (누끼 배경제거 처리됨, 1.5배 크기) */}
-        {(isWorlds || hasMsi) && (
-          <div className="absolute bottom-1 right-1 z-20 flex gap-0.5 items-end pointer-events-none">
-            {isWorlds && (
-              <div className="relative" style={{ width: trophyW.worlds, height: trophyH.worlds }}>
-                <Image src="/img/world.png" alt="Worlds" fill className="object-contain drop-shadow" />
-              </div>
-            )}
-            {hasMsi && (
-              <div className="relative" style={{ width: trophyW.msi, height: trophyH.msi }}>
-                <Image src="/img/msi.png" alt="MSI" fill className="object-contain drop-shadow" />
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* 하단: 이름 + 팀·연도 */}
+      {/* 하단: 이름 + (FINALS MVP) + 팀·연도 */}
       <div className="px-1.5 pb-1.5 pt-1 bg-[var(--card-footer-bg,#0d0d1a)]">
         <p className="text-center text-[var(--card-name,#e8e8f0)] font-semibold truncate leading-tight" style={{ fontSize: size === 'slot' ? '9px' : '11px' }}>
           {name}
         </p>
-        <p className="text-center text-[var(--card-meta,#6868a0)] truncate" style={{ fontSize: '8px' }}>
+        {/* FINALS MVP 배지 — slot 크기 제외 (공간 부족) */}
+        {hasCrown && size !== 'slot' && (
+          <p className="text-center text-[7px] font-bold text-yellow-400/80 tracking-[0.12em] leading-tight uppercase mt-0.5">
+            Finals MVP
+          </p>
+        )}
+        <p className="text-center text-[var(--card-meta,#9090b8)] truncate" style={{ fontSize: '8px' }}>
           {player.team} · {player.year}
         </p>
       </div>

@@ -17,8 +17,8 @@ export default function Home() {
 
         {/* 설명 */}
         <p className="text-white/30 text-sm leading-relaxed mb-10">
-          역대 최강 선수들로 드림팀을 구성하고<br />
-          월드 챔피언에 도전하세요
+          Draft the greatest players of all time<br />
+          and compete for the World Championship
         </p>
 
         {/* 시작 버튼 */}
@@ -32,7 +32,7 @@ export default function Home() {
         {/* 보조 링크 */}
         <div className="mt-6 text-xs text-white/20">
           <Link href="/about" className="hover:text-white/50 transition-colors">
-            레이팅 산출 기준 →
+            Rating System →
           </Link>
         </div>
       </div>

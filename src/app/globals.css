@@ -2,8 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 다크 테마 배경 — 모바일 하단 흰 여백 방지 */
+html, body {
+  background-color: #0d0d1a;
+}
+
 /* WORLDS 카드 시머 스윕 — PlayerCard.tsx animate-[shimmer_...] 전용 */
 @keyframes shimmer {
   0%   { transform: translateX(-120%) skewX(-12deg); }
   100% { transform: translateX(220%)  skewX(-12deg); }
+}
+
+/* 스크롤바 숨김 유틸리티 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

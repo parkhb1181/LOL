@@ -130,8 +130,8 @@ export default async function ResultPage(
   const { result, playerInfos } = computed
   const gradeColor = GRADE_COLOR[result.grade] ?? '#e8e8f0'
 
-  const TROPHY_KO: Record<string, string> = {
-    SPLIT1: '스프링', MSI: 'MSI', SPLIT2: '서머', WORLDS: 'Worlds',
+  const TROPHY_EN: Record<string, string> = {
+    SPLIT1: 'Spring', MSI: 'MSI', SPLIT2: 'Summer', WORLDS: 'Worlds',
   }
 
   return (
@@ -150,7 +150,7 @@ export default async function ResultPage(
           <div className="flex gap-2 flex-wrap justify-center">
             {result.trophies.map(tr => (
               <span key={tr} className="text-[10px] tracking-widest px-2.5 py-1 rounded-full border border-white/15 text-white/40">
-                {TROPHY_KO[tr] ?? tr}
+                {TROPHY_EN[tr] ?? tr}
               </span>
             ))}
           </div>
@@ -205,7 +205,7 @@ export default async function ResultPage(
           href="/draft"
           className="mt-2 inline-block w-full max-w-xs py-3.5 bg-white text-[#0d0d1a] font-black text-sm tracking-[0.15em] uppercase rounded-xl text-center hover:bg-white/90 active:scale-95 transition-all"
         >
-          내 드래프트 시작
+          Start My Draft
         </Link>
       </div>
     </main>
