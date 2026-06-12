@@ -11,7 +11,7 @@
 playerId,year,league,award,value,split
 
 # ═══════════════════════════════════════════════════
-# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 60건)
+# EDITORIAL — 앵커 보정 전용 (±1~5, 최대 100건)
 # ═══════════════════════════════════════════════════
 # Faker 2015: 역대 최고 MID 피크. Worlds+MSI 동시 제패 + FINALS_MVP에도 OVR 97 → 99 보정
 # SEASON_MVP 2015는 Duke(Spring)/Ssumday(Summer) 수상으로 Faker 미포함 — 팀 성적 대비 개인 공헌 보완
@@ -637,3 +637,55 @@ Hans Sama,2025,LEC,EDITORIAL,1,NONE
 Tarzan (Lee Seung-yong),2025,LPL,EDITORIAL,2,NONE
 Hope (Wang Jie),2025,LPL,EDITORIAL,1,NONE
 Shanks,2025,LPL,EDITORIAL,1,NONE
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL — tiebreak2 (5명동률 7팀, 20건 / Gakgos 2025 LCS 제외 — 미진출)
+# ═══════════════════════════════════════════════════
+Bdd,2025,LCK,EDITORIAL,2,NONE
+Cuzz,2025,LCK,EDITORIAL,1,NONE
+PerfecT (Lee Seung-min),2025,LCK,EDITORIAL,-1,NONE
+Viper (Park Do-hyeon),2022,LPL,EDITORIAL,2,NONE
+Scout,2022,LPL,EDITORIAL,1,NONE
+Flandre,2022,LPL,EDITORIAL,-1,NONE
+Viper (Park Do-hyeon),2025,LCK,EDITORIAL,2,NONE
+Zeka (Kim Geon-woo),2025,LCK,EDITORIAL,1,NONE
+Peanut,2025,LCK,EDITORIAL,-1,NONE
+Elyoya,2024,LEC,EDITORIAL,2,NONE
+Supa,2024,LEC,EDITORIAL,1,NONE
+Fresskowy,2024,LEC,EDITORIAL,-1,NONE
+Elyoya,2025,LEC,EDITORIAL,2,NONE
+Supa,2025,LEC,EDITORIAL,1,NONE
+Jojopyun,2025,LEC,EDITORIAL,-1,NONE
+Contractz,2023,LCS,EDITORIAL,2,NONE
+Palafox,2023,LCS,EDITORIAL,1,NONE
+Dhokla,2023,LCS,EDITORIAL,-1,NONE
+Inspired,2025,LCS,EDITORIAL,2,NONE
+Massu,2025,LCS,EDITORIAL,1,NONE
+
+# ═══════════════════════════════════════════════════
+# EDITORIAL — tiebreak3 (4명동률 8팀, 24건)
+# ═══════════════════════════════════════════════════
+Faker,2023,LCK,EDITORIAL,2,NONE
+Zeus,2023,LCK,EDITORIAL,1,NONE
+Oner,2023,LCK,EDITORIAL,-1,NONE
+Chovy,2023,LCK,EDITORIAL,2,NONE
+Peyz,2023,LCK,EDITORIAL,1,NONE
+Doran (Choi Hyeon-joon),2023,LCK,EDITORIAL,-1,NONE
+Faker,2024,LCK,EDITORIAL,2,NONE
+Oner,2024,LCK,EDITORIAL,1,NONE
+Zeus,2024,LCK,EDITORIAL,-1,NONE
+Oner,2025,LCK,EDITORIAL,2,NONE
+Gumayusi,2025,LCK,EDITORIAL,1,NONE
+Doran (Choi Hyeon-joon),2025,LCK,EDITORIAL,-1,NONE
+JackeyLove,2025,LPL,EDITORIAL,2,NONE
+Kanavi,2025,LPL,EDITORIAL,1,NONE
+Creme,2025,LPL,EDITORIAL,-1,NONE
+Knight (Zhuo Ding),2025,LPL,EDITORIAL,2,NONE
+Bin (Chen Ze-Bin),2025,LPL,EDITORIAL,1,NONE
+ON,2025,LPL,EDITORIAL,-1,NONE
+TheShy,2019,LPL,EDITORIAL,2,NONE
+Rookie,2019,LPL,EDITORIAL,1,NONE
+Ning,2019,LPL,EDITORIAL,-1,NONE
+Razork,2024,LEC,EDITORIAL,2,NONE
+Humanoid,2024,LEC,EDITORIAL,1,NONE
+Noah (Oh Hyeon-taek),2024,LEC,EDITORIAL,-1,NONE
