@@ -4,13 +4,14 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D2 (2026-06-12) / Phase 2 이미지 파이프라인 스크립트 완성, Vercel 배포 준비 완료
-- 브랜치: main (최신 커밋: 38cb5ea)
-- 빌드 상태: Next.js build ✓ 통과 (TypeScript noEmit 포함)
-- **복귀 후 재개 시작점**: ① Vercel env var 설정(NEXT_PUBLIC_R2_PUBLIC_BASE_URL) + git push → ② `npx tsx scripts/05-images.ts` 로컬 실행 → ③ `npx tsx scripts/06-upload-r2.ts` → ④ 사진 확인
+- 날짜 / Phase: D2 (2026-06-12) / Phase 2 완료, Vercel push 완료
+- 브랜치: main (최신 커밋: 9f6fa15)
+- 빌드 상태: Next.js build ✓ / Vercel 재빌드 중
+- **복귀 후 재개 시작점**: Vercel 재빌드 완료 후 사진 확인 → 리그 계수 적용 여부 결정 (호빈 게이트)
 
 ## 완료 (최신)
-- **Phase 2 스크립트 완성 (38cb5ea)**: 05-images.ts (PlayerImages→imageinfo→sharp 256crop) + 06-upload-r2.ts (R2 업로드+photo 갱신) + robots.txt (크롤러 차단). 실행은 로컬에서 호빈이 직접.
+- **Phase 2 실행 완료 (9f6fa15)**: 05-images.ts 852건 다운로드 + 871건 webp 변환(실패 0) → 06-upload-r2.ts R2 871건 업로드 100% → players.json photo 871건 갱신 → git push
+- **stats_agg KDA 차등 (78ce42a)**: 04-ratings role×year z-score ±3 (2013~2020), 서브 -1 (전 시대). 2015 SKT 99/99/98/98/96, 2024 T1 93/89×4, 시대 평균 79.6/79.7(형평 확인)
 - **Phase 1 재빌드 완료 (15bbea9)**: LEC/LCS 국내 플옵 결과 포함, awards.csv playerId 28건 수정, Xiaohu 2022 FMVP 활성화, 07-build.ts LEC/LCS 필터 수정
   - players.json 2223건 / teams.json 445건 / OVR 75: 0명 (전원 플옵 컷 이상)
   - Bjergsen 81→89, G2 2019 83-87→93-97 (LEC domestic 반영 효과)
@@ -77,7 +78,9 @@
 - 09-montecarlo.ts: 더미→실데이터 교체 후 밸런스 검증
 
 ## 호빈 게이트 대기
+- **리그 계수 적용 여부**: LCS 과대평가 확인(Doublelift 2019=94 > Faker 2019=90). 제안: 국내 플옵 가산에 계수 LCK/LPL×1.0, LEC×0.9, LCS×0.85 적용. 승인 시 즉시 구현 가능 (§9 外 변경이므로 명시 승인 필요)
 - **Canyon/Chovy 앵커 조정 방향 결정** — 현재 Canyon 97(목표 96), Chovy 99(목표 96). 위 3가지 선택지 중 결정 필요
+- **Vercel NEXT_PUBLIC_R2_PUBLIC_BASE_URL 설정 확인** — 미설정 시 사진 미표시
 - **opponents-2026.json 실값 교체** (D3 — 현재 플레이스홀더)
 - **DESIGN_GUIDE v1.0 승격** (D4 전) — CSS 토큰 확정 후 프론트 적용
 
