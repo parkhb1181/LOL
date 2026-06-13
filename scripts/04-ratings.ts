@@ -72,6 +72,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Zeus|2023|LCK': 97,
   'Oner|2023|LCK': 97,
   'Keria|2023|LCK': 96,
+  'Keria|2024|LCK': 90,    // 월즈 우승인데 2022(93)보다 낮은 모순 완화 — 88→90
   'Faker|2024|LCK': 95,
   'Zeus|2024|LCK': 91,
   'Gumayusi|2024|LCK': 90,
@@ -80,7 +81,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Bang|2015|LCK': 95,                  // 2015 Worlds 우승 ADC, AP1st 제도 미비
   'Bang|2016|LCK': 95,                  // 2016 Worlds 우승 ADC
   'Wolf (Lee Jae-wan)|2015|LCK': 94,   // 2015 슬럼프 시즌 — 팀 성과 대비 개인 하향 유지
-  'Wolf (Lee Jae-wan)|2016|LCK': 91,   // 2016 Worlds 우승 SUP, AP1st 미비
+  'Wolf (Lee Jae-wan)|2016|LCK': 93,   // 91→93 (그랜드슬램급, 15=94와 역전 완화)
   // ── Samsung White 2014 ──────────────────────────────────────────────────
   'Mata|2014|LCK': 96,   // 역대 유일 서폿 F.MVP
   'imp|2014|LCK': 94,
@@ -89,6 +90,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Looper|2014|LCK': 90,
   // ── LCK 개별 보정 ───────────────────────────────────────────────────────
   'Smeb|2015|LCK': 91,
+  'Khan|2017|LCK': 88,       // 서머 결승 MVP, 반시즌 패널티 과함 — 85→88
   'Score|2018|LCK': 90,     // KT 2018 최고 시즌, 국내 우승+Worlds 4강
   'Nuguri|2020|LCK': 95,    // Worlds 우승 완전체 탑, Zeus 2023급
   // ── SSG 2017 — 향로 메타 월즈 준우승 (Patch 2·3 상향) ──────────────────
@@ -99,15 +101,16 @@ const OVR_OVERRIDES: Record<string, number> = {
   'CuVee|2017|LCK': 89,     // SSG 탑 위크사이드, 월즈 준우승
   // ── DRX 2022 — 월즈 미라클런 ─────────────────────────────────────────────
   'Zeka (Kim Geon-woo)|2022|LCK': 91,  // 월즈 우승 미드
-  'Kingen|2022|LCK': 87,               // 월즈 결승 MVP
+  'Kingen|2022|LCK': 89,               // 87→89 (월즈 결승 MVP 체면)
   'BeryL|2022|LCK': 90,                // 월즈 우승 오더 SUP
+  'BeryL|2021|LCK': 89,               // 93→89 (부진 시즌이 우승 시즌 20/22=90보다 높은 모순 해소)
   // ── LPL ─────────────────────────────────────────────────────────────────
   'Scout|2021|LPL': 97,
   'Viper (Park Do-hyeon)|2021|LPL': 97,
   'Kanavi|2023|LPL': 96,
-  'knight (Zhuo Ding)|2023|LPL': 96,
+  'knight (Zhuo Ding)|2023|LPL': 94,   // 96→94 (Faker 24/25=95와 역전 해소)
   'Ruler|2023|LPL': 96,
-  'knight (Zhuo Ding)|2024|LPL': 96,
+  'knight (Zhuo Ding)|2024|LPL': 94,   // 96→94
   '369|2023|LPL': 95,
   'Elk|2024|LPL': 96,
   'Bin (Chen Ze-Bin)|2024|LPL': 92,   // 96→92 (Patch 4 — 국제 우승 0, LPL 정규만)
@@ -115,9 +118,10 @@ const OVR_OVERRIDES: Record<string, number> = {
   'TheShy|2023|LPL': 91,
   'SofM|2020|LPL': 90,
   // ── IG 2018 Worlds 우승 (Patch 2·3) ──────────────────────────────────────
-  'TheShy|2018|LPL': 93,   // 역대 최고점 세체탑
-  'Rookie|2018|LPL': 93,   // 양스플릿 MVP + Worlds 우승
-  'Ning|2018|LPL': 92,     // 정글 최초 Worlds F.MVP
+  'TheShy|2018|LPL': 93,         // 역대 최고점 세체탑
+  'Rookie|2018|LPL': 95,         // 93→95 (단일시즌 역대급 미드, 압도적 상징성)
+  'Ning|2018|LPL': 92,           // 정글 최초 Worlds F.MVP
+  'JackeyLove|2018|LPL': 86,    // IG 월즈 우승 ADC — 1차 구제 누락 보정
   // ── RNG 2018 MSI 우승 ────────────────────────────────────────────────────
   'Uzi (Jian Zi-Hao)|2018|LPL': 92,  // 역대 최고 MSI 시즌 ADC
   // ── FPX 2019 Worlds 우승 ─────────────────────────────────────────────────
@@ -130,7 +134,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'YellOwStaR|2015|LEC': 90,    // 곡선 완화 방지
   'Rekkles|2018|LEC': 90,       // 95→90 (Patch 4 — LEC 정규 독식, 국제 한계)
   'Jankos|2019|LEC': 91,        // 97→91 (Patch 4 + 검증: Tian 92 ≥ Jankos)
-  'Perkz|2019|LEC': 93,         // 96→93 (Patch 4 — MSI 우승 인정, 비원딜 보정)
+  'Perkz|2019|LEC': 91,         // 93→91 (2차 — 비원딜, 정통 원딜 위 과함)
   'Caps|2019|LEC': 97,          // G2 2019 MID — 유지 (Worlds 결승 에이스)
   'Perkz|2022|LEC': 76,
   'Yike|2023|LEC': 88,          // 94→88 (Patch 4 — LEC만, 국제 한계)
