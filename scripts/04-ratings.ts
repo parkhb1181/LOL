@@ -71,6 +71,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Oner|2023|LCK': 95,   // T1 2023 (94→95: T1우승팀 상향)
   'Keria|2023|LCK': 96,  // T1 2023 (94→96: T1우승팀 상향)
   'Chovy|2024|LCK': 98,
+  'Wolf (Lee Jae-wan)|2015|LCK': 94,  // SKT 2015 우승이나 당해 슬럼프+MSI 부진 — MaRin/Faker 옆 98 과대
   // LPL
   'Scout|2021|LPL': 97,
   'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG)
@@ -88,6 +89,8 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Yike|2023|LEC': 94,          // LEC 국내 최고 정글, 국제 실적 없음 — 재빌드 98 복원 방지
   'Caps|2024|LEC': 95,
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
+  // LCS — z-score 인플레 보정
+  'Berserker (Kim Min-cheol)|2023|LCS': 88,  // Cloud9 LCS, Worlds 그룹 탈락 — LCS 인플레 95→88
 }
 
 // §9 연도×리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
@@ -443,6 +446,12 @@ async function main() {
 
     // 하드오버라이드 — OVR_OVERRIDES 매칭 시 calc/compress/clamp 결과 전부 무시
     const ovr = OVR_OVERRIDES[`${playerId}|${year}|${leagueCode}`] ?? calcOvr_
+
+    // DEBUG: Trick 2016 추적
+    if (playerId === 'Trick' && year === 2016) {
+      const coeff_dbg = getLeagueCoeff(year, leagueCode)
+      process.stderr.write(`[DEBUG] Trick 2016: coeff=${coeff_dbg} rawOvr=${rawOvr} baseOvr=${baseOvr} bonus=${individualBonus} calcOvr_=${calcOvr_} ovr=${ovr} playoffPlaces=${JSON.stringify(playoffPlaces)} worldsPlace=${worldsPlace} msiPlace=${msiPlace} awards=${JSON.stringify(awards)}\n`)
+    }
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'
