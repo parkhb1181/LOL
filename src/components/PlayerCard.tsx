@@ -8,7 +8,7 @@
 import { useState } from 'react'
 import type { PlayerSeason } from '@/lib/data'
 
-export type CardSize = 'pick' | 'slot' | 'result'
+export type CardSize = 'pick' | 'slot' | 'result' | 'dex'
 
 type Props = {
   player: PlayerSeason
@@ -59,6 +59,7 @@ const SIZE_W: Record<CardSize, string> = {
   pick:   'w-[140px] aspect-[5/7] draft-pick-w',
   slot:   'w-[110px] md:w-[140px] aspect-[5/7]',
   result: 'w-[130px] md:w-[160px] aspect-[5/7]',
+  dex:    'w-full aspect-[5/7]',  // 그리드 셀 채움 — 도감 전용
 }
 
 // OVR 폰트 크기 (Anton — font-ovr-display)
@@ -66,6 +67,7 @@ const SIZE_OVR: Record<CardSize, string> = {
   pick:   'text-[38px] md:text-[46px]',
   slot:   'text-[28px] md:text-[36px]',
   result: 'text-[34px] md:text-[42px]',
+  dex:    'text-[32px] md:text-[44px]',
 }
 
 // 이름 폰트 크기 (Bebas Neue — font-heading-md)
@@ -73,6 +75,7 @@ const SIZE_NAME: Record<CardSize, string> = {
   pick:   'text-[20px] md:text-[26px]',
   slot:   'text-[13px] md:text-[17px]',
   result: 'text-[17px] md:text-[22px]',
+  dex:    'text-[16px] md:text-[22px]',
 }
 
 export default function PlayerCard({
