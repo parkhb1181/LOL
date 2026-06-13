@@ -103,12 +103,20 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Looper|2014|LCK': 90,  // 위크사이드 탑 최솟값
   // LCK
   'Smeb|2015|LCK': 91,                 // KOO 준우승 에이스 TOP, 당해 세계 최고 탑급 — 85 과소
+  // SSG 2017 — 향로 메타 월즈 준우승 위크사이드 보정
+  'Ruler|2017|LCK': 89,      // 월즈 2017 F.MVP, ADC 주도 향로 결승 — 83 과소
+  'CoreJJ|2017|LCK': 88,     // 향로 메타 핵심 SUP — LCS 시절(93) 구분, SSG 팀 내 Ruler 아래
+  // DRX 2022 — 월즈 미라클런 위크사이드 보정
+  'Zeka (Kim Geon-woo)|2022|LCK': 88,  // 월즈 우승 미드, 쵸비·페이커 꺾음 — 82 과소
+  'Kingen|2022|LCK': 87,              // 월즈 2022 결승 MVP — 81 과소
+  'BeryL|2022|LCK': 85,              // 월즈 우승 오더 SUP — 83 소폭 상향
   // LEC
   'YellOwStaR|2015|LEC': 90,   // 곡선 완화 후 공식 상승 방지 — v1 값 고정
   'Rekkles|2018|LEC': 95,             // Fnatic 준우승 에이스 ADC, 팀메이트 Caps/Broxah 96인데 89 과소
   'Jankos|2019|LEC': 97,        // G2 2019 MSI+Worlds결승 시즌 JGL
   'Perkz|2019|LEC': 96,         // G2 2019 ADC
   'Caps|2019|LEC': 97,          // G2 2019 MID
+  'Perkz|2022|LEC': 76,         // Team Vitality 부진기 — 71 과소 (역대급 경력 최솟값)
   'Yike|2023|LEC': 94,          // LEC 국내 최고 정글, 국제 실적 없음 — 재빌드 98 복원 방지
   'Caps|2024|LEC': 95,
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
