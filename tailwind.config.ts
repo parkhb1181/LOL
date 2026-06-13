@@ -64,7 +64,7 @@ const config: Config = {
     'text-grade-grandslam', 'text-grade-legendary', 'text-grade-elite', 'text-grade-contender',
     'border-secondary/50', 'border-amber-400/35',
     'bg-surface-container-high', 'bg-surface-bright',
-    'is-shuffling', 'is-flying',
+    'is-flying',
   ],
   plugins: [],
 }

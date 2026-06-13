@@ -1,6 +1,7 @@
 // 공유 헤더 — 도감/드래프트/결과 페이지 공통 (도감 헤더 기준)
 // activePage: 현재 페이지에 active 스타일 적용
 // fixed: true → fixed top-0 전체 폭 (dex·/r), false → 페이지 플로우 inline (draft)
+// fixedMobile: 모바일 헤더만 독립적으로 fixed 제어 (draft 전용 — 데스크톱은 fixed 그대로)
 // rightSlot: 헤더 우측 커스텀 콘텐츠 (draft 슬롯 미니 등)
 import Link from 'next/link'
 import type { ReactNode } from 'react'
@@ -8,11 +9,16 @@ import type { ReactNode } from 'react'
 type Props = {
   activePage?: 'collection' | 'draft'
   fixed?: boolean
+  fixedMobile?: boolean
   rightSlot?: ReactNode
 }
 
-export default function SiteHeader({ activePage, fixed = false, rightSlot }: Props) {
-  const positionCls = fixed
+export default function SiteHeader({ activePage, fixed = false, fixedMobile, rightSlot }: Props) {
+  const desktopPos = fixed
+    ? 'fixed top-0 left-0 w-full z-50'
+    : 'relative z-20 shrink-0'
+  // fixedMobile이 명시되면 모바일은 그 값 우선, 아니면 fixed 상속
+  const mobilePos  = (fixedMobile ?? fixed)
     ? 'fixed top-0 left-0 w-full z-50'
     : 'relative z-20 shrink-0'
 
@@ -23,7 +29,7 @@ export default function SiteHeader({ activePage, fixed = false, rightSlot }: Pro
     <>
       {/* 데스크톱 헤더 */}
       <header
-        className={`hidden md:flex items-center px-10 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${positionCls}`}
+        className={`hidden md:flex items-center px-10 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${desktopPos}`}
         style={{ paddingTop: fixed ? 'max(1rem, env(safe-area-inset-top))' : undefined }}
       >
         <Link
@@ -45,8 +51,8 @@ export default function SiteHeader({ activePage, fixed = false, rightSlot }: Pro
 
       {/* 모바일 헤더 */}
       <header
-        className={`flex md:hidden items-center justify-between px-5 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${positionCls}`}
-        style={{ paddingTop: fixed ? 'max(1rem, env(safe-area-inset-top))' : undefined }}
+        className={`flex md:hidden items-center justify-between px-5 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${mobilePos}`}
+        style={{ paddingTop: (fixedMobile ?? fixed) ? 'max(1rem, env(safe-area-inset-top))' : undefined }}
       >
         <Link href="/" className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface">
           GRANDSLAM

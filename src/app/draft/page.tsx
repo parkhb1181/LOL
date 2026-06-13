@@ -758,7 +758,8 @@ export default function DraftPage() {
       />
 
       {/* ── Main content ── */}
-      <main className={`mx-auto px-4 py-8 w-full relative z-10 md:flex-1 md:flex md:flex-col md:justify-center ${
+      {/* pt-16 pb-20: 모바일 fixed 헤더(64px)+탭바(80px) 클리어런스, md:py-8 으로 데스크톱 복원 */}
+      <main className={`mx-auto px-4 pt-16 pb-20 md:py-8 w-full relative z-10 md:flex-1 md:flex md:flex-col md:justify-center ${
         state.phase === 'RESULT'
           ? 'max-w-5xl'
           : isDraftScreen
@@ -778,27 +779,45 @@ export default function DraftPage() {
         {/* SPIN / PICK */}
         {(state.phase === 'SPIN' || state.phase === 'PICK') && (
           <>
-            {/* ── 모바일 ── */}
-            <div className="md:hidden flex flex-col gap-5 w-full">
-              <MobileSlotRow picks={state.picks} />
-              <p className="text-center font-label-caps text-label-caps text-outline">
-                Round {state.round + 1} / 5
-              </p>
+            {/* ── 모바일 (Stitch 디자인) ── */}
+            <div className="md:hidden flex flex-col gap-4 w-full">
+
+              {/* 섹션 타이틀 */}
+              <h1 className="text-center font-heading-md text-heading-md text-on-surface uppercase">
+                Draft Roster
+              </h1>
+
+              {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
+              <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
+
               {state.phase === 'SPIN' && (
                 <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">Spinning...</p>
               )}
+
               {state.phase === 'PICK' && state.spunTeam && (
-                <MobilePickScreen
-                  roster={machine.currentRoster}
-                  pickedPlayerIds={machine.pickedPlayerIds}
-                  emptyRoles={machine.emptyRoles}
-                  onPick={(p) => machine.pick(p, state.spunTeam!)}
-                  onReroll={handleReroll}
-                  onPlayAgain={handlePlayAgain}
-                  rerollLeft={state.rerollLeft}
-                  spunTeam={state.spunTeam}
-                  shufflePhase={shufflePhase}
-                />
+                <div className="flex flex-col gap-3">
+                  {/* 팀명 + 라운드 카운터 — 같은 행 */}
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="font-heading-md text-heading-md text-on-surface uppercase truncate">
+                      {state.spunTeam.team} ({state.spunTeam.year})
+                    </h2>
+                    <span className="shrink-0 font-label-caps text-label-caps text-outline bg-surface-container-high px-2 py-1 rounded">
+                      ROUND {state.round + 1}/5
+                    </span>
+                  </div>
+
+                  <MobilePickScreen
+                    roster={machine.currentRoster}
+                    pickedPlayerIds={machine.pickedPlayerIds}
+                    emptyRoles={machine.emptyRoles}
+                    onPick={(p) => machine.pick(p, state.spunTeam!)}
+                    onReroll={handleReroll}
+                    onPlayAgain={handlePlayAgain}
+                    rerollLeft={state.rerollLeft}
+                    spunTeam={state.spunTeam}
+                    shufflePhase={shufflePhase}
+                  />
+                </div>
               )}
             </div>
 
