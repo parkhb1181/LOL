@@ -259,16 +259,19 @@ async function main() {
 
     const composite_z = kda_z * wKda + gs_z * wGs + kp_z * wKp
 
-    // 표본 소규모 패널티: n < 10이면 최대 ±3으로 축소 (신뢰도 낮은 극단값 억제)
-    const effectiveMax = m.n < 10 ? 3 : MAX_BONUS
-    const effectiveMin = m.n < 10 ? -3 : MIN_BONUS
-    const statsBonus = Math.max(effectiveMin, Math.min(effectiveMax, Math.round(composite_z * SCALE)))
+    // 지표 수 기반 effectiveCap (단일 지표 과신 방지)
+    // 3지표: ±7 / 2지표: ±5 / 1지표(KDA-only): ±3 / n<10이면 추가 -2
+    const nMetrics = 1 + (playerHasGs ? 1 : 0) + (playerHasKp ? 1 : 0)
+    const baseCap = nMetrics === 3 ? 7 : nMetrics === 2 ? 5 : 3
+    const effectiveCap = m.n < 10 ? Math.max(1, baseCap - 2) : baseCap
+    const statsBonus = Math.max(-effectiveCap, Math.min(effectiveCap, Math.round(composite_z * SCALE)))
 
     // earlyNote: 데이터 제약 메모
     const notes: string[] = []
     if (!playerHasGs) notes.push('GS-없음(AvgTG공란)')
     if (!playerHasKp) notes.push('KP-없음(AvgTK공란)')
     if (m.n < 10) notes.push(`표본소규모(n=${m.n})`)
+    notes.push(`지표${nMetrics}개cap±${effectiveCap}`)
     if (m.year === 2013) notes.push('2013초기시즌')
 
     const ovrKey = `${m.playerId}|${m.year}|${m.leagueCode}`

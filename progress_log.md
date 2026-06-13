@@ -10,20 +10,33 @@
 
 ---
 
-## [2022~2023 담당] Oracle's Elixir 데이터 수집 현황
+## [2022~2023 담당] ✅ 완료
 
-### ⚠️ OE 자동 다운로드 실패 — Leaguepedia 대체
-- oracleselixir.com 전체 403 차단 (다운로드 페이지 포함)
-- S3 직접 URL (oracleselixir-downloadable-match-data.s3-us-west-2.amazonaws.com) 404
-- **대안 채택**: Leaguepedia ScoreboardPlayers Cargo API
-- golddiffat15/xpdiffat15/csdiffat15: Leaguepedia에 없음 → CS per game으로 대체 (라인전 지표)
-- 수집 지표: KDA (35%) + GoldShare (25%) + CS (20%) + DamageToChampions (20%)
-- **호빈 검토 필요**: CS를 라인전 지표로 사용하는 것이 적절한지 확인 요망
+### 데이터 소스: Leaguepedia ScoreboardPlayers (OE 대체)
+- OE oracleselixir.com 전체 403, S3 oracles-elixir 버킷 us-east-1 403 (API 키 있으나 서명 없음)
+- **대안**: Leaguepedia ScoreboardPlayers GROUP BY (Link, Team, IngameRole)
+- golddiffat15/xpdiffat15/csdiffat15 없음 → CS per game 대체 (호빈 검토 필요)
+- 수집 지표: **KDA 35% + GoldShare 25% + CS 20% + DamageToChampions 20%**
+- scale 3.0, 다지표 캡 ±8
 
-| 연도 | 상태 | 데이터 소스 | 비고 |
-|------|------|------------|------|
-| 2022 | 수집 중 | Leaguepedia (OE 대체) | golddiffat15 없음 |
-| 2023 | 수집 중 | Leaguepedia (OE 대체) | golddiffat15 없음 |
+| 연도 | 상태 | 건수 | 매칭 | 비고 |
+|------|------|------|------|------|
+| 2022 | ✅ 완료 | 365건 | 180/180 (100%) | golddiffat15 없음 |
+| 2023 | ✅ 완료 | 338건 | 185/185 (100%) | golddiffat15 없음 |
+
+**출력 파일**:
+- `pipeline-cache/oe-stats-2022-2023.json` (703건 원시 z-score)
+- `pipeline-cache/oe-comparison-2022-2023.json` (365건 OVR 비교표)
+
+### 주요 OVR 변화
+| 선수 | 연도 | 역할 | 현재 | 신규 | 변화 | 메모 |
+|------|------|------|------|------|------|------|
+| Chovy | 2022 | MID | 88 | 94 | +6 | stat 2.015σ — 라인전 지배력 반영 |
+| Kanavi | 2023 | JGL | 96 | 99 | +6 | JDG 2023, 합리적 |
+| Yike | 2023 | JGL | 97 | 99 | +6 | ⚠️ 루키, 베이스 97이 높음 — 호빈 검토 필요 |
+| Inspired | 2022 | JGL | 92 | 97 | +5 | 검토 |
+| Oner | 2022 | JGL | 93 | 97 | +4 | ⚠️ Oner 2023 OVERRIDE=94보다 높음 — 검토 필요 |
+| Malrang | 2023 | JGL | 76 | 75 | -4 | 클램프(최소 75) |
 
 ---
 
@@ -31,8 +44,8 @@
 
 | 연도 | TOP | JGL | MID | ADC | SUP | 상태 |
 |------|-----|-----|-----|-----|-----|------|
-| 2022 | - | - | - | - | - | 수집 중 |
-| 2023 | - | - | - | - | - | 수집 중 |
+| 2022 | 81명 | 71명 | 67명 | 70명 | 76명 | ✅ 완료 |
+| 2023 | 64명 | 61명 | 73명 | 67명 | 73명 | ✅ 완료 |
 
 ---
 
@@ -103,8 +116,11 @@
 
 | 날짜 | 연도 | 내용 |
 |------|------|------|
-| 2026-06-13 | 2022~2023 | OE 403/404 차단 — Leaguepedia Cargo로 대체 진행 |
+| 2026-06-13 | 2022~2023 | OE oracleselixir.com 403, S3 버킷 403 확정 — API 키 있으나 서명 없어 직접 접근 불가 |
 | 2026-06-13 | 2022~2023 | golddiffat15 Leaguepedia 미제공 — CS per game 대체 (호빈 검토 필요) |
+| 2026-06-13 | 2022~2023 | ✅ Leaguepedia 수집 완료: 703건, 매칭 365/365 (100%), 최대 변화 +6/-4 |
+| 2026-06-13 | 전체 | 新규칙: 다지표 시즌 ±8, KDA 단일/부족 시즌 ±3 (04-ratings.ts 통합 시 적용) |
+| 2026-06-13 | 2022~2023 | ⚠️ Yike 2023 베이스 97 → +6 = 99 (루키 과대평가 가능성), Oner 2022→97 vs 2023 OVERRIDE=94 역전 — 호빈 검토 필요 |
 | 2026-06-13 | - | 2019~2021 담당자 작업 대기 중 |
 | 2026-06-13 | 2016~2018 | OE 403/404 차단 (동일) — Leaguepedia stats_agg 활용 |
 | 2026-06-13 | 2016~2018 | DamageToChampions 2016~2018 전부 공란 — 제외 (KDA+GS+KP 3지표) |
