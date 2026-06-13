@@ -99,6 +99,12 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Crown|2017|LCK': 89,     // SSG 미드, 월즈 준우승
   'Ambition|2017|LCK': 89,  // SSG 정글, 월즈 준우승
   'CuVee|2017|LCK': 89,     // SSG 탑 위크사이드, 월즈 준우승
+  // ── Griffin 2018 — LCK 준우승·Worlds 8강 (호빈 +3 보정) ────────────────────
+  'Chovy|2018|LCK': 79,
+  'Lehends|2018|LCK': 79,
+  'Tarzan (Lee Seung-yong)|2018|LCK': 77,
+  'Sword (Choi Sung-won)|2018|LCK': 76,
+  'Viper (Park Do-hyeon)|2018|LCK': 76,
   // ── DRX 2022 — 월즈 미라클런 ─────────────────────────────────────────────
   'Zeka (Kim Geon-woo)|2022|LCK': 91,  // 월즈 우승 미드
   'Kingen|2022|LCK': 89,               // 87→89 (월즈 결승 MVP 체면)
