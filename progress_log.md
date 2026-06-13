@@ -64,13 +64,69 @@
 
 ---
 
-## [2019~2021 담당] 상태
+## [2019~2021 담당] ✅ 완료
 
-| 연도 | 상태 | 파일명 | 선수 행 수 | 비고 |
-|------|------|--------|-----------|------|
-| 2019 | 대기 중 | - | - | |
-| 2020 | 대기 중 | - | - | |
-| 2021 | 대기 중 | - | - | |
+### 데이터 소스: Oracle's Elixir (Google Drive 공개 폴더)
+- oracleselixir.com/S3 직접 접근 실패 → JS 번들 역분석 → Google Drive 폴더 ID 발견
+- 다운로드 URL: `drive.usercontent.google.com/download?id={fileId}&export=download&confirm=t`
+
+| 연도 | 상태 | 파일명 | 크기 | 선수-팀 유니크 | 5게임+ | 비고 |
+|------|------|--------|------|----------------|--------|------|
+| 2019 | ✅ 완료 | pipeline-cache/oe/2019.csv | 69.8 MB | 461건 | 389건 | |
+| 2020 | ✅ 완료 | pipeline-cache/oe/2020.csv | 84.9 MB | 403건 | 369건 | |
+| 2021 | ✅ 완료 | pipeline-cache/oe/2021.csv | 104.7 MB | 357건 | 318건 | |
+
+**지표 구성 (4종, 사전 승인)**:
+| 지표 | 컬럼 | 가중치 |
+|------|------|--------|
+| KDA | (kills+assists)/max(1,deaths) | 35% |
+| 골드차 | golddiffat15 | 25% |
+| 라인전 | csdiffat15 | 20% |
+| 데미지 | dpm | 20% |
+
+- 정규화: 포지션 × 연도별 z-score (OE 전체 선수 기준 — 우리 DB 미한정)
+- 결측치(null): 0 처리 (포지션 평균 대체 아님 — 호빈 확인 필요)
+- 매칭 커버리지: **93.1% (715/768)** — 미매칭 6.9%는 보조 로스터(OVR 보너스 0)
+
+**출력 파일**:
+- `pipeline-cache/oe/stats_2019.json` (389건)
+- `pipeline-cache/oe/stats_2020.json` (369건)
+- `pipeline-cache/oe/stats_2021.json` (318건)
+- `scripts/04b-oe-stats.ts` — 집계·정규화 스크립트
+
+**04-ratings.ts 통합**:
+- OE 보너스 로딩: `oeBonusByKey` Map (normName|year|league 키)
+- 2019~2021: OE composite bonus 적용 (캡 ±8)
+- 2013~2018: KDA z-score ±3 클램프 유지
+- compressOvr 상한: 99 → **98** (99는 OVR_OVERRIDES로만)
+- OVR 99 확정 4명: Faker 2013, MaRin 2015, Faker 2016, Canyon 2020
+
+**최종 빌드 결과** (07-build.ts zod 통과):
+- players.json: 1,709건
+- OVR 분포: 75~79: 3113건, 80~89: 726건, 90~99: 151건
+
+### OVR 99 검증 ✅
+```
+Faker 2013 LCK MID = 99
+MaRin 2015 LCK TOP = 99
+Faker 2016 LCK MID = 99
+Canyon 2020 LCK JGL = 99
+합계: 정확히 4명
+```
+
+### 주요 OVR 변화 (2019~2021)
+| 선수 | 연도 | v1.0 | v1.1 | 변화 | 메모 |
+|------|------|------|------|------|------|
+| Chovy | 2020 | 78 | 85 | +7 | Griffin 부진에도 개인 지표 우수 |
+| Deft | 2020 | 77 | 84 | +7 | 개인 지표 강세 |
+| TheShy | 2019 | 86 | 92 | +6 | IG 우승팀 주전 |
+| Blaber | 2020 | 92 | 96 | +4 | LCS 최강 정글 |
+| Mata | 2019 | 90 | 87 | -3 | SUP 포지션 구조 특성 |
+
+### 판단 목록 (호빈 검토 필요)
+1. **csdiffat15 사용** (xpdiffat15 대신): OE에 두 컬럼 모두 있으나 xpdiffat15 선택 근거 없어 csdiffat15로 통일
+2. **결측치 → 0 처리**: golddiffat15/csdiffat15 null 시 해당 지표 z=0 처리 (포지션 평균 대체 아님)
+3. **미매칭 6.9%**: OE 이름(예: "Dread (Lee Jin-hyeok)")→ suffix 제거 방식 — 일부 선수 매칭 실패 시 보너스 0 유지
 
 ---
 
@@ -108,7 +164,40 @@
 
 ## [2016~2018] 포지션별 정규화 현황
 
-스크립트 04c-ovr-stats.ts 구현 완료 후 실행 결과를 여기 기록
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.17
+JGL 2016: OE=35 LP=38 평균bonus=-0.19
+MID 2016: OE=33 LP=40 평균bonus=-0.16
+ADC 2016: OE=25 LP=48 평균bonus=-0.07
+SUP 2016: OE=23 LP=50 평균bonus=-0.08
+TOP 2017: OE=31 LP=31 평균bonus=0.02
+JGL 2017: OE=30 LP=33 평균bonus=-0.06
+MID 2017: OE=35 LP=28 평균bonus=0.02
+ADC 2017: OE=33 LP=30 평균bonus=0.03
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=-0.08
+JGL 2018: OE=30 LP=24 평균bonus=0.02
+MID 2018: OE=30 LP=24 평균bonus=-0.09
+ADC 2018: OE=31 LP=23 평균bonus=-0.07
+SUP 2018: OE=28 LP=26 평균bonus=0.11
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.17
+JGL 2016: OE=35 LP=38 평균bonus=-0.19
+MID 2016: OE=0 LP=73 평균bonus=-0.03
+ADC 2016: OE=25 LP=48 평균bonus=-0.07
+SUP 2016: OE=23 LP=50 평균bonus=-0.08
+TOP 2017: OE=31 LP=31 평균bonus=0.02
+JGL 2017: OE=30 LP=33 평균bonus=-0.06
+MID 2017: OE=2 LP=61 평균bonus=0.03
+ADC 2017: OE=33 LP=30 평균bonus=0.02
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=-0.08
+JGL 2018: OE=30 LP=24 평균bonus=0.04
+MID 2018: OE=3 LP=51 평균bonus=0.02
+ADC 2018: OE=31 LP=23 평균bonus=-0.17
+SUP 2018: OE=28 LP=26 평균bonus=0.11
 
 ---
 
