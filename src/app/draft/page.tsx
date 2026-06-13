@@ -358,7 +358,7 @@ function RevealScreen({
 
   return (
     <div className="flex flex-col items-center" style={{ minHeight: '55vh' }}>
-      <div className="w-full max-w-sm flex justify-end mb-2">
+      <div className="w-full max-w-sm flex justify-end mt-4 mb-2">
         <button
           onClick={onSkip}
           className="font-label-caps text-[10px] px-3 py-1.5 rounded border border-outline-variant text-outline hover:text-on-surface hover:border-secondary/40 transition-colors"
@@ -937,7 +937,7 @@ export default function DraftPage() {
             </div>
 
             {/* ── 데스크톱 ── */}
-            <div className="hidden md:flex md:flex-col md:items-center md:gap-6 md:w-full md:flex-1 md:justify-center">
+            <div className="hidden md:flex md:flex-col md:items-center md:gap-6 md:w-full md:flex-1 md:justify-center md:pt-8">
               {/* 상단 5슬롯 */}
               <DraftSlotRow picks={state.picks} />
 
