@@ -104,6 +104,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   // LCK
   'Smeb|2015|LCK': 91,                 // KOO 준우승 에이스 TOP, 당해 세계 최고 탑급 — 85 과소
   // LEC
+  'YellOwStaR|2015|LEC': 90,   // 곡선 완화 후 공식 상승 방지 — v1 값 고정
   'Rekkles|2018|LEC': 95,             // Fnatic 준우승 에이스 ADC, 팀메이트 Caps/Broxah 96인데 89 과소
   'Jankos|2019|LEC': 97,        // G2 2019 MSI+Worlds결승 시즌 JGL
   'Perkz|2019|LEC': 96,         // G2 2019 ADC
@@ -206,17 +207,19 @@ function calcOvr(params: {
 
 // raw → OVR 구간별 비선형 압축 (상한 98 — 99는 OVR_OVERRIDES 4명 전용)
 // raw ≤ 60       → 60
-// raw 60~85      → OVR 60~85   (×1.00 선형)
-// raw 85~95      → OVR 85~90   (×0.50, raw 10 = OVR 5)
-// raw 95~110     → OVR 90~95   (×0.33, raw 15 = OVR 5)
-// raw 110~135    → OVR 95~98   (×0.12, raw 25 = OVR 3)
-// raw ≥ 135      → 98
+// v2: 바닥 상향 + 80대 넉넉하게 + 90 초반 완화
+// raw ≤ 60       → OVR 70     (바닥)
+// raw 60~80      → OVR 70~82  (×0.60, raw 20 = OVR 12)
+// raw 80~100     → OVR 82~92  (×0.50, raw 20 = OVR 10)
+// raw 100~120    → OVR 92~96  (×0.20, raw 20 = OVR 4)
+// raw 120~140    → OVR 96~98  (×0.10, raw 20 = OVR 2)
+// raw ≥ 140      → 98
 function compressOvr(raw: number): number {
-  if (raw <= 60) return 60
-  if (raw <= 85) return raw
-  if (raw <= 95) return 85 + (raw - 85) * 0.5
-  if (raw <= 110) return 90 + (raw - 95) / 3
-  if (raw <= 135) return 95 + (raw - 110) * 3 / 25
+  if (raw <= 60) return 70
+  if (raw <= 80) return 70 + (raw - 60) * 0.60
+  if (raw <= 100) return 82 + (raw - 80) * 0.50
+  if (raw <= 120) return 92 + (raw - 100) * 0.20
+  if (raw <= 140) return 96 + (raw - 120) * 0.10
   return 98
 }
 
