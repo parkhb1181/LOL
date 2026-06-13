@@ -164,18 +164,18 @@ function PickButtons({
   const { t } = useLang()
   if (layout === 'mobile') {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-row gap-3">
         <button
           onClick={onReroll}
           disabled={rerollLeft <= 0}
-          className="group w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center gap-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="group flex-1 py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center gap-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <RerollIcon />
           {t.draft.reroll(rerollLeft)}
         </button>
         <button
           onClick={onPlayAgain}
-          className="font-label-caps text-[11px] text-outline hover:text-secondary transition-colors py-2 text-center"
+          className="flex-1 py-3.5 border border-outline-variant/50 bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center transition-colors"
         >
           {t.draft.playAgain}
         </button>
@@ -183,18 +183,18 @@ function PickButtons({
     )
   }
   return (
-    <div className="flex flex-col items-center gap-5 mt-2">
+    <div className="flex flex-row items-center gap-3 mt-2">
       <button
         onClick={onReroll}
         disabled={rerollLeft <= 0}
-        className="group flex items-center gap-2 font-label-caps text-label-caps py-3 px-8 rounded bg-surface-bright hover:bg-surface-variant border border-outline-variant hover:border-secondary/50 text-on-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        className="group flex items-center gap-2 font-label-caps text-label-caps py-3 px-6 rounded bg-surface-bright hover:bg-surface-variant border border-outline-variant hover:border-secondary/50 text-on-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <RerollIcon />
         {t.draft.rerollShort(rerollLeft)}
       </button>
       <button
         onClick={onPlayAgain}
-        className="font-label-caps text-[11px] text-outline hover:text-secondary transition-colors"
+        className="font-label-caps text-label-caps py-3 px-6 rounded border border-outline-variant/50 bg-surface-container-low hover:bg-surface-bright text-outline hover:text-on-surface transition-colors"
       >
         {t.draft.playAgain}
       </button>
