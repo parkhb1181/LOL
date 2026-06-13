@@ -3,7 +3,7 @@
 // IDLE → SPIN(roundN) → PICK(roundN) → [round<5? SPIN(round+1) : SIM] → REVEAL → RESULT
 // GAME_SPEC §2: single full-team reroll (fullReroll) instead of per-team/year buttons
 
-import { useReducer, useCallback } from 'react'
+import { useReducer, useCallback, useMemo } from 'react'
 import { mulberry32 } from './prng'
 import { simulate } from './sim'
 import { highlightStepsFlat, pickHighlightSteps } from './simHighlight'
@@ -56,7 +56,8 @@ type Action =
   | { type: 'START'; seed: number; spunTeam: TeamYear }          // IDLE → PICK
   | { type: 'SPIN_DONE'; spunTeam: TeamYear }                    // Spin result confirmed → PICK
   | { type: 'FULL_REROLL'; spunTeam: TeamYear }                  // Full team re-draw (GAME_SPEC §2)
-  | { type: 'PICK'; player: PlayerSeason; teamYear: TeamYear }   // Player selected → next SPIN or SIM
+  | { type: 'PICK'; player: PlayerSeason; teamYear: TeamYear }   // 마지막(5번째) 픽 → SIM
+  | { type: 'PICK_AND_SPIN'; player: PlayerSeason; teamYear: TeamYear; nextSpunTeam: TeamYear }  // 1~4번째 픽: SPIN 단계 생략하고 다음 팀 즉시 반영
   | { type: 'SIM_DONE'; result: SimResult }                      // SIM → REVEAL
   | { type: 'REVEAL_NEXT' }                                      // Show 1 step
   | { type: 'REVEAL_SKIP' }                                      // Jump to RESULT immediately
@@ -113,21 +114,33 @@ function reducer(state: DraftState, action: Action): DraftState {
         error: null,
       }
 
-    // PICK: player selected → update picks array, then next round or SIM
+    // PICK: 마지막 픽(5번째) → SIM (allFilled 보장)
     case 'PICK': {
       const roleIdx = ROLES.indexOf(action.player.role as Role)
       const newPicks = [...state.picks]
       newPicks[roleIdx] = { player: action.player, teamYear: action.teamYear }
-
-      const nextRound = state.round + 1
-      const allFilled = newPicks.every(p => p !== null)
-
       return {
         ...state,
-        phase: allFilled ? 'SIM' : 'SPIN',
-        round: nextRound,
+        phase: 'SIM',
+        round: state.round + 1,
         picks: newPicks,
         spunTeam: null,
+        error: null,
+      }
+    }
+
+    // PICK_AND_SPIN: 1~4번째 픽 — 다음 스핀 결과를 미리 계산해서 함께 dispatch
+    // SPIN 단계를 건너뛰므로 "픽 화면 사라짐→재등장" 플래시가 없음
+    case 'PICK_AND_SPIN': {
+      const roleIdx = ROLES.indexOf(action.player.role as Role)
+      const newPicks = [...state.picks]
+      newPicks[roleIdx] = { player: action.player, teamYear: action.teamYear }
+      return {
+        ...state,
+        phase: 'PICK',
+        round: state.round + 1,
+        picks: newPicks,
+        spunTeam: action.nextSpunTeam,
         error: null,
       }
     }
@@ -238,21 +251,22 @@ function buildSpinPool(
 export function useDraftMachine(data: DraftData | null) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  const teamMap = data
-    ? new Map<string, TeamYear>(data.teams.map(t => [t.key, t]))
-    : new Map<string, TeamYear>()
+  // data가 바뀔 때만 재생성 — 매 render마다 수천 건 순회하지 않도록 메모화
+  const teamMap = useMemo(
+    () => data ? new Map<string, TeamYear>(data.teams.map(t => [t.key, t])) : new Map<string, TeamYear>(),
+    [data]
+  )
 
-  const playersByTeam = data
-    ? (() => {
-        const m = new Map<string, PlayerSeason[]>()
-        for (const p of data.players) {
-          const k = `${p.teamSlug}_${p.year}`
-          if (!m.has(k)) m.set(k, [])
-          m.get(k)!.push(p)
-        }
-        return m
-      })()
-    : new Map<string, PlayerSeason[]>()
+  const playersByTeam = useMemo(() => {
+    if (!data) return new Map<string, PlayerSeason[]>()
+    const m = new Map<string, PlayerSeason[]>()
+    for (const p of data.players) {
+      const k = `${p.teamSlug}_${p.year}`
+      if (!m.has(k)) m.set(k, [])
+      m.get(k)!.push(p)
+    }
+    return m
+  }, [data])
 
   // Per-round rng instance — unique seed via round × salt (determinism)
   const getRng = (round: number) =>
@@ -309,9 +323,33 @@ export function useDraftMachine(data: DraftData | null) {
   }, [data, state.rerollLeft, state.round, state.picks, state.seed])
 
   // pick: player selection
+  // 마지막(5번째) 픽이면 PICK → SIM으로 넘어가므로 스핀 불필요
+  // 1~4번째 픽이면 다음 스핀 결과를 즉석 계산해 단일 dispatch → SPIN 단계 생략
   const pick = useCallback((player: PlayerSeason, teamYear: TeamYear) => {
-    dispatch({ type: 'PICK', player, teamYear })
-  }, [])
+    if (!data) return
+    const roleIdx = ROLES.indexOf(player.role as Role)
+    const newPicks = [...state.picks]
+    newPicks[roleIdx] = { player, teamYear }
+    const allFilled = newPicks.every(p => p !== null)
+
+    if (allFilled) {
+      // 마지막 픽 → 기존 PICK 액션(→ SIM)
+      dispatch({ type: 'PICK', player, teamYear })
+      return
+    }
+
+    // 다음 라운드 스핀 즉석 계산
+    const nextRound = state.round + 1
+    const nextEmptyRoles = ROLES.filter((_, i) => newPicks[i] === null)
+    const nextPickedIds = new Set(newPicks.filter(Boolean).map(p => p!.player.playerId))
+    const nextPickedTeamKeys = new Set(newPicks.filter(Boolean).map(p => p!.teamYear.key))
+    const rng = mulberry32(((state.seed ^ (nextRound * 0x9E3779B9)) >>> 0))
+    const pool = buildSpinPool(nextEmptyRoles, nextPickedIds, data.spinIndex as SpinIndex, teamMap, playersByTeam)
+    const nextTeamKey = weightedDraw(pool, teamMap, rng, nextPickedTeamKeys)
+    const nextSpunTeam = teamMap.get(nextTeamKey)!
+    dispatch({ type: 'PICK_AND_SPIN', player, teamYear, nextSpunTeam })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, state.picks, state.round, state.seed, teamMap, playersByTeam])
 
   // runSim: run simulation (called from useEffect when SIM phase starts)
   const runSim = useCallback(() => {
