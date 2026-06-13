@@ -535,32 +535,24 @@ function mobileRoundLabel(h: HighlightStep): string {
   return stage.replace(/_/g, ' ').toUpperCase()
 }
 
-// 시즌 결과 개별 카드 (2x2 그리드)
+// 시즌 결과 개별 항목 (2x2 그리드 — 박스 없음, 텍스트만)
 function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: boolean }) {
   const { t } = useLang()
   const roundLabel = mobileRoundLabel(h)
-  const isDNQ = roundLabel === 'DNQ'  // 영문 원본으로 체크 (번역 전)
+  const isDNQ = roundLabel === 'DNQ'
   const displayLabel = t.draft.roundLabel[roundLabel] ?? roundLabel
-  const ser   = h.step.series?.[0]
+  const ser = h.step.series?.[0]
 
   return (
-    <div className={[
-      'rounded flex flex-col items-center justify-center relative overflow-hidden py-3 px-2 min-h-[90px]',
-      isHighlight
-        ? 'bg-surface-container-high border-2 border-secondary/50 shadow-[0_0_12px_rgba(233,195,73,0.1)]'
-        : 'bg-surface-container-low border border-outline-variant',
-    ].join(' ')}>
-      {isHighlight && (
-        <div className="absolute inset-0 card-shimmer opacity-20 pointer-events-none" aria-hidden />
-      )}
-      <span className={`font-label-caps text-[10px] mb-1 z-10 ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
+    <div className="flex flex-col items-center gap-0.5 py-2">
+      <span className={`font-label-caps text-[9px] uppercase ${isHighlight ? 'text-secondary' : 'text-outline/50'}`}>
         {t.draft.sectionShort[h.section] ?? h.section.toUpperCase()}
       </span>
-      <span className={`font-heading-md text-[18px] leading-tight text-center z-10 ${isDNQ ? 'text-outline/50' : 'text-on-surface'}`}>
+      <span className={`font-heading-md text-[16px] leading-tight text-center ${isDNQ ? 'text-outline/40' : isHighlight ? 'text-secondary' : 'text-on-surface'}`}>
         {displayLabel}
       </span>
       {ser && !isDNQ && (
-        <div className={`mt-1.5 z-10 text-center font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+        <div className={`text-center font-body-main text-[10px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
           {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
         </div>
       )}
@@ -625,6 +617,11 @@ function MobileResultScreen({
         </div>
       </div>
 
+      {/* URL 워터마크 — 상세 보기 위, 스샷 캡처용 */}
+      <p className="font-label-caps text-[9px] text-outline/40 text-center mb-2">
+        grandslamlol.vercel.app
+      </p>
+
       {/* 버튼 영역 */}
       <div className="flex flex-col gap-2 w-full">
         <button
@@ -641,11 +638,6 @@ function MobileResultScreen({
           {t.draft.playAgain}
         </button>
       </div>
-
-      {/* URL 워터마크 (공유 캡처용) */}
-      <p className="font-label-caps text-[8px] text-outline/30 text-center mt-3">
-        grandslamlol.vercel.app
-      </p>
     </div>
   )
 }
@@ -908,7 +900,7 @@ export default function DraftPage() {
         {(state.phase === 'SPIN' || state.phase === 'PICK') && (
           <>
             {/* ── 모바일 (Stitch 디자인) ── */}
-            <div className="md:hidden flex flex-col gap-4 w-full">
+            <div className="md:hidden flex flex-col gap-4 w-full pt-2">
 
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
@@ -958,17 +950,23 @@ export default function DraftPage() {
                 <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">{t.draft.spinning}</p>
               )}
               {state.phase === 'PICK' && state.spunTeam && (
-                <DesktopPickScreen
-                  roster={machine.currentRoster}
-                  pickedPlayerIds={machine.pickedPlayerIds}
-                  emptyRoles={machine.emptyRoles}
-                  onPick={(p) => machine.pick(p, state.spunTeam!)}
-                  onReroll={handleReroll}
-                  onPlayAgain={handlePlayAgain}
-                  rerollLeft={state.rerollLeft}
-                  spunTeam={state.spunTeam}
-                  shufflePhase={shufflePhase}
-                />
+                <>
+                  <h2 className="font-heading-lg text-heading-lg text-on-surface uppercase text-center tracking-wide -mt-2">
+                    {state.spunTeam.team}
+                    <span className="text-outline/60 ml-2">({state.spunTeam.year})</span>
+                  </h2>
+                  <DesktopPickScreen
+                    roster={machine.currentRoster}
+                    pickedPlayerIds={machine.pickedPlayerIds}
+                    emptyRoles={machine.emptyRoles}
+                    onPick={(p) => machine.pick(p, state.spunTeam!)}
+                    onReroll={handleReroll}
+                    onPlayAgain={handlePlayAgain}
+                    rerollLeft={state.rerollLeft}
+                    spunTeam={state.spunTeam}
+                    shufflePhase={shufflePhase}
+                  />
+                </>
               )}
             </div>
           </>
