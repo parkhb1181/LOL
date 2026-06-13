@@ -14,16 +14,16 @@ type Anchor = {
   note?: string
 }
 
-// PRD §6.2 앵커 목표값 (D0 수기 계산 세션 전 초안 — 확정 후 갱신)
+// PRD §6.2 앵커 목표값 (OVR_OVERRIDES 확정값 반영 — 세션18 갱신)
 const ANCHORS: Anchor[] = [
   { label: 'Faker 2015', playerId: 'Faker', year: 2015, minOvr: 97, maxOvr: 99,
     note: '전성기 피크 — Worlds+MSI 동시 제패 (MaRin WORLDS_MVP, Faker FINALS_MVP Summer)' },
-  { label: 'Faker 2013', playerId: 'Faker', year: 2013, minOvr: 90, maxOvr: 95,
-    note: 'MSI·공식 Worlds MVP 제도 부재 — awards 큐레이션에 따라 93~95 목표' },
-  { label: 'Canyon 2020', playerId: 'Canyon', year: 2020, minOvr: 92, maxOvr: 96,
-    note: 'PRD §6.2' },
-  { label: 'Chovy 2024', playerId: 'Chovy', year: 2024, minOvr: 92, maxOvr: 96,
-    note: 'PRD §6.2' },
+  { label: 'Faker 2013', playerId: 'Faker', year: 2013, minOvr: 99, maxOvr: 99,
+    note: 'OVR_OVERRIDE 99 확정 — MSI·Worlds MVP 제도 부재지만 PRD §6.2 수기 앵커로 결정' },
+  { label: 'Canyon 2020', playerId: 'Canyon', year: 2020, minOvr: 99, maxOvr: 99,
+    note: 'OVR_OVERRIDE 99 확정 — WORLDS_MVP+FINALS_MVP+stats 최고점' },
+  { label: 'Chovy 2024', playerId: 'Chovy', year: 2024, minOvr: 98, maxOvr: 98,
+    note: 'OVR_OVERRIDE 98 확정 — Worlds 준우승 캐리 + ALLPRO_1ST + stats 최고점' },
   { label: 'Ruler 2017', playerId: 'Ruler', year: 2017, minOvr: 88, maxOvr: 92,
     note: 'PRD §6.2' },
 ]

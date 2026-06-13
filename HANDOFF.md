@@ -4,8 +4,8 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D3 (2026-06-13) / v1.1 OVR OVERRIDE 보정 완료
-- 브랜치: ovr-stats-rework (최신 커밋: 83a5e93)
+- 날짜 / Phase: D3 (2026-06-14) / v1.1 OVR OVERRIDE 보정 완료 + 앵커 5/5 통과
+- 브랜치: ovr-stats-rework (최신 커밋: df00a27 → 세션18 추가 커밋 예정)
 - 빌드 상태: Next.js build ✓ / players.json 1709건 / OVR 99=4명 ✓
 - **복귀 후 재개 시작점**: 아래 "호빈 게이트 대기" 항목 결정 → 다음 Phase(프론트 잔여 or main 머지)
 
