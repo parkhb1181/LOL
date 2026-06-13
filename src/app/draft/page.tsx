@@ -4,7 +4,7 @@
 // §13.5 Hydration guard: initial render matches server, fetch after mount
 // v0 디자인 통합: stage-lighting 배경, 카드 fly/shuffle 애니메이션, v0 헤더
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PlayerCard from '@/components/PlayerCard'
 import SiteHeader from '@/components/SiteHeader'
 import BottomNav from '@/components/BottomNav'
@@ -51,7 +51,7 @@ function SlotItem({ role, player }: { role: string; player: PlayerSeason | null 
       </div>
     )
   }
-  return <PlayerCard player={player} size="slot" compact />
+  return <PlayerCard player={player} size="slot" />
 }
 
 // 상단 5슬롯 행
@@ -88,8 +88,8 @@ function MobileSlotRow({ picks, isPickPhase }: {
             </div>
           )
         }
-        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움, compact로 OVR+사진만
-        return <PlayerCard key={role} player={player} size="mob-result" compact />
+        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움
+        return <PlayerCard key={role} player={player} size="mob-result" />
       })}
     </div>
   )
@@ -374,11 +374,15 @@ function RevealScreen({
   )
 }
 
-// ── 결과 화면 버튼 아이콘 ─────────────────────────────────────────────────────
-const LinkIcon = () => (
+// ── 결과 화면 아이콘 ──────────────────────────────────────────────────────────
+const ListIcon = () => (
   <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    <line x1="8" y1="6" x2="21" y2="6"/>
+    <line x1="8" y1="12" x2="21" y2="12"/>
+    <line x1="8" y1="18" x2="21" y2="18"/>
+    <line x1="3" y1="6" x2="3.01" y2="6"/>
+    <line x1="3" y1="12" x2="3.01" y2="12"/>
+    <line x1="3" y1="18" x2="3.01" y2="18"/>
   </svg>
 )
 const ReplayIcon = () => (
@@ -398,7 +402,73 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':      'text-outline',
 }
 
-// ── 모바일 결과 전용 헬퍼 ─────────────────────────────────────────────────────
+// ── 경기 상세 모달 ─────────────────────────────────────────────────────────────
+// §13.4: simResult.steps 전체 표시 — 단일 시리즈(플옵/국제전)는 경기 결과 포함
+// 정규시즌(series 18개)은 step.label 요약만 표시
+function DetailModal({ steps, onClose }: { steps: SimStep[]; onClose: () => void }) {
+  const { t } = useLang()
+
+  // stage prefix → 섹션 번역명
+  function getSection(stage: string): string {
+    if (stage.startsWith('Spring_')) return t.draft.sectionShort['Spring Split'] ?? 'SPRING'
+    if (stage.startsWith('msi_'))    return t.draft.sectionShort['MSI'] ?? 'MSI'
+    if (stage.startsWith('Summer_')) return t.draft.sectionShort['Summer Split'] ?? 'SUMMER'
+    if (stage.startsWith('worlds_')) return t.draft.sectionShort['Worlds'] ?? 'WORLDS'
+    return '—'
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/70 flex items-end md:items-center justify-center"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm bg-surface-container rounded-t-2xl md:rounded-2xl max-h-[80vh] flex flex-col"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* 헤더 */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-outline-variant/30 flex-shrink-0">
+          <h3 className="font-heading-md text-heading-md text-on-surface uppercase tracking-wide">
+            {t.draft.detailTitle}
+          </h3>
+          <button
+            onClick={onClose}
+            className="font-label-caps text-[11px] text-outline hover:text-on-surface transition-colors px-2.5 py-1 rounded border border-outline-variant/40"
+          >
+            {t.draft.closeDetail}
+          </button>
+        </div>
+        {/* 스텝 목록 */}
+        <div className="overflow-y-auto px-5 py-4 space-y-3">
+          {steps.map((step, i) => {
+            // series가 정확히 1개 = 플옵/국제전 단일 경기 → 상세 표시
+            // series가 복수(정규시즌 18경기) = 레이블 요약만
+            const singleSer = step.series?.length === 1 ? step.series[0] : undefined
+            return (
+              <div key={i} className="flex flex-col gap-0.5">
+                <p className="font-label-caps text-[9px] text-outline/40 uppercase tracking-wider">
+                  {getSection(step.stage)}
+                </p>
+                <p className="font-body-main text-[13px] text-on-surface-variant">
+                  {step.label}
+                </p>
+                {singleSer && (
+                  <p className={`font-body-main text-[12px] ${singleSer.win ? 'text-green-400' : 'text-red-400'}`}>
+                    {singleSer.win
+                      ? t.draft.matchWin(singleSer.opp, singleSer.score)
+                      : t.draft.matchLoss(singleSer.opp, singleSer.score)}
+                  </p>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── 모바일 결과 전용 헬퍼 ─────────────────────────────────────────────────────────────────
 // 달성 단계 → 영문 라벨 (모바일 시즌 카드)
 function mobileRoundLabel(h: HighlightStep): string {
   const stage = h.step.stage
@@ -421,26 +491,34 @@ function mobileRoundLabel(h: HighlightStep): string {
   return stage.replace(/_/g, ' ').toUpperCase()
 }
 
-// 시즌 결과 개별 카드 (2×2 그리드)
+// 시즌 결과 개별 카드 (2x2 그리드)
 function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: boolean }) {
   const { t } = useLang()
   const roundLabel = mobileRoundLabel(h)
   const isDNQ = roundLabel === 'DNQ'  // 영문 원본으로 체크 (번역 전)
   const displayLabel = t.draft.roundLabel[roundLabel] ?? roundLabel
-  const ser = h.step.series?.[0]
+  const ser   = h.step.series?.[0]
 
   return (
-    <div className="flex flex-col gap-0.5 py-1 px-1">
-      <span className={`font-label-caps text-[10px] uppercase tracking-wider ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
+    <div className={[
+      'rounded flex flex-col items-center justify-center relative overflow-hidden py-3 px-2 min-h-[90px]',
+      isHighlight
+        ? 'bg-surface-container-high border-2 border-secondary/50 shadow-[0_0_12px_rgba(233,195,73,0.1)]'
+        : 'bg-surface-container-low border border-outline-variant',
+    ].join(' ')}>
+      {isHighlight && (
+        <div className="absolute inset-0 card-shimmer opacity-20 pointer-events-none" aria-hidden />
+      )}
+      <span className={`font-label-caps text-[10px] mb-1 z-10 ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
         {t.draft.sectionShort[h.section] ?? h.section.toUpperCase()}
       </span>
-      <span className={`font-heading-md text-[16px] leading-tight ${isDNQ ? 'text-outline/50' : isHighlight ? 'text-secondary' : 'text-on-surface'}`}>
+      <span className={`font-heading-md text-[18px] leading-tight text-center z-10 ${isDNQ ? 'text-outline/50' : 'text-on-surface'}`}>
         {displayLabel}
       </span>
       {ser && !isDNQ && (
-        <span className={`font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+        <div className={`mt-1.5 z-10 text-center font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
           {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
-        </span>
+        </div>
       )}
     </div>
   )
@@ -448,11 +526,12 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
 
 // 모바일 결과 화면 전체 레이아웃 (Stitch 모바일 디자인)
 function MobileResultScreen({
-  simResult, picks, onReset,
+  simResult, picks, onReset, onShowDetail,
 }: {
   simResult: NonNullable<ReturnType<typeof useDraftMachine>['state']['simResult']>
   picks: ReturnType<typeof useDraftMachine>['state']['picks']
   onReset: () => void
+  onShowDetail: () => void
 }) {
   const { t } = useLang()
   const highlights  = pickHighlightSteps(simResult.steps)
@@ -473,8 +552,8 @@ function MobileResultScreen({
         {simResult.grade}
       </h1>
 
-      {/* 시즌 결과 2×2 — 박스 없이 텍스트만, 컴팩트 */}
-      <div className="w-full grid grid-cols-2 gap-x-3 gap-y-1 mb-4">
+      {/* 시즌 결과 2x2 그리드 */}
+      <div className="w-full grid grid-cols-2 gap-3 mb-6">
         {highlights.map(h => (
           <MobileSeasonCard
             key={h.section}
@@ -502,18 +581,27 @@ function MobileResultScreen({
         </div>
       </div>
 
-      {/* URL 워터마크 — 버튼 위, 공유 스샷 출처 표시 */}
-      <p className="font-label-caps text-[10px] text-outline/50 text-center mb-3 tracking-wider">
+      {/* 버튼 영역 */}
+      <div className="flex flex-col gap-2 w-full">
+        <button
+          onClick={onShowDetail}
+          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          <ListIcon />
+          {t.draft.detailBtn}
+        </button>
+        <button
+          onClick={onReset}
+          className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
+        >
+          {t.draft.playAgain}
+        </button>
+      </div>
+
+      {/* URL 워터마크 (공유 캡처용) */}
+      <p className="font-label-caps text-[8px] text-outline/30 text-center mt-3">
         grandslamlol.vercel.app
       </p>
-
-      {/* PLAY AGAIN 버튼 */}
-      <button
-        onClick={onReset}
-        className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
-      >
-        {t.draft.playAgain}
-      </button>
     </div>
   )
 }
@@ -528,19 +616,8 @@ function ResultScreen({
   onReset: () => void
 }) {
   const { t } = useLang()
-  const [copied, setCopied] = useState(false)
-
-  const pIds = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
-  const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/r?p=${encodeURIComponent(pIds)}&s=${seed}`
-    : ''
-
-  const handleCopy = async () => {
-    if (!shareUrl) return
-    await navigator.clipboard.writeText(shareUrl)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  // 상세 보기 모달 — 모바일(MobileResultScreen)과 데스크톱 공유
+  const [showDetail, setShowDetail] = useState(false)
 
   const highlights = pickHighlightSteps(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
@@ -564,9 +641,19 @@ function ResultScreen({
   return (
     <div className="w-full py-4">
 
+      {/* 경기 상세 모달 — 모바일+데스크톱 공통 */}
+      {showDetail && (
+        <DetailModal steps={simResult.steps} onClose={() => setShowDetail(false)} />
+      )}
+
       {/* ── 모바일 전용 ── */}
       <div className="md:hidden">
-        <MobileResultScreen simResult={simResult} picks={picks} onReset={onReset} />
+        <MobileResultScreen
+          simResult={simResult}
+          picks={picks}
+          onReset={onReset}
+          onShowDetail={() => setShowDetail(true)}
+        />
       </div>
 
       {/* ── 데스크톱 전용 ── */}
@@ -624,11 +711,11 @@ function ResultScreen({
         {/* 액션 버튼 */}
         <div className="flex flex-row gap-3 items-center w-full max-w-sm justify-center">
           <button
-            onClick={handleCopy}
+            onClick={() => setShowDetail(true)}
             className="w-full px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
           >
-            <LinkIcon />
-            {copied ? t.draft.copied : t.draft.copyLink}
+            <ListIcon />
+            {t.draft.detailBtn}
           </button>
           <button
             onClick={onReset}
@@ -742,7 +829,7 @@ export default function DraftPage() {
               {ROLES.map((role, i) => {
                 const p = state.picks[i]?.player
                 return p ? (
-                  <PlayerCard key={role} player={p} size="slot" compact />
+                  <PlayerCard key={role} player={p} size="slot" />
                 ) : (
                   <div key={role} className="w-[55px] aspect-[5/7] rounded border border-dashed border-outline-variant/40 flex items-center justify-center">
                     <span className="font-label-caps text-[8px] text-outline/50">{role}</span>
@@ -853,13 +940,11 @@ export default function DraftPage() {
         )}
 
         {state.phase === 'REVEAL' && state.simResult && (
-          <div className="pt-4 md:pt-0">
-            <RevealScreen
-              highlights={pickHighlightSteps(state.simResult.steps)}
-              revealStep={state.revealStep}
-              onSkip={machine.revealSkip}
-            />
-          </div>
+          <RevealScreen
+            highlights={pickHighlightSteps(state.simResult.steps)}
+            revealStep={state.revealStep}
+            onSkip={machine.revealSkip}
+          />
         )}
 
         {state.phase === 'RESULT' && state.simResult && (

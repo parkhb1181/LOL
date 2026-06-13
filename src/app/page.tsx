@@ -49,7 +49,7 @@ export default function Home() {
             </span>
           </h1>
 
-          <p className="font-body-main text-body-main text-on-surface-variant max-w-sm text-center">
+          <p className="font-body-main text-body-main text-on-surface-variant max-w-sm text-center" style={{ wordBreak: 'keep-all' }}>
             {t.home.desc}
           </p>
 
@@ -62,7 +62,7 @@ export default function Home() {
             </Link>
             <Link
               href="/dex"
-              className="w-full py-4 px-8 bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest text-center hover:bg-surface-container-high active:scale-[0.98] transition-all"
+              className="w-full py-4 px-8 bg-surface-container border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest text-center hover:bg-surface-container-high active:scale-[0.98] transition-all"
             >
               {t.home.collection}
             </Link>
