@@ -65,5 +65,7 @@ export const ko = {
       'Summer Split': '서머',
       'Worlds': '월즈',
     } as Record<string, string>,
+    matchWin:  (opp: string, score: string) => `승 vs ${opp} ${score}`,
+    matchLoss: (opp: string, score: string) => `패 vs ${opp} ${score}`,
   },
 }

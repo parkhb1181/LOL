@@ -78,8 +78,7 @@ function MobileSlotRow({ picks, isPickPhase }: {
         if (!player) {
           return isPickPhase ? (
             // PICK 중: 골드 테두리 + 은은한 글로우
-            <div key={role} className="aspect-[5/7] rounded border-2 border-secondary/60 bg-surface-container-lowest flex flex-col items-center justify-center gap-0.5 shadow-[0_0_8px_rgba(233,195,73,0.2)]">
-              <span className="text-secondary text-sm font-bold leading-none">+</span>
+            <div key={role} className="aspect-[5/7] rounded border border-secondary/60 bg-surface-container-lowest flex items-center justify-center shadow-[0_0_8px_rgba(233,195,73,0.2)]">
               <span className="font-label-caps text-[8px] text-secondary font-bold">{role}</span>
             </div>
           ) : (
@@ -447,9 +446,8 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
         {displayLabel}
       </span>
       {ser && !isDNQ && (
-        <div className={`mt-1 z-10 flex items-start gap-1 font-body-main text-[10px] leading-tight ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
-          <span className="flex-shrink-0">{ser.win ? '✓' : '✗'}</span>
-          <span>{ser.win ? `def. ${ser.opp} ${ser.score}` : `lost to ${ser.opp} ${ser.score}`}</span>
+        <div className={`mt-1.5 z-10 text-center font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+          {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
         </div>
       )}
     </div>
@@ -608,8 +606,8 @@ function ResultScreen({
                   {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
                 </span>
                 {ser && (
-                  <span className={`font-body-main text-xs ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
-                    {ser.win ? `def. ${ser.opp} ${ser.score}` : `lost to ${ser.opp} ${ser.score}`}
+                  <span className={`font-body-main text-[12px] mt-0.5 ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+                    {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
                   </span>
                 )}
               </div>

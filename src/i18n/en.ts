@@ -65,5 +65,7 @@ export const en = {
       'Summer Split': 'SUMMER',
       'Worlds': 'WORLDS',
     } as Record<string, string>,
+    matchWin:  (opp: string, score: string) => `def. ${opp} ${score}`,
+    matchLoss: (opp: string, score: string) => `lost to ${opp} ${score}`,
   },
 }

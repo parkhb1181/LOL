@@ -12,6 +12,7 @@ body {
   background-color: #14141c;
   min-height: 100dvh;
   overscroll-behavior: none;
+  font-weight: 500; /* Pretendard Medium — 한글 가독성 */
 }
 
 /* ── Stage lighting: 중앙 미세 블루 글로우 (v0 bg-radial-glow) ────────────── */
