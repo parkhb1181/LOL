@@ -72,6 +72,8 @@ type NormalizedRow = AggregatedRow & {
   zLane: number
   zDpm: number
   compositeZ: number
+  nMetrics: number
+  cap: number
   ovrBonus: number
 }
 
@@ -248,32 +250,31 @@ function normalize(rows: AggregatedRow[]): NormalizedRow[] {
 
     const zKDA = ns.sdKda > 0 ? (r.avgKDA - ns.muKda) / ns.sdKda : 0
 
-    // 결측치 null — 동적 재분배 (04e-early/04d와 동일 원칙)
-    const zGolddiff: number | null = r.avgGolddiffat15 !== null && ns.sdGold > 0
+    // 결측치 → z=0 폴백 (전 시대 통일 규칙 — 재분배 금지)
+    const zGolddiffRaw: number | null = r.avgGolddiffat15 !== null && ns.sdGold > 0
       ? (r.avgGolddiffat15 - ns.muGold) / ns.sdGold : null
-    const zLane: number | null = r.avgLaneDiff !== null && ns.sdLane > 0
+    const zLaneRaw: number | null = r.avgLaneDiff !== null && ns.sdLane > 0
       ? (r.avgLaneDiff - ns.muLane) / ns.sdLane : null
-    const zDpm: number | null = r.avgDpm !== null && ns.sdDpm > 0
+    const zDpmRaw: number | null = r.avgDpm !== null && ns.sdDpm > 0
       ? (r.avgDpm - ns.muDpm) / ns.sdDpm : null
 
-    // 가중치 재분배: 없는 지표는 남은 가중치에 비례 분배
-    const weights: [number | null, number][] = [
-      [zKDA, W_KDA], [zGolddiff, W_GOLD], [zLane, W_LANE], [zDpm, W_DPM]
-    ]
-    const available = weights.filter(([z]) => z !== null)
-    const totalW = available.reduce((s, [, w]) => s + w, 0)
-    const compositeZ = totalW > 0 ? available.reduce((s, [z, w]) => s + z! * (w / totalW), 0) : 0
+    // z=0 폴백으로 고정 가중치 composite (KDA35+GD1525+Lane20+DPM20)
+    const compositeZ = W_KDA * zKDA + W_GOLD * (zGolddiffRaw ?? 0) + W_LANE * (zLaneRaw ?? 0) + W_DPM * (zDpmRaw ?? 0)
 
-    // cap ±7 (3+지표 공통 기준)
-    const ovrBonus = Math.max(-7, Math.min(7, Math.round(compositeZ * 4.0)))
+    // 지표 수 기반 동적 cap: ≥3개 → ±7 / 2개 → ±5 / 1개(KDA 단일) → ±3
+    const nMetrics = 1 + (zGolddiffRaw !== null ? 1 : 0) + (zLaneRaw !== null ? 1 : 0) + (zDpmRaw !== null ? 1 : 0)
+    const cap = nMetrics >= 3 ? 7 : nMetrics === 2 ? 5 : 3
+    const ovrBonus = Math.max(-cap, Math.min(cap, Math.round(compositeZ * 4.0)))
 
     return {
       ...r,
       zKDA: Math.round(zKDA * 100) / 100,
-      zGolddiff: zGolddiff !== null ? Math.round(zGolddiff * 100) / 100 : 0,
-      zLane: zLane !== null ? Math.round(zLane * 100) / 100 : 0,
-      zDpm: zDpm !== null ? Math.round(zDpm * 100) / 100 : 0,
+      zGolddiff: zGolddiffRaw !== null ? Math.round(zGolddiffRaw * 100) / 100 : 0,
+      zLane: zLaneRaw !== null ? Math.round(zLaneRaw * 100) / 100 : 0,
+      zDpm: zDpmRaw !== null ? Math.round(zDpmRaw * 100) / 100 : 0,
       compositeZ: Math.round(compositeZ * 100) / 100,
+      nMetrics,
+      cap,
       ovrBonus,
     }
   })
@@ -315,7 +316,11 @@ async function processYear(year: number) {
     console.log(`  ${r}: ${cnt}명 (laneDiff 커버리지: ${laneCov}/${cnt})`)
   })
 
-  console.log(`[${year}] ovrBonus 분포: -6~-4: ${norm.filter(x=>x.ovrBonus<=-4).length}, -3~-1: ${norm.filter(x=>x.ovrBonus>=-3&&x.ovrBonus<=-1).length}, 0: ${norm.filter(x=>x.ovrBonus===0).length}, 1~3: ${norm.filter(x=>x.ovrBonus>=1&&x.ovrBonus<=3).length}, 4~6: ${norm.filter(x=>x.ovrBonus>=4).length}`)
+  console.log(`[${year}] ovrBonus 분포: -7~-5: ${norm.filter(x=>x.ovrBonus<=-5).length}, -4~-2: ${norm.filter(x=>x.ovrBonus>=-4&&x.ovrBonus<=-2).length}, -1: ${norm.filter(x=>x.ovrBonus===-1).length}, 0: ${norm.filter(x=>x.ovrBonus===0).length}, +1: ${norm.filter(x=>x.ovrBonus===1).length}, 2~4: ${norm.filter(x=>x.ovrBonus>=2&&x.ovrBonus<=4).length}, 5~7: ${norm.filter(x=>x.ovrBonus>=5).length}`)
+  const cap7 = norm.filter(x=>Math.abs(x.ovrBonus)>=7).length
+  const cap5 = norm.filter(x=>x.nMetrics===2).length
+  const cap3 = norm.filter(x=>x.nMetrics===1).length
+  console.log(`[${year}] 지표 수별: 4개(cap±7)=${norm.filter(x=>x.nMetrics===4).length} 3개(cap±7)=${norm.filter(x=>x.nMetrics===3).length} 2개(cap±5)=${cap5} 1개(cap±3)=${cap3} / 상한도달(|bonus|≥5): ${cap7+norm.filter(x=>Math.abs(x.ovrBonus)===5&&x.nMetrics===2).length}`)
   console.log(`[${year}] 저장: ${outPath}`)
 }
 
