@@ -164,18 +164,18 @@ function PickButtons({
   const { t } = useLang()
   if (layout === 'mobile') {
     return (
-      <div className="flex flex-row gap-3">
+      <div className="flex flex-row gap-2">
         <button
           onClick={onReroll}
           disabled={rerollLeft <= 0}
-          className="group flex-1 py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center gap-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="group flex-1 py-2 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center gap-1.5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <RerollIcon />
           {t.draft.reroll(rerollLeft)}
         </button>
         <button
           onClick={onPlayAgain}
-          className="flex-1 py-3.5 border border-outline-variant/50 bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center transition-colors"
+          className="flex-1 py-2 border border-outline-variant/50 bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center transition-colors"
         >
           {t.draft.playAgain}
         </button>
@@ -544,15 +544,15 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
   const ser = h.step.series?.[0]
 
   return (
-    <div className="flex flex-col items-center gap-0.5 py-2">
-      <span className={`font-label-caps text-[9px] uppercase ${isHighlight ? 'text-secondary' : 'text-outline/50'}`}>
+    <div className="flex flex-col items-center gap-px py-1">
+      <span className={`font-label-caps text-[8px] uppercase ${isHighlight ? 'text-secondary' : 'text-outline/50'}`}>
         {t.draft.sectionShort[h.section] ?? h.section.toUpperCase()}
       </span>
-      <span className={`font-heading-md text-[16px] leading-tight text-center ${isDNQ ? 'text-outline/40' : isHighlight ? 'text-secondary' : 'text-on-surface'}`}>
+      <span className={`font-heading-md text-[13px] leading-tight text-center ${isDNQ ? 'text-outline/40' : isHighlight ? 'text-secondary' : 'text-on-surface'}`}>
         {displayLabel}
       </span>
       {ser && !isDNQ && (
-        <div className={`text-center font-body-main text-[10px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+        <div className={`text-center font-body-main text-[9px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
           {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
         </div>
       )}
@@ -584,12 +584,12 @@ function MobileResultScreen({
     <div className="flex flex-col items-center w-full pb-24">
 
       {/* 등급명 */}
-      <h1 className={`font-heading-lg text-heading-lg uppercase text-center mb-4 ${gradeColor}`}>
+      <h1 className={`font-heading-lg text-heading-lg uppercase text-center mb-2 ${gradeColor}`}>
         {simResult.grade}
       </h1>
 
-      {/* 시즌 결과 2x2 그리드 */}
-      <div className="w-full grid grid-cols-2 gap-3 mb-6">
+      {/* 시즌 결과 2x2 그리드 — 컴팩트 */}
+      <div className="w-full grid grid-cols-2 gap-1.5 mb-3">
         {highlights.map(h => (
           <MobileSeasonCard
             key={h.section}
@@ -600,7 +600,7 @@ function MobileResultScreen({
       </div>
 
       {/* 선수 카드 3+2 (TOP/JGL/MID → ADC/SUP) */}
-      <div className="w-full flex flex-col items-center gap-3 mb-6">
+      <div className="w-full flex flex-col items-center gap-2 mb-3">
         <div className="flex justify-center gap-2 w-full">
           {[0, 1, 2].map(i => picks[i] && (
             <div key={i} className="w-[30%]">
@@ -617,8 +617,8 @@ function MobileResultScreen({
         </div>
       </div>
 
-      {/* URL 워터마크 — 상세 보기 위, 스샷 캡처용 */}
-      <p className="font-label-caps text-[9px] text-outline/40 text-center mb-2">
+      {/* URL 워터마크 — 카드 아래, 스샷 캡처용 */}
+      <p className="font-label-caps text-[9px] text-outline/50 text-center mb-3">
         grandslamlol.vercel.app
       </p>
 
