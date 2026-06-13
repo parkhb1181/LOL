@@ -137,15 +137,10 @@ export default function PlayerCard({
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* 하단 페이드 — dex(큰 카드): 30%부터 불투명 · 60%까지 반투명 · 90% 투명 (빈 공간 방지)
-                       기타 카드: 약한 페이드 (현재 꽉 차 있음) */}
+        {/* 이미지 하단 끝 가장자리 페이드 — 카드 높이 기준 15% 고정, 인물 위치 무관 */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: size === 'dex'
-              ? 'linear-gradient(to top, #14141c 32%, rgba(20,20,28,0.68) 58%, transparent 88%)'
-              : 'linear-gradient(to top, #14141c 20%, rgba(20,20,28,0.45) 50%, transparent)',
-          }}
+          className="absolute bottom-0 left-0 right-0 h-[15%] pointer-events-none"
+          style={{ background: 'linear-gradient(to top, #14141c, transparent)' }}
         />
       </div>
 
