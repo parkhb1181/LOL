@@ -124,12 +124,21 @@ export default function PlayerCard({
           <img
             src={photoSrc(player)!}
             alt={player.nameEn}
-            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            className={[
+              'w-full h-full object-cover object-top transition-transform duration-300',
+              size === 'dex'
+                ? 'scale-[0.82] origin-top group-hover:scale-[0.86]'
+                : 'group-hover:scale-105',
+            ].join(' ')}
             onError={() => setImgError(true)}
           />
         ) : (
           <div
-            className="w-full h-full flex items-center justify-center text-white/60 font-black text-4xl transition-transform duration-300 group-hover:scale-105"
+            className={[
+              'w-full h-full flex items-center justify-center text-white/60 font-black text-4xl transition-transform duration-300',
+              size === 'dex' ? 'scale-[0.82] origin-top group-hover:scale-[0.86]' : 'group-hover:scale-105',
+            ].join(' ')}
             style={{ background: avatarBg(player.teamSlug) }}
           >
             {player.nameEn.charAt(0).toUpperCase()}
