@@ -62,33 +62,39 @@
   - 출력: `pipeline-cache/ovr-stats-early.json` 1012건 / `pipeline-cache/ovr-comparison-early.csv` 1165행
   - 데이터: Leaguepedia stats_agg (OE 2013~2015 미제공)
   - 지표: KDA+GS+KP 동적 가중치 — 2014 GS 전면 제외, n<10 ±3 클램프
-- [x] 2022~2023 포지션별 z-score 정규화·점수화 — `scripts/04c-oe-stats.ts` (커밋 c12f8e5)
-  - 출력: `pipeline-cache/oe-stats-2022-2023.json` 703건 / `pipeline-cache/oe-comparison-2022-2023.json` 365건
-  - 데이터: Leaguepedia ScoreboardPlayers GROUP BY (OE S3 403 — API 키 있으나 서명 없음)
-  - 지표: KDA 35% + GoldShare 25% + CS 20% + Damage 20%, 다지표 캡 ±8
+- [x] 2022~2023 포지션별 z-score 정규화·점수화 — `scripts/04c-oe-stats.ts`
+  - 지표: KDA 35% + GoldShare 25% + CS 20% + Damage 20%, **cap ±7** (1b40d33에서 ±8→±7 수정)
   - 매칭: 365/365 (100%), 미매칭 0
-- [x] **04-ratings.ts v1.1 통합 완료** (이번 세션)
-  - 2013~2015: ovr-stats-early.json statsBonus 적용 (bonusCap ±8)
-  - 2016~2018: KDA stats_agg ±3 (기존 유지)
-  - 2019~2021: pipeline-cache/oe/stats_{yr}.json composite bonus (다른 터미널 준비 완료)
-  - 2022~2023: oe-stats-2022-2023.json ovrAdjust 적용 (bonusCap ±8)
+- [x] **04-ratings.ts v1.1 통합 완료 + 2016~2018 OE 지표 완성**
+  - 2016~2018: OE 다지표 **CAP±7** + LP 폴백 ±3 (04e-ovr-final.ts → ovr-stats-v11-final.json 857건)
+  - 2019~2021: pipeline-cache/oe/stats_{yr}.json **cap ±7** (04b 재실행 완료)
+  - 2022~2023: oe-stats-2022-2023.json ovrAdjust **cap ±7** (04c-oe-stats 재실행 완료)
   - compressOvr 상한 98, calcOvr_ clamp 98 확인
-- [x] **OVR=99 정확히 4명 확정** (재빌드 검증 완료)
-  - 99: Faker 2013/2016, MaRin 2015, Canyon 2020
-  - Faker 2015 = 98, Chovy 2024 = 98 ✓
-  - players.json 재빌드 완료 (1709건, zod 통과)
-- [x] 98 라인 (17명): Faker 2015, DWG 2020/2021 6인, Keria 2022, Chovy 2024, Tian 2019, Kanavi/knight 2020/2023 LPL, YellOwStaR 2015, Wunder 2019, Yike 2023
+- [x] **터미널 간 지표 일관성 통일** (커밋 1b40d33)
+  - 전 터미널 3+지표 cap ±7 통일 (사용자 확정 규칙 2013~2025 전체 공통)
+  - 라인전: 2019~2021(04b) XP+CS 블렌드로 통일 (04d 2024~2025와 동일)
+  - 결측치: null+동적 재분배 (04b, 04e-final)
+  - 데이터 제약 차이 허용: 2013~2015(LP KDA+GS+KP), 2022~2023(LP CS per game), 2024~2025(Mode A/B 자동)
+- [x] **2019~2021 z=0 폴백 + 동적 cap 통일** (커밋 9a6c2a4)
+  - 04b-oe-stats.ts: 재분배→z=0 폴백, cap ±7/5/3 동적 (≥3개→7, 2개→5, 1개→3)
+  - 2019~2021 전원 4지표 100% 커버 → 전원 cap ±7 적용
+  - Canyon 2021=98, ShowMaker 2021=98 (구 ±6→±7로 정상화)
+- [x] **T1 2023 역전 해소 + OVR 99=4명 재확인** (커밋 e9a4bab)
+  - Faker 2023=97, Keria 2023=96, Oner 2023=95 (추가/수정)
+  - Kanavi|2023|LPL=96, knight(Zhuo Ding)|2023|LPL=96 (JDG 하향)
+  - OVR 99: Faker 2013/2016, MaRin 2015, Canyon 2020 ✓
+  - players.json 1709건 재빌드 완료
+- [x] 98 라인 (15명): Chovy 2024, Yike 2023, Keria 2022, BeryL/Canyon/ShowMaker 2021, Nuguri/ShowMaker 2020, Kanavi/knight 2020, Tian 2019, Wunder 2019, Rekkles 2018, Faker 2015, Wolf 2015
 
 ### 호빈 검토 필요 (v1.1 결과)
-1. **Apple|2014|LCS +7** (78→85): KDA=9.21, kda_z=4.38, n=15 KDA-only — 극단값 의심, 수동 캡 또는 제외 검토
-2. **Looper|2014|LCK +7** (89→96): Samsung White TOP, KDA-only (n=34). 정당하나 트로피 가중 OVR과 이중 반영 우려
-3. **YellOwStaR|2015|LEC +6** → 98로 클램프됨 (compressOvr 상한 98 작동)
-4. **Clearlove|2015|LPL +7** (88→95): kda_z=3.58 극단, EDG 2015 LPL 지배 — 수용 여부
-5. **2014 GS 전면 제외**: LCK AvgTG 공란으로 전리그 버킷 비율 30% 미달 → KDA+KP만 사용. 수용 여부 확인 필요
-6. **[2022-2023] Yike 2023 → 98** (compressOvr 상한으로 클램프, 99 방지됨): 루키이지만 98 수용 여부
-7. **[2022-2023] Oner 2022 → 97**: OVR_OVERRIDE `Oner|2023|LCK=94`보다 2022가 높은 역전 — 검토
-8. **[2022-2023] CS per game = 라인전 대체 지표**: golddiffat15 없어서 대체 사용 — 적절한지 확인 필요
-9. **Keria 2022 LCK = 98**: v1.1 보너스 적용 후 98 진입 — 수용 여부 (2023 OVERRIDE=94보다 높음)
+1. **T1 2023 잔여 역전**: Oner(JGL 95) < Kanavi(96), Gumayusi(ADC 95) < Ruler(96) 1점 차 — 같은 포지션 비교. Oner를 96으로 올리거나 Ruler를 95로 낮추는 결정 필요. 또는 현재 수용
+2. **Wolf 2015 LCK SUP = 98**: SKT T1 2015 Worlds 우승 + ALLPRO? — 수용 여부
+3. **Rekkles 2018 LEC ADC = 98**: Fnatic (non-Worlds winner) — 수용 여부. OVR_OVERRIDE 추가로 96~97 하향 고려
+4. **Yike 2023 LEC JGL = 98**: G2 LEC 3-split + FMVP + ALLPRO1ST 합산 — 수용 여부
+5. **Oner 2022 LCK JGL = 97**: OVR_OVERRIDE Oner 2023=95보다 높은 역전 — 2022에 OVERRIDE 추가 필요할 수 있음
+6. **Apple|2014|LCS +7** (78→85): KDA=9.21, kda_z=4.38 극단값 — 수동 캡 또는 제외 검토
+7. **Looper|2014|LCK** → Keria 2022 역전 확인 필요
+8. **2016 Smeb/Bang 하향**: 이전 98→현재 95/94 (04c 방식 변경 효과) — 수용 여부
 
 ## 다음 작업
 
