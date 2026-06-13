@@ -9,7 +9,7 @@
 //
 // 정규화: 포지션 × 연도 내 z-score (필수 — 포지션 구조 차이 보정)
 // 최종 composite z-score: 위 4개 포지션별 z-score의 가중 합산
-// OVR 기여폭: ±6점 (z=±1.5 → ±6, scale=4.0)
+// OVR 기여폭: 지표수 기반 ±7/±5/±3 (다지표 max ±7, scale=4.0)
 
 import fs from 'fs'
 import path from 'path'
@@ -261,9 +261,9 @@ function normalize(rows: AggregatedRow[]): NormalizedRow[] {
     // z=0 폴백으로 고정 가중치 composite (KDA35+GD1525+Lane20+DPM20)
     const compositeZ = W_KDA * zKDA + W_GOLD * (zGolddiffRaw ?? 0) + W_LANE * (zLaneRaw ?? 0) + W_DPM * (zDpmRaw ?? 0)
 
-    // 지표 수 기반 동적 cap: ≥2개(다지표) → ±8 / 1개(KDA 단일) → ±3 (전 연도 통일 규칙)
+    // 지표 수 기반 동적 cap: ≥3개 → ±7 / 2개 → ±5 / 1개(KDA 단일) → ±3 (전 연도 통일 규칙)
     const nMetrics = 1 + (zGolddiffRaw !== null ? 1 : 0) + (zLaneRaw !== null ? 1 : 0) + (zDpmRaw !== null ? 1 : 0)
-    const cap = nMetrics >= 2 ? 8 : 3
+    const cap = nMetrics >= 3 ? 7 : nMetrics === 2 ? 5 : 3
     const ovrBonus = Math.max(-cap, Math.min(cap, Math.round(compositeZ * 4.0)))
 
     return {

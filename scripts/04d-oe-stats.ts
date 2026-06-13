@@ -15,9 +15,9 @@ const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 const TARGET_YEARS = [2024, 2025]
 const TARGET_LEAGUES = ['LCK', 'LPL', 'LEC', 'LCS']
 
-// OVR 기여폭 — 다지표 ±8 (전 연도 통일)
-const OVR_CAP = 8
-const Z_SCALE = 3.0  // z=±1.5 → ±4.5점, clamp ±8
+// OVR 기여폭 — 다지표 ±7 (전 연도 통일)
+const OVR_CAP = 7
+const Z_SCALE = 3.0  // z=±1.5 → ±4.5점, clamp ±7
 
 // IngameRole 정규화
 const ROLE_NORM: Record<string, string> = {

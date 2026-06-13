@@ -28,10 +28,10 @@ import type { RatedEntry } from './04-ratings'
 
 const TARGET_YEARS = [2013, 2014, 2015]
 
-// OVR 기여 스케일 — 다지표 ±8 / KDA단일 ±3 (전 연도 통일 규칙)
-const SCALE = 4.0         // z=2 → 8점
-const MAX_BONUS = 8
-const MIN_BONUS = -8
+// OVR 기여 스케일 — 다지표 ±7 / KDA단일 ±3 (전 연도 통일 규칙)
+const SCALE = 4.0         // z=2 → 8점 (scale 유지, effectiveCap으로 clamp)
+const MAX_BONUS = 7
+const MIN_BONUS = -7
 const MIN_N = 3           // 3경기 미만 제외
 
 // ─── 통계 헬퍼 ────────────────────────────────────────────────────────────────
@@ -259,10 +259,10 @@ async function main() {
 
     const composite_z = kda_z * wKda + gs_z * wGs + kp_z * wKp
 
-    // 지표 수 기반 effectiveCap — 다지표(2+) ±8 / KDA단일 ±3 (전 연도 통일 규칙)
+    // 지표 수 기반 effectiveCap — 다지표(2+) ±7 / KDA단일 ±3 (전 연도 통일 규칙)
     // n<10이면 추가 -2 (표본 소규모 과신 방지)
     const nMetrics = 1 + (playerHasGs ? 1 : 0) + (playerHasKp ? 1 : 0)
-    const baseCap = nMetrics >= 2 ? 8 : 3
+    const baseCap = nMetrics >= 2 ? 7 : 3
     const effectiveCap = m.n < 10 ? Math.max(1, baseCap - 2) : baseCap
     const statsBonus = Math.max(-effectiveCap, Math.min(effectiveCap, Math.round(composite_z * SCALE)))
 
