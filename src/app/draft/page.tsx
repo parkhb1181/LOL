@@ -11,7 +11,7 @@ import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
-import { highlightRoundLabel, highlightSummary, pickHighlightSteps, type HighlightStep } from '@/lib/simHighlight'
+import { highlightRoundLabel, pickHighlightSteps, type HighlightStep } from '@/lib/simHighlight'
 
 function sectionShort(h: HighlightStep): string {
   if (h.section === 'Spring Split') return 'Spring'
@@ -374,70 +374,82 @@ function ResultScreen({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const highlights  = pickHighlightSteps(simResult.steps)
-  const gradeColor  = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
+  const highlights = pickHighlightSteps(simResult.steps)
+  const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
 
-  function rowTone(h: HighlightStep): string {
-    const s = h.step
-    if (s.stage.endsWith('_missed') || s.stage === 'msi_out' || s.stage === 'worlds_swiss_out') return 'text-outline/40'
-    const win = s.series?.[0]?.win ?? s.stage.endsWith('win')
-    return win ? 'text-green-300/90' : 'text-red-300/90'
+  // DNQ=dim / 우승=gold / 그 외=일반 white (Stitch 컬러 체계)
+  function sectionTone(h: HighlightStep): string {
+    const stage = h.step.stage
+    const isDNQ =
+      stage === 'Spring_missed' || stage === 'Summer_missed' ||
+      (stage === 'msi_out' && (h.step.label.includes('DNQ') || h.step.label.includes('미진출'))) ||
+      (stage === 'worlds_swiss_out' && h.step.label.includes('DNQ'))
+    if (isDNQ) return 'text-outline/50'
+    const isWin =
+      stage === 'msi_win' || stage === 'worlds_win' ||
+      ((stage === 'Spring_final' || stage === 'Summer_final' || stage === 'worlds_final' || stage === 'msi_r3') &&
+        (h.step.series?.[0]?.win ?? false))
+    if (isWin) return 'text-secondary'
+    return 'text-on-surface'
+  }
+
+  const SECTION_SHORT: Record<string, string> = {
+    'Spring Split': 'Spring', 'MSI': 'MSI', 'Summer Split': 'Summer', 'Worlds': 'Worlds',
   }
 
   return (
-    <div className="flex flex-col gap-8 items-center">
-      {simResult.trophies.length > 0 && (
-        <div className="flex gap-2 flex-wrap justify-center">
-          {simResult.trophies.map(tr => (
-            <span key={tr} className="font-label-caps text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border border-secondary/30 text-secondary/60">
-              {tr === 'SPLIT1' ? 'Spring' : tr === 'MSI' ? 'MSI' : tr === 'SPLIT2' ? 'Summer' : 'Worlds'}
-            </span>
-          ))}
-        </div>
-      )}
+    <div className="flex flex-col items-center gap-6 py-4">
 
+      {/* Season Result 헤더 */}
       <div className="text-center">
-        <p className="font-label-caps text-label-caps text-outline/40 uppercase mb-3">Season Result</p>
-        <h2 className={`font-heading-lg text-[48px] md:text-[64px] leading-none ${gradeColor}`}>
+        <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
+          Season Result
+        </p>
+        <h2 className={`font-ovr-display text-[48px] md:text-[72px] leading-none tracking-tighter uppercase drop-shadow-lg ${gradeColor}`}>
           {simResult.grade}
         </h2>
-        <p className="text-outline text-sm mt-3 font-label-caps">
-          TEAM OVR {simResult.teamOvr}
+        <p className="font-heading-md text-heading-md text-on-surface-variant uppercase tracking-wide mt-1">
+          Team OVR {simResult.teamOvr}
         </p>
       </div>
 
-      <div className="w-full max-w-md flex flex-col gap-2.5">
-        {highlights.map((h, i) => (
-          <div key={i} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-4 items-baseline">
-            <span className="font-label-caps text-[10px] text-on-surface/50">{sectionShort(h)}</span>
-            <span className={`text-xs tabular-nums whitespace-nowrap overflow-hidden text-ellipsis ${rowTone(h)}`}>
-              {highlightSummary(h)}
+      {/* 4-column 시즌 결과 그리드 */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-3">
+        {highlights.map(h => (
+          <div key={h.section} className="flex flex-col gap-0.5">
+            <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
+              {SECTION_SHORT[h.section] ?? h.section}
+            </span>
+            <span className={`font-body-main text-sm ${sectionTone(h)}`}>
+              {highlightRoundLabel(h)}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col items-center gap-2 w-full">
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-2 justify-items-center w-full overflow-hidden">
-          {ROLES.map((_, i) => picks[i] && (
-            <PlayerCard key={i} player={picks[i]!.player} size="result" />
-          ))}
-        </div>
-        <p className="font-label-caps text-[10px] text-outline/40 select-none mt-1">
-          grandslamlol.vercel.app
-        </p>
+      {/* 선수 카드 가로 스크롤 */}
+      <div className="w-full flex overflow-x-auto gap-3 md:gap-4 pb-3 md:justify-center px-4 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {ROLES.map((_, i) => picks[i] && (
+          <div key={i} className="flex-shrink-0">
+            <PlayerCard player={picks[i]!.player} size="result" />
+          </div>
+        ))}
       </div>
+      <p className="font-label-caps text-[10px] text-outline/40 select-none -mt-3">
+        grandslamlol.vercel.app
+      </p>
 
-      <div className="flex gap-3 flex-wrap justify-center">
+      {/* 액션 버튼 */}
+      <div className="flex flex-col md:flex-row gap-3 items-center w-full max-w-sm justify-center">
         <button
           onClick={handleCopy}
-          className="font-label-caps text-label-caps px-6 py-2.5 rounded bg-surface-bright border border-outline-variant hover:border-secondary/50 text-on-surface transition-colors"
+          className="w-full md:w-auto px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-variant text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
         >
-          {copied ? 'Copied!' : 'Copy Link'}
+          {copied ? '✓ Copied!' : 'Copy Link'}
         </button>
         <button
           onClick={onReset}
-          className="font-label-caps text-label-caps px-6 py-2.5 rounded bg-secondary text-surface-container-lowest hover:opacity-90 transition-opacity font-bold"
+          className="w-full md:w-auto px-8 py-3 rounded bg-secondary hover:opacity-90 text-surface-container-lowest font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
         >
           Play Again
         </button>
@@ -536,18 +548,14 @@ export default function DraftPage() {
           GRANDSLAM
         </Link>
 
-        {/* 중앙 네비 (데스크톱 — 시각적 장식, P1/P2 미구현) */}
+        {/* 중앙 네비 (데스크톱) */}
         <nav className="hidden md:flex gap-8 absolute left-1/2 -translate-x-1/2">
-          {['COLLECTION', 'MARKET', 'HALL OF FAME'].map(item => (
-            <a
-              key={item}
-              href="#"
-              onClick={e => e.preventDefault()}
-              className="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-200"
-            >
-              {item}
-            </a>
-          ))}
+          <Link href="/dex" className="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-200">
+            COLLECTION
+          </Link>
+          <Link href="/draft" className="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-200">
+            PLAY GAME
+          </Link>
         </nav>
 
         {/* 우측: SPIN/PICK 외 화면에서 슬롯 미니 표시 */}
@@ -572,7 +580,7 @@ export default function DraftPage() {
       {/* ── Main content ── */}
       <main className={`mx-auto px-4 py-8 w-full relative z-10 md:flex-1 md:flex md:flex-col md:justify-center ${
         state.phase === 'RESULT'
-          ? 'max-w-3xl'
+          ? 'max-w-5xl'
           : isDraftScreen
           ? 'max-w-6xl md:px-10 md:py-4 md:min-h-0'
           : 'max-w-3xl'
