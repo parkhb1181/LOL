@@ -76,21 +76,7 @@ export default function SiteHeader({ activePage, fixed = false, fixedMobile, rig
         <Link href="/" className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface">
           GRANDSLAM
         </Link>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/dex"
-            className={`font-label-caps text-[11px] uppercase tracking-wider transition-colors ${activePage === 'collection' ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary'}`}
-          >
-            {t.nav.collection}
-          </Link>
-          <Link
-            href="/draft"
-            className={`font-label-caps text-[11px] uppercase tracking-wider transition-colors ${activePage === 'draft' ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary'}`}
-          >
-            {t.nav.playGame}
-          </Link>
-          <LangToggle />
-        </div>
+        <LangToggle />
       </header>
     </>
   )

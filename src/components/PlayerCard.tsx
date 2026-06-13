@@ -94,9 +94,9 @@ export default function PlayerCard({
   const isGold   = isWorlds
 
   const borderCls = isWorlds
-    ? 'border-2 border-secondary/50'
+    ? 'border border-secondary/50'
     : hasMsi
-    ? 'border-2 border-amber-400/35'
+    ? 'border border-amber-400/35'
     : 'border border-outline-variant/50'
 
   const badge    = LEAGUE_BADGE[player.league]
@@ -177,7 +177,8 @@ export default function PlayerCard({
       )}
 
       {/* 6. 하단 좌정렬: 역할 + 선수 이름 + 팀·연도 */}
-      <div className="absolute bottom-2.5 left-2.5 z-20 w-full pr-3">
+      {/* textShadow 상속으로 하위 텍스트 전체 적용 — 흰 유니폼 위 가독성 보장 */}
+      <div className="absolute bottom-2.5 left-2.5 z-20 w-full pr-3" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)' }}>
         <div className="font-label-caps text-[9px] text-outline/70 mb-[2px] uppercase">{player.role}</div>
         <div className={[
           'font-heading-md leading-none truncate uppercase text-on-surface',
