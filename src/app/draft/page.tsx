@@ -94,7 +94,8 @@ function MobileSlotRow({ picks, isPickPhase }: {
             </div>
           )
         }
-        return <PlayerCard key={role} player={player} size="slot" />
+        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움
+        return <PlayerCard key={role} player={player} size="mob-result" />
       })}
     </div>
   )
@@ -190,9 +191,9 @@ function PickRosterGrid({
     }, 550)
   }
 
-  // 모바일: grid-cols-3 (Stitch) / 데스크톱: flex nowrap
+  // 모바일: flex-wrap justify-center (마지막 행 중앙 정렬) / 데스크톱: flex nowrap
   const rowCls = layout === 'mobile'
-    ? 'grid grid-cols-3 gap-2'
+    ? 'flex flex-wrap justify-center gap-2'
     : 'flex flex-nowrap gap-4 justify-center w-full'
 
   return (
@@ -208,11 +209,15 @@ function PickRosterGrid({
           const shuffleCls = shufflePhase === 'out' ? 'is-shuffle-out'
                            : shufflePhase === 'in'  ? 'is-shuffle-in'
                            : ''
+          // 모바일: w-[30%] 고정 → 3장/행 + 나머지 행 justify-center 자동 중앙
+          const wrapCls = layout === 'mobile'
+            ? ['w-[30%] shrink-0', shuffleCls].filter(Boolean).join(' ')
+            : shuffleCls
           return (
             <div
               key={p.id}
               style={{ '--card-idx': idx } as React.CSSProperties}
-              className={shuffleCls}
+              className={wrapCls}
             >
               <PlayerCard
                 player={p}

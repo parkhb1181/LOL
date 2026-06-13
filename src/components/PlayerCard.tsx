@@ -67,7 +67,7 @@ const SIZE_OVR: Record<CardSize, string> = {
   pick:         'text-[38px] md:text-[46px]',
   slot:         'text-[28px] md:text-[36px]',
   result:       'text-[34px] md:text-[42px]',
-  dex:          'text-[32px] md:text-[44px]',
+  dex:          'text-[24px] md:text-[44px]',
   'mob-result': 'text-[22px]',
 }
 
