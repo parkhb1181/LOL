@@ -71,13 +71,24 @@ function DraftSlotRow({ picks }: { picks: (ReturnType<typeof useDraftMachine>['s
 }
 
 // 모바일 5슬롯 그리드 (grid-cols-5)
-function MobileSlotRow({ picks }: { picks: (ReturnType<typeof useDraftMachine>['state']['picks'][0])[] }) {
+// isPickPhase: true → 비어있는 슬롯에 골드 테두리+글로우 (Stitch 디자인)
+function MobileSlotRow({ picks, isPickPhase }: {
+  picks: (ReturnType<typeof useDraftMachine>['state']['picks'][0])[]
+  isPickPhase: boolean
+}) {
   return (
     <div className="grid grid-cols-5 gap-1.5">
       {ROLES.map((role, i) => {
         const player = picks[i]?.player ?? null
         if (!player) {
-          return (
+          return isPickPhase ? (
+            // PICK 중: 골드 테두리 + 은은한 글로우
+            <div key={role} className="aspect-[5/7] rounded border-2 border-secondary/60 bg-surface-container-lowest flex flex-col items-center justify-center gap-0.5 shadow-[0_0_8px_rgba(233,195,73,0.2)]">
+              <span className="text-secondary text-sm font-bold leading-none">+</span>
+              <span className="font-label-caps text-[8px] text-secondary font-bold">{role}</span>
+            </div>
+          ) : (
+            // SPIN/기타: 점선 빈 슬롯
             <div key={role} className="aspect-[5/7] rounded border-2 border-dashed border-outline-variant/30 flex items-center justify-center bg-[#14141c]/50">
               <span className="text-[9px] text-outline/50 font-semibold">{role}</span>
             </div>
@@ -99,15 +110,38 @@ const RerollIcon = () => (
 )
 
 // ── 픽 화면 버튼 ───────────────────────────────────────────────────────────────
+// layout="mobile": 전체 너비 버튼 스타일 (Stitch), layout="desktop": 기존 컴팩트 스타일
 function PickButtons({
   onPlayAgain,
   onReroll,
   rerollLeft,
+  layout = 'desktop',
 }: {
   onPlayAgain: () => void
   onReroll: () => void
   rerollLeft: number
+  layout?: 'mobile' | 'desktop'
 }) {
+  if (layout === 'mobile') {
+    return (
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={onReroll}
+          disabled={rerollLeft <= 0}
+          className="group w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center gap-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <RerollIcon />
+          Reroll ({rerollLeft} left)
+        </button>
+        <button
+          onClick={onPlayAgain}
+          className="font-label-caps text-[11px] text-outline hover:text-secondary transition-colors py-2 text-center"
+        >
+          Play Again
+        </button>
+      </div>
+    )
+  }
   return (
     <div className="flex flex-col items-center gap-5 mt-2">
       <button
@@ -156,8 +190,9 @@ function PickRosterGrid({
     }, 550)
   }
 
+  // 모바일: grid-cols-3 (Stitch) / 데스크톱: flex nowrap
   const rowCls = layout === 'mobile'
-    ? 'flex flex-wrap gap-3 justify-center'
+    ? 'grid grid-cols-3 gap-2'
     : 'flex flex-nowrap gap-4 justify-center w-full'
 
   return (
@@ -181,7 +216,7 @@ function PickRosterGrid({
             >
               <PlayerCard
                 player={p}
-                size="pick"
+                size={layout === 'mobile' ? 'dex' : 'pick'}
                 disabled={isDisabled}
                 isFlying={flyingId === p.id}
                 onClick={() => !isDisabled && handlePickWithFly(p)}
@@ -209,7 +244,7 @@ function MobilePickScreen({
   shufflePhase: 'out' | 'in' | null
 }) {
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="flex flex-col gap-3 w-full">
       <PickRosterGrid
         roster={roster}
         pickedPlayerIds={pickedPlayerIds}
@@ -218,7 +253,7 @@ function MobilePickScreen({
         shufflePhase={shufflePhase}
         layout="mobile"
       />
-      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} />
+      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} layout="mobile" />
     </div>
   )
 }
@@ -699,9 +734,11 @@ export default function DraftPage() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       {/* ── 헤더 (SiteHeader 공유) ── */}
+      {/* fixedMobile: 드래프트 페이지는 모바일 헤더 항상 fixed (BottomNav와 쌍) */}
       <SiteHeader
         activePage="draft"
         fixed={false}
+        fixedMobile={true}
         rightSlot={
           state.phase !== 'IDLE' && !isDraftScreen ? (
             <div className="flex gap-2">
