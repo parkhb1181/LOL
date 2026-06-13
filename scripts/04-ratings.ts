@@ -69,7 +69,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Faker|2025|LCK': 95,   // T1 2025 Worlds 우승 + 3연속 MVP — 자동 92(국내 준우승) 상향
   'ShowMaker|2020|LCK': 98,
   'Zeus|2023|LCK': 97,
-  'Oner|2023|LCK': 95,   // T1 2023 (94→95: T1우승팀 상향)
+  'Oner|2023|LCK': 97,   // T1 2023 Worlds 우승 — 2022(97)보다 낮은 역전 해소
   'Keria|2023|LCK': 96,  // T1 2023 (94→96: T1우승팀 상향)
   'Chovy|2024|LCK': 98,
   'Faker|2024|LCK': 95,     // Worlds MVP — 준우승팀 BLG 선수보다 낮은 구조 보정
@@ -87,7 +87,12 @@ const OVR_OVERRIDES: Record<string, number> = {
   'ON|2024|LPL': 93,
   'Elk|2024|LPL': 96,
   'Bin (Chen Ze-Bin)|2024|LPL': 96,     // BLG 준우승 — stats-driven 98 하향
+  'TheShy|2023|LPL': 91,               // Weibo 준우승 에이스 TOP, 역대급 탑 — 81 과소
+  'SofM|2020|LPL': 90,                 // Suning 준우승 캐리 JGL, 서구권 정글 신화 시즌 — 83 과소
+  // LCK
+  'Smeb|2015|LCK': 91,                 // KOO 준우승 에이스 TOP, 당해 세계 최고 탑급 — 85 과소
   // LEC
+  'Rekkles|2018|LEC': 95,             // Fnatic 준우승 에이스 ADC, 팀메이트 Caps/Broxah 96인데 89 과소
   'Jankos|2019|LEC': 97,        // G2 2019 MSI+Worlds결승 시즌 JGL
   'Perkz|2019|LEC': 96,         // G2 2019 ADC
   'Caps|2019|LEC': 97,          // G2 2019 MID
