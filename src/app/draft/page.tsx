@@ -133,14 +133,14 @@ function PickRosterGrid({
   pickedPlayerIds,
   emptyRoles,
   onPick,
-  isShuffling,
+  shufflePhase,
   layout,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
   emptyRoles: string[]
   onPick: (p: PlayerSeason) => void
-  isShuffling: boolean
+  shufflePhase: 'out' | 'in' | null
   layout: 'mobile' | 'desktop'
 }) {
   // flyingId: 클릭된 카드가 날아가는 동안 추적 (600ms 후 실제 pick 실행)
@@ -167,18 +167,22 @@ function PickRosterGrid({
           const isFilled  = !emptyRoles.includes(p.role)
           const isPicked  = pickedPlayerIds.has(p.playerId)
           const isDisabled = isFilled || isPicked
+          // 리롤 시차: --card-idx → animation-delay calc() (is-shuffle-out/in)
+          // 비활성 카드도 동일하게 애니메이션 (shufflePhase 무조건 적용)
+          const shuffleCls = shufflePhase === 'out' ? 'is-shuffle-out'
+                           : shufflePhase === 'in'  ? 'is-shuffle-in'
+                           : ''
           return (
             <div
               key={p.id}
-              // 리롤 시차: CSS --card-idx 변수로 계산 (rerollCycle animation-delay 에서 사용)
               style={{ '--card-idx': idx } as React.CSSProperties}
+              className={shuffleCls}
             >
               <PlayerCard
                 player={p}
                 size="pick"
                 disabled={isDisabled}
                 isFlying={flyingId === p.id}
-                isShuffling={isShuffling && !isDisabled}
                 onClick={() => !isDisabled && handlePickWithFly(p)}
               />
             </div>
@@ -191,7 +195,7 @@ function PickRosterGrid({
 // ── PICK 화면 (모바일) ─────────────────────────────────────────────────────────
 function MobilePickScreen({
   roster, pickedPlayerIds, emptyRoles, onPick,
-  onReroll, onPlayAgain, rerollLeft, spunTeam, isShuffling,
+  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
@@ -201,7 +205,7 @@ function MobilePickScreen({
   onPlayAgain: () => void
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
-  isShuffling: boolean
+  shufflePhase: 'out' | 'in' | null
 }) {
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -210,7 +214,7 @@ function MobilePickScreen({
         pickedPlayerIds={pickedPlayerIds}
         emptyRoles={emptyRoles}
         onPick={onPick}
-        isShuffling={isShuffling}
+        shufflePhase={shufflePhase}
         layout="mobile"
       />
       <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} />
@@ -221,7 +225,7 @@ function MobilePickScreen({
 // ── PICK 화면 (데스크톱) ───────────────────────────────────────────────────────
 function DesktopPickScreen({
   roster, pickedPlayerIds, emptyRoles, onPick,
-  onReroll, onPlayAgain, rerollLeft, spunTeam, isShuffling,
+  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
@@ -231,7 +235,7 @@ function DesktopPickScreen({
   onPlayAgain: () => void
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
-  isShuffling: boolean
+  shufflePhase: 'out' | 'in' | null
 }) {
   return (
     <div className="flex flex-col items-center gap-5 w-full">
@@ -240,7 +244,7 @@ function DesktopPickScreen({
         pickedPlayerIds={pickedPlayerIds}
         emptyRoles={emptyRoles}
         onPick={onPick}
-        isShuffling={isShuffling}
+        shufflePhase={shufflePhase}
         layout="desktop"
       />
       <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} />
@@ -333,17 +337,31 @@ function RevealScreen({
   )
 }
 
-// Grade accent colors
+// ── 결과 화면 버튼 아이콘 ─────────────────────────────────────────────────────
+const LinkIcon = () => (
+  <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+  </svg>
+)
+const ReplayIcon = () => (
+  <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 4v6h6"/>
+    <path d="M3.51 15a9 9 0 1 0 .49-4.17"/>
+  </svg>
+)
+
+// Grade accent colors — tailwind.config grade-* 토큰 사용
 const GRADE_COLOR: Record<string, string> = {
-  'GRAND SLAM':   'text-secondary',
-  'LEGENDARY':    'text-[#c080ff]',
-  'ELITE':        'text-[#60c0ff]',
-  'CONTENDER':    'text-[#40d4a0]',
+  'GRAND SLAM':   'text-grade-grandslam',
+  'LEGENDARY':    'text-grade-legendary',
+  'ELITE':        'text-grade-elite',
+  'CONTENDER':    'text-grade-contender',
   'PLAYOFF TEAM': 'text-on-surface',
   'REBUILD':      'text-outline',
 }
 
-// ── RESULT screen ──────────────────────────────────────────────────────────────
+// ── RESULT screen (Stitch v1 디자인) ──────────────────────────────────────────
 function ResultScreen({
   simResult, picks, seed, onReset,
 }: {
@@ -369,7 +387,7 @@ function ResultScreen({
   const highlights = pickHighlightSteps(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
 
-  // DNQ=dim / 우승=gold / 그 외=일반 white (Stitch 컬러 체계)
+  // DNQ=dim / 우승=gold / 그 외=일반 white
   function sectionTone(h: HighlightStep): string {
     const stage = h.step.stage
     const isDNQ =
@@ -390,10 +408,10 @@ function ResultScreen({
   }
 
   return (
-    <div className="flex flex-col items-center gap-6 py-4">
+    <div className="flex flex-col items-center w-full py-6">
 
-      {/* Season Result 헤더 */}
-      <div className="text-center">
+      {/* ── 등급 헤더 ── */}
+      <div className="text-center mb-6">
         <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
           Season Result
         </p>
@@ -405,8 +423,8 @@ function ResultScreen({
         </p>
       </div>
 
-      {/* 4-column 시즌 결과 그리드 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-3">
+      {/* ── 시즌 결과 4칸 그리드 ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-2 mb-8 text-sm">
         {highlights.map(h => (
           <div key={h.section} className="flex flex-col gap-0.5">
             <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
@@ -419,31 +437,35 @@ function ResultScreen({
         ))}
       </div>
 
-      {/* 선수 카드 가로 스크롤 */}
-      <div className="w-full flex overflow-x-auto gap-3 md:gap-4 pb-3 md:justify-center px-4 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* ── 선수 카드 가로 스크롤 (snap) ── */}
+      <div className="w-full max-w-[1100px] flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory px-4 md:px-0 pb-4 md:justify-center gap-3 md:gap-4">
         {ROLES.map((_, i) => picks[i] && (
-          <div key={i} className="flex-shrink-0">
+          <div key={i} className="flex-shrink-0 snap-center">
             <PlayerCard player={picks[i]!.player} size="result" />
           </div>
         ))}
       </div>
-      <p className="font-label-caps text-[10px] text-outline/40 select-none -mt-3">
+
+      {/* URL 워터마크 — 공유 캡처용 */}
+      <p className="font-label-caps text-[10px] text-outline/40 select-none mt-1 mb-6">
         grandslamlol.vercel.app
       </p>
 
-      {/* 액션 버튼 */}
+      {/* ── 액션 버튼 ── */}
       <div className="flex flex-col md:flex-row gap-3 items-center w-full max-w-sm justify-center">
         <button
           onClick={handleCopy}
-          className="w-full md:w-auto px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-variant text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
+          className="w-full md:w-auto px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
         >
-          {copied ? '✓ Copied!' : 'Copy Link'}
+          <LinkIcon />
+          {copied ? '✓ COPIED!' : 'COPY LINK'}
         </button>
         <button
           onClick={onReset}
-          className="w-full md:w-auto px-8 py-3 rounded bg-secondary hover:opacity-90 text-surface-container-lowest font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
+          className="w-full md:w-auto px-8 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
         >
-          Play Again
+          <ReplayIcon />
+          PLAY AGAIN
         </button>
       </div>
     </div>
@@ -456,19 +478,25 @@ export default function DraftPage() {
   const machine = useDraftMachine(data)
   const { state } = machine
 
-  // shuffle 상태 — Reroll 클릭 시 1.2s 동안 카드 흔들기
-  const [isShuffling, setIsShuffling] = useState(false)
+  // 리롤 2단계 애니메이션 상태 — out: 기존 카드 페이드아웃, in: 새 카드 페이드인
+  const [shufflePhase, setShufflePhase] = useState<'out' | 'in' | null>(null)
 
   const handlePlayAgain = () => {
-    const hasPicks = state.picks.some(Boolean)
-    if (hasPicks && !window.confirm('Start over?')) return
     machine.reset()
   }
 
   function handleReroll() {
-    setIsShuffling(true)
-    machine.fullReroll()
-    setTimeout(() => setIsShuffling(false), 1300)
+    if (shufflePhase !== null) return  // 이미 애니메이션 중이면 무시
+    // out 완료 시점: 마지막 카드(idx=9) delay + 250ms 애니메이션 = 9*30+250+20 = 540ms
+    const OUT_MS = 540
+    // in 완료 시점: 동일 계산 + 여유 = 550ms
+    const IN_MS  = 550
+    setShufflePhase('out')
+    setTimeout(() => {
+      machine.fullReroll()
+      setShufflePhase('in')
+      setTimeout(() => setShufflePhase(null), IN_MS)
+    }, OUT_MS)
   }
 
   // StrictMode fires effects twice — refs guard against double invocation
@@ -526,7 +554,7 @@ export default function DraftPage() {
   return (
     <div
       className={`min-h-[100dvh] text-on-surface md:flex md:flex-col ${
-        isDraftScreen ? 'md:fixed md:inset-0 md:z-10 md:min-h-0 md:overflow-hidden' : ''
+        isDraftScreen ? 'md:h-screen md:min-h-0 md:overflow-hidden' : ''
       }`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
@@ -592,7 +620,7 @@ export default function DraftPage() {
                   onPlayAgain={handlePlayAgain}
                   rerollLeft={state.rerollLeft}
                   spunTeam={state.spunTeam}
-                  isShuffling={isShuffling}
+                  shufflePhase={shufflePhase}
                 />
               )}
             </div>
@@ -620,7 +648,7 @@ export default function DraftPage() {
                   onPlayAgain={handlePlayAgain}
                   rerollLeft={state.rerollLeft}
                   spunTeam={state.spunTeam}
-                  isShuffling={isShuffling}
+                  shufflePhase={shufflePhase}
                 />
               )}
             </div>

@@ -96,17 +96,23 @@ body {
   animation: borderPulse 2.5s ease-in-out infinite;
 }
 
-/* ── Reroll: 위로 페이드아웃 → 아래서 페이드인 (카드별 60ms 시차) ─────────── */
-/* --card-idx CSS 변수로 시차 제어 (PickRosterGrid에서 inline style로 주입) */
-@keyframes rerollCycle {
-  0%   { opacity: 1; transform: translateY(0);     }
-  42%  { opacity: 0; transform: translateY(-15px); }
-  43%  { opacity: 0; transform: translateY(15px);  }
-  100% { opacity: 1; transform: translateY(0);     }
+/* ── Reroll 2단계: 나가는 카드(out) → 들어오는 카드(in), 카드별 30ms 시차 ─── */
+/* --card-idx CSS 변수로 시차 제어 (PickRosterGrid wrapper div에서 주입) */
+@keyframes shuffleOut {
+  from { opacity: 1; transform: translateY(0);    }
+  to   { opacity: 0; transform: translateY(-16px); }
 }
-.is-shuffling {
-  animation: rerollCycle 0.75s ease-in-out forwards;
-  animation-delay: calc(var(--card-idx, 0) * 60ms);
+@keyframes shuffleIn {
+  from { opacity: 0; transform: translateY(16px);  }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.is-shuffle-out {
+  animation: shuffleOut 250ms ease-in both;
+  animation-delay: calc(var(--card-idx, 0) * 30ms);
+}
+.is-shuffle-in {
+  animation: shuffleIn 250ms ease-out both;
+  animation-delay: calc(var(--card-idx, 0) * 30ms);
 }
 
 /* ── Card click → slot fly ───────────────────────────────────────────────── */

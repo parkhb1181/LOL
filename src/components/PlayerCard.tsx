@@ -16,7 +16,6 @@ type Props = {
   disabled?: boolean
   onClick?: () => void
   isFlying?: boolean
-  isShuffling?: boolean
 }
 
 function photoSrc(player: PlayerSeason): string | null {
@@ -84,7 +83,6 @@ export default function PlayerCard({
   disabled = false,
   onClick,
   isFlying = false,
-  isShuffling = false,
 }: Props) {
   const [imgError, setImgError] = useState(false)
 
@@ -113,9 +111,8 @@ export default function PlayerCard({
         isWorlds ? 'card-selected' : '',
         ovrGlowCls(player.ovr, isGold),
         'card-lift group select-none',
-        disabled    ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
-        isFlying    ? 'is-flying'    : '',
-        isShuffling ? 'is-shuffling' : '',
+        disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
+        isFlying ? 'is-flying' : '',
       ].filter(Boolean).join(' ')}
       aria-label={`${player.nameEn} ${player.year} ${player.team}`}
     >
