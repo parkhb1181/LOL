@@ -31,7 +31,7 @@ Humanoid,2021,LEC,EDITORIAL,1,NONE
 Armut,2021,LEC,EDITORIAL,-1,NONE
 
 # ═══════════════════════════════════════════════════
-# WORLDS_MVP (2014~2024) — 2013 제도 미시상
+# WORLDS_MVP (2014~2025) — 2013 제도 미시상
 # ═══════════════════════════════════════════════════
 Mata,2014,WORLDS,WORLDS_MVP,,NONE
 MaRin,2015,WORLDS,WORLDS_MVP,,NONE
@@ -44,6 +44,7 @@ Scout,2021,WORLDS,WORLDS_MVP,,NONE
 Kingen,2022,WORLDS,WORLDS_MVP,,NONE
 Zeus,2023,WORLDS,WORLDS_MVP,,NONE
 Faker,2024,WORLDS,WORLDS_MVP,,NONE
+Faker,2025,WORLDS,WORLDS_MVP,,NONE
 
 # ═══════════════════════════════════════════════════
 # MSI_MVP (§6.1 가점 없음 — 주석 보존만)

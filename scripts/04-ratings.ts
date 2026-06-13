@@ -66,7 +66,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   // ── OVR 98 ──────────────────────────────────────────────────────────────
   'Faker|2015|LCK': 98,   // 2015 우승 but 이미 2013/2016 = 99이므로 98
   'Faker|2023|LCK': 97,   // T1 2023 Worlds 우승 (MID)
-  'Faker|2025|LCK': 95,   // T1 2025 Worlds 3연속 우승 — 2025 데이터 미완으로 stats 과소 보정
+  'Faker|2025|LCK': 95,   // T1 2025 Worlds 우승 + 3연속 MVP — 자동 92(국내 준우승) 상향
   'ShowMaker|2020|LCK': 98,
   'Zeus|2023|LCK': 97,
   'Oner|2023|LCK': 95,   // T1 2023 (94→95: T1우승팀 상향)

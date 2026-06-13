@@ -6183,8 +6183,8 @@
     "role": "MID",
     "ovr": 95,
     "frame": "WORLDS",
-    "crown": false,
-    "worldsMvp": false,
+    "crown": true,
+    "worldsMvp": true,
     "msiWinner": false,
     "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/faker_2025_t1.webp",
     "badges": []
