@@ -134,7 +134,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   // ── LEC ─────────────────────────────────────────────────────────────────
   'YellOwStaR|2015|LEC': 90,    // 곡선 완화 방지
   'Rekkles|2018|LEC': 90,       // 95→90 (Patch 4 — LEC 정규 독식, 국제 한계)
-  'Jankos|2019|LEC': 91,        // 97→91 (Patch 4 + 검증: Tian 92 ≥ Jankos)
+  'Jankos|2019|LEC': 95,        // 91→95 (호빈 수동 조정)
   'Perkz|2019|LEC': 91,         // 93→91 (2차 — 비원딜, 정통 원딜 위 과함)
   'Caps|2019|LEC': 97,          // G2 2019 MID — 유지 (Worlds 결승 에이스)
   'Perkz|2022|LEC': 76,
