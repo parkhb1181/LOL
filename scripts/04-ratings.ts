@@ -56,11 +56,15 @@ function parseAwardsCsv(csv: string): AwardRow[] {
 
 // calc/compress/clamp/individualBonus 전부 끝난 최종 OVR을 덮어씀
 // key: `${playerId}|${year}|${leagueCode}`
+// ⚠️ OVR 99는 이 테이블로만 부여 (compressOvr 상한 = 98) — 4명 고정
 const OVR_OVERRIDES: Record<string, number> = {
-  // LCK
-  'Faker|2015|LCK': 99,
-  'MaRin|2015|LCK': 99,
-  'Canyon|2020|LCK': 98,
+  // ── OVR 99 확정 4명 ──────────────────────────────────────────────────────
+  'Faker|2013|LCK': 99,   // 2013 Worlds 우승 — 전설적 등장
+  'Faker|2016|LCK': 99,   // 2016 Worlds 우승 — 역대 최고 미드 시즌
+  'MaRin|2015|LCK': 99,   // 2015 Worlds 우승 — 역대 최고 탑
+  'Canyon|2020|LCK': 99,  // 2020 Worlds 우승 — 역대 최고 정글
+  // ── OVR 98 ──────────────────────────────────────────────────────────────
+  'Faker|2015|LCK': 98,   // 2015 우승 but 이미 2013/2016 = 99이므로 98
   'ShowMaker|2020|LCK': 98,
   'Zeus|2023|LCK': 97,
   'Oner|2023|LCK': 94,
@@ -68,8 +72,8 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Chovy|2024|LCK': 98,
   // LPL
   'Scout|2021|LPL': 97,
-  'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG), 호빈 목록 LCK는 오타
-  'Ruler|2023|LPL': 96,                  // Ruler 2023 실제 league=LPL (JDG), 호빈 목록 LCK는 오타
+  'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG)
+  'Ruler|2023|LPL': 96,                  // Ruler 2023 실제 league=LPL (JDG)
   'knight (Zhuo Ding)|2024|LPL': 96,
   '369|2023|LPL': 95,
   'ON|2024|LPL': 93,
@@ -147,11 +151,11 @@ function calcOvr(params: {
   return Math.max(60, Math.min(99, Math.round(score)))
 }
 
-// OVR 범위 압축 60~99 → 75~99 (선형 변환)
-// 하한 75로 낮춰 78~80 밀집 완화 (격차 최대 24)
+// OVR 범위 압축 60~99 → 75~98 (선형 변환)
+// 상한 98: 99는 OVR_OVERRIDES 4명 전용 (Faker 2013/2016, MaRin 2015, Canyon 2020)
 function compressOvr(raw: number): number {
   const clamped = Math.max(60, Math.min(99, raw))
-  return Math.max(75, Math.min(99, Math.round(75 + (clamped - 60) * 24 / 39)))
+  return Math.max(75, Math.min(98, Math.round(75 + (clamped - 60) * 23 / 39)))
 }
 
 function mean(arr: number[]): number {
@@ -182,8 +186,79 @@ async function main() {
   const awardsCsv = fs.existsSync(awardsPath) ? fs.readFileSync(awardsPath, 'utf-8') : ''
   const allAwards = parseAwardsCsv(awardsCsv)
 
-  // ─── stats_agg 로드 (2013~2020 KDA, 재수집 불요) ──────────────────────────
-  // key: `${playerId}|${team}|${year}` → kda
+  // ─── OE 복합 지표 로드 (2019~2021, v1.1) ──────────────────────────────────
+  // key: `${normalizedName}|${year}|${leagueCode}` → ovrBonus (±6)
+  // normalizedName: playerId에서 "(XXX)" suffix 제거 후 소문자화
+  const OE_DIR = path.join(process.cwd(), 'pipeline-cache', 'oe')
+  const oeBonusByKey = new Map<string, number>()
+
+  if (fs.existsSync(OE_DIR)) {
+    for (const yr of [2019, 2020, 2021]) {
+      const statsPath = path.join(OE_DIR, `stats_${yr}.json`)
+      if (!fs.existsSync(statsPath)) continue
+      const rows = JSON.parse(fs.readFileSync(statsPath, 'utf-8')) as Array<{
+        playername: string; year: number; league: string; ovrBonus: number
+      }>
+      for (const r of rows) {
+        const normName = r.playername.toLowerCase()
+        const key = `${normName}|${r.year}|${r.league}`
+        // 중복 시 ovrBonus 절댓값이 큰 쪽 보존 (팀 이적 선수 대비)
+        if (!oeBonusByKey.has(key) || Math.abs(r.ovrBonus) > Math.abs(oeBonusByKey.get(key)!)) {
+          oeBonusByKey.set(key, r.ovrBonus)
+        }
+      }
+    }
+    console.log(`OE v1.1 지표 로드: ${oeBonusByKey.size}건`)
+  }
+
+  // ─── 2013~2015 다지표 보너스 로드 (04e-early-stats.ts 출력) ─────────────────
+  // key: `${playerId}|${year}|${leagueCode}` (대소문자 원본 유지) → statsBonus
+  const earlyStatsByKey = new Map<string, number>()
+  const earlyStatsPath = path.join(process.cwd(), 'pipeline-cache', 'ovr-stats-early.json')
+  if (fs.existsSync(earlyStatsPath)) {
+    const earlyData = JSON.parse(fs.readFileSync(earlyStatsPath, 'utf-8')) as Record<string, { statsBonus: number }>
+    for (const [k, v] of Object.entries(earlyData)) {
+      earlyStatsByKey.set(k, v.statsBonus)
+    }
+    console.log(`2013~2015 다지표 보너스 로드: ${earlyStatsByKey.size}건`)
+  }
+
+  // ─── 2022~2023 다지표 보너스 로드 (04c-oe-stats.ts 출력) ────────────────────
+  // key: `${playerId(lower)}|${year}|${team(lower)}` → ovrAdjust (다지표 ±8)
+  const lateStatsByKey = new Map<string, number>()
+  const lateStatsPath = path.join(process.cwd(), 'pipeline-cache', 'oe-stats-2022-2023.json')
+  if (fs.existsSync(lateStatsPath)) {
+    const lateData = JSON.parse(fs.readFileSync(lateStatsPath, 'utf-8')) as Array<{
+      playerId: string; team: string; year: number; ovrAdjust: number
+    }>
+    for (const r of lateData) {
+      const k = `${r.playerId.toLowerCase()}|${r.year}|${r.team.toLowerCase()}`
+      lateStatsByKey.set(k, r.ovrAdjust)
+    }
+    console.log(`2022~2023 다지표 보너스 로드: ${lateStatsByKey.size}건`)
+  }
+
+  // ─── v1.1 최종 지표 로드 (2016~2018) ─────────────────────────────────────
+  // 04e-ovr-final.ts 출력: OE 다지표(±8) or LP 3지표 폴백(±3)
+  // key: `${playerId}|${year}|${leagueCode}`  (원본 대소문자)
+  const v11FinalPath = path.join(process.cwd(), 'pipeline-cache', 'ovr-stats-v11-final.json')
+  const v11FinalMap = new Map<string, { statsBonus: number; mode: 'oe' | 'lp' }>()
+  if (fs.existsSync(v11FinalPath)) {
+    const v11Data = JSON.parse(fs.readFileSync(v11FinalPath, 'utf-8')) as Record<string, { statsBonus: number; mode: 'oe' | 'lp' }>
+    for (const [k, v] of Object.entries(v11Data)) {
+      v11FinalMap.set(k, { statsBonus: v.statsBonus, mode: v.mode })
+    }
+    console.log(`v11 final 지표 로드: ${v11FinalMap.size}건 (2016~2018)`)
+  }
+
+  // Leaguepedia playerId → OE 정규화 이름 변환
+  // 예: "Dread (Lee Jin-hyeok)" → "dread", "BeryL" → "beryl"
+  function normalizePlayerId(pid: string): string {
+    return pid.replace(/\s*\([^)]*\)\s*/g, '').trim().toLowerCase()
+  }
+
+  // ─── stats_agg 로드 (2013~2018 KDA, 재수집 불요) ──────────────────────────
+  // key: `${playerId}|${team}|${year}` → kda  (2019+ 는 OE로 교체됨)
   const CARGO_DIR = path.join(process.cwd(), 'pipeline-cache', 'cargo')
   const aggByKey = new Map<string, number>()
 
@@ -211,10 +286,10 @@ async function main() {
     console.log(`stats_agg 로드: ${aggByKey.size}건`)
   }
 
-  // ─── role × year 정규화 버킷 (2013~2020 KDA 정규화용) ─────────────────────
+  // ─── role × year 정규화 버킷 (2013~2018 KDA 정규화용 — 2019~2021은 OE로 교체) ──
   const normBuckets = new Map<string, number[]>()  // key: `${role}|${year}`
   for (const e of entries) {
-    if (e.year > 2020) continue
+    if (e.year > 2018) continue
     const kda = aggByKey.get(`${e.playerId}|${e.team}|${e.year}`)
     if (kda === undefined) continue
     const bk = `${e.role}|${e.year}`
@@ -294,18 +369,30 @@ async function main() {
     // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
     let individualBonus = 0
 
-    // KDA 보정 — 2013~2020만 적용 (stats_agg 수집 구간)
-    // 2021~2025: KDA 부재 → 보정 0 (패널티 없음, 시대 간 형평성 유지)
-    if (year <= 2020) {
-      const kda = aggByKey.get(`${playerId}|${team}|${year}`)
-      if (kda !== undefined) {
-        const norm = normStats.get(`${role}|${year}`)
-        if (norm && norm.sd > 0) {
-          const z = (kda - norm.mu) / norm.sd
-          // z=±1.5 → ±3, scale=2.0 — 우승팀 주전 급락 방지
-          individualBonus += Math.max(-3, Math.min(3, Math.round(z * 2.0)))
-        }
+    if (year >= 2022 && year <= 2023) {
+      // 2022~2023 다지표 (KDA+GS+CS+Dmg 4종, 04c-oe-stats.ts)
+      const k = `${playerId.toLowerCase()}|${year}|${team.toLowerCase()}`
+      const bonus = lateStatsByKey.get(k)
+      if (bonus !== undefined) individualBonus += bonus
+    } else if (year >= 2019 && year <= 2021) {
+      // OE 복합 지표 (v1.1): KDA+골드차+라인전+데미지 4종 가중 composite z-score → ±6점
+      const normName = normalizePlayerId(playerId)
+      const oeKey = `${normName}|${year}|${leagueCode}`
+      const oeBonus = oeBonusByKey.get(oeKey)
+      if (oeBonus !== undefined) {
+        individualBonus += oeBonus
       }
+    } else if (year <= 2015) {
+      // 2013~2015 다지표 (04e-early-stats.ts) — KDA+GS+KP 동적 가중치
+      const earlyBonus = earlyStatsByKey.get(`${playerId}|${year}|${leagueCode}`)
+      if (earlyBonus !== undefined) individualBonus += earlyBonus
+    } else if (year >= 2016 && year <= 2018) {
+      // 2016~2018 v1.1 복합 지표 (04e-ovr-final.ts): OE 다지표(±8) or LP 폴백(±3)
+      const v11Entry = v11FinalMap.get(`${playerId}|${year}|${leagueCode}`)
+      if (v11Entry) {
+        individualBonus = v11Entry.statsBonus  // 이미 적절히 cap됨
+      }
+      // 미매칭 시 0 유지
     }
 
     // 주전/서브 구분 — 전 시대 공통 (gameCount 커버리지 100%)
@@ -314,13 +401,12 @@ async function main() {
       individualBonus -= 1  // 서브 소폭 감점
     }
 
-    // 총 차등 폭 ±3 클램프 (우승팀 주전 추락 방지)
-    individualBonus = Math.max(-3, Math.min(3, individualBonus))
+    // 차등 폭 클램프 — 다지표 시즌(2013~2023) ±8 / 2024~2025(보정 없음) ±3
+    const bonusCap = year <= 2023 ? 8 : 3
+    individualBonus = Math.max(-bonusCap, Math.min(bonusCap, individualBonus))
 
-    // 99 희소성 보호: baseOvr===99이면 보정 무시
-    const calcOvr_ = baseOvr === 99
-      ? 99
-      : Math.max(75, Math.min(99, baseOvr + individualBonus))
+    // 99 희소성 보호: compress 상한=98이므로 baseOvr은 99 미도달 — OVR_OVERRIDES 전용
+    const calcOvr_ = Math.max(75, Math.min(98, baseOvr + individualBonus))
 
     // 하드오버라이드 — OVR_OVERRIDES 매칭 시 calc/compress/clamp 결과 전부 무시
     const ovr = OVR_OVERRIDES[`${playerId}|${year}|${leagueCode}`] ?? calcOvr_

@@ -62,26 +62,33 @@
   - 출력: `pipeline-cache/ovr-stats-early.json` 1012건 / `pipeline-cache/ovr-comparison-early.csv` 1165행
   - 데이터: Leaguepedia stats_agg (OE 2013~2015 미제공)
   - 지표: KDA+GS+KP 동적 가중치 — 2014 GS 전면 제외, n<10 ±3 클램프
-- [x] 2022~2023 포지션별 z-score 정규화·점수화 — `scripts/04c-oe-stats.ts` (이번 세션)
+- [x] 2022~2023 포지션별 z-score 정규화·점수화 — `scripts/04c-oe-stats.ts` (커밋 c12f8e5)
   - 출력: `pipeline-cache/oe-stats-2022-2023.json` 703건 / `pipeline-cache/oe-comparison-2022-2023.json` 365건
   - 데이터: Leaguepedia ScoreboardPlayers GROUP BY (OE S3 403 — API 키 있으나 서명 없음)
   - 지표: KDA 35% + GoldShare 25% + CS 20% + Damage 20%, 다지표 캡 ±8
   - 매칭: 365/365 (100%), 미매칭 0
+- [x] **04-ratings.ts v1.1 통합 완료** (이번 세션)
+  - 2013~2015: ovr-stats-early.json statsBonus 적용 (bonusCap ±8)
+  - 2016~2018: KDA stats_agg ±3 (기존 유지)
+  - 2019~2021: pipeline-cache/oe/stats_{yr}.json composite bonus (다른 터미널 준비 완료)
+  - 2022~2023: oe-stats-2022-2023.json ovrAdjust 적용 (bonusCap ±8)
+  - compressOvr 상한 98, calcOvr_ clamp 98 확인
+- [x] **OVR=99 정확히 4명 확정** (재빌드 검증 완료)
+  - 99: Faker 2013/2016, MaRin 2015, Canyon 2020
+  - Faker 2015 = 98, Chovy 2024 = 98 ✓
+  - players.json 재빌드 완료 (1709건, zod 통과)
+- [x] 98 라인 (17명): Faker 2015, DWG 2020/2021 6인, Keria 2022, Chovy 2024, Tian 2019, Kanavi/knight 2020/2023 LPL, YellOwStaR 2015, Wunder 2019, Yike 2023
 
 ### 호빈 검토 필요 (v1.1 결과)
 1. **Apple|2014|LCS +7** (78→85): KDA=9.21, kda_z=4.38, n=15 KDA-only — 극단값 의심, 수동 캡 또는 제외 검토
 2. **Looper|2014|LCK +7** (89→96): Samsung White TOP, KDA-only (n=34). 정당하나 트로피 가중 OVR과 이중 반영 우려
-3. **YellOwStaR|2015|LEC +6** (95→99): kda_z=3.81, Fnatic 2015 지배 시즌 — 합리적이나 Wolf(98→99)와 동급
-4. **Clearlove|2015|LPL +7** (88→95): kda_z=3.58 극단, EDG 2015 LPL 지배
+3. **YellOwStaR|2015|LEC +6** → 98로 클램프됨 (compressOvr 상한 98 작동)
+4. **Clearlove|2015|LPL +7** (88→95): kda_z=3.58 극단, EDG 2015 LPL 지배 — 수용 여부
 5. **2014 GS 전면 제외**: LCK AvgTG 공란으로 전리그 버킷 비율 30% 미달 → KDA+KP만 사용. 수용 여부 확인 필요
-6. **[2022-2023] Yike 2023 JGL 97→99 (+6)**: 루키 시즌, 베이스 97 자체가 높음 — 수용 여부 검토
-7. **[2022-2023] Oner 2022 JGL 93→97 (+4)**: OVR_OVERRIDE `Oner|2023|LCK=94`보다 2022가 높아지는 역전 발생
+6. **[2022-2023] Yike 2023 → 98** (compressOvr 상한으로 클램프, 99 방지됨): 루키이지만 98 수용 여부
+7. **[2022-2023] Oner 2022 → 97**: OVR_OVERRIDE `Oner|2023|LCK=94`보다 2022가 높은 역전 — 검토
 8. **[2022-2023] CS per game = 라인전 대체 지표**: golddiffat15 없어서 대체 사용 — 적절한지 확인 필요
-
-### 다음 단계 (04-ratings.ts 통합)
-- ovr-stats-early.json 점수를 04-ratings.ts에 통합 (statsBonus 가산 후 clamp 60~99)
-- 통합 후 08-anchors.ts 앵커 검증, 07-build.ts 재빌드, players.json 갱신
-- 호빈 검토 완료 후 진행
+9. **Keria 2022 LCK = 98**: v1.1 보너스 적용 후 98 진입 — 수용 여부 (2023 OVERRIDE=94보다 높음)
 
 ## 다음 작업
 
