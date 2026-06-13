@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { Anton, Bebas_Neue, Inter } from 'next/font/google'
+import { Anton, Bebas_Neue } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { LangProvider } from '@/i18n'
@@ -19,10 +20,16 @@ const bebasNeue = Bebas_Neue({
   variable: '--font-bebas',
 })
 
-const inter = Inter({
-  subsets: ['latin'],
+// 본문/UI: Pretendard — 한글+영문 통일 (Inter 대체)
+const pretendard = localFont({
+  src: [
+    { path: '../../public/fonts/Pretendard-Regular.woff',   weight: '400', style: 'normal' },
+    { path: '../../public/fonts/Pretendard-Medium.woff',    weight: '500', style: 'normal' },
+    { path: '../../public/fonts/Pretendard-SemiBold.woff',  weight: '600', style: 'normal' },
+    { path: '../../public/fonts/Pretendard-Bold.woff',      weight: '700', style: 'normal' },
+  ],
+  variable: '--font-pretendard',
   display: 'swap',
-  variable: '--font-inter',
 })
 
 const BASE_URL = 'https://grandslamlol.vercel.app'
@@ -67,13 +74,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${anton.variable} ${bebasNeue.variable} ${inter.variable}`}>
+    <html lang="ko" className={`${anton.variable} ${bebasNeue.variable} ${pretendard.variable}`}>
       <body className="bg-[#0d0d1a]">
         <LangProvider>
           {children}
         </LangProvider>
         {/* §10 Disclaimer — all pages */}
-        <footer className="border-t border-[#2a2a4a] mt-12 px-4 py-5 text-center text-[10px] text-[#6868a0] leading-relaxed">
+        <footer className="border-t border-[#2a2a4a] px-4 py-5 text-center text-[10px] text-[#6868a0] leading-relaxed">
           Unofficial fan project · Images:{' '}
           <a href="https://lol.fandom.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/40 transition-colors">
             Leaguepedia
@@ -82,6 +89,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <span className="mx-2 opacity-40">·</span>
           <a href="/about" className="underline underline-offset-2 hover:text-white/40 transition-colors">
             Legal
+          </a>
+          <span className="mx-2 opacity-40">·</span>
+          <a href="/privacy" className="underline underline-offset-2 hover:text-white/40 transition-colors">
+            Privacy
           </a>
         </footer>
         <Analytics />

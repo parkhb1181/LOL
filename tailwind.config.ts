@@ -42,8 +42,8 @@ const config: Config = {
         'ovr-display': ['var(--font-anton)', 'Anton', 'sans-serif'],
         'heading-lg':  ['var(--font-bebas)', '"Bebas Neue"', 'sans-serif'],
         'heading-md':  ['var(--font-bebas)', '"Bebas Neue"', 'sans-serif'],
-        'label-caps':  ['var(--font-inter)', 'Inter', 'sans-serif'],
-        'body-main':   ['var(--font-inter)', 'Inter', 'sans-serif'],
+        'label-caps':  ['var(--font-pretendard)', 'Pretendard', 'sans-serif'],
+        'body-main':   ['var(--font-pretendard)', 'Pretendard', 'sans-serif'],
       },
       fontSize: {
         'heading-lg':         ['40px', { lineHeight: '1.1' }],
