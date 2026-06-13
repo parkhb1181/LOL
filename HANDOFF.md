@@ -121,6 +121,7 @@
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
+- 2026-06-14 (세션21): 메인+결과 화면 4개 수정 완료 (40bbe5e). 컬렉션 버튼 색상(bg-surface-container), 한글 줄바꿈(keep-all), 상세 보기 모달(DetailModal — 전 경기 내역), 모바일 상세 보기 버튼 추가. 빌드 ✓.
 - 2026-06-14 (세션20): 한/영 언어 토글 전 화면 완료 (80f780b). draft/page.tsx 전체 번역 (RevealScreen/ResultScreen/PickButtons/DraftPage). 빌드 ✓.
 - 2026-06-14 (세션19): KO/EN 언어 토글 완료 (b140cb7). i18n LangProvider+en/ko 구조 통일. SiteHeader KO|EN 버튼. draft 결과 라벨 번역. 빌드 ✓.
 - 2026-06-13 (세션18): OVERRIDE 보정 (83a5e93). Faker 2025 WORLDS_MVP 추가. 준우승 에이스 4명 과소 보정. Oner 2023 97로 역전 해소. OVR 99=4명 ✓.
