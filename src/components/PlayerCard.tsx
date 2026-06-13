@@ -67,7 +67,7 @@ const SIZE_OVR: Record<CardSize, string> = {
   pick:         'text-[38px] md:text-[46px]',
   slot:         'text-[28px] md:text-[36px]',
   result:       'text-[34px] md:text-[42px]',
-  dex:          'text-[24px] md:text-[44px]',
+  dex:          'text-[22px] md:text-[28px]',
   'mob-result': 'text-[22px]',
 }
 
@@ -76,7 +76,7 @@ const SIZE_NAME: Record<CardSize, string> = {
   pick:         'text-[20px] md:text-[26px]',
   slot:         'text-[13px] md:text-[17px]',
   result:       'text-[17px] md:text-[22px]',
-  dex:          'text-[16px] md:text-[22px]',
+  dex:          'text-[14px] md:text-[17px]',
   'mob-result': 'text-[13px]',
 }
 
@@ -119,8 +119,8 @@ export default function PlayerCard({
       ].filter(Boolean).join(' ')}
       aria-label={`${player.nameEn} ${player.year} ${player.team}`}
     >
-      {/* 1. 사진 / 아바타 — 카드 전체 채움 */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* 1. 사진 / 아바타 — dex: 카드 상단 75%(하단 25%는 어두운 배경), 기타: 전체 채움 */}
+      <div className={size === 'dex' ? 'absolute inset-x-0 top-0 h-[75%] overflow-hidden' : 'absolute inset-0 overflow-hidden'}>
         {hasPhoto ? (
           <img
             src={photoSrc(player)!}
@@ -137,9 +137,9 @@ export default function PlayerCard({
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* 이미지 하단 끝 가장자리 페이드 — 카드 높이 기준 15% 고정, 인물 위치 무관 */}
+        {/* 하단 페이드 — dex는 더 깊게 페이드해 카드 배경과 자연스럽게 연결 */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-[15%] pointer-events-none"
+          className={`absolute bottom-0 left-0 right-0 pointer-events-none ${size === 'dex' ? 'h-[35%]' : 'h-[15%]'}`}
           style={{ background: 'linear-gradient(to top, #14141c, transparent)' }}
         />
       </div>

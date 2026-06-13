@@ -292,8 +292,8 @@ export default function DexPage() {
                     </div>
                   ))}
                 </div>
-                {/* 데스크톱: 5열 그리드 */}
-                <div className="hidden md:grid md:grid-cols-5 md:gap-4">
+                {/* 데스크톱: 5열 그리드 — max-w-[900px]로 카드 크기 제어 (현재보다 ~25% 축소) */}
+                <div className="hidden md:grid md:grid-cols-5 md:gap-4 max-w-[900px]">
                   {group.players.map(player => (
                     <PlayerCard key={player.id} player={player} size="dex" />
                   ))}
