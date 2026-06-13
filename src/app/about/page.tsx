@@ -92,16 +92,13 @@ export default function AboutPage() {
           </p>
         </section>
 
-        {/* Contact */}
+        {/* Privacy */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Contact</h2>
-          <p className="text-sm text-on-surface-variant">
-            <a
-              href="mailto:parkhb1181@gmail.com"
-              className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors"
-            >
-              parkhb1181@gmail.com
-            </a>
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Privacy</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
+            <Link href="/privacy" className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors">
+              개인정보처리방침 (Privacy Policy)
+            </Link>
           </p>
         </section>
 
