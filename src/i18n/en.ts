@@ -31,7 +31,7 @@ export const en = {
     draftRoster: 'Draft Roster',
     spinning: 'Spinning...',
     round: (n: number, total: number) => `Round ${n}/${total}`,
-    reroll: (n: number) => `Reroll (${n} left)`,
+    reroll: (n: number) => `Reroll (${n})`,
     rerollShort: (n: number) => `Reroll (${n})`,
     playAgain: 'Play Again',
     skip: 'Skip',
