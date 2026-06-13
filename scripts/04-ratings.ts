@@ -82,9 +82,10 @@ const OVR_OVERRIDES: Record<string, number> = {
   'ON|2024|LPL': 93,
   'Elk|2024|LPL': 96,
   // LEC
-  'Jankos|2019|LEC': 97,
-  'Perkz|2019|LEC': 96,
-  'Caps|2019|LEC': 97,
+  'Jankos|2019|LEC': 97,        // G2 2019 MSI+Worlds결승 시즌 JGL
+  'Perkz|2019|LEC': 96,         // G2 2019 ADC
+  'Caps|2019|LEC': 97,          // G2 2019 MID
+  'Yike|2023|LEC': 94,          // LEC 국내 최고 정글, 국제 실적 없음 — 재빌드 98 복원 방지
   'Caps|2024|LEC': 95,
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
 }
