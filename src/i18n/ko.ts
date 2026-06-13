@@ -1,7 +1,7 @@
 export const ko = {
   nav: {
-    collection: '컬렉션',
-    playGame: '게임 시작',
+    collection: 'COLLECTION',
+    playGame: 'PLAY GAME',
   },
   home: {
     subtitle: 'LoL 올타임 드래프트 시뮬레이터',
