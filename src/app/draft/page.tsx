@@ -15,12 +15,6 @@ import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
 import { highlightRoundLabel, pickHighlightSteps, type HighlightStep } from '@/lib/simHighlight'
 
-function sectionShort(h: HighlightStep): string {
-  if (h.section === 'Spring Split') return 'Spring'
-  if (h.section === 'Summer Split') return 'Summer'
-  return h.section
-}
-
 // ── Data load hook ────────────────────────────────────────────────────────────
 // §13.5: fetch only after mount (no window/fetch needed in SSR)
 function useDraftData() {
@@ -326,14 +320,14 @@ function RevealScreen({
           onClick={onSkip}
           className="font-label-caps text-[10px] px-3 py-1.5 rounded border border-outline-variant text-outline hover:text-on-surface hover:border-secondary/40 transition-colors"
         >
-          Skip
+          {t.draft.skip}
         </button>
       </div>
 
       {current && step && (
         <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center py-6 w-full max-w-sm">
           <p className="font-label-caps text-label-caps text-outline/50 uppercase">
-            {current.section}
+            {t.draft.sectionShort[current.section] ?? current.section}
           </p>
           <p className={`text-2xl font-black tracking-wide ${
             cur === 'win' ? 'text-on-surface' : cur === 'lose' ? 'text-on-surface/60' : 'text-outline'
@@ -426,10 +420,6 @@ function mobileRoundLabel(h: HighlightStep): string {
   if (stage === 'msi_r1') return won ? 'SEMIFINALS' : 'QUARTERFINALS'
   if (stage.startsWith('worlds_swiss_r')) return 'SWISS'
   return stage.replace(/_/g, ' ').toUpperCase()
-}
-
-const MOBILE_SECTION_SHORT: Record<string, string> = {
-  'Spring Split': 'SPRING', 'MSI': 'MSI', 'Summer Split': 'SUMMER', 'Worlds': 'WORLDS',
 }
 
 // 시즌 결과 개별 카드 (2×2 그리드)
@@ -595,13 +585,13 @@ function ResultScreen({
         {/* 등급 헤더 */}
         <div className="text-center mb-6">
           <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
-            Season Result
+            {t.draft.seasonResult}
           </p>
           <h2 className={`font-ovr-display text-[72px] leading-none tracking-tighter uppercase drop-shadow-lg ${gradeColor}`}>
             {simResult.grade}
           </h2>
           <p className="font-heading-md text-heading-md text-on-surface-variant uppercase tracking-wide mt-1">
-            Team OVR {simResult.teamOvr}
+            {t.draft.teamOvr} {simResult.teamOvr}
           </p>
         </div>
 
@@ -861,7 +851,7 @@ export default function DraftPage() {
         )}
 
         {state.phase === 'SIM' && (
-          <p className="text-center text-on-surface animate-pulse py-12 font-label-caps text-label-caps">{t.draft.preparing}</p>
+          <p className="text-center text-on-surface animate-pulse py-12 font-label-caps text-label-caps">{t.draft.spinning}</p>
         )}
 
         {state.phase === 'REVEAL' && state.simResult && (
