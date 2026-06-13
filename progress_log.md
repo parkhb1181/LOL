@@ -80,8 +80,8 @@
 ### 지표 일관성 통일 (전 연도)
 | 항목 | 통일 결과 |
 |------|---------|
-| 다지표 cap | **전 연도 ±8** (04e ±7→±8, 2019~2021 재계산) |
-| 라인전 지표 | 연도별 데이터 가용성 차이 허용 (z-score 내 상대 비교로 공정) |
+| 다지표 cap | **전 연도 ±7** (04b/04c/04d/04e 공통 — ±8→±7 통일) |
+| 라인전 지표 | 2019~2021: XP+CS 블렌드 (04d 2024~2025와 동일) / 연도별 가용성 차이는 z-score 내 상대 비교로 공정 |
 | 결측치 | 04b: z=0 폴백 / 04e-early: 동적 재분배 / 04c/04d: z=0 |
 | 포지션별 정규화 | 전 연도 ✓ |
 
@@ -104,7 +104,7 @@
 |------|------|--------|
 | KDA | (kills+assists)/max(1,deaths) | 35% |
 | 골드차 | golddiffat15 | 25% |
-| 라인전 | csdiffat15 | 20% |
+| 라인전 | (xpdiffat15/100 + csdiffat15)/2 블렌드 | 20% |
 | 데미지 | dpm | 20% |
 
 - 정규화: 포지션 × 연도별 z-score (OE 전체 선수 기준 — 우리 DB 미한정)
@@ -119,14 +119,14 @@
 
 **04-ratings.ts 통합**:
 - OE 보너스 로딩: `oeBonusByKey` Map (normName|year|league 키)
-- 2019~2021: OE composite bonus 적용 (캡 ±8)
+- 2019~2021: OE composite bonus 적용 (캡 ±7 — 전 연도 통일)
 - 2013~2018: KDA z-score ±3 클램프 유지
 - compressOvr 상한: 99 → **98** (99는 OVR_OVERRIDES로만)
 - OVR 99 확정 4명: Faker 2013, MaRin 2015, Faker 2016, Canyon 2020
 
 **최종 빌드 결과** (07-build.ts zod 통과):
 - players.json: 1,709건
-- OVR 분포: 75~79: 3113건, 80~89: 726건, 90~99: 151건
+- OVR 분포: 75~79: 857건, 80~84: 442건, 85~89: 233건, 90~94: 109건, 95~99: 68건
 
 ### OVR 99 검증 ✅
 ```
@@ -146,10 +146,14 @@ Canyon 2020 LCK JGL = 99
 | Blaber | 2020 | 92 | 96 | +4 | LCS 최강 정글 |
 | Mata | 2019 | 90 | 87 | -3 | SUP 포지션 구조 특성 |
 
-### 판단 목록 (호빈 검토 필요)
-1. **csdiffat15 사용** (xpdiffat15 대신): OE에 두 컬럼 모두 있으나 xpdiffat15 선택 근거 없어 csdiffat15로 통일
-2. **결측치 → 0 처리**: golddiffat15/csdiffat15 null 시 해당 지표 z=0 처리 (포지션 평균 대체 아님)
-3. **미매칭 6.9%**: OE 이름(예: "Dread (Lee Jin-hyeok)")→ suffix 제거 방식 — 일부 선수 매칭 실패 시 보너스 0 유지
+### 판단 목록 (확정)
+1. **라인전: XP+CS 블렌드** (`(xpdiffat15/100 + csdiffat15)/2`): 2024~2025(04d)와 통일 — 확정
+2. **결측치 → z=0 폴백**: golddiffat15/라인전 null 시 해당 지표 z=0 처리, nMetrics 기반 동적 cap — 확정
+3. **미매칭 6.9%**: OVR 85+ 미매칭 = 0건 (최고 Sword 2019 LCK = 82) — 무명 보조 로스터만 → 보너스 0 유지
+
+### T1 2023 역전 해소 ✅
+- 수정 전: JDG 97 ≥ T1 Faker 94 (역전)
+- 수정 후: T1 Faker/Zeus 97, Keria 96, Oner/Gumayusi 95 > JDG knight/Kanavi/Ruler 96
 
 ---
 

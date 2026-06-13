@@ -423,7 +423,7 @@ async function main() {
       const earlyBonus = earlyStatsByKey.get(`${playerId}|${year}|${leagueCode}`)
       if (earlyBonus !== undefined) individualBonus += earlyBonus
     } else if (year >= 2016 && year <= 2018) {
-      // 2016~2018 OE 다지표+LP 폴백 (04e-ovr-final.ts), cap ±7 (v11-final에서 이미 cap됨)
+      // 2016~2018 KDA+GS+KP (04c-ovr-stats.ts), SCALE=3.5, cap ±7/5/3 (소스에서 이미 cap됨)
       const bonus = v11StatsMap.get(`${playerId}|${year}|${leagueCode}`)
       if (bonus !== undefined) individualBonus += bonus
     }
