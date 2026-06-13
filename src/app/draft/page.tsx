@@ -596,17 +596,25 @@ function ResultScreen({
         </div>
 
         {/* 시즌 결과 4칸 그리드 */}
-        <div className="grid grid-cols-4 gap-x-8 gap-y-2 mb-8 text-sm">
-          {highlights.map(h => (
-            <div key={h.section} className="flex flex-col gap-0.5">
-              <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
-                {t.draft.sectionShort[h.section] ?? h.section}
-              </span>
-              <span className={`font-body-main text-sm ${sectionTone(h)}`}>
-                {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
-              </span>
-            </div>
-          ))}
+        <div className="grid grid-cols-4 gap-x-8 gap-y-3 mb-8 text-sm">
+          {highlights.map(h => {
+            const ser = h.step.series?.[0]
+            return (
+              <div key={h.section} className="flex flex-col gap-0.5">
+                <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
+                  {t.draft.sectionShort[h.section] ?? h.section}
+                </span>
+                <span className={`font-body-main text-sm ${sectionTone(h)}`}>
+                  {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
+                </span>
+                {ser && (
+                  <span className={`font-body-main text-xs ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+                    {ser.win ? `def. ${ser.opp} ${ser.score}` : `lost to ${ser.opp} ${ser.score}`}
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {/* 선수 카드 가로 스크롤 (snap) */}
