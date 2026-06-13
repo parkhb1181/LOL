@@ -72,6 +72,9 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Oner|2023|LCK': 95,   // T1 2023 (94→95: T1우승팀 상향)
   'Keria|2023|LCK': 96,  // T1 2023 (94→96: T1우승팀 상향)
   'Chovy|2024|LCK': 98,
+  'Faker|2024|LCK': 95,     // Worlds MVP — 준우승팀 BLG 선수보다 낮은 구조 보정
+  'Zeus|2024|LCK': 91,      // LCK 3시드 약체, 데이터 과소 보정
+  'Gumayusi|2024|LCK': 90,  // 2024 데이터 미완 과소 보정 (87→90)
   'Wolf (Lee Jae-wan)|2015|LCK': 94,  // SKT 2015 우승이나 당해 슬럼프+MSI 부진 — MaRin/Faker 옆 98 과대
   // LPL
   'Scout|2021|LPL': 97,
