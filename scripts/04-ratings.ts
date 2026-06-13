@@ -89,6 +89,18 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Bin (Chen Ze-Bin)|2024|LPL': 96,     // BLG 준우승 — stats-driven 98 하향
   'TheShy|2023|LPL': 91,               // Weibo 준우승 에이스 TOP, 역대급 탑 — 81 과소
   'SofM|2020|LPL': 90,                 // Suning 준우승 캐리 JGL, 서구권 정글 신화 시즌 — 83 과소
+  // FPX 2019 (Worlds 우승 — 에이스는 위크사이드보다 높게)
+  'Doinb|2019|LPL': 93,   // 에이스 MID
+  'Tian|2019|LPL': 92,    // 에이스 JGL
+  'Lwx|2019|LPL': 91,     // 위크사이드 ADC
+  'GimGoon|2019|LPL': 90, // 위크사이드 탑 최솟값
+  'Crisp|2019|LPL': 90,   // 위크사이드 SUP
+  // Samsung White 2014 (Worlds 역대최강팀 — 공식 82~83, 위크사이드 90+ 보정)
+  'Mata|2014|LCK': 96,    // 역대 유일 서폿 F.MVP — 에이스급
+  'imp|2014|LCK': 94,     // 2014 세체원 ADC, 하드캐리
+  'PawN|2014|LCK': 93,    // 월즈 우승 미드
+  'DanDy|2014|LCK': 93,   // 역대급 정글, 탈수기 운영
+  'Looper|2014|LCK': 90,  // 위크사이드 탑 최솟값
   // LCK
   'Smeb|2015|LCK': 91,                 // KOO 준우승 에이스 TOP, 당해 세계 최고 탑급 — 85 과소
   // LEC
@@ -100,6 +112,8 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Caps|2024|LEC': 95,
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
   // LCS — z-score 인플레 보정
+  'Blaber|2020|LCS': 73,  // stats-driven 87 하향 — LCS 인플레, 국제전 성과 없음
+  'Blaber|2021|LCS': 75,  // 2021 LCS 우승, 국제전 없음 — 90+ 과대
   'CoreJJ|2019|LCS': 93,                          // MSI 준우승 인정, 월즈 그룹탈락+LCS 96 과대
   'Berserker (Kim Min-cheol)|2022|LCS': 86,       // 루키+ALLPRO_2nd+월즈그룹 — 팀메이트(ALLPRO_1ST=88)보다 낮아야
   'Berserker (Kim Min-cheol)|2023|LCS': 88,       // Cloud9 LCS, Worlds 그룹 탈락 — LCS 인플레 95→88
@@ -126,21 +140,27 @@ function getLeagueCoeff(year: number, leagueCode: string): number {
   return LEAGUE_COEFF_TABLE[`${year}|${leagueCode}`] ?? (leagueCode === 'LCK' ? 1.0 : 0.80)
 }
 
-// §4.3 레이팅 공식 (§6.1 룰 패치 반영)
-// Rule 1: 연내 복수 스플릿 가점 합산 — 최고 1회 아님
-// Rule 4: AllPro 2020+ 시즌만 (제도 부재 이전 미적용)
+// 리그 계수를 0.85~1.0 범위로 압축 — AllPro/SEASON_MVP 전용 (이중 페널티 방지)
+// 원래 계수 0.75~1.00 → 0.85~1.00 선형 재매핑
+function getAwardCoeff(leagueCoeff: number): number {
+  return 0.85 + Math.max(0, Math.min(0.25, leagueCoeff - 0.75)) * 0.60
+}
+
+// raw 점수 누적 — 비선형 압축 전 단계 (천장 없음)
+// Rule 1: 연내 복수 스플릿 합산 / Rule 4: AllPro 2020+ 시즌만
 function calcOvr(params: {
-  playoffPlaces: number[]   // 연내 플옵 결과 전부 (합산 적용)
+  playoffPlaces: number[]
   msiPlace: number | null
   worldsPlace: number | null
   awards: AwardRow[]
-  leagueCode: string        // 리그 계수 적용용
-  year: number              // 연도별 계수 조회용
+  leagueCode: string
+  year: number
 }): number {
   let score = 60
   const coeff = getLeagueCoeff(params.year, params.leagueCode)
+  const awardCoeff = getAwardCoeff(coeff)
 
-  // 국내 플옵 — 스플릿별 합산 + 리그 계수 (Rule 1)
+  // 국내 플옵 × 리그 계수 (Rule 1: 스플릿별 합산)
   for (const p of params.playoffPlaces) {
     let pts = 0
     if (p === 1) pts = 8
@@ -151,43 +171,53 @@ function calcOvr(params: {
     score += pts * coeff
   }
 
-  // MSI
+  // MSI (리그 계수 면제): 우승+8 / 준우승+5 / 4강+2
   if (params.msiPlace !== null) {
     const p = params.msiPlace
-    if (p === 1) score += 5
-    else if (p === 2) score += 3
+    if (p === 1) score += 8
+    else if (p === 2) score += 5
     else if (p <= 4) score += 2
   }
 
-  // Worlds
+  // Worlds (리그 계수 면제): 우승+15 / F(준우승)+12 / 4강+8 / 8강+5 / 진출+2
   if (params.worldsPlace !== null) {
     const p = params.worldsPlace
-    if (p === 1) score += 13
-    else if (p === 2) score += 8
-    else if (p <= 4) score += 5
-    else if (p <= 8) score += 3
-    else score += 1  // 진출만
+    if (p === 1) score += 15
+    else if (p === 2) score += 12
+    else if (p <= 4) score += 8
+    else if (p <= 8) score += 5
+    else score += 2
   }
 
-  // awards (Rule 4: AllPro는 2020+ 시즌만)
+  // 개인 수상 — AllPro/SEASON_MVP에 awardCoeff 적용 (0.85~1.0)
+  // WORLDS_MVP: Worlds 순위 가점으로 흡수, 별도 가산 제거
   for (const a of params.awards) {
-    if (a.award === 'SEASON_MVP') score += 6
+    if (a.award === 'SEASON_MVP') score += 6 * awardCoeff
     else if (a.award === 'FINALS_MVP') score += 4
-    else if (a.award === 'WORLDS_MVP') score += 8
-    else if (a.award === 'ALLPRO_1ST' && a.year >= 2020) score += 5
-    else if (a.award === 'ALLPRO_2ND' && a.year >= 2020) score += 3
-    else if (a.award === 'ALLPRO_3RD' && a.year >= 2020) score += 1
+    else if (a.award === 'WORLDS_MVP') score += 0
+    else if (a.award === 'ALLPRO_1ST' && a.year >= 2020) score += 5 * awardCoeff
+    else if (a.award === 'ALLPRO_2ND' && a.year >= 2020) score += 3 * awardCoeff
+    else if (a.award === 'ALLPRO_3RD' && a.year >= 2020) score += 1 * awardCoeff
     else if (a.award === 'EDITORIAL') score += a.value
   }
 
-  return Math.max(60, Math.min(99, Math.round(score)))
+  return score  // unclamped raw
 }
 
-// OVR 범위 압축 60~99 → 75~98 (선형 변환)
-// 상한 98: 99는 OVR_OVERRIDES 4명 전용 (Faker 2013/2016, MaRin 2015, Canyon 2020)
+// raw → OVR 구간별 비선형 압축 (상한 98 — 99는 OVR_OVERRIDES 4명 전용)
+// raw ≤ 60       → 60
+// raw 60~85      → OVR 60~85   (×1.00 선형)
+// raw 85~95      → OVR 85~90   (×0.50, raw 10 = OVR 5)
+// raw 95~110     → OVR 90~95   (×0.33, raw 15 = OVR 5)
+// raw 110~135    → OVR 95~98   (×0.12, raw 25 = OVR 3)
+// raw ≥ 135      → 98
 function compressOvr(raw: number): number {
-  const clamped = Math.max(60, Math.min(99, raw))
-  return Math.max(75, Math.min(98, Math.round(75 + (clamped - 60) * 23 / 39)))
+  if (raw <= 60) return 60
+  if (raw <= 85) return raw
+  if (raw <= 95) return 85 + (raw - 85) * 0.5
+  if (raw <= 110) return 90 + (raw - 95) / 3
+  if (raw <= 135) return 95 + (raw - 110) * 3 / 25
+  return 98
 }
 
 function mean(arr: number[]): number {
@@ -409,55 +439,53 @@ async function main() {
     const msiPlace = msiByTeamYear.get(teamYearKey) ?? null
 
     const awards = awardsByPY.get(`${playerId}|${year}`) ?? []
+    // 비선형 압축 전 raw 점수 (unclamped)
     const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards, leagueCode, year })
-    const baseOvr = compressOvr(rawOvr)
 
-    // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
-    let individualBonus = 0
+    // ─── stats 보정 — raw에 합산 후 비선형 압축 ──────────────────────────────
+    let statsBonus = 0
 
     if (year >= 2024) {
       // 2024~2025 다지표 (04d-oe-stats.ts) — link=playerId 기준
       const k = `${playerId.toLowerCase()}|${year}|${team.toLowerCase()}`
       const bonus = newStatsByKey.get(k)
-      if (bonus !== undefined) individualBonus += bonus
+      if (bonus !== undefined) statsBonus = bonus
     } else if (year >= 2022 && year <= 2023) {
       // 2022~2023 다지표 (KDA+GS+CS+Dmg 4종, 04c-oe-stats.ts)
       const k = `${playerId.toLowerCase()}|${year}|${team.toLowerCase()}`
       const bonus = lateStatsByKey.get(k)
-      if (bonus !== undefined) individualBonus += bonus
+      if (bonus !== undefined) statsBonus = bonus
     } else if (year >= 2019 && year <= 2021) {
-      // OE 복합 지표 (v1.1): KDA+골드차+라인전+데미지 4종 가중 composite z-score → ±6점
+      // OE 복합 지표 (v1.1): KDA+골드차+라인전+데미지 4종 가중 composite z-score
       const normName = normalizePlayerId(playerId)
       const oeKey = `${normName}|${year}|${leagueCode}`
       const oeBonus = oeBonusByKey.get(oeKey)
-      if (oeBonus !== undefined) {
-        individualBonus += oeBonus
-      }
+      if (oeBonus !== undefined) statsBonus = oeBonus
     } else if (year <= 2015) {
       // 2013~2015 다지표 (04e-early-stats.ts) — KDA+GS+KP 동적 가중치
       const earlyBonus = earlyStatsByKey.get(`${playerId}|${year}|${leagueCode}`)
-      if (earlyBonus !== undefined) individualBonus += earlyBonus
+      if (earlyBonus !== undefined) statsBonus = earlyBonus
     } else if (year >= 2016 && year <= 2018) {
-      // 2016~2018 KDA+GS+KP (04c-ovr-stats.ts), SCALE=3.5, cap ±7/5/3 (소스에서 이미 cap됨)
+      // 2016~2018 KDA+GS+KP, cap ±7 (소스에서 이미 cap됨)
       const bonus = v11StatsMap.get(`${playerId}|${year}|${leagueCode}`)
-      if (bonus !== undefined) individualBonus += bonus
+      if (bonus !== undefined) statsBonus = bonus
     }
 
-    // 주전/서브 구분 — 전 시대 공통 (gameCount 커버리지 100%)
+    // 주전/서브 구분 — 전 시대 공통
     const maxGames = teamMaxGames.get(`${team}|${year}`) ?? entry.gameCount
     if (entry.gameCount < maxGames * 0.8) {
-      individualBonus -= 1  // 서브 소폭 감점
+      statsBonus -= 1
     }
 
-    // 차등 폭 클램프 — 전 연도 다지표 ±7, KDA 단일 ±3 (사용자 확정 규칙 방호막)
-    const bonusCap = 7
-    individualBonus = Math.max(-bonusCap, Math.min(bonusCap, individualBonus))
+    // 방호막: 개별 스크립트 이미 cap됨, 여기선 ±7 재확인
+    statsBonus = Math.max(-7, Math.min(7, statsBonus))
 
-    // 99 희소성 보호: compress 상한=98이므로 baseOvr은 99 미도달 — OVR_OVERRIDES 전용
-    const calcOvr_ = Math.max(75, Math.min(98, baseOvr + individualBonus))
+    // stats를 raw에 합산 → 비선형 압축 (99는 OVR_OVERRIDES 전용)
+    const rawTotal = rawOvr + statsBonus
+    const baseOvr = Math.max(60, Math.min(98, Math.round(compressOvr(rawTotal))))
 
-    // 하드오버라이드 — OVR_OVERRIDES 매칭 시 calc/compress/clamp 결과 전부 무시
-    const ovr = OVR_OVERRIDES[`${playerId}|${year}|${leagueCode}`] ?? calcOvr_
+    // 하드오버라이드 — OVR_OVERRIDES 매칭 시 calc/compress 결과 전부 무시
+    const ovr = OVR_OVERRIDES[`${playerId}|${year}|${leagueCode}`] ?? baseOvr
 
     // frame: Worlds Place=1 시즌
     const frame: 'WORLDS' | 'NORMAL' = worldsPlace === 1 ? 'WORLDS' : 'NORMAL'
