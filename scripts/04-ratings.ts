@@ -238,6 +238,21 @@ async function main() {
     console.log(`2022~2023 다지표 보너스 로드: ${lateStatsByKey.size}건`)
   }
 
+  // ─── 2024~2025 다지표 보너스 로드 (04d-oe-stats.ts 출력) ──────────────────
+  // key: `${playerId(lower)}|${year}|${team(lower)}` → ovrBonus (다지표 ±8)
+  const newStatsByKey = new Map<string, number>()
+  const newStatsPath = path.join(process.cwd(), 'pipeline-cache', 'oe-stats-2024-2025.json')
+  if (fs.existsSync(newStatsPath)) {
+    const newData = JSON.parse(fs.readFileSync(newStatsPath, 'utf-8')) as Array<{
+      playerId: string; team: string; year: number; ovrBonus: number
+    }>
+    for (const r of newData) {
+      const k = `${r.playerId.toLowerCase()}|${r.year}|${r.team.toLowerCase()}`
+      newStatsByKey.set(k, r.ovrBonus)
+    }
+    console.log(`2024~2025 다지표 보너스 로드: ${newStatsByKey.size}건`)
+  }
+
   // ─── v1.1 최종 지표 로드 (2016~2018) ─────────────────────────────────────
   // 04e-ovr-final.ts 출력: OE 다지표(±8) or LP 3지표 폴백(±3)
   // key: `${playerId}|${year}|${leagueCode}`  (원본 대소문자)
@@ -369,7 +384,12 @@ async function main() {
     // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
     let individualBonus = 0
 
-    if (year >= 2022 && year <= 2023) {
+    if (year >= 2024) {
+      // 2024~2025 다지표 (04d-oe-stats.ts) — link=playerId 기준
+      const k = `${playerId.toLowerCase()}|${year}|${team.toLowerCase()}`
+      const bonus = newStatsByKey.get(k)
+      if (bonus !== undefined) individualBonus += bonus
+    } else if (year >= 2022 && year <= 2023) {
       // 2022~2023 다지표 (KDA+GS+CS+Dmg 4종, 04c-oe-stats.ts)
       const k = `${playerId.toLowerCase()}|${year}|${team.toLowerCase()}`
       const bonus = lateStatsByKey.get(k)
@@ -401,8 +421,9 @@ async function main() {
       individualBonus -= 1  // 서브 소폭 감점
     }
 
-    // 차등 폭 클램프 — 다지표 시즌(2013~2023) ±8 / 2024~2025(보정 없음) ±3
-    const bonusCap = year <= 2023 ? 8 : 3
+    // 차등 폭 클램프 — 전 연도 다지표 ±8 (각 스크립트에서 이미 cap됨, 여기서 방호막)
+    // KDA단일 시즌은 각 스크립트에서 ±3으로 먼저 cap하므로 bonusCap=8이 실효 없음
+    const bonusCap = 8
     individualBonus = Math.max(-bonusCap, Math.min(bonusCap, individualBonus))
 
     // 99 희소성 보호: compress 상한=98이므로 baseOvr은 99 미도달 — OVR_OVERRIDES 전용
