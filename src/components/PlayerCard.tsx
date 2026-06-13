@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean
   onClick?: () => void
   isFlying?: boolean
+  compact?: boolean   // 슬롯 간소화: true면 하단 역할/이름/팀 숨김, 사진+OVR만 표시
 }
 
 function photoSrc(player: PlayerSeason): string | null {
@@ -86,6 +87,7 @@ export default function PlayerCard({
   disabled = false,
   onClick,
   isFlying = false,
+  compact = false,
 }: Props) {
   const [imgError, setImgError] = useState(false)
 
@@ -176,18 +178,19 @@ export default function PlayerCard({
         </div>
       )}
 
-      {/* 6. 하단 좌정렬: 역할 + 선수 이름 + 팀·연도 */}
-      {/* textShadow 상속으로 하위 텍스트 전체 적용 — 흰 유니폼 위 가독성 보장 */}
-      <div className="absolute bottom-2.5 left-2.5 z-20 w-full pr-3" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)' }}>
-        <div className="font-label-caps text-[9px] text-outline/70 mb-[2px] uppercase">{player.role}</div>
-        <div className={[
-          'font-heading-md leading-none truncate uppercase text-on-surface',
-          SIZE_NAME[size],
-        ].join(' ')}>
-          {player.nameEn}
+      {/* 6. 하단 좌정렬: compact=true면 숨김 (슬롯 간소화 — 사진+OVR만) */}
+      {!compact && (
+        <div className="absolute bottom-2.5 left-2.5 z-20 w-full pr-3" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)' }}>
+          <div className="font-label-caps text-[9px] text-outline/70 mb-[2px] uppercase">{player.role}</div>
+          <div className={[
+            'font-heading-md leading-none truncate uppercase text-on-surface',
+            SIZE_NAME[size],
+          ].join(' ')}>
+            {player.nameEn}
+          </div>
+          <div className="text-[7px] text-outline/40 mt-[2px] truncate">{player.team} · {player.year}</div>
         </div>
-        <div className="text-[7px] text-outline/40 mt-[2px] truncate">{player.team} · {player.year}</div>
-      </div>
+      )}
     </button>
   )
 }

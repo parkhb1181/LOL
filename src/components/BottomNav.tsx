@@ -57,7 +57,7 @@ export default function BottomNav({ activePage }: Props) {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/30 md:hidden"
+      className="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-md border-t border-outline-variant/20 md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex h-16">

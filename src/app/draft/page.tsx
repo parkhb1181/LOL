@@ -51,7 +51,7 @@ function SlotItem({ role, player }: { role: string; player: PlayerSeason | null 
       </div>
     )
   }
-  return <PlayerCard player={player} size="slot" />
+  return <PlayerCard player={player} size="slot" compact />
 }
 
 // 상단 5슬롯 행
@@ -88,8 +88,8 @@ function MobileSlotRow({ picks, isPickPhase }: {
             </div>
           )
         }
-        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움
-        return <PlayerCard key={role} player={player} size="mob-result" />
+        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움, compact로 OVR+사진만
+        return <PlayerCard key={role} player={player} size="mob-result" compact />
       })}
     </div>
   )
@@ -427,28 +427,20 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
   const roundLabel = mobileRoundLabel(h)
   const isDNQ = roundLabel === 'DNQ'  // 영문 원본으로 체크 (번역 전)
   const displayLabel = t.draft.roundLabel[roundLabel] ?? roundLabel
-  const ser   = h.step.series?.[0]
+  const ser = h.step.series?.[0]
 
   return (
-    <div className={[
-      'rounded flex flex-col items-center justify-center relative overflow-hidden py-3 px-2 min-h-[90px]',
-      isHighlight
-        ? 'bg-surface-container-high border-2 border-secondary/50 shadow-[0_0_12px_rgba(233,195,73,0.1)]'
-        : 'bg-surface-container-low border border-outline-variant',
-    ].join(' ')}>
-      {isHighlight && (
-        <div className="absolute inset-0 card-shimmer opacity-20 pointer-events-none" aria-hidden />
-      )}
-      <span className={`font-label-caps text-[10px] mb-1 z-10 ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
+    <div className="flex flex-col gap-0.5 py-1 px-1">
+      <span className={`font-label-caps text-[10px] uppercase tracking-wider ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
         {t.draft.sectionShort[h.section] ?? h.section.toUpperCase()}
       </span>
-      <span className={`font-heading-md text-[18px] leading-tight text-center z-10 ${isDNQ ? 'text-outline/50' : 'text-on-surface'}`}>
+      <span className={`font-heading-md text-[16px] leading-tight ${isDNQ ? 'text-outline/50' : isHighlight ? 'text-secondary' : 'text-on-surface'}`}>
         {displayLabel}
       </span>
       {ser && !isDNQ && (
-        <div className={`mt-1.5 z-10 text-center font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+        <span className={`font-body-main text-[11px] leading-snug ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
           {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
-        </div>
+        </span>
       )}
     </div>
   )
@@ -481,8 +473,8 @@ function MobileResultScreen({
         {simResult.grade}
       </h1>
 
-      {/* 시즌 결과 2×2 그리드 */}
-      <div className="w-full grid grid-cols-2 gap-3 mb-6">
+      {/* 시즌 결과 2×2 — 박스 없이 텍스트만, 컴팩트 */}
+      <div className="w-full grid grid-cols-2 gap-x-3 gap-y-1 mb-4">
         {highlights.map(h => (
           <MobileSeasonCard
             key={h.section}
@@ -493,7 +485,7 @@ function MobileResultScreen({
       </div>
 
       {/* 선수 카드 3+2 (TOP/JGL/MID → ADC/SUP) */}
-      <div className="w-full flex flex-col items-center gap-3 mb-8">
+      <div className="w-full flex flex-col items-center gap-3 mb-6">
         <div className="flex justify-center gap-2 w-full">
           {[0, 1, 2].map(i => picks[i] && (
             <div key={i} className="w-[30%]">
@@ -510,6 +502,11 @@ function MobileResultScreen({
         </div>
       </div>
 
+      {/* URL 워터마크 — 버튼 위, 공유 스샷 출처 표시 */}
+      <p className="font-label-caps text-[10px] text-outline/50 text-center mb-3 tracking-wider">
+        grandslamlol.vercel.app
+      </p>
+
       {/* PLAY AGAIN 버튼 */}
       <button
         onClick={onReset}
@@ -517,11 +514,6 @@ function MobileResultScreen({
       >
         {t.draft.playAgain}
       </button>
-
-      {/* URL 워터마크 (공유 캡처용) */}
-      <p className="font-label-caps text-[8px] text-outline/30 text-center mt-3">
-        grandslamlol.vercel.app
-      </p>
     </div>
   )
 }
@@ -750,7 +742,7 @@ export default function DraftPage() {
               {ROLES.map((role, i) => {
                 const p = state.picks[i]?.player
                 return p ? (
-                  <PlayerCard key={role} player={p} size="slot" />
+                  <PlayerCard key={role} player={p} size="slot" compact />
                 ) : (
                   <div key={role} className="w-[55px] aspect-[5/7] rounded border border-dashed border-outline-variant/40 flex items-center justify-center">
                     <span className="font-label-caps text-[8px] text-outline/50">{role}</span>
@@ -861,11 +853,13 @@ export default function DraftPage() {
         )}
 
         {state.phase === 'REVEAL' && state.simResult && (
-          <RevealScreen
-            highlights={pickHighlightSteps(state.simResult.steps)}
-            revealStep={state.revealStep}
-            onSkip={machine.revealSkip}
-          />
+          <div className="pt-4 md:pt-0">
+            <RevealScreen
+              highlights={pickHighlightSteps(state.simResult.steps)}
+              revealStep={state.revealStep}
+              onSkip={machine.revealSkip}
+            />
+          </div>
         )}
 
         {state.phase === 'RESULT' && state.simResult && (
