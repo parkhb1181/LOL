@@ -59,73 +59,89 @@ function parseAwardsCsv(csv: string): AwardRow[] {
 // ⚠️ OVR 99는 이 테이블로만 부여 (compressOvr 상한 = 98) — 4명 고정
 const OVR_OVERRIDES: Record<string, number> = {
   // ── OVR 99 확정 4명 ──────────────────────────────────────────────────────
-  'Faker|2013|LCK': 99,   // 2013 Worlds 우승 — 전설적 등장
-  'Faker|2016|LCK': 99,   // 2016 Worlds 우승 — 역대 최고 미드 시즌
-  'MaRin|2015|LCK': 99,   // 2015 Worlds 우승 — 역대 최고 탑
-  'Canyon|2020|LCK': 99,  // 2020 Worlds 우승 — 역대 최고 정글
+  'Faker|2013|LCK': 99,
+  'Faker|2016|LCK': 99,
+  'MaRin|2015|LCK': 99,
+  'Canyon|2020|LCK': 99,
   // ── OVR 98 ──────────────────────────────────────────────────────────────
-  'Faker|2015|LCK': 98,   // 2015 우승 but 이미 2013/2016 = 99이므로 98
-  'Faker|2023|LCK': 97,   // T1 2023 Worlds 우승 (MID)
-  'Faker|2025|LCK': 95,   // T1 2025 Worlds 우승 + 3연속 MVP — 자동 92(국내 준우승) 상향
+  'Faker|2015|LCK': 98,
   'ShowMaker|2020|LCK': 98,
-  'Zeus|2023|LCK': 97,
-  'Oner|2023|LCK': 97,   // T1 2023 Worlds 우승 — 2022(97)보다 낮은 역전 해소
-  'Keria|2023|LCK': 96,  // T1 2023 (94→96: T1우승팀 상향)
   'Chovy|2024|LCK': 98,
-  'Faker|2024|LCK': 95,     // Worlds MVP — 준우승팀 BLG 선수보다 낮은 구조 보정
-  'Zeus|2024|LCK': 91,      // LCK 3시드 약체, 데이터 과소 보정
-  'Gumayusi|2024|LCK': 90,  // 2024 데이터 미완 과소 보정 (87→90)
-  'Wolf (Lee Jae-wan)|2015|LCK': 94,  // SKT 2015 우승이나 당해 슬럼프+MSI 부진 — MaRin/Faker 옆 98 과대
-  // LPL
+  // ── T1 2023-2025 ────────────────────────────────────────────────────────
+  'Faker|2023|LCK': 97,
+  'Zeus|2023|LCK': 97,
+  'Oner|2023|LCK': 97,
+  'Keria|2023|LCK': 96,
+  'Faker|2024|LCK': 95,
+  'Zeus|2024|LCK': 91,
+  'Gumayusi|2024|LCK': 90,
+  'Faker|2025|LCK': 95,
+  // ── SKT 2015-2016 Worlds 우승 — AP1st 부재 시대 보정 (Patch 2) ──────────
+  'Bang|2015|LCK': 95,                  // 2015 Worlds 우승 ADC, AP1st 제도 미비
+  'Bang|2016|LCK': 95,                  // 2016 Worlds 우승 ADC
+  'Wolf (Lee Jae-wan)|2015|LCK': 94,   // 2015 슬럼프 시즌 — 팀 성과 대비 개인 하향 유지
+  'Wolf (Lee Jae-wan)|2016|LCK': 91,   // 2016 Worlds 우승 SUP, AP1st 미비
+  // ── Samsung White 2014 ──────────────────────────────────────────────────
+  'Mata|2014|LCK': 96,   // 역대 유일 서폿 F.MVP
+  'imp|2014|LCK': 94,
+  'PawN|2014|LCK': 93,
+  'DanDy|2014|LCK': 93,
+  'Looper|2014|LCK': 90,
+  // ── LCK 개별 보정 ───────────────────────────────────────────────────────
+  'Smeb|2015|LCK': 91,
+  'Score|2018|LCK': 90,     // KT 2018 최고 시즌, 국내 우승+Worlds 4강
+  'Nuguri|2020|LCK': 95,    // Worlds 우승 완전체 탑, Zeus 2023급
+  // ── SSG 2017 — 향로 메타 월즈 준우승 (Patch 2·3 상향) ──────────────────
+  'Ruler|2017|LCK': 92,     // Worlds 2017 F.MVP — 92 (Patch 3)
+  'CoreJJ|2017|LCK': 91,    // 향로 핵심 SUP — Ruler(92) 아래, LCS 시절(90) 위
+  'Crown|2017|LCK': 89,     // SSG 미드, 월즈 준우승
+  'Ambition|2017|LCK': 89,  // SSG 정글, 월즈 준우승
+  'CuVee|2017|LCK': 89,     // SSG 탑 위크사이드, 월즈 준우승
+  // ── DRX 2022 — 월즈 미라클런 ─────────────────────────────────────────────
+  'Zeka (Kim Geon-woo)|2022|LCK': 91,  // 월즈 우승 미드
+  'Kingen|2022|LCK': 87,               // 월즈 결승 MVP
+  'BeryL|2022|LCK': 90,                // 월즈 우승 오더 SUP
+  // ── LPL ─────────────────────────────────────────────────────────────────
   'Scout|2021|LPL': 97,
-  'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG)
-  'Kanavi|2023|LPL': 96,                 // JDG 2023 준우승 (98→96: T1 역전 해소)
-  'knight (Zhuo Ding)|2023|LPL': 96,    // JDG 2023 준우승 (98→96: T1 역전 해소)
-  'Ruler|2023|LPL': 96,                  // Ruler 2023 실제 league=LPL (JDG)
+  'Viper (Park Do-hyeon)|2021|LPL': 97,
+  'Kanavi|2023|LPL': 96,
+  'knight (Zhuo Ding)|2023|LPL': 96,
+  'Ruler|2023|LPL': 96,
   'knight (Zhuo Ding)|2024|LPL': 96,
   '369|2023|LPL': 95,
-  'ON|2024|LPL': 93,
   'Elk|2024|LPL': 96,
-  'Bin (Chen Ze-Bin)|2024|LPL': 96,     // BLG 준우승 — stats-driven 98 하향
-  'TheShy|2023|LPL': 91,               // Weibo 준우승 에이스 TOP, 역대급 탑 — 81 과소
-  'SofM|2020|LPL': 90,                 // Suning 준우승 캐리 JGL, 서구권 정글 신화 시즌 — 83 과소
-  // FPX 2019 (Worlds 우승 — 에이스는 위크사이드보다 높게)
-  'Doinb|2019|LPL': 93,   // 에이스 MID
-  'Tian|2019|LPL': 92,    // 에이스 JGL
-  'Lwx|2019|LPL': 91,     // 위크사이드 ADC
-  'GimGoon|2019|LPL': 90, // 위크사이드 탑 최솟값
-  'Crisp|2019|LPL': 90,   // 위크사이드 SUP
-  // Samsung White 2014 (Worlds 역대최강팀 — 공식 82~83, 위크사이드 90+ 보정)
-  'Mata|2014|LCK': 96,    // 역대 유일 서폿 F.MVP — 에이스급
-  'imp|2014|LCK': 94,     // 2014 세체원 ADC, 하드캐리
-  'PawN|2014|LCK': 93,    // 월즈 우승 미드
-  'DanDy|2014|LCK': 93,   // 역대급 정글, 탈수기 운영
-  'Looper|2014|LCK': 90,  // 위크사이드 탑 최솟값
-  // LCK
-  'Smeb|2015|LCK': 91,                 // KOO 준우승 에이스 TOP, 당해 세계 최고 탑급 — 85 과소
-  // SSG 2017 — 향로 메타 월즈 준우승 위크사이드 보정
-  'Ruler|2017|LCK': 89,      // 월즈 2017 F.MVP, ADC 주도 향로 결승 — 83 과소
-  'CoreJJ|2017|LCK': 88,     // 향로 메타 핵심 SUP — LCS 시절(93) 구분, SSG 팀 내 Ruler 아래
-  // DRX 2022 — 월즈 미라클런 위크사이드 보정
-  'Zeka (Kim Geon-woo)|2022|LCK': 88,  // 월즈 우승 미드, 쵸비·페이커 꺾음 — 82 과소
-  'Kingen|2022|LCK': 87,              // 월즈 2022 결승 MVP — 81 과소
-  'BeryL|2022|LCK': 85,              // 월즈 우승 오더 SUP — 83 소폭 상향
-  // LEC
-  'YellOwStaR|2015|LEC': 90,   // 곡선 완화 후 공식 상승 방지 — v1 값 고정
-  'Rekkles|2018|LEC': 95,             // Fnatic 준우승 에이스 ADC, 팀메이트 Caps/Broxah 96인데 89 과소
-  'Jankos|2019|LEC': 97,        // G2 2019 MSI+Worlds결승 시즌 JGL
-  'Perkz|2019|LEC': 96,         // G2 2019 ADC
-  'Caps|2019|LEC': 97,          // G2 2019 MID
-  'Perkz|2022|LEC': 76,         // Team Vitality 부진기 — 71 과소 (역대급 경력 최솟값)
-  'Yike|2023|LEC': 94,          // LEC 국내 최고 정글, 국제 실적 없음 — 재빌드 98 복원 방지
-  'Caps|2024|LEC': 95,
-  'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
-  // LCS — z-score 인플레 보정
-  'Blaber|2020|LCS': 73,  // stats-driven 87 하향 — LCS 인플레, 국제전 성과 없음
-  'Blaber|2021|LCS': 75,  // 2021 LCS 우승, 국제전 없음 — 90+ 과대
-  'CoreJJ|2019|LCS': 93,                          // MSI 준우승 인정, 월즈 그룹탈락+LCS 96 과대
-  'Berserker (Kim Min-cheol)|2022|LCS': 86,       // 루키+ALLPRO_2nd+월즈그룹 — 팀메이트(ALLPRO_1ST=88)보다 낮아야
-  'Berserker (Kim Min-cheol)|2023|LCS': 88,       // Cloud9 LCS, Worlds 그룹 탈락 — LCS 인플레 95→88
+  'Bin (Chen Ze-Bin)|2024|LPL': 92,   // 96→92 (Patch 4 — 국제 우승 0, LPL 정규만)
+  'ON|2024|LPL': 89,                   // 93→89 (Patch 4)
+  'TheShy|2023|LPL': 91,
+  'SofM|2020|LPL': 90,
+  // ── IG 2018 Worlds 우승 (Patch 2·3) ──────────────────────────────────────
+  'TheShy|2018|LPL': 93,   // 역대 최고점 세체탑
+  'Rookie|2018|LPL': 93,   // 양스플릿 MVP + Worlds 우승
+  'Ning|2018|LPL': 92,     // 정글 최초 Worlds F.MVP
+  // ── RNG 2018 MSI 우승 ────────────────────────────────────────────────────
+  'Uzi (Jian Zi-Hao)|2018|LPL': 92,  // 역대 최고 MSI 시즌 ADC
+  // ── FPX 2019 Worlds 우승 ─────────────────────────────────────────────────
+  'Doinb|2019|LPL': 93,
+  'Tian|2019|LPL': 92,    // Worlds F.MVP
+  'Lwx|2019|LPL': 91,
+  'GimGoon|2019|LPL': 90,
+  'Crisp|2019|LPL': 90,
+  // ── LEC ─────────────────────────────────────────────────────────────────
+  'YellOwStaR|2015|LEC': 90,    // 곡선 완화 방지
+  'Rekkles|2018|LEC': 90,       // 95→90 (Patch 4 — LEC 정규 독식, 국제 한계)
+  'Jankos|2019|LEC': 91,        // 97→91 (Patch 4 + 검증: Tian 92 ≥ Jankos)
+  'Perkz|2019|LEC': 93,         // 96→93 (Patch 4 — MSI 우승 인정, 비원딜 보정)
+  'Caps|2019|LEC': 97,          // G2 2019 MID — 유지 (Worlds 결승 에이스)
+  'Perkz|2022|LEC': 76,
+  'Yike|2023|LEC': 88,          // 94→88 (Patch 4 — LEC만, 국제 한계)
+  'Caps|2024|LEC': 91,          // 95→91 (Patch 4)
+  'BrokenBlade|2024|LEC': 87,   // 90→87 (Patch 4)
+  // ── LCS ─────────────────────────────────────────────────────────────────
+  'Blaber|2020|LCS': 73,
+  'Blaber|2021|LCS': 75,
+  'CoreJJ|2019|LCS': 90,                         // 93→90 (Patch 4 + 모순해소: 2017 SSG > LCS 시절)
+  'Berserker (Kim Min-cheol)|2022|LCS': 86,
+  'Berserker (Kim Min-cheol)|2023|LCS': 88,
 }
 
 // §9 연도×리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
