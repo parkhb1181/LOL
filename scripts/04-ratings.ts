@@ -93,7 +93,7 @@ const OVR_OVERRIDES: Record<string, number> = {
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
   // LCS — z-score 인플레 보정
   'CoreJJ|2019|LCS': 93,                          // MSI 준우승 인정, 월즈 그룹탈락+LCS 96 과대
-  'Berserker (Kim Min-cheol)|2022|LCS': 89,       // LCS 2nd+루키 시즌 — z-score 인플레
+  'Berserker (Kim Min-cheol)|2022|LCS': 86,       // 루키+ALLPRO_2nd+월즈그룹 — 팀메이트(ALLPRO_1ST=88)보다 낮아야
   'Berserker (Kim Min-cheol)|2023|LCS': 88,       // Cloud9 LCS, Worlds 그룹 탈락 — LCS 인플레 95→88
 }
 
