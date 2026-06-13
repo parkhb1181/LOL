@@ -1,4 +1,4 @@
-// §7.4 Grade table — §9 컷 (S=10 / intl cap=86, 2026-06 v2)
+// §7.4 Grade table — §9 컷 (S=20 / intl cap=86, 2026-06 v3)
 // 트로피·월즈 성과 → 상위 등급 / 트로피 REBUILD만 정규시즌 순위로 구제
 
 export type Grade =

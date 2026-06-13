@@ -105,6 +105,9 @@
 - DESIGN_GUIDE v1.0 승격 후 CSS 변수/토큰 적용
 - PlayerCard: WORLDS 프레임 시머 애니메이션, crown 오버레이 (에셋 수령 후)
 - lab/page.tsx: 카드 디자인 랩 구현
+- **[배포 전 필수] /lab 접근 차단**: 내부 개발 페이지 — 일반 유저 노출 금지
+  방법 후보: ① middleware.ts 로그인 게이트 ② `robots.txt Disallow: /lab` + noindex 메타 ③ 라우트 삭제(대신 로컬 URL 직접 접근)
+  지금은 `noindex` 최소 처리 후 배포, 이후 삭제 검토
 - 09-montecarlo.ts: 실데이터 교체 후 밸런스 검증
 
 ## 호빈 게이트 대기

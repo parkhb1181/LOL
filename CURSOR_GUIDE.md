@@ -271,7 +271,7 @@ simulate(picks: PlayerSeason[5], opponents: Opponent[], seed: number): SimResult
 ```
 teamPower = Σ ovr × w[role],  w = {MID:1.10, JGL:1.10, ADC:1.00, TOP:0.95, SUP:0.85} (합 5.0)
 teamOvr = teamPower / 5                       // 60~99 스케일로 정규화. 표시는 round(teamOvr)
-게임 승률 P(win) = 1 / (1 + 10^((oppRating − teamOvr) / S)),  S 초기값 40 (§9 튜닝 파라미터)
+게임 승률 P(win) = 1 / (1 + 10^((oppRating − teamOvr) / S)),  S 확정값 20 (§9 튜닝 파라미터, 초기 40 → 2026-06 v3 조정)
                                               // 양변 모두 60~99 평균 스케일 — teamPower(합산값)를 직접 넣지 말 것
 시리즈: Bo1=1게임, Bo3=2선승, Bo5=3선승 — 게임 단위 난수 (simRng만 사용, §6.1)
 ```
@@ -346,7 +346,7 @@ p: PlayerSeason.id 5개, 순서 TOP.JGL.MID.ADC.SUP 고정 / s: 시뮬 seed (10�
 
 ## 9. 튜닝 단계 (조정 허용 파라미터 — 이 목록 외 수정 금지)
 
-1. Elo 스케일 `S` (초기 40)
+1. Elo 스케일 `S` (확정값 20 — 초기 40에서 2026-06 v3 조정)
 2. `opponents-2026.json`의 팀 구성·rating 값 — **regular 정확히 9팀**(zod로 강제, 1~3티어 혼합: 92~94 / 88~91 / 84~87 / 하위 78~83), **intl 12팀 내외**(상위권 위주). **D0에 스키마를 충족하는 플레이스홀더를 생성**하고, D3에 호빈이 실명·확정값으로 교체 (스키마는 D0부터 항상 충족 — 빌드·검증 경로 단일 유지). 두 풀 간 중복 허용
 3. 레이팅 공식의 가점 수치 (§4.3) — **앵커 검증(08-anchors.ts) 결과가 어긋날 때만**. 앵커 목표값은 PRD §6.2 (시대별 현실화 버전)를 따른다
 4. 스핀 가중치 `TeamYear.weight` 산출 계수 (초안: Worlds 우승 8 / Worlds 진출·국내 우승 4 / 플옵 2 / 그 외 1) — 몬테카를로의 그리디 분포와 체감 유명 팀 비율(목표 50~60%)을 보고 조정
