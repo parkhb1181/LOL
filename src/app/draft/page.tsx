@@ -617,7 +617,7 @@ function ResultScreen({
         </div>
 
         {/* 선수 카드 가로 스크롤 (snap) */}
-        <div className="w-full max-w-[1100px] flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory pb-4 justify-center gap-4">
+        <div className="w-full max-w-[1100px] flex overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 justify-center gap-4">
           {ROLES.map((_, i) => picks[i] && (
             <div key={i} className="flex-shrink-0 snap-center">
               <PlayerCard player={picks[i]!.player} size="result" />
