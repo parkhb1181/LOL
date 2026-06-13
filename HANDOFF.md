@@ -4,9 +4,9 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D3 (2026-06-14) / v1.1 OVR OVERRIDE 보정 완료 + 앵커 5/5 통과
-- 브랜치: ovr-stats-rework (최신 커밋: df00a27 → 세션18 추가 커밋 예정)
-- 빌드 상태: Next.js build ✓ / players.json 1709건 / OVR 99=4명 ✓
+- 날짜 / Phase: D3 (2026-06-14) / 프론트 언어 토글 전 화면 완료
+- 브랜치: ovr-stats-rework (최신 커밋: 80f780b — 한/영 언어 토글 전 화면 적용)
+- 빌드 상태: Next.js build ✓ / TypeScript ✓ / 11페이지 정적 생성 ✓
 - **복귀 후 재개 시작점**: 아래 "호빈 게이트 대기" 항목 결정 → 다음 Phase(프론트 잔여 or main 머지)
 
 ## 완료 (최신)
@@ -121,8 +121,9 @@
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
+- 2026-06-14 (세션20): 한/영 언어 토글 전 화면 완료 (80f780b). draft/page.tsx 전체 번역 (RevealScreen/ResultScreen/PickButtons/DraftPage). 빌드 ✓.
+- 2026-06-14 (세션19): KO/EN 언어 토글 완료 (b140cb7). i18n LangProvider+en/ko 구조 통일. SiteHeader KO|EN 버튼. draft 결과 라벨 번역. 빌드 ✓.
 - 2026-06-13 (세션18): OVERRIDE 보정 (83a5e93). Faker 2025 WORLDS_MVP 추가. 준우승 에이스 4명 과소 보정. Oner 2023 97로 역전 해소. OVR 99=4명 ✓.
 - 2026-06-13 (세션17): 연도별 리그 계수+v11-final 경로 수정+OVERRIDE 정리 (d6c9dfa). 08-anchors 2/5. bonusCap ±7 통일. T1 2024 보정.
 - 2026-06-13 (세션16): v1.1 최종 검증·정리 (0c9d0ec). XP+CS 블렌드·cap±7·T1 역전 해소 확인. OVR 99=4명 ✓, T1 Faker/Zeus 97 > JDG 96 ✓. progress_log 최종 상태 반영.
 - 2026-06-13 (세션15): v1.1 OVR 전 연도 통합 완료 (c8eb399). 2024~2025 LP 수집 611건. 전 연도 cap ±7 통일. players.json 1709건 / OVR 99=4명 ✓. 신규 Bin 2024=98 (stats-driven).
-- 2026-06-13 (세션14): awards.csv playerId 28건 수정+Xiaohu 활성화+LEC/LCS 국내결과+07-build 필터 수정. players.json 2223건. Bjergsen 89, G2 2019 93-97.

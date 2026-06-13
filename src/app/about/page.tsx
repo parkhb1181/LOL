@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import SiteHeader from '@/components/SiteHeader'
+import BottomNav from '@/components/BottomNav'
 
 export const metadata = {
   title: 'Legal & Attribution — GRANDSLAM',
@@ -6,21 +8,23 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#0d0d1a] text-white px-6 py-14">
-      <div className="max-w-lg mx-auto flex flex-col gap-10">
+    <div className="min-h-screen text-on-surface">
+      <SiteHeader fixed />
+
+      <main className="max-w-lg mx-auto px-6 pt-24 pb-28 flex flex-col gap-10">
 
         {/* Header */}
         <div>
-          <Link href="/" className="text-xs text-white/30 hover:text-white/60 transition-colors">
+          <Link href="/" className="text-xs text-outline/40 hover:text-outline/80 transition-colors">
             ← GRANDSLAM
           </Link>
-          <h1 className="mt-4 text-2xl font-black tracking-tight">Legal &amp; Attribution</h1>
+          <h1 className="mt-4 text-2xl font-black tracking-tight text-on-surface">Legal &amp; Attribution</h1>
         </div>
 
         {/* Disclaimer */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Disclaimer</h2>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Disclaimer</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             GRANDSLAM is an unofficial fan-made project. It is not affiliated with, endorsed by,
             or associated with Riot Games, Inc. League of Legends and all related properties
             are trademarks of Riot Games.
@@ -29,14 +33,14 @@ export default function AboutPage() {
 
         {/* Data Source */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Data Source</h2>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Data Source</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             Player and team data (tournament results, rosters, awards) are sourced from the{' '}
             <a
               href="https://lol.fandom.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 underline underline-offset-2 hover:text-white/80 transition-colors"
+              className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors"
             >
               Leaguepedia
             </a>{' '}
@@ -46,14 +50,14 @@ export default function AboutPage() {
 
         {/* Image License */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Player Images</h2>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Player Images</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             Player images are sourced from{' '}
             <a
               href="https://lol.fandom.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 underline underline-offset-2 hover:text-white/80 transition-colors"
+              className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors"
             >
               Leaguepedia
             </a>
@@ -62,7 +66,7 @@ export default function AboutPage() {
               href="https://creativecommons.org/licenses/by-sa/4.0/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 underline underline-offset-2 hover:text-white/80 transition-colors"
+              className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors"
             >
               CC BY-SA 4.0
             </a>
@@ -72,16 +76,16 @@ export default function AboutPage() {
 
         {/* Analytics */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Analytics</h2>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Analytics</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             We use analytics to improve the experience. No personal data is collected or sold.
           </p>
         </section>
 
         {/* Rating Methodology */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Rating System</h2>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Rating System</h2>
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             Player OVR ratings are computed from tournament placement (domestic, MSI, Worlds),
             individual awards (MVP, All-Pro), and editorial adjustments for era fairness.
             Ratings reflect historical peak performance and are not official Riot metrics.
@@ -90,18 +94,20 @@ export default function AboutPage() {
 
         {/* Contact */}
         <section className="flex flex-col gap-2">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-white/30">Contact</h2>
-          <p className="text-sm text-white/70">
+          <h2 className="text-[10px] tracking-[0.4em] uppercase text-outline/40">Contact</h2>
+          <p className="text-sm text-on-surface-variant">
             <a
               href="mailto:parkhb1181@gmail.com"
-              className="text-white/50 underline underline-offset-2 hover:text-white/80 transition-colors"
+              className="text-outline/60 underline underline-offset-2 hover:text-on-surface-variant transition-colors"
             >
               parkhb1181@gmail.com
             </a>
           </p>
         </section>
 
-      </div>
-    </main>
+      </main>
+
+      <BottomNav />
+    </div>
   )
 }
