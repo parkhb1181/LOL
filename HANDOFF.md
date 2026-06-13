@@ -4,18 +4,21 @@
 > 여기에는 **상태만** 기록한다 — 절차·DoD·수치·스키마는 SSOT 3종이 원문 (복제 금지).
 
 ## 현재 상태
-- 날짜 / Phase: D2 (2026-06-12) / Phase 2 완료, Vercel push 완료
-- 브랜치: main (최신 커밋: 9f6fa15)
-- 빌드 상태: Next.js build ✓ / Vercel 재빌드 중
-- **복귀 후 재개 시작점**: Vercel 재빌드 완료 후 사진 확인 → 리그 계수 적용 여부 결정 (호빈 게이트)
+- 날짜 / Phase: D3 (2026-06-13) / v1.1 OVR 통합 **전체 완료** (2013~2025)
+- 브랜치: ovr-stats-rework (최신 커밋: c8eb399)
+- 빌드 상태: Next.js build ✓ / players.json 1709건 / OVR 99=4명 ✓
+- **복귀 후 재개 시작점**: 아래 "호빈 게이트 대기" 항목 결정 → 다음 Phase(프론트 잔여 or main 머지)
 
 ## 완료 (최신)
-- **Phase 2 실행 완료 (9f6fa15)**: 05-images.ts 852건 다운로드 + 871건 webp 변환(실패 0) → 06-upload-r2.ts R2 871건 업로드 100% → players.json photo 871건 갱신 → git push
-- **stats_agg KDA 차등 (78ce42a)**: 04-ratings role×year z-score ±3 (2013~2020), 서브 -1 (전 시대). 2015 SKT 99/99/98/98/96, 2024 T1 93/89×4, 시대 평균 79.6/79.7(형평 확인)
-- **Phase 1 재빌드 완료 (15bbea9)**: LEC/LCS 국내 플옵 결과 포함, awards.csv playerId 28건 수정, Xiaohu 2022 FMVP 활성화, 07-build.ts LEC/LCS 필터 수정
-  - players.json 2223건 / teams.json 445건 / OVR 75: 0명 (전원 플옵 컷 이상)
-  - Bjergsen 81→89, G2 2019 83-87→93-97 (LEC domestic 반영 효과)
-  - stats(04b): v1.1 포기 결정 — stats_agg 캐시 37개 미완성 상태로 보존 (v1.1 재개용)
+- **v1.1 OVR 전 연도 통합 완료 (c8eb399)**: 2013~2025 전 연도 다지표 cap ±8 통일
+  - 04d-oe-stats.ts: 2024~2025 Leaguepedia 수집 611건 → oe-stats-2024-2025.json
+  - 04-ratings.ts: 2024~2025 섹션 추가 + bonusCap 단일화(8)
+  - players.json 1709건 재빌드 / OVR 99=4명(Faker 2013/2016·MaRin 2015·Canyon 2020) ✓
+  - OVR 98(16명): Chovy 2024·Wolf 2015·Bang 2016·Smeb 2016·Nuguri 2020·ShowMaker 2020·BeryL/Canyon/ShowMaker 2021·Keria 2022·Tian 2019·Kanavi/knight 2020·Wunder 2019·Yike 2023·Bin 2024
+  - **신규**: Bin (Chen Ze-Bin) 2024 LPL TOP=98 (OVERRIDE 없이 stats-driven)
+- **지표 일관성 통일 (c8eb399)**: 04e ±7→±8, 2019~2021 재계산(z×4.0)
+- **Phase 2 실행 완료 (9f6fa15)**: R2 871건 업로드 / photo URL 갱신
+- **Phase 1 재빌드 완료 (15bbea9)**: LEC/LCS 국내 플옵, awards.csv 28건 수정
 
 ## 완료 (이전)
 - 스캐폴드: Next.js 15 + TypeScript + Tailwind, src/ 구조
@@ -54,55 +57,31 @@
 ## 진행 중
 없음.
 
-## v1.1 OVR 지표 반영 작업 현황 (브랜치: ovr-stats-rework)
+## v1.1 OVR 지표 반영 작업 현황 (브랜치: ovr-stats-rework) — **전체 완료**
 
-### 완료
-- [x] backup_v1.0/ 안전장치 (players.json, ratings.json, awards.csv)
-- [x] 2013~2015 포지션별 z-score 정규화·점수화 — `scripts/04e-early-stats.ts` (커밋 b864e3a)
-  - 출력: `pipeline-cache/ovr-stats-early.json` 1012건 / `pipeline-cache/ovr-comparison-early.csv` 1165행
-  - 데이터: Leaguepedia stats_agg (OE 2013~2015 미제공)
-  - 지표: KDA+GS+KP 동적 가중치 — 2014 GS 전면 제외, n<10 ±3 클램프
-- [x] 2022~2023 포지션별 z-score 정규화·점수화 — `scripts/04c-oe-stats.ts`
-  - 지표: KDA 35% + GoldShare 25% + CS 20% + Damage 20%, **cap ±7** (1b40d33에서 ±8→±7 수정)
-  - 매칭: 365/365 (100%), 미매칭 0
-- [x] **04-ratings.ts v1.1 통합 완료 + 2016~2018 OE 지표 완성**
-  - 2016~2018: OE 다지표 **CAP±7** + LP 폴백 ±3 (04e-ovr-final.ts → ovr-stats-v11-final.json 857건)
-  - 2019~2021: pipeline-cache/oe/stats_{yr}.json **cap ±7** (04b 재실행 완료)
-  - 2022~2023: oe-stats-2022-2023.json ovrAdjust **cap ±7** (04c-oe-stats 재실행 완료)
-  - compressOvr 상한 98, calcOvr_ clamp 98 확인
-- [x] **터미널 간 지표 일관성 통일** (커밋 1b40d33)
-  - 전 터미널 3+지표 cap ±7 통일 (사용자 확정 규칙 2013~2025 전체 공통)
-  - 라인전: 2019~2021(04b) XP+CS 블렌드로 통일 (04d 2024~2025와 동일)
-  - 결측치: null+동적 재분배 (04b, 04e-final)
-  - 데이터 제약 차이 허용: 2013~2015(LP KDA+GS+KP), 2022~2023(LP CS per game), 2024~2025(Mode A/B 자동)
-- [x] **2019~2021 z=0 폴백 + 동적 cap 통일** (커밋 9a6c2a4)
-  - 04b-oe-stats.ts: 재분배→z=0 폴백, cap ±7/5/3 동적 (≥3개→7, 2개→5, 1개→3)
-  - 2019~2021 전원 4지표 100% 커버 → 전원 cap ±7 적용
-  - Canyon 2021=98, ShowMaker 2021=98 (구 ±6→±7로 정상화)
-- [x] **T1 2023 역전 해소 + OVR 99=4명 재확인** (커밋 e9a4bab)
-  - Faker 2023=97, Keria 2023=96, Oner 2023=95 (추가/수정)
-  - Kanavi|2023|LPL=96, knight(Zhuo Ding)|2023|LPL=96 (JDG 하향)
-  - OVR 99: Faker 2013/2016, MaRin 2015, Canyon 2020 ✓
-  - players.json 1709건 재빌드 완료
-- [x] 98 라인 (15명): Chovy 2024, Yike 2023, Keria 2022, BeryL/Canyon/ShowMaker 2021, Nuguri/ShowMaker 2020, Kanavi/knight 2020, Tian 2019, Wunder 2019, Rekkles 2018, Faker 2015, Wolf 2015
+### 전 연도 완료 요약
+| 연도 | 스크립트 | 데이터 소스 | 지표 | cap | 상태 |
+|------|---------|-----------|------|-----|------|
+| 2013~2015 | 04e-early-stats.ts | LP stats_agg | KDA+GS+KP 동적 | ±8 | ✅ |
+| 2016~2018 | 04e-ovr-final.ts | LP stats_agg | KDA+GS+KP | ±8 | ✅ |
+| 2019~2021 | 04b-oe-stats.ts | OE CSV | KDA+GD15+CS15+DPM | ±8 | ✅ |
+| 2022~2023 | 04c-oe-stats.ts | LP ScoreboardPlayers | KDA+GS+CS+Dmg | ±8 | ✅ |
+| 2024~2025 | 04d-oe-stats.ts | LP ScoreboardPlayers | KDA+GS+CS+Dmg | ±8 | ✅ |
 
 ### 호빈 검토 필요 (v1.1 결과)
-1. **T1 2023 잔여 역전**: Oner(JGL 95) < Kanavi(96), Gumayusi(ADC 95) < Ruler(96) 1점 차 — 같은 포지션 비교. Oner를 96으로 올리거나 Ruler를 95로 낮추는 결정 필요. 또는 현재 수용
-2. **Wolf 2015 LCK SUP = 98**: SKT T1 2015 Worlds 우승 + ALLPRO? — 수용 여부
-3. **Rekkles 2018 LEC ADC = 98**: Fnatic (non-Worlds winner) — 수용 여부. OVR_OVERRIDE 추가로 96~97 하향 고려
-4. **Yike 2023 LEC JGL = 98**: G2 LEC 3-split + FMVP + ALLPRO1ST 합산 — 수용 여부
-5. **Oner 2022 LCK JGL = 97**: OVR_OVERRIDE Oner 2023=95보다 높은 역전 — 2022에 OVERRIDE 추가 필요할 수 있음
-6. **Apple|2014|LCS +7** (78→85): KDA=9.21, kda_z=4.38 극단값 — 수동 캡 또는 제외 검토
-7. **Looper|2014|LCK** → Keria 2022 역전 확인 필요
-8. **2016 Smeb/Bang 하향**: 이전 98→현재 95/94 (04c 방식 변경 효과) — 수용 여부
+1. **Bin 2024 LPL TOP = 98**: OVERRIDE 없이 stats-driven. 수용 여부 (OVR_OVERRIDE 추가로 하향 또는 현재 유지)
+2. **T1 2023 잔여 역전**: Oner(JGL 95) < Kanavi(96), Gumayusi(ADC 95) < Ruler(96) 1점 차
+3. **Wolf 2015 LCK SUP = 98**: SKT 2015 Worlds 우승팀 — 수용 여부
+4. **Rekkles 2018 LEC ADC = 98**: Fnatic (non-Worlds winner) — 하향 검토
+5. **Yike 2023 LEC JGL = 98**: G2 LEC 3-split + FMVP + ALLPRO1ST — 수용 여부
+6. **Oner 2022 = 97 vs Oner 2023 OVERRIDE=95**: 역전 구조 — 2022 OVERRIDE 추가 고려
+7. **Apple|2014|LCS +7** (78→85): kda_z=4.38 극단값 — 제외 검토
 
 ## 다음 작업
 
-### ① Canyon/Chovy 앵커 조정 (호빈 결정 후)
-선택지 3가지 → 호빈 결정 필요:
-1. awards.csv EDITORIAL 마이너스 추가 (Canyon -3, Chovy -5 전후) → 목표 96 이하 진입
-2. PRD §6.2 앵커 목표값 상향 (96~99로 수용) → "최고 선수는 99 가능" 설계
-3. WORLDS_MVP/SEASON_MVP 가점 자체 하향 → 전체 분포 재조정
+### ① v1.1 검토 항목 결정 (호빈 결정 후)
+- Bin 2024=98 수용 여부 / T1 2023 역전 / Wolf·Rekkles·Yike 98 수용 여부
+- Canyon/Chovy 앵커 조정 필요 시: awards.csv EDITORIAL 마이너스 추가(Canyon -3, Chovy -5 전후)
 
 ### ② opponents-2026.json 실값 교체 (D3 게이트)
 현재 플레이스홀더 유지 — 호빈이 실명·레이팅 확정 후 교체
@@ -132,11 +111,8 @@
 - 네이밍/도메인 (PRD §13 Q1)
 
 ## 세션 로그 (최근 5개만 유지)
-- 2026-06-12 (세션14): awards.csv playerId 28건 수정+Xiaohu 활성화+LEC/LCS 국내결과+07-build 필터 수정. players.json 2223건. Bjergsen 89, G2 2019 93-97.
-- 2026-06-12 (세션13): 3개 버그 수정 완료 (78384d5). Worlds frame 정확(13팀·연도), KT2015 5명(dedup), G2/FNC/C9/TL 포함 확인. players.json 1593건. ④사진은 Phase2 미구현으로 null 유지.
-- 2026-06-12 (세션12): 5가지 묶음 적용 완료 (18896bd). OVR 압축 78~99, 99→2명, 카드 풀 2999→1714명, Faker 닉네임/Faker2013 OVR 94 복구. Canyon 97/Chovy 99 구조적 한계 보고.
-- 2026-06-12 (세션11): OG 이미지 강화 (/api/og) + /r generateMetadata 완료 (67ffd0a). 6가지 UI 개선 완료. build 통과.
-- 2026-06-12 (세션10): GAME_SPEC v1 구현 — 자동스핀·fullReroll·S=20·타임라인. 더미 5팀 생성.
-- 2026-06-11 (세션9): Worlds 2017~2025 TournamentResults 버그 수정(dcf50be). 통합 재실행 계획 수립.
-- 2026-06-11 (세션8): LCK 2013~2015 League명 실값 확인. 01-tournaments.ts 픽스(b7be083).
-- 2026-06-11 (세션7): awards.csv v0.3 확정, 01-tournaments.ts Worlds 2017+ 버그 수정.
+- 2026-06-13 (세션15): v1.1 OVR 전 연도 통합 완료 (c8eb399). 2024~2025 LP 수집 611건. 전 연도 cap ±8 통일. players.json 1709건 / OVR 99=4명 ✓. 신규 Bin 2024=98 (stats-driven).
+- 2026-06-13 (세션14): awards.csv playerId 28건 수정+Xiaohu 활성화+LEC/LCS 국내결과+07-build 필터 수정. players.json 2223건. Bjergsen 89, G2 2019 93-97.
+- 2026-06-12 (세션13): 3개 버그 수정 완료 (78384d5). Worlds frame 정확(13팀·연도), KT2015 5명(dedup), G2/FNC/C9/TL 포함 확인. players.json 1593건.
+- 2026-06-12 (세션12): 5가지 묶음 적용 완료 (18896bd). OVR 압축 78~99, 99→2명, 카드 풀 2999→1714명.
+- 2026-06-12 (세션11): OG 이미지 강화 (/api/og) + /r generateMetadata 완료 (67ffd0a). build 통과.

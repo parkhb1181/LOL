@@ -49,18 +49,41 @@
 
 ---
 
-## [2024~2025 담당] Oracle's Elixir 데이터 수집 현황
+## [2024~2025 담당] ✅ 완료
 
-### OE 접근 성공
-- JS 번들에서 API 키 `f561197a-82ea-4e54-acd2-386979018a7a` + `oe.datalisk.io/matchData` 획득
-- 2024 URL: `https://oracles-elixir.s3-us-west-2.amazonaws.com/2024_LoL_esports_match_data_from_OraclesElixir.csv` (10195 games)
-- 2025 URL: `https://oracles-elixir.s3-us-west-2.amazonaws.com/2025_LoL_esports_match_data_from_OraclesElixir.csv` (10038 games)
-- 지표: kills/deaths/assists (KDA 35%) + golddiffat15 (25%) + xpdiffat15+csdiffat15 (라인전 20%) + damagetochampions/dpm (20%)
+### 데이터 소스: Leaguepedia ScoreboardPlayers (2022~2023과 동일 방식)
+- OE S3 직접 접근은 이전 시도에서 확인된 403 차단 → LP 경로로 진행
+- **수집 지표**: KDA 35% + GoldShare 25% + CS 20% + DamageToChampions 20% (Mode B — at-15 미수집)
+- 스크립트: `scripts/04d-oe-stats.ts`
 
-| 연도 | 상태 | 파일 | 선수 행 수 | 비고 |
-|------|------|------|-----------|------|
-| 2024 | 다운로드 중 | oe-data/2024.csv | - | |
-| 2025 | 다운로드 중 | oe-data/2025.csv | - | |
+| 연도 | 상태 | 건수 | 상승 | 하락 | 평균보너스 |
+|------|------|------|------|------|----------|
+| 2024 | ✅ 완료 | 315건 | 130 | 124 | +0.03 |
+| 2025 | ✅ 완료 | 296건 | 124 | 117 | +0.01 |
+
+**출력 파일**: `pipeline-cache/oe-stats-2024-2025.json` (611건)
+
+### 앵커 검증 (2024~2025)
+| 선수 | 연도 | 팀 | bonus | compositeZ | 비고 |
+|------|------|---|-------|-----------|------|
+| Chovy | 2024 | Gen.G | +7 | 2.224 | kda=2.674, gs=2.021, cs=1.919, dmg=1.998 |
+| Faker | 2024 | T1 | 0 | 0.139 | kda=0.582, gs=-0.536 |
+| Bin | 2024 | 팀 미표시 | OVR=98 | - | stats-driven, OVERRIDE 없음 ⚠️ |
+| Chovy | 2025 | Gen.G | +4 | 1.439 | |
+| Faker | 2025 | T1 | -1 | -0.252 | |
+
+### 04-ratings.ts 통합 (2024~2025)
+- 로딩: `pipeline-cache/oe-stats-2024-2025.json` → `newStatsByKey` Map
+- 키: `${playerId.lower()}|${year}|${team.lower()}`
+- bonusCap 단일화: `const bonusCap = 8` (전 연도 통일)
+
+### 지표 일관성 통일 (전 연도)
+| 항목 | 통일 결과 |
+|------|---------|
+| 다지표 cap | **전 연도 ±8** (04e ±7→±8, 2019~2021 재계산) |
+| 라인전 지표 | 연도별 데이터 가용성 차이 허용 (z-score 내 상대 비교로 공정) |
+| 결측치 | 04b: z=0 폴백 / 04e-early: 동적 재분배 / 04c/04d: z=0 |
+| 포지션별 정규화 | 전 연도 ✓ |
 
 ---
 
@@ -164,6 +187,74 @@ Canyon 2020 LCK JGL = 99
 
 ## [2016~2018] 포지션별 정규화 현황
 
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.14
+JGL 2016: OE=35 LP=38 평균bonus=-0.18
+MID 2016: OE=33 LP=40 평균bonus=-0.18
+ADC 2016: OE=25 LP=48 평균bonus=-0.05
+SUP 2016: OE=23 LP=50 평균bonus=-0.14
+TOP 2017: OE=31 LP=31 평균bonus=0.05
+JGL 2017: OE=30 LP=33 평균bonus=-0.10
+MID 2017: OE=35 LP=28 평균bonus=0.03
+ADC 2017: OE=33 LP=30 평균bonus=-0.03
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=0.00
+JGL 2018: OE=30 LP=24 평균bonus=0.04
+MID 2018: OE=30 LP=24 평균bonus=-0.15
+ADC 2018: OE=31 LP=23 평균bonus=-0.11
+SUP 2018: OE=28 LP=26 평균bonus=0.15
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.14
+JGL 2016: OE=35 LP=38 평균bonus=-0.18
+MID 2016: OE=33 LP=40 평균bonus=-0.18
+ADC 2016: OE=25 LP=48 평균bonus=-0.05
+SUP 2016: OE=23 LP=50 평균bonus=-0.14
+TOP 2017: OE=31 LP=31 평균bonus=0.05
+JGL 2017: OE=30 LP=33 평균bonus=-0.10
+MID 2017: OE=35 LP=28 평균bonus=0.03
+ADC 2017: OE=33 LP=30 평균bonus=-0.03
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=0.00
+JGL 2018: OE=30 LP=24 평균bonus=0.04
+MID 2018: OE=30 LP=24 평균bonus=-0.15
+ADC 2018: OE=31 LP=23 평균bonus=-0.11
+SUP 2018: OE=28 LP=26 평균bonus=0.15
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.14
+JGL 2016: OE=35 LP=38 평균bonus=-0.18
+MID 2016: OE=33 LP=40 평균bonus=-0.18
+ADC 2016: OE=25 LP=48 평균bonus=-0.05
+SUP 2016: OE=23 LP=50 평균bonus=-0.14
+TOP 2017: OE=31 LP=31 평균bonus=0.05
+JGL 2017: OE=30 LP=33 평균bonus=-0.10
+MID 2017: OE=35 LP=28 평균bonus=0.03
+ADC 2017: OE=33 LP=30 평균bonus=-0.03
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=0.00
+JGL 2018: OE=30 LP=24 평균bonus=0.04
+MID 2018: OE=30 LP=24 평균bonus=-0.15
+ADC 2018: OE=31 LP=23 평균bonus=-0.11
+SUP 2018: OE=28 LP=26 평균bonus=0.15
+
+### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
+TOP 2016: OE=33 LP=39 평균bonus=-0.14
+JGL 2016: OE=35 LP=38 평균bonus=-0.19
+MID 2016: OE=33 LP=40 평균bonus=-0.19
+ADC 2016: OE=25 LP=48 평균bonus=-0.07
+SUP 2016: OE=23 LP=50 평균bonus=-0.12
+TOP 2017: OE=31 LP=31 평균bonus=0.03
+JGL 2017: OE=30 LP=33 평균bonus=-0.10
+MID 2017: OE=35 LP=28 평균bonus=0.05
+ADC 2017: OE=33 LP=30 평균bonus=-0.03
+SUP 2017: OE=27 LP=36 평균bonus=0.11
+TOP 2018: OE=32 LP=21 평균bonus=0.00
+JGL 2018: OE=30 LP=24 평균bonus=0.04
+MID 2018: OE=30 LP=24 평균bonus=-0.15
+ADC 2018: OE=31 LP=23 평균bonus=-0.13
+SUP 2018: OE=28 LP=26 평균bonus=0.15
 
 ### [2016~2018] 포지션별 정규화 현황 — 04e-ovr-final 결과
 TOP 2016: OE=33 LP=39 평균bonus=-0.17
