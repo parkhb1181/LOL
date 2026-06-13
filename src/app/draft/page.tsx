@@ -745,7 +745,7 @@ export default function DraftPage() {
         fixed={false}
         fixedMobile={true}
         rightSlot={
-          state.phase !== 'IDLE' && !isDraftScreen ? (
+          state.phase !== 'IDLE' && !isDraftScreen && state.phase !== 'RESULT' ? (
             <div className="flex gap-2">
               {ROLES.map((role, i) => {
                 const p = state.picks[i]?.player

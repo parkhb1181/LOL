@@ -126,12 +126,12 @@ export default function PlayerCard({
             src={photoSrc(player)!}
             alt={player.nameEn}
             loading="lazy"
-            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover object-top"
             onError={() => setImgError(true)}
           />
         ) : (
           <div
-            className="w-full h-full flex items-center justify-center text-white/60 font-black text-4xl transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full flex items-center justify-center text-white/60 font-black text-4xl"
             style={{ background: avatarBg(player.teamSlug) }}
           >
             {player.nameEn.charAt(0).toUpperCase()}
