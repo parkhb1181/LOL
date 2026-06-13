@@ -65,8 +65,48 @@ function DraftSlotRow({ picks }: { picks: (ReturnType<typeof useDraftMachine>['s
   )
 }
 
+// 모바일 상단 슬롯 카드 — 사진 위 / OVR·이름 아래 분리 레이아웃
+// 텍스트가 사진을 가리지 않도록 영역 분리 (compact prop 대신 전용 컴포넌트)
+function MobileSlotCard({ player }: { player: PlayerSeason }) {
+  const [imgError, setImgError] = useState(false)
+  const src = process.env.NEXT_PUBLIC_PHOTOS_ENABLED === 'false' ? null : (player.photo ?? null)
+  const hasPhoto = !!src && !imgError
+  // PlayerCard.avatarBg와 동일 로직
+  const h = [...player.teamSlug].reduce((a, c) => a + c.charCodeAt(0), 0)
+  const avatarColor = `hsl(${[210, 150, 30, 280, 350, 190, 60, 320][h % 8]}, 35%, 28%)`
+
+  return (
+    <div className="flex flex-col">
+      {/* 사진 — 3:4 비율, 텍스트 오버레이 없음 */}
+      <div className="w-full aspect-[3/4] rounded-t overflow-hidden bg-surface-container-high border border-outline-variant/30">
+        {hasPhoto ? (
+          <img
+            src={src}
+            alt={player.nameEn}
+            loading="lazy"
+            className="w-full h-full object-cover object-top"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div
+            className="w-full h-full flex items-center justify-center font-black text-white/60 text-lg"
+            style={{ background: avatarColor }}
+          >
+            {player.nameEn.charAt(0).toUpperCase()}
+          </div>
+        )}
+      </div>
+      {/* OVR + 이름 — 사진 아래 (얼굴 비가림) */}
+      <div className="bg-[#1a1a2e] rounded-b px-0.5 py-[3px] text-center">
+        <div className="font-ovr-display leading-none text-[12px] text-secondary">{player.ovr}</div>
+        <div className="font-heading-md text-[7px] text-on-surface/80 truncate uppercase leading-tight">{player.nameEn}</div>
+      </div>
+    </div>
+  )
+}
+
 // 모바일 5슬롯 그리드 (grid-cols-5)
-// isPickPhase: true → 비어있는 슬롯에 골드 테두리+글로우 (Stitch 디자인)
+// isPickPhase: true → 비어있는 슬롯에 골드 테두리+글로우
 function MobileSlotRow({ picks, isPickPhase }: {
   picks: (ReturnType<typeof useDraftMachine>['state']['picks'][0])[]
   isPickPhase: boolean
@@ -76,20 +116,24 @@ function MobileSlotRow({ picks, isPickPhase }: {
       {ROLES.map((role, i) => {
         const player = picks[i]?.player ?? null
         if (!player) {
-          return isPickPhase ? (
-            // PICK 중: 골드 테두리 + 은은한 글로우
-            <div key={role} className="aspect-[5/7] rounded border border-secondary/60 bg-surface-container-lowest flex items-center justify-center shadow-[0_0_8px_rgba(233,195,73,0.2)]">
-              <span className="font-label-caps text-[8px] text-secondary font-bold">{role}</span>
-            </div>
-          ) : (
-            // SPIN/기타: 점선 빈 슬롯
-            <div key={role} className="aspect-[5/7] rounded border-2 border-dashed border-outline-variant/30 flex items-center justify-center bg-[#14141c]/50">
-              <span className="text-[9px] text-outline/50 font-semibold">{role}</span>
+          return (
+            <div key={role} className="flex flex-col">
+              {/* 빈 사진 영역 — 채워진 슬롯과 동일 3:4 비율 */}
+              <div className={`w-full aspect-[3/4] rounded-t flex items-center justify-center ${
+                isPickPhase
+                  ? 'border border-secondary/60 bg-surface-container-lowest shadow-[0_0_8px_rgba(233,195,73,0.2)]'
+                  : 'border border-dashed border-outline-variant/30 bg-[#14141c]/50'
+              }`}>
+                <span className={`font-label-caps text-[8px] font-bold ${isPickPhase ? 'text-secondary' : 'text-outline/50'}`}>
+                  {role}
+                </span>
+              </div>
+              {/* 텍스트 자리 확보 — MobileSlotCard 하단 바와 높이 통일 */}
+              <div className="bg-[#1a1a2e] rounded-b" style={{ minHeight: '28px' }} />
             </div>
           )
         }
-        // slot 크기(w-[110px])는 grid cell(~65px) 초과 → mob-result(w-full)로 셀 채움
-        return <PlayerCard key={role} player={player} size="mob-result" />
+        return <MobileSlotCard key={role} player={player} />
       })}
     </div>
   )
@@ -865,11 +909,6 @@ export default function DraftPage() {
           <>
             {/* ── 모바일 (Stitch 디자인) ── */}
             <div className="md:hidden flex flex-col gap-4 w-full">
-
-              {/* 섹션 타이틀 */}
-              <h1 className="text-center font-heading-md text-heading-md text-on-surface uppercase">
-                {t.draft.draftRoster}
-              </h1>
 
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
