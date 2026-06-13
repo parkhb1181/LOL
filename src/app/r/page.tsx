@@ -88,7 +88,7 @@ export async function generateMetadata(
   if (!computed) return {}
 
   const { result, playerInfos } = computed
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://grandslamlol.vercel.app'
 
   // §8.2: serialize via URLSearchParams — prevents missing encoding for spaces/special chars
   const params = new URLSearchParams({
