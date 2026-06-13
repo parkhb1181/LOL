@@ -13,6 +13,7 @@ const ROLE_ORDER = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
 const YEARS = Array.from({ length: 13 }, (_, i) => 2025 - i) // 2025~2013 내림차순
 const LEAGUES = ['LCK', 'LPL', 'LEC', 'LCS'] as const
 type LeagueCode = (typeof LEAGUES)[number]
+type SortMode = 'team' | 'ovr-desc' | 'ovr-asc'
 
 // 리그 색상 — 인라인 스타일 사용 (Tailwind purge 우회)
 const LEAGUE_COLOR: Record<LeagueCode, string> = {
@@ -71,13 +72,6 @@ function avgOvrColor(avg: number): string {
   return '#9ca3af'
 }
 
-const SearchIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.35-4.35" />
-  </svg>
-)
-
 export default function DexPage() {
   const [players, setPlayers] = useState<PlayerSeason[]>([])
   const [loading, setLoading] = useState(true)
@@ -86,6 +80,7 @@ export default function DexPage() {
   const [selectedLeague, setSelectedLeague] = useState<LeagueCode | null>(null)
   const [selectedYear, setSelectedYear] = useState<number | null>(2024)
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortMode, setSortMode] = useState<SortMode>('team')
 
   // mount 후 fetch — §13.5
   useEffect(() => {
@@ -118,11 +113,31 @@ export default function DexPage() {
     return teams
   }, [allTeams, selectedLeague, searchQuery])
 
+  // OVR 정렬 모드: 팀 그룹 해제 + 선수 단위 flat 리스트
+  // 리그·시즌·검색 필터 동일 적용
+  const flatPlayers = useMemo(() => {
+    if (sortMode === 'team') return []
+    const q = searchQuery.trim().toLowerCase()
+    let base = players
+    if (selectedYear !== null) base = base.filter(p => p.year === selectedYear)
+    if (selectedLeague) base = base.filter(p => p.league === selectedLeague)
+    if (q) base = base.filter(p =>
+      p.nameEn.toLowerCase().includes(q) ||
+      (p.nameKo?.includes(q) ?? false) ||
+      p.playerId.toLowerCase().includes(q)
+    )
+    return [...base].sort((a, b) =>
+      sortMode === 'ovr-desc' ? b.ovr - a.ovr : a.ovr - b.ovr
+    )
+  }, [players, selectedLeague, selectedYear, searchQuery, sortMode])
+
   function toggleLeague(l: LeagueCode) {
     setSelectedLeague(prev => (prev === l ? null : l))
   }
 
-  const totalPlayers = filteredTeams.reduce((s, g) => s + g.players.length, 0)
+  const totalPlayers = sortMode !== 'team'
+    ? flatPlayers.length
+    : filteredTeams.reduce((s, g) => s + g.players.length, 0)
 
   return (
     <div className="min-h-screen text-on-surface font-body-main">
@@ -139,7 +154,10 @@ export default function DexPage() {
           </h1>
           {!loading && (
             <p className="font-label-caps text-label-caps text-outline/50 mt-2 uppercase">
-              {filteredTeams.length} Teams · {totalPlayers} Players
+              {sortMode === 'team'
+                ? `${filteredTeams.length} Teams · ${totalPlayers} Players`
+                : `${totalPlayers} Players`
+              }
               {selectedYear === null && (
                 <span className="ml-2 text-secondary/60">· All Seasons</span>
               )}
@@ -202,20 +220,31 @@ export default function DexPage() {
                 ))}
               </select>
             </div>
+
+            {/* 정렬 드롭다운 */}
+            <div className="shrink-0 flex items-center gap-2">
+              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SORT</span>
+              <select
+                value={sortMode}
+                onChange={e => setSortMode(e.target.value as SortMode)}
+                className="bg-surface-container-high border border-outline-variant font-label-caps text-label-caps text-on-surface rounded-full py-1 pl-3 pr-7 focus:outline-none focus:ring-1 focus:ring-outline/50 cursor-pointer"
+              >
+                <option value="team">BY TEAM</option>
+                <option value="ovr-desc">OVR HIGH</option>
+                <option value="ovr-asc">OVR LOW</option>
+              </select>
+            </div>
           </div>
 
-          {/* 선수 검색 — 모바일 별도 행, 데스크톱에서도 아래에 배치 */}
-          <div className="relative mt-3">
+          {/* 선수 검색 — 실시간 필터 (입력 즉시 반영, 돋보기 버튼 없음) */}
+          <div className="mt-3">
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search players..."
-              className="bg-surface-container-lowest/60 border border-outline-variant/60 focus:border-secondary/60 w-full md:max-w-sm rounded-full text-sm font-body-main text-on-surface py-2 pl-4 pr-9 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all"
+              className="bg-surface-container-lowest/60 border border-outline-variant/60 focus:border-secondary/60 w-full md:max-w-sm rounded-full text-sm font-body-main text-on-surface py-2 px-4 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline">
-              <SearchIcon />
-            </span>
           </div>
         </div>
 
@@ -228,18 +257,16 @@ export default function DexPage() {
           </div>
         )}
 
-        {/* ── 팀 그리드 ── */}
-        {!loading && (
+        {/* ── 팀 그리드 / OVR 정렬 뷰 ── */}
+        {!loading && sortMode === 'team' && (
           <div className="space-y-12">
             {filteredTeams.length === 0 && (
               <p className="font-label-caps text-label-caps text-outline/40 text-center py-16 uppercase">
                 No teams found
               </p>
             )}
-
             {filteredTeams.map(group => (
               <section key={group.key} className="space-y-4">
-                {/* 팀 헤더 */}
                 <div className="flex items-baseline gap-3 border-b border-outline-variant/30 pb-2">
                   <h2 className="font-heading-lg text-heading-lg text-on-surface tracking-wide">
                     {group.team}
@@ -255,20 +282,30 @@ export default function DexPage() {
                     AVG {group.avgOvr}
                   </span>
                 </div>
-
-                {/* 5명 카드 그리드 */}
                 {/* 모바일 3열 (3+2 레이아웃), 데스크톱 5열 */}
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-4">
                   {group.players.map(player => (
-                    <PlayerCard
-                      key={player.id}
-                      player={player}
-                      size="dex"
-                    />
+                    <PlayerCard key={player.id} player={player} size="dex" />
                   ))}
                 </div>
               </section>
             ))}
+          </div>
+        )}
+
+        {/* OVR 높은순/낮은순 — 팀 그룹 해제, flat 그리드 */}
+        {!loading && sortMode !== 'team' && (
+          <div>
+            {flatPlayers.length === 0 && (
+              <p className="font-label-caps text-label-caps text-outline/40 text-center py-16 uppercase">
+                No players found
+              </p>
+            )}
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 md:gap-4">
+              {flatPlayers.map(player => (
+                <PlayerCard key={player.id} player={player} size="dex" />
+              ))}
+            </div>
           </div>
         )}
       </main>

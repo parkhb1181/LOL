@@ -126,27 +126,27 @@ export default function PlayerCard({
             src={photoSrc(player)!}
             alt={player.nameEn}
             loading="lazy"
-            className={[
-              'w-full h-full object-cover object-top transition-transform duration-300',
-              size === 'dex'
-                ? 'scale-[0.82] origin-top group-hover:scale-[0.86]'
-                : 'group-hover:scale-105',
-            ].join(' ')}
+            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
             onError={() => setImgError(true)}
           />
         ) : (
           <div
-            className={[
-              'w-full h-full flex items-center justify-center text-white/60 font-black text-4xl transition-transform duration-300',
-              size === 'dex' ? 'scale-[0.82] origin-top group-hover:scale-[0.86]' : 'group-hover:scale-105',
-            ].join(' ')}
+            className="w-full h-full flex items-center justify-center text-white/60 font-black text-4xl transition-transform duration-300 group-hover:scale-105"
             style={{ background: avatarBg(player.teamSlug) }}
           >
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* 하단 페이드 — v0 from body bg #14141c */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#14141c] via-[#14141c]/45 to-transparent pointer-events-none" />
+        {/* 하단 페이드 — dex(큰 카드): 30%부터 불투명 · 60%까지 반투명 · 90% 투명 (빈 공간 방지)
+                       기타 카드: 약한 페이드 (현재 꽉 차 있음) */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: size === 'dex'
+              ? 'linear-gradient(to top, #14141c 32%, rgba(20,20,28,0.68) 58%, transparent 88%)'
+              : 'linear-gradient(to top, #14141c 20%, rgba(20,20,28,0.45) 50%, transparent)',
+          }}
+        />
       </div>
 
       {/* 2. 노이즈 텍스처 */}
