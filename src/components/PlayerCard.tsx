@@ -167,11 +167,11 @@ export default function PlayerCard({
         )}
       </div>
 
-      {/* 5. 우상단: AP1 배지 (있을 때만) */}
+      {/* 5. 우상단: AllPro 1st 배지 (있을 때만) */}
       {player.badges.includes('ALLPRO_1ST') && (
         <div className="absolute top-2 right-1.5 z-20">
-          <span className="font-label-caps text-[7px] uppercase tracking-wider px-1.5 py-[2px] rounded-sm bg-yellow-900/60 border border-yellow-600/40 text-yellow-300">
-            AP1
+          <span className="font-label-caps text-[7px] uppercase tracking-wider px-1.5 py-[2px] rounded-sm bg-yellow-900/20 border border-yellow-600/15 text-yellow-200/55">
+            1st
           </span>
         </div>
       )}
