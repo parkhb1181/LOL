@@ -434,9 +434,8 @@ async function main() {
       individualBonus -= 1  // 서브 소폭 감점
     }
 
-    // 차등 폭 클램프 — 전 연도 ±7/5/3(지표수별) 통일, 방호막 역할
-    // 2024~2025는 ±3 (단지표 KDA 단독 정규화)
-    const bonusCap = year <= 2023 ? 7 : 3
+    // 차등 폭 클램프 — 전 연도 다지표 ±8, KDA 단일 ±3 (사용자 확정 규칙 방호막)
+    const bonusCap = 8
     individualBonus = Math.max(-bonusCap, Math.min(bonusCap, individualBonus))
 
     // 99 희소성 보호: compress 상한=98이므로 baseOvr은 99 미도달 — OVR_OVERRIDES 전용

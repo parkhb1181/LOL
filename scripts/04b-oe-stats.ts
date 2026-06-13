@@ -261,9 +261,9 @@ function normalize(rows: AggregatedRow[]): NormalizedRow[] {
     // z=0 폴백으로 고정 가중치 composite (KDA35+GD1525+Lane20+DPM20)
     const compositeZ = W_KDA * zKDA + W_GOLD * (zGolddiffRaw ?? 0) + W_LANE * (zLaneRaw ?? 0) + W_DPM * (zDpmRaw ?? 0)
 
-    // 지표 수 기반 동적 cap: ≥3개 → ±7 / 2개 → ±5 / 1개(KDA 단일) → ±3
+    // 지표 수 기반 동적 cap: ≥2개(다지표) → ±8 / 1개(KDA 단일) → ±3 (전 연도 통일 규칙)
     const nMetrics = 1 + (zGolddiffRaw !== null ? 1 : 0) + (zLaneRaw !== null ? 1 : 0) + (zDpmRaw !== null ? 1 : 0)
-    const cap = nMetrics >= 3 ? 7 : nMetrics === 2 ? 5 : 3
+    const cap = nMetrics >= 2 ? 8 : 3
     const ovrBonus = Math.max(-cap, Math.min(cap, Math.round(compositeZ * 4.0)))
 
     return {
