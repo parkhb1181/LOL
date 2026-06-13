@@ -409,9 +409,9 @@ function mobileRoundLabel(h: HighlightStep): string {
   const won   = h.step.series?.[0]?.win ?? stage.endsWith('win')
   if (stage === 'Spring_missed' || stage === 'Summer_missed') return 'DNQ'
   if (stage === 'worlds_swiss_out')
-    return (h.step.label.includes('DNQ') || h.step.label.includes('미진출')) ? 'DNQ' : 'SWISS ELIM'
+    return h.step.label.includes('DNQ') ? 'DNQ' : 'SWISS ELIM'
   if (stage === 'msi_out')
-    return (h.step.label.includes('DNQ') || h.step.label.includes('미진출')) ? 'DNQ' : 'ELIMINATED'
+    return h.step.label.includes('DNQ') ? 'DNQ' : 'ELIMINATED'
   if (stage === 'msi_win' || stage === 'worlds_win') return 'CHAMPIONS'
   if (stage === 'Spring_final' || stage === 'Summer_final') return won ? 'CHAMPIONS' : 'FINALIST'
   if (stage === 'Spring_sf'    || stage === 'Summer_sf')    return won ? 'FINALIST'  : 'PLAYOFFS'
@@ -563,7 +563,7 @@ function ResultScreen({
     const stage = h.step.stage
     const isDNQ =
       stage === 'Spring_missed' || stage === 'Summer_missed' ||
-      (stage === 'msi_out' && (h.step.label.includes('DNQ') || h.step.label.includes('미진출'))) ||
+      (stage === 'msi_out' && h.step.label.includes('DNQ')) ||
       (stage === 'worlds_swiss_out' && h.step.label.includes('DNQ'))
     if (isDNQ) return 'text-outline/50'
     const isWin =

@@ -27,7 +27,7 @@ function lastMsi(by: Map<string, SimStep>): SimStep {
   if (played) return played
   if (by.get('msi_win')) return by.get('msi_win')!
   const reached = by.has('Spring_final') || !!by.get('Spring_sf')?.series?.[0]?.win
-  if (!reached) return synth('msi_out', 'MSI — DNQ (Spring Finals 미진출)')
+  if (!reached) return synth('msi_out', 'MSI — DNQ (Missed Spring Finals)')
   return synth('msi_out', 'MSI — Eliminated')
 }
 
@@ -50,7 +50,7 @@ function lastWorlds(by: Map<string, SimStep>): SimStep {
   if (by.get('worlds_swiss_out')) return by.get('worlds_swiss_out')!
   if (by.get('worlds_win')) return by.get('worlds_win')!
   const reached = by.has('Summer_sf') || by.has('Summer_final') || by.has('worlds_swiss_r1')
-  if (!reached) return synth('worlds_swiss_out', 'Worlds — DNQ (Summer Playoffs 미진출)')
+  if (!reached) return synth('worlds_swiss_out', 'Worlds — DNQ (Missed Summer Playoffs)')
   return synth('worlds_swiss_out', 'Worlds — Swiss Eliminated')
 }
 
@@ -69,36 +69,36 @@ export function highlightStepsFlat(highlights: HighlightStep[]): SimStep[] {
   return highlights.map(h => h.step)
 }
 
-/** 섹션별 최종 도달 라운드 (결승 / 4강 / 8강 / 스위스 / 미진출 등) */
+/** 섹션별 최종 도달 라운드 (English) */
 export function highlightRoundLabel(h: HighlightStep): string {
   const { step } = h
   const stage = step.stage
   const ser = step.series?.[0]
   const won = ser?.win ?? stage.endsWith('win')
 
-  if (stage === 'Spring_missed' || stage === 'Summer_missed') return 'PO 미진출'
-  if (stage === 'worlds_swiss_out') return '스위스 탈락'
+  if (stage === 'Spring_missed' || stage === 'Summer_missed') return 'Missed Playoffs'
+  if (stage === 'worlds_swiss_out') return 'Swiss Exit'
   if (stage === 'msi_out') {
-    return step.label.includes('DNQ') || step.label.includes('미진출') ? '미출전' : '탈락'
+    return step.label.includes('DNQ') ? 'Did Not Qualify' : 'Eliminated'
   }
-  if (stage === 'msi_win' || stage === 'worlds_win') return '우승'
+  if (stage === 'msi_win' || stage === 'worlds_win') return 'Champion'
 
   if (
     won &&
     (stage === 'Spring_final' || stage === 'Summer_final' ||
      stage === 'worlds_final' || stage === 'msi_r3')
   ) {
-    return '우승'
+    return 'Champion'
   }
 
   if (stage === 'Spring_final' || stage === 'Summer_final' || stage === 'worlds_final' || stage === 'msi_r3') {
-    return '결승'
+    return 'Finals'
   }
   if (stage === 'Spring_sf' || stage === 'Summer_sf' || stage === 'worlds_sf' || stage === 'msi_r2') {
-    return '4강'
+    return 'Semifinals'
   }
-  if (stage === 'worlds_qf' || stage === 'msi_r1') return '8강'
-  if (stage.startsWith('worlds_swiss_r')) return '스위스'
+  if (stage === 'worlds_qf' || stage === 'msi_r1') return 'Quarterfinals'
+  if (stage.startsWith('worlds_swiss_r')) return 'Swiss Stage'
 
   return step.label
 }
