@@ -3,7 +3,9 @@
 // 입력: pipeline-cache/oe/{year}.csv (Google Drive 다운로드 완료 필요)
 //
 // 지표 4종 (가중치 사전 승인됨):
-//   KDA 35% + 골드차(golddiffat15) 25% + 라인전(csdiffat15) 20% + 데미지(dpm) 20%
+//   KDA 35% + 골드차(golddiffat15) 25% + 라인전((xpdiffat15/100+csdiffat15)/2) 20% + 데미지(dpm) 20%
+//   라인전: 04d-oe-stats.ts(2024~2025)와 동일한 XP+CS 블렌드 — 터미널 간 일관성 유지
+//   둘 중 하나라도 null이면 laneDiff=null → zLane=0
 //
 // 정규화: 포지션 × 연도 내 z-score (필수 — 포지션 구조 차이 보정)
 // 최종 composite z-score: 위 4개 포지션별 z-score의 가중 합산
@@ -40,10 +42,12 @@ type PlayerStats = {
   sumDeaths: number
   sumAssists: number
   sumGolddiffat15: number
+  sumXpdiffat15: number
   sumCsdiffat15: number
   sumDpm: number
-  // golddiffat15 유효 게임 수 (null인 게임 제외)
+  // 유효 게임 수 (null인 게임 제외)
   gamesGolddiff: number
+  gamesXpdiff: number
   gamesCsdiff: number
   gamesDpm: number
 }
@@ -56,19 +60,18 @@ type AggregatedRow = {
   role: string
   games: number
   avgKDA: number
-  avgGolddiffat15: number | null  // 데이터 부재 시 null
-  avgCsdiffat15: number | null
+  avgGolddiffat15: number | null
+  // 라인전 블렌드: (xpdiffat15/100 + csdiffat15)/2 — 04d-oe-stats.ts와 동일
+  avgLaneDiff: number | null
   avgDpm: number | null
 }
 
 type NormalizedRow = AggregatedRow & {
   zKDA: number
   zGolddiff: number
-  zCsdiff: number
+  zLane: number
   zDpm: number
-  // 가중 composite z-score
   compositeZ: number
-  // OVR 기여 점수 (±6 클램프)
   ovrBonus: number
 }
 
@@ -103,14 +106,13 @@ async function parseOeCsv(year: number): Promise<PlayerStats[]> {
       const headers = line.split(',')
       headers.forEach((h, i) => { cols[h.trim()] = i })
       headerParsed = true
-      // 필수 컬럼 확인
       const required = ['league', 'position', 'playername', 'teamname', 'year',
         'kills', 'deaths', 'assists', 'dpm', 'datacompleteness']
       const missing = required.filter(c => cols[c] === undefined)
       if (missing.length > 0) {
         console.warn(`[${year}] 컬럼 누락: ${missing.join(', ')}`)
       }
-      console.log(`[${year}] 헤더 파싱 완료. golddiffat15=${cols['golddiffat15'] ?? 'MISSING'}, csdiffat15=${cols['csdiffat15'] ?? 'MISSING'}`)
+      console.log(`[${year}] 헤더 파싱 완료. golddiff=${cols['golddiffat15'] ?? 'MISSING'}, xpdiff=${cols['xpdiffat15'] ?? 'MISSING'}, csdiff=${cols['csdiffat15'] ?? 'MISSING'}`)
       continue
     }
 
@@ -118,16 +120,13 @@ async function parseOeCsv(year: number): Promise<PlayerStats[]> {
     const parts = line.split(',')
     const get = (col: string) => parts[cols[col] ?? -1] ?? ''
 
-    // 팀 행 제외 (position = "team" or empty)
     const rawPos = get('position').toLowerCase()
     const role = POS_MAP[rawPos]
-    if (!role) continue  // "team" 및 기타 비-선수 행
+    if (!role) continue
 
-    // 리그 필터
     const league = get('league')
     if (!TARGET_LEAGUES.has(league)) { skippedLeague++; continue }
 
-    // datacompleteness: 'partial' 행은 제외 (골드차 등 결측 가능)
     const completeness = get('datacompleteness')
     if (completeness === 'partial') continue
 
@@ -145,10 +144,12 @@ async function parseOeCsv(year: number): Promise<PlayerStats[]> {
     const assists = parseFloat(get('assists')) || 0
     const dpmRaw = get('dpm')
     const golddiffRaw = get('golddiffat15')
+    const xpdiffRaw = get('xpdiffat15')
     const csdiffRaw = get('csdiffat15')
 
     const dpm = dpmRaw !== '' && !isNaN(parseFloat(dpmRaw)) ? parseFloat(dpmRaw) : null
     const golddiff = golddiffRaw !== '' && !isNaN(parseFloat(golddiffRaw)) ? parseFloat(golddiffRaw) : null
+    const xpdiff = xpdiffRaw !== '' && !isNaN(parseFloat(xpdiffRaw)) ? parseFloat(xpdiffRaw) : null
     const csdiff = csdiffRaw !== '' && !isNaN(parseFloat(csdiffRaw)) ? parseFloat(csdiffRaw) : null
 
     if (!statsMap.has(key)) {
@@ -156,8 +157,8 @@ async function parseOeCsv(year: number): Promise<PlayerStats[]> {
         playername, team, year: rowYear, league, role,
         games: 0,
         sumKills: 0, sumDeaths: 0, sumAssists: 0,
-        sumGolddiffat15: 0, sumCsdiffat15: 0, sumDpm: 0,
-        gamesGolddiff: 0, gamesCsdiff: 0, gamesDpm: 0,
+        sumGolddiffat15: 0, sumXpdiffat15: 0, sumCsdiffat15: 0, sumDpm: 0,
+        gamesGolddiff: 0, gamesXpdiff: 0, gamesCsdiff: 0, gamesDpm: 0,
       })
     }
 
@@ -167,6 +168,8 @@ async function parseOeCsv(year: number): Promise<PlayerStats[]> {
     s.sumDeaths += deaths
     s.sumAssists += assists
     if (golddiff !== null) { s.sumGolddiffat15 += golddiff; s.gamesGolddiff++ }
+    // xpd와 csd는 블렌드 계산용 — 둘 다 있어야 유효
+    if (xpdiff !== null) { s.sumXpdiffat15 += xpdiff; s.gamesXpdiff++ }
     if (csdiff !== null) { s.sumCsdiffat15 += csdiff; s.gamesCsdiff++ }
     if (dpm !== null) { s.sumDpm += dpm; s.gamesDpm++ }
   }
@@ -180,9 +183,14 @@ function aggregate(stats: PlayerStats[]): AggregatedRow[] {
   return stats
     .filter(s => s.games >= MIN_GAMES)
     .map(s => {
-      const avgKDA = (s.sumKills + s.sumAssists) / Math.max(1, s.sumDeaths) / s.games * s.games
-      // KDA는 게임당 평균이 아니라 통산 집계 기준
       const totalKDA = (s.sumKills + s.sumAssists) / Math.max(1, s.sumDeaths)
+
+      // 라인전 블렌드: xpd와 csd 모두 MIN_GAMES 이상 있어야 유효
+      // — 04d-oe-stats.ts(2024~2025)와 동일 공식: (xpd/100 + csd) / 2
+      const hasLane = s.gamesXpdiff >= MIN_GAMES && s.gamesCsdiff >= MIN_GAMES
+      const avgLaneDiff = hasLane
+        ? (s.sumXpdiffat15 / s.gamesXpdiff / 100 + s.sumCsdiffat15 / s.gamesCsdiff) / 2
+        : null
 
       return {
         playername: s.playername,
@@ -193,7 +201,7 @@ function aggregate(stats: PlayerStats[]): AggregatedRow[] {
         games: s.games,
         avgKDA: totalKDA,
         avgGolddiffat15: s.gamesGolddiff >= MIN_GAMES ? s.sumGolddiffat15 / s.gamesGolddiff : null,
-        avgCsdiffat15: s.gamesCsdiff >= MIN_GAMES ? s.sumCsdiffat15 / s.gamesCsdiff : null,
+        avgLaneDiff,
         avgDpm: s.gamesDpm >= MIN_GAMES ? s.sumDpm / s.gamesDpm : null,
       }
     })
@@ -201,23 +209,22 @@ function aggregate(stats: PlayerStats[]): AggregatedRow[] {
 
 function normalize(rows: AggregatedRow[]): NormalizedRow[] {
   // 포지션×연도 버킷별 통계 계산 — OE 전체 선수 기준 (우리 DB 제한 없음)
-  // 이 버킷이 z-score의 기준이 됨 (§2 요구사항)
-  const buckets = new Map<string, { kdas: number[], golds: number[], css: number[], dpms: number[] }>()
+  const buckets = new Map<string, { kdas: number[], golds: number[], lanes: number[], dpms: number[] }>()
 
   for (const r of rows) {
     const k = `${r.role}|${r.year}`
-    if (!buckets.has(k)) buckets.set(k, { kdas: [], golds: [], css: [], dpms: [] })
+    if (!buckets.has(k)) buckets.set(k, { kdas: [], golds: [], lanes: [], dpms: [] })
     const b = buckets.get(k)!
     b.kdas.push(r.avgKDA)
     if (r.avgGolddiffat15 !== null) b.golds.push(r.avgGolddiffat15)
-    if (r.avgCsdiffat15 !== null) b.css.push(r.avgCsdiffat15)
+    if (r.avgLaneDiff !== null) b.lanes.push(r.avgLaneDiff)
     if (r.avgDpm !== null) b.dpms.push(r.avgDpm)
   }
 
   const normStats = new Map<string, {
     muKda: number; sdKda: number
     muGold: number; sdGold: number
-    muCs: number; sdCs: number
+    muLane: number; sdLane: number
     muDpm: number; sdDpm: number
   }>()
 
@@ -225,15 +232,14 @@ function normalize(rows: AggregatedRow[]): NormalizedRow[] {
     normStats.set(k, {
       muKda: mean(b.kdas), sdKda: stdev(b.kdas),
       muGold: mean(b.golds), sdGold: stdev(b.golds),
-      muCs: mean(b.css), sdCs: stdev(b.css),
+      muLane: mean(b.lanes), sdLane: stdev(b.lanes),
       muDpm: mean(b.dpms), sdDpm: stdev(b.dpms),
     })
   }
 
-  // 가중치 (사전 승인됨)
   const W_KDA = 0.35
   const W_GOLD = 0.25
-  const W_CS = 0.20
+  const W_LANE = 0.20
   const W_DPM = 0.20
 
   return rows.map(r => {
@@ -242,27 +248,31 @@ function normalize(rows: AggregatedRow[]): NormalizedRow[] {
 
     const zKDA = ns.sdKda > 0 ? (r.avgKDA - ns.muKda) / ns.sdKda : 0
 
-    // 데이터 부재 시 0 (포지션 평균 처리 — 호빈 확인 필요)
-    const zGolddiff = r.avgGolddiffat15 !== null && ns.sdGold > 0
-      ? (r.avgGolddiffat15 - ns.muGold) / ns.sdGold : 0
-    const zCsdiff = r.avgCsdiffat15 !== null && ns.sdCs > 0
-      ? (r.avgCsdiffat15 - ns.muCs) / ns.sdCs : 0
-    const zDpm = r.avgDpm !== null && ns.sdDpm > 0
-      ? (r.avgDpm - ns.muDpm) / ns.sdDpm : 0
+    // 결측치 null — 동적 재분배 (04e-early/04d와 동일 원칙)
+    const zGolddiff: number | null = r.avgGolddiffat15 !== null && ns.sdGold > 0
+      ? (r.avgGolddiffat15 - ns.muGold) / ns.sdGold : null
+    const zLane: number | null = r.avgLaneDiff !== null && ns.sdLane > 0
+      ? (r.avgLaneDiff - ns.muLane) / ns.sdLane : null
+    const zDpm: number | null = r.avgDpm !== null && ns.sdDpm > 0
+      ? (r.avgDpm - ns.muDpm) / ns.sdDpm : null
 
-    // composite z-score (결측치는 가중치 재분배 없이 0 처리 — 단순화 판단)
-    const compositeZ = zKDA * W_KDA + zGolddiff * W_GOLD + zCsdiff * W_CS + zDpm * W_DPM
+    // 가중치 재분배: 없는 지표는 남은 가중치에 비례 분배
+    const weights: [number | null, number][] = [
+      [zKDA, W_KDA], [zGolddiff, W_GOLD], [zLane, W_LANE], [zDpm, W_DPM]
+    ]
+    const available = weights.filter(([z]) => z !== null)
+    const totalW = available.reduce((s, [, w]) => s + w, 0)
+    const compositeZ = totalW > 0 ? available.reduce((s, [z, w]) => s + z! * (w / totalW), 0) : 0
 
-    // OVR 기여: z=±1.5 → ±6점 (scale=4.0)
-    // 기존 KDA ±3 대비 폭 확장 (4개 지표 통합으로 신뢰도 향상)
-    const ovrBonus = Math.max(-6, Math.min(6, Math.round(compositeZ * 4.0)))
+    // cap ±7 (3+지표 공통 기준)
+    const ovrBonus = Math.max(-7, Math.min(7, Math.round(compositeZ * 4.0)))
 
     return {
       ...r,
       zKDA: Math.round(zKDA * 100) / 100,
-      zGolddiff: Math.round(zGolddiff * 100) / 100,
-      zCsdiff: Math.round(zCsdiff * 100) / 100,
-      zDpm: Math.round(zDpm * 100) / 100,
+      zGolddiff: zGolddiff !== null ? Math.round(zGolddiff * 100) / 100 : 0,
+      zLane: zLane !== null ? Math.round(zLane * 100) / 100 : 0,
+      zDpm: zDpm !== null ? Math.round(zDpm * 100) / 100 : 0,
       compositeZ: Math.round(compositeZ * 100) / 100,
       ovrBonus,
     }
@@ -288,7 +298,6 @@ async function processYear(year: number) {
   const norm = normalize(agg)
   fs.writeFileSync(outPath, JSON.stringify(norm, null, 2), 'utf-8')
 
-  // 요약 출력
   const topPlayers = norm
     .sort((a, b) => b.compositeZ - a.compositeZ)
     .slice(0, 10)
@@ -298,13 +307,12 @@ async function processYear(year: number) {
     console.log(`  ${p.playername.padEnd(20)} ${p.role.padEnd(4)} ${p.team.padEnd(25)} z=${p.compositeZ.toFixed(2)} ovrBonus=${p.ovrBonus > 0 ? '+' : ''}${p.ovrBonus}`)
   })
 
-  // 포지션별 샘플 커버리지
   const roles = ['TOP', 'JGL', 'MID', 'ADC', 'SUP']
   console.log(`[${year}] 포지션별 선수 수:`)
   roles.forEach(r => {
     const cnt = norm.filter(x => x.role === r).length
-    const golddiffCoverage = norm.filter(x => x.role === r && x.avgGolddiffat15 !== null).length
-    console.log(`  ${r}: ${cnt}명 (golddiff 커버리지: ${golddiffCoverage}/${cnt})`)
+    const laneCov = norm.filter(x => x.role === r && x.avgLaneDiff !== null).length
+    console.log(`  ${r}: ${cnt}명 (laneDiff 커버리지: ${laneCov}/${cnt})`)
   })
 
   console.log(`[${year}] ovrBonus 분포: -6~-4: ${norm.filter(x=>x.ovrBonus<=-4).length}, -3~-1: ${norm.filter(x=>x.ovrBonus>=-3&&x.ovrBonus<=-1).length}, 0: ${norm.filter(x=>x.ovrBonus===0).length}, 1~3: ${norm.filter(x=>x.ovrBonus>=1&&x.ovrBonus<=3).length}, 4~6: ${norm.filter(x=>x.ovrBonus>=4).length}`)
