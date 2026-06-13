@@ -169,18 +169,18 @@ export default function DexPage() {
         {/* 모바일: 수평 스크롤 pill 칩 행 / 데스크톱: flex row */}
         <div className="mb-6">
 
-          {/* 리그 칩 + 시즌 — 모바일 가로 스크롤 */}
-          <div className="flex overflow-x-auto gap-2 pb-3 -mx-5 px-5 md:mx-0 md:px-0 md:flex-wrap md:items-center md:gap-3 scrollbar-hide">
+          {/* 리그 칩 + 시즌/정렬 — 모바일 2줄 wrap / 데스크톱 1줄 */}
+          <div className="flex flex-wrap gap-1.5 pb-3 md:gap-3 md:items-center">
             {/* ALL */}
             <button
               onClick={() => setSelectedLeague(null)}
-              className={`shrink-0 px-4 py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap ${
+              className={`px-3 py-1 md:px-4 md:py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap ${
                 selectedLeague === null
                   ? 'border-on-surface-variant/60 bg-surface-variant text-on-surface'
                   : 'border-outline-variant/40 text-outline/60 hover:text-outline'
               }`}
             >
-              ALL REGIONS
+              ALL
             </button>
             {LEAGUES.map(l => {
               const isActive = selectedLeague === l
@@ -189,7 +189,7 @@ export default function DexPage() {
                 <button
                   key={l}
                   onClick={() => toggleLeague(l)}
-                  className={`shrink-0 px-4 py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all whitespace-nowrap ${
+                  className={`px-3 py-1 md:px-4 md:py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all whitespace-nowrap ${
                     isDimmed ? 'opacity-35 hover:opacity-75' : 'opacity-100'
                   }`}
                   style={{
@@ -207,7 +207,7 @@ export default function DexPage() {
             <div className="w-px h-4 bg-outline-variant hidden md:block self-center" />
 
             {/* 시즌 드롭다운 */}
-            <div className="shrink-0 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SEASON</span>
               <select
                 value={selectedYear ?? 'ALL'}
@@ -222,7 +222,7 @@ export default function DexPage() {
             </div>
 
             {/* 정렬 드롭다운 */}
-            <div className="shrink-0 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SORT</span>
               <select
                 value={sortMode}
@@ -282,8 +282,16 @@ export default function DexPage() {
                     AVG {group.avgOvr}
                   </span>
                 </div>
-                {/* 모바일 3열 (3+2 레이아웃), 데스크톱 5열 */}
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-4">
+                {/* 모바일: flex-wrap justify-center → 마지막 줄 중앙 정렬 */}
+                <div className="flex flex-wrap justify-center gap-2 md:hidden">
+                  {group.players.map(player => (
+                    <div key={player.id} className="w-[calc(33.33%-6px)]">
+                      <PlayerCard player={player} size="dex" />
+                    </div>
+                  ))}
+                </div>
+                {/* 데스크톱: 5열 그리드 */}
+                <div className="hidden md:grid md:grid-cols-5 md:gap-4">
                   {group.players.map(player => (
                     <PlayerCard key={player.id} player={player} size="dex" />
                   ))}
