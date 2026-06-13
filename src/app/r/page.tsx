@@ -4,8 +4,9 @@
 import fs from 'fs'
 import path from 'path'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import SiteHeader from '@/components/SiteHeader'
 import { simulate } from '@/lib/sim'
 import type { SimPlayer } from '@/lib/sim'
 
@@ -136,13 +137,7 @@ export default async function ResultPage(
 
   return (
     <main className="min-h-screen bg-[#0d0d1a] text-white">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-white/10">
-        <Link href="/" className="font-black text-base tracking-tight text-white/80 hover:text-white transition-colors">
-          GRANDSLAM
-        </Link>
-        <span className="text-xs text-white/20 tracking-widest">SHARED RESULT</span>
-      </header>
+      <SiteHeader fixed />
 
       <div className="max-w-2xl mx-auto px-6 py-14 flex flex-col items-center gap-8">
         {/* Trophy badges */}

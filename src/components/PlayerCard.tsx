@@ -110,6 +110,7 @@ export default function PlayerCard({
         'rounded relative overflow-hidden',
         'bg-surface-container-high',
         borderCls,
+        isWorlds ? 'card-selected' : '',
         ovrGlowCls(player.ovr, isGold),
         'card-lift group select-none',
         disabled    ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
@@ -150,14 +151,6 @@ export default function PlayerCard({
 
       {/* 2. 노이즈 텍스처 */}
       <div className="absolute inset-0 noise-overlay opacity-10 pointer-events-none" aria-hidden />
-
-      {/* 3. WORLDS / MSI shimmer */}
-      {(isWorlds || hasMsi) && (
-        <div
-          className={`absolute inset-0 card-shimmer pointer-events-none ${isWorlds ? 'opacity-[0.18]' : 'opacity-[0.10]'}`}
-          aria-hidden
-        />
-      )}
 
       {/* 4. 좌상단: OVR (Anton) + 리그 배지 (solid pill) */}
       <div className="absolute top-2 left-2 z-20 flex flex-col items-center leading-none">

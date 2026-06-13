@@ -81,24 +81,32 @@ body {
   text-shadow: 0 0 12px rgba(233, 195, 73, 0.65) !important;
 }
 
-/* ── Gold shimmer overlay (WORLDS / MSI) ─────────────────────────────────── */
-@keyframes cardShimmer {
-  0%   { background-position: -100% -100%; }
-  100% { background-position: 200%  200%; }
+/* ── WORLDS 카드 골드 테두리 펄스 ────────────────────────────────────────── */
+@keyframes borderPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(233, 195, 73, 0.15);
+    border-color: rgba(233, 195, 73, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(233, 195, 73, 0.4);
+    border-color: rgba(233, 195, 73, 0.8);
+  }
 }
-.card-shimmer {
-  background: linear-gradient(135deg, transparent 20%, rgba(255,255,255,0.30) 50%, transparent 80%);
-  background-size: 200% 200%;
-  animation: cardShimmer 3s infinite linear;
+.card-selected {
+  animation: borderPulse 2.5s ease-in-out infinite;
 }
 
-/* ── Reroll shuffle ──────────────────────────────────────────────────────── */
-@keyframes shuffleCycle {
-  0%, 100% { opacity: 1;   transform: scale(1);    filter: blur(0);   }
-  50%       { opacity: 0.4; transform: scale(0.96); filter: blur(2px); }
+/* ── Reroll: 위로 페이드아웃 → 아래서 페이드인 (카드별 60ms 시차) ─────────── */
+/* --card-idx CSS 변수로 시차 제어 (PickRosterGrid에서 inline style로 주입) */
+@keyframes rerollCycle {
+  0%   { opacity: 1; transform: translateY(0);     }
+  42%  { opacity: 0; transform: translateY(-15px); }
+  43%  { opacity: 0; transform: translateY(15px);  }
+  100% { opacity: 1; transform: translateY(0);     }
 }
 .is-shuffling {
-  animation: shuffleCycle 0.22s ease-in-out infinite;
+  animation: rerollCycle 0.75s ease-in-out forwards;
+  animation-delay: calc(var(--card-idx, 0) * 60ms);
 }
 
 /* ── Card click → slot fly ───────────────────────────────────────────────── */

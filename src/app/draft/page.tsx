@@ -5,8 +5,8 @@
 // v0 디자인 통합: stage-lighting 배경, 카드 fly/shuffle 애니메이션, v0 헤더
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import Link from 'next/link'
 import PlayerCard from '@/components/PlayerCard'
+import SiteHeader from '@/components/SiteHeader'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
@@ -170,8 +170,8 @@ function PickRosterGrid({
           return (
             <div
               key={p.id}
-              // shuffle 시차: index × 100ms
-              style={isShuffling ? { animationDelay: `${idx * 80}ms` } : undefined}
+              // 리롤 시차: CSS --card-idx 변수로 계산 (rerollCycle animation-delay 에서 사용)
+              style={{ '--card-idx': idx } as React.CSSProperties}
             >
               <PlayerCard
                 player={p}
@@ -205,11 +205,6 @@ function MobilePickScreen({
 }) {
   return (
     <div className="flex flex-col gap-5 w-full">
-      {spunTeam && (
-        <h2 className="font-ovr-display text-[28px] text-on-surface text-center tracking-tight">
-          {spunTeam.team} <span className="text-secondary">{spunTeam.year}</span>
-        </h2>
-      )}
       <PickRosterGrid
         roster={roster}
         pickedPlayerIds={pickedPlayerIds}
@@ -240,9 +235,6 @@ function DesktopPickScreen({
 }) {
   return (
     <div className="flex flex-col items-center gap-5 w-full">
-      <h2 className="font-heading-lg text-heading-md md:text-heading-lg text-on-surface text-center tracking-wide">
-        {spunTeam ? `${spunTeam.team} (${spunTeam.year})` : 'Choose your player'}
-      </h2>
       <PickRosterGrid
         roster={roster}
         pickedPlayerIds={pickedPlayerIds}
@@ -476,7 +468,7 @@ export default function DraftPage() {
   function handleReroll() {
     setIsShuffling(true)
     machine.fullReroll()
-    setTimeout(() => setIsShuffling(false), 1200)
+    setTimeout(() => setIsShuffling(false), 1300)
   }
 
   // StrictMode fires effects twice — refs guard against double invocation
@@ -538,29 +530,12 @@ export default function DraftPage() {
       }`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      {/* ── 헤더 (v0 스타일) ── */}
-      <header
-        className="flex items-center shrink-0 px-5 md:px-10 py-4 border-b border-outline-variant/40 bg-surface-container-lowest/70 backdrop-blur-md relative z-20"
-        style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
-      >
-        {/* 로고 */}
-        <Link href="/" className="font-ovr-display text-ovr-display-mobile md:text-ovr-display tracking-tighter text-on-surface hover:text-secondary transition-colors">
-          GRANDSLAM
-        </Link>
-
-        {/* 중앙 네비 (데스크톱) */}
-        <nav className="hidden md:flex gap-8 absolute left-1/2 -translate-x-1/2">
-          <Link href="/dex" className="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-200">
-            COLLECTION
-          </Link>
-          <Link href="/draft" className="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors duration-200">
-            PLAY GAME
-          </Link>
-        </nav>
-
-        {/* 우측: SPIN/PICK 외 화면에서 슬롯 미니 표시 */}
-        {state.phase !== 'IDLE' && !isDraftScreen && (
-          <div className="ml-auto hidden md:block">
+      {/* ── 헤더 (SiteHeader 공유) ── */}
+      <SiteHeader
+        activePage="draft"
+        fixed={false}
+        rightSlot={
+          state.phase !== 'IDLE' && !isDraftScreen ? (
             <div className="flex gap-2">
               {ROLES.map((role, i) => {
                 const p = state.picks[i]?.player
@@ -573,9 +548,9 @@ export default function DraftPage() {
                 )
               })}
             </div>
-          </div>
-        )}
-      </header>
+          ) : undefined
+        }
+      />
 
       {/* ── Main content ── */}
       <main className={`mx-auto px-4 py-8 w-full relative z-10 md:flex-1 md:flex md:flex-col md:justify-center ${
@@ -627,17 +602,10 @@ export default function DraftPage() {
               {/* 상단 5슬롯 */}
               <DraftSlotRow picks={state.picks} />
 
-              {/* Round 정보 — v0: label-caps 라운드 + Anton 팀명 + 연도 골드 */}
-              <div className="text-center">
-                <p className="font-label-caps text-[10px] text-outline/60 uppercase tracking-[0.2em]">
-                  Round {state.round + 1} / 5
-                </p>
-                {state.spunTeam && (
-                  <h1 className="font-ovr-display text-[36px] md:text-[40px] text-on-surface tracking-tight mt-1">
-                    {state.spunTeam.team} <span className="text-secondary">{state.spunTeam.year}</span>
-                  </h1>
-                )}
-              </div>
+              {/* Round 카운터 */}
+              <p className="font-label-caps text-[10px] text-outline/60 uppercase tracking-[0.2em]">
+                Round {state.round + 1} / 5
+              </p>
 
               {state.phase === 'SPIN' && (
                 <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">Spinning...</p>

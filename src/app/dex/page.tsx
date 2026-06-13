@@ -4,8 +4,8 @@
 // §13.5 hydration: fetch는 mount 후, 초기 렌더는 서버와 동일 상태
 
 import { useEffect, useState, useMemo } from 'react'
-import Link from 'next/link'
 import PlayerCard from '@/components/PlayerCard'
+import SiteHeader from '@/components/SiteHeader'
 import type { PlayerSeason } from '@/lib/data'
 
 const ROLE_ORDER = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
@@ -126,30 +126,7 @@ export default function DexPage() {
   return (
     <div className="min-h-screen text-on-surface font-body-main">
 
-      {/* ── 데스크톱 헤더 (fixed) — 검색창 제거, COLLECTION+PLAY GAME만 ── */}
-      <header className="hidden md:flex fixed top-0 left-0 w-full z-50 items-center px-10 py-4 border-b border-outline-variant/30 bg-[#14141c]/95 backdrop-blur-md">
-        <Link href="/" className="font-ovr-display text-ovr-display tracking-tighter text-on-surface hover:text-secondary transition-colors mr-8">
-          GRANDSLAM
-        </Link>
-        <nav className="flex gap-6">
-          <span className="font-heading-md text-heading-md text-secondary border-b-2 border-secondary pb-1 uppercase cursor-default">
-            COLLECTION
-          </span>
-          <Link href="/draft" className="font-heading-md text-heading-md text-on-surface-variant hover:text-secondary transition-colors uppercase">
-            PLAY GAME
-          </Link>
-        </nav>
-      </header>
-
-      {/* ── 모바일 헤더 (fixed) ── */}
-      <header className="flex md:hidden fixed top-0 left-0 w-full z-50 items-center justify-between px-5 py-4 border-b border-outline-variant/30 bg-[#14141c]/95 backdrop-blur-md">
-        <Link href="/" className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface">
-          GRANDSLAM
-        </Link>
-        <Link href="/draft" className="font-label-caps text-[11px] text-secondary uppercase tracking-wider">
-          PLAY GAME
-        </Link>
-      </header>
+      <SiteHeader activePage="collection" fixed />
 
       {/* ── 메인 콘텐츠 ── */}
       <main className="pt-20 md:pt-28 pb-24 px-5 md:px-10 max-w-7xl mx-auto relative z-10">
