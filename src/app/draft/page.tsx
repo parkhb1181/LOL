@@ -8,6 +8,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import PlayerCard from '@/components/PlayerCard'
 import SiteHeader from '@/components/SiteHeader'
 import BottomNav from '@/components/BottomNav'
+import { useLang } from '@/i18n'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
@@ -123,6 +124,7 @@ function PickButtons({
   rerollLeft: number
   layout?: 'mobile' | 'desktop'
 }) {
+  const { t } = useLang()
   if (layout === 'mobile') {
     return (
       <div className="flex flex-col gap-2">
@@ -132,13 +134,13 @@ function PickButtons({
           className="group w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-heading-md text-heading-md uppercase rounded flex items-center justify-center gap-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <RerollIcon />
-          Reroll ({rerollLeft} left)
+          {t.draft.reroll(rerollLeft)}
         </button>
         <button
           onClick={onPlayAgain}
           className="font-label-caps text-[11px] text-outline hover:text-secondary transition-colors py-2 text-center"
         >
-          Play Again
+          {t.draft.playAgain}
         </button>
       </div>
     )
@@ -151,13 +153,13 @@ function PickButtons({
         className="group flex items-center gap-2 font-label-caps text-label-caps py-3 px-8 rounded bg-surface-bright hover:bg-surface-variant border border-outline-variant hover:border-secondary/50 text-on-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <RerollIcon />
-        Reroll ({rerollLeft})
+        {t.draft.rerollShort(rerollLeft)}
       </button>
       <button
         onClick={onPlayAgain}
         className="font-label-caps text-[11px] text-outline hover:text-secondary transition-colors"
       >
-        Play Again
+        {t.draft.playAgain}
       </button>
     </div>
   )
@@ -301,6 +303,7 @@ function RevealScreen({
   revealStep: number
   onSkip: () => void
 }) {
+  const { t } = useLang()
   const current = revealStep > 0 ? highlights[revealStep - 1] : null
   const step = current?.step
 
@@ -335,7 +338,7 @@ function RevealScreen({
           <p className={`text-2xl font-black tracking-wide ${
             cur === 'win' ? 'text-on-surface' : cur === 'lose' ? 'text-on-surface/60' : 'text-outline'
           }`}>
-            {highlightRoundLabel(current)}
+            {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(current))}
           </p>
           <h2 className={`text-xl font-bold leading-snug px-2 ${
             cur === 'win' ? 'text-green-300' : cur === 'lose' ? 'text-red-300' : 'text-outline'
@@ -431,8 +434,10 @@ const MOBILE_SECTION_SHORT: Record<string, string> = {
 
 // 시즌 결과 개별 카드 (2×2 그리드)
 function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: boolean }) {
+  const { t } = useLang()
   const roundLabel = mobileRoundLabel(h)
-  const isDNQ = roundLabel === 'DNQ'
+  const isDNQ = roundLabel === 'DNQ'  // 영문 원본으로 체크 (번역 전)
+  const displayLabel = t.draft.roundLabel[roundLabel] ?? roundLabel
   const ser   = h.step.series?.[0]
 
   return (
@@ -446,10 +451,10 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
         <div className="absolute inset-0 card-shimmer opacity-20 pointer-events-none" aria-hidden />
       )}
       <span className={`font-label-caps text-[10px] mb-1 z-10 ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
-        {MOBILE_SECTION_SHORT[h.section] ?? h.section.toUpperCase()}
+        {t.draft.sectionShort[h.section] ?? h.section.toUpperCase()}
       </span>
       <span className={`font-heading-md text-[18px] leading-tight text-center z-10 ${isDNQ ? 'text-outline/50' : 'text-on-surface'}`}>
-        {roundLabel}
+        {displayLabel}
       </span>
       {ser && !isDNQ && (
         <div className={`mt-1 z-10 flex items-start gap-1 font-body-main text-[10px] leading-tight ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
@@ -469,6 +474,7 @@ function MobileResultScreen({
   picks: ReturnType<typeof useDraftMachine>['state']['picks']
   onReset: () => void
 }) {
+  const { t } = useLang()
   const highlights  = pickHighlightSteps(simResult.steps)
   const gradeColor  = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
 
@@ -521,7 +527,7 @@ function MobileResultScreen({
         onClick={onReset}
         className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
       >
-        PLAY AGAIN
+        {t.draft.playAgain}
       </button>
 
       {/* URL 워터마크 (공유 캡처용) */}
@@ -541,6 +547,7 @@ function ResultScreen({
   seed: number
   onReset: () => void
 }) {
+  const { t } = useLang()
   const [copied, setCopied] = useState(false)
 
   const pIds = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
@@ -574,10 +581,6 @@ function ResultScreen({
     return 'text-on-surface'
   }
 
-  const SECTION_SHORT: Record<string, string> = {
-    'Spring Split': 'Spring', 'MSI': 'MSI', 'Summer Split': 'Summer', 'Worlds': 'Worlds',
-  }
-
   return (
     <div className="w-full py-4">
 
@@ -607,10 +610,10 @@ function ResultScreen({
           {highlights.map(h => (
             <div key={h.section} className="flex flex-col gap-0.5">
               <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
-                {SECTION_SHORT[h.section] ?? h.section}
+                {t.draft.sectionShort[h.section] ?? h.section}
               </span>
               <span className={`font-body-main text-sm ${sectionTone(h)}`}>
-                {highlightRoundLabel(h)}
+                {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
               </span>
             </div>
           ))}
@@ -637,14 +640,14 @@ function ResultScreen({
             className="w-full px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
           >
             <LinkIcon />
-            {copied ? '✓ COPIED!' : 'COPY LINK'}
+            {copied ? t.draft.copied : t.draft.copyLink}
           </button>
           <button
             onClick={onReset}
             className="w-full px-8 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
           >
             <ReplayIcon />
-            PLAY AGAIN
+            {t.draft.playAgain}
           </button>
         </div>
       </div>
@@ -655,6 +658,7 @@ function ResultScreen({
 // ── Main page ──────────────────────────────────────────────────────────────────
 export default function DraftPage() {
   const { data, loading } = useDraftData()
+  const { t } = useLang()
   const machine = useDraftMachine(data)
   const { state } = machine
 
@@ -776,7 +780,7 @@ export default function DraftPage() {
         {state.phase === 'IDLE' && (
           <div className="flex flex-col items-center justify-center gap-4 py-16">
             <p className="font-label-caps text-label-caps text-outline animate-pulse">
-              {loading ? 'Loading...' : 'Preparing spin...'}
+              {loading ? t.draft.loading : t.draft.preparing}
             </p>
           </div>
         )}
@@ -789,14 +793,14 @@ export default function DraftPage() {
 
               {/* 섹션 타이틀 */}
               <h1 className="text-center font-heading-md text-heading-md text-on-surface uppercase">
-                Draft Roster
+                {t.draft.draftRoster}
               </h1>
 
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
 
               {state.phase === 'SPIN' && (
-                <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">Spinning...</p>
+                <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">{t.draft.spinning}</p>
               )}
 
               {state.phase === 'PICK' && state.spunTeam && (
@@ -807,7 +811,7 @@ export default function DraftPage() {
                       {state.spunTeam.team} ({state.spunTeam.year})
                     </h2>
                     <span className="shrink-0 font-label-caps text-label-caps text-outline bg-surface-container-high px-2 py-1 rounded">
-                      ROUND {state.round + 1}/5
+                      {t.draft.round(state.round + 1, 5).toUpperCase()}
                     </span>
                   </div>
 
@@ -833,11 +837,11 @@ export default function DraftPage() {
 
               {/* Round 카운터 */}
               <p className="font-label-caps text-[10px] text-outline/60 uppercase tracking-[0.2em]">
-                Round {state.round + 1} / 5
+                {t.draft.round(state.round + 1, 5)}
               </p>
 
               {state.phase === 'SPIN' && (
-                <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">Spinning...</p>
+                <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">{t.draft.spinning}</p>
               )}
               {state.phase === 'PICK' && state.spunTeam && (
                 <DesktopPickScreen
@@ -857,7 +861,7 @@ export default function DraftPage() {
         )}
 
         {state.phase === 'SIM' && (
-          <p className="text-center text-on-surface animate-pulse py-12 font-label-caps text-label-caps">Simulating season...</p>
+          <p className="text-center text-on-surface animate-pulse py-12 font-label-caps text-label-caps">{t.draft.preparing}</p>
         )}
 
         {state.phase === 'REVEAL' && state.simResult && (

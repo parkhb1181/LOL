@@ -1,10 +1,9 @@
-// 공유 헤더 — 도감/드래프트/결과 페이지 공통 (도감 헤더 기준)
-// activePage: 현재 페이지에 active 스타일 적용
-// fixed: true → fixed top-0 전체 폭 (dex·/r), false → 페이지 플로우 inline (draft)
-// fixedMobile: 모바일 헤더만 독립적으로 fixed 제어 (draft 전용 — 데스크톱은 fixed 그대로)
+'use client'
+// 공유 헤더 — 전 페이지 공통 (홈/도감/드래프트/결과)
 // rightSlot: 헤더 우측 커스텀 콘텐츠 (draft 슬롯 미니 등)
 import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { useLang } from '@/i18n'
 
 type Props = {
   activePage?: 'collection' | 'draft'
@@ -13,12 +12,28 @@ type Props = {
   rightSlot?: ReactNode
 }
 
+function LangToggle() {
+  const { lang, toggleLang } = useLang()
+  return (
+    <button
+      onClick={toggleLang}
+      aria-label="언어 전환"
+      className="flex items-center gap-1 font-label-caps text-[11px] tracking-wider shrink-0"
+    >
+      <span className={lang === 'ko' ? 'text-secondary' : 'text-outline/50 hover:text-outline'}>KO</span>
+      <span className="text-outline/30">|</span>
+      <span className={lang === 'en' ? 'text-secondary' : 'text-outline/50 hover:text-outline'}>EN</span>
+    </button>
+  )
+}
+
 export default function SiteHeader({ activePage, fixed = false, fixedMobile, rightSlot }: Props) {
+  const { t } = useLang()
+
   const desktopPos = fixed
     ? 'fixed top-0 left-0 w-full z-50'
     : 'relative z-20 shrink-0'
-  // fixedMobile이 명시되면 모바일은 그 값 우선, 아니면 fixed 상속
-  const mobilePos  = (fixedMobile ?? fixed)
+  const mobilePos = (fixedMobile ?? fixed)
     ? 'fixed top-0 left-0 w-full z-50'
     : 'relative z-20 shrink-0'
 
@@ -40,13 +55,17 @@ export default function SiteHeader({ activePage, fixed = false, fixedMobile, rig
         </Link>
         <nav className="flex gap-6">
           <Link href="/dex" className={activePage === 'collection' ? navActive : navIdle}>
-            COLLECTION
+            {t.nav.collection}
           </Link>
           <Link href="/draft" className={activePage === 'draft' ? navActive : navIdle}>
-            PLAY GAME
+            {t.nav.playGame}
           </Link>
         </nav>
-        {rightSlot && <div className="ml-auto">{rightSlot}</div>}
+        {/* 우측: 커스텀 슬롯(있으면 우선) + 언어 토글 */}
+        <div className="ml-auto flex items-center gap-4">
+          {rightSlot && <div>{rightSlot}</div>}
+          <LangToggle />
+        </div>
       </header>
 
       {/* 모바일 헤더 */}
@@ -57,19 +76,20 @@ export default function SiteHeader({ activePage, fixed = false, fixedMobile, rig
         <Link href="/" className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface">
           GRANDSLAM
         </Link>
-        <div className="flex gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href="/dex"
             className={`font-label-caps text-[11px] uppercase tracking-wider transition-colors ${activePage === 'collection' ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary'}`}
           >
-            COLLECTION
+            {t.nav.collection}
           </Link>
           <Link
             href="/draft"
             className={`font-label-caps text-[11px] uppercase tracking-wider transition-colors ${activePage === 'draft' ? 'text-secondary' : 'text-on-surface-variant hover:text-secondary'}`}
           >
-            PLAY GAME
+            {t.nav.playGame}
           </Link>
+          <LangToggle />
         </div>
       </header>
     </>

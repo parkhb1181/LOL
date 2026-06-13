@@ -7,6 +7,7 @@ import { useEffect, useState, useMemo } from 'react'
 import PlayerCard from '@/components/PlayerCard'
 import SiteHeader from '@/components/SiteHeader'
 import BottomNav from '@/components/BottomNav'
+import { useLang } from '@/i18n'
 import type { PlayerSeason } from '@/lib/data'
 
 const ROLE_ORDER = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
@@ -73,6 +74,7 @@ function avgOvrColor(avg: number): string {
 }
 
 export default function DexPage() {
+  const { t } = useLang()
   const [players, setPlayers] = useState<PlayerSeason[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -150,16 +152,16 @@ export default function DexPage() {
         {/* 타이틀 */}
         <div className="mb-8 md:mb-12">
           <h1 className="font-ovr-display text-[40px] md:text-ovr-display tracking-tight text-on-surface uppercase drop-shadow-md">
-            PLAYER COLLECTION
+            {t.dex.title}
           </h1>
           {!loading && (
             <p className="font-label-caps text-label-caps text-outline/50 mt-2 uppercase">
               {sortMode === 'team'
-                ? `${filteredTeams.length} Teams · ${totalPlayers} Players`
-                : `${totalPlayers} Players`
+                ? t.dex.countTeams(filteredTeams.length, totalPlayers)
+                : `${totalPlayers}`
               }
               {selectedYear === null && (
-                <span className="ml-2 text-secondary/60">· All Seasons</span>
+                <span className="ml-2 text-secondary/60">· {t.dex.allSeasons}</span>
               )}
             </p>
           )}
@@ -180,7 +182,7 @@ export default function DexPage() {
                   : 'border-outline-variant/40 text-outline/60 hover:text-outline'
               }`}
             >
-              ALL
+              {t.dex.all}
             </button>
             {LEAGUES.map(l => {
               const isActive = selectedLeague === l
@@ -208,13 +210,13 @@ export default function DexPage() {
 
             {/* 시즌 드롭다운 */}
             <div className="flex items-center gap-2">
-              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SEASON</span>
+              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">{t.dex.season}</span>
               <select
                 value={selectedYear ?? 'ALL'}
                 onChange={e => setSelectedYear(e.target.value === 'ALL' ? null : Number(e.target.value))}
                 className="bg-surface-container-high border border-outline-variant font-label-caps text-label-caps text-on-surface rounded-full py-1 pl-3 pr-7 focus:outline-none focus:ring-1 focus:ring-outline/50 cursor-pointer"
               >
-                <option value="ALL">ALL</option>
+                <option value="ALL">{t.dex.all}</option>
                 {YEARS.map(y => (
                   <option key={y} value={y}>{y}</option>
                 ))}
@@ -223,15 +225,15 @@ export default function DexPage() {
 
             {/* 정렬 드롭다운 */}
             <div className="flex items-center gap-2">
-              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SORT</span>
+              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">{t.dex.sort}</span>
               <select
                 value={sortMode}
                 onChange={e => setSortMode(e.target.value as SortMode)}
                 className="bg-surface-container-high border border-outline-variant font-label-caps text-label-caps text-on-surface rounded-full py-1 pl-3 pr-7 focus:outline-none focus:ring-1 focus:ring-outline/50 cursor-pointer"
               >
-                <option value="team">BY TEAM</option>
-                <option value="ovr-desc">OVR HIGH</option>
-                <option value="ovr-asc">OVR LOW</option>
+                <option value="team">{t.dex.byTeam}</option>
+                <option value="ovr-desc">{t.dex.ovrHigh}</option>
+                <option value="ovr-asc">{t.dex.ovrLow}</option>
               </select>
             </div>
           </div>
@@ -242,7 +244,7 @@ export default function DexPage() {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search players..."
+              placeholder={t.dex.searchPlaceholder}
               className="bg-surface-container-lowest/60 border border-outline-variant/60 focus:border-secondary/60 w-full md:max-w-sm rounded-full text-sm font-body-main text-on-surface py-2 px-4 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all"
             />
           </div>
@@ -252,7 +254,7 @@ export default function DexPage() {
         {loading && (
           <div className="flex items-center justify-center py-24">
             <p className="font-label-caps text-label-caps text-outline/50 animate-pulse uppercase tracking-widest">
-              Loading...
+              {t.dex.loading}
             </p>
           </div>
         )}
@@ -262,7 +264,7 @@ export default function DexPage() {
           <div className="space-y-12">
             {filteredTeams.length === 0 && (
               <p className="font-label-caps text-label-caps text-outline/40 text-center py-16 uppercase">
-                No teams found
+                {t.dex.noTeams}
               </p>
             )}
             {filteredTeams.map(group => (
@@ -306,7 +308,7 @@ export default function DexPage() {
           <div>
             {flatPlayers.length === 0 && (
               <p className="font-label-caps text-label-caps text-outline/40 text-center py-16 uppercase">
-                No players found
+                {t.dex.noPlayers}
               </p>
             )}
             <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 md:gap-4">

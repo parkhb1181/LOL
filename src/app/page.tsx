@@ -1,8 +1,12 @@
+'use client'
 import Link from 'next/link'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import { useLang } from '@/i18n'
 
 export default function Home() {
+  const { t } = useLang()
+
   return (
     <div className="min-h-screen bg-surface-container-lowest text-on-surface flex flex-col relative overflow-x-hidden">
 
@@ -22,22 +26,16 @@ export default function Home() {
         />
       </div>
 
-      {/* 헤더 (공유 컴포넌트 — activePage 없음) */}
       <SiteHeader fixed />
-
-      {/* 헤더 high-offset spacer (fixed 헤더 높이 보정) */}
       <div className="h-[57px] md:h-[65px] shrink-0" />
 
-      {/* 히어로 */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 relative z-10">
         <div className="text-center max-w-xl mx-auto flex flex-col items-center gap-10">
 
-          {/* 라벨 */}
           <p className="font-label-caps text-label-caps text-on-surface-variant tracking-[0.2em] uppercase">
-            LoL All-Time Draft Simulator
+            {t.home.subtitle}
           </p>
 
-          {/* 메인 타이틀 */}
           <h1
             className="font-heading-lg leading-[0.85] tracking-tighter drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
             style={{ fontSize: 'clamp(80px, 22vw, 140px)' }}
@@ -51,40 +49,35 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* 설명 */}
           <p className="font-body-main text-body-main text-on-surface-variant max-w-sm text-center">
-            Draft the greatest players of all time and compete for the World Championship.
+            {t.home.desc}
           </p>
 
-          {/* 버튼 그룹 */}
           <div className="flex flex-col w-full max-w-[400px] gap-4">
             <Link
               href="/draft"
               className="w-full py-4 px-8 bg-secondary text-on-secondary font-label-caps text-label-caps uppercase tracking-widest text-center hover:opacity-90 hover:shadow-[0_0_20px_rgba(233,195,73,0.3)] active:scale-[0.98] transition-all"
             >
-              DRAFT START
+              {t.home.draftStart}
             </Link>
             <Link
               href="/dex"
               className="w-full py-4 px-8 bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest text-center hover:bg-surface-container-high active:scale-[0.98] transition-all"
             >
-              COLLECTION
+              {t.home.collection}
             </Link>
           </div>
 
-          {/* Rating System 링크 */}
           <Link
             href="/about"
-            className="font-label-caps text-label-caps text-on-surface-variant opacity-60 hover:opacity-100 hover:text-on-surface transition-all flex items-center gap-1"
+            className="font-label-caps text-label-caps text-on-surface-variant opacity-60 hover:opacity-100 hover:text-on-surface transition-all"
           >
-            Rating System →
+            {t.home.ratingSystem}
           </Link>
         </div>
       </main>
 
-      {/* 푸터 (공유 컴포넌트) */}
       <SiteFooter />
-
     </div>
   )
 }
