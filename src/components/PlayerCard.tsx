@@ -139,10 +139,10 @@ export default function PlayerCard({
             {player.nameEn.charAt(0).toUpperCase()}
           </div>
         )}
-        {/* 하단 페이드 — dex는 더 깊게 페이드해 카드 배경과 자연스럽게 연결 */}
+        {/* 하단 페이드 — 텍스트 영역(이름+팀+시즌) 커버를 위해 non-dex는 h-[35%]로 확장 */}
         <div
-          className={`absolute bottom-0 left-0 right-0 pointer-events-none ${size === 'dex' ? 'h-[35%]' : 'h-[15%]'}`}
-          style={{ background: 'linear-gradient(to top, #14141c, transparent)' }}
+          className={`absolute bottom-0 left-0 right-0 pointer-events-none ${size === 'dex' ? 'h-[35%]' : 'h-[35%]'}`}
+          style={{ background: 'linear-gradient(to top, rgba(20,20,28,1) 0%, rgba(20,20,28,0.85) 40%, transparent 100%)' }}
         />
       </div>
 
@@ -169,10 +169,10 @@ export default function PlayerCard({
         )}
       </div>
 
-      {/* 5. 우상단: AllPro 1st 배지 (있을 때만) */}
+      {/* 5. 우상단: AllPro 1st 배지 — PC만 표시 (모바일 슬롯은 MobileSlotCard로 분리) */}
       {player.badges.includes('ALLPRO_1ST') && (
-        <div className="absolute top-2 right-1.5 z-20">
-          <span className="font-label-caps text-[7px] uppercase tracking-wider px-1.5 py-[2px] rounded-sm bg-yellow-900/20 border border-yellow-600/15 text-yellow-200/55">
+        <div className="hidden md:block absolute top-2 right-1.5 z-20">
+          <span className="font-label-caps text-[7px] uppercase tracking-wider px-1.5 py-[2px] rounded-sm bg-yellow-500/30 border border-yellow-400/60 text-yellow-100">
             1st
           </span>
         </div>
@@ -188,7 +188,7 @@ export default function PlayerCard({
           ].join(' ')}>
             {player.nameEn}
           </div>
-          <div className="text-[7px] text-outline/40 mt-[2px] truncate">{player.team} · {player.year}</div>
+          <div className="text-[8px] text-outline/80 mt-[2px] truncate" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9)' }}>{player.team} · {player.year}</div>
         </div>
       )}
     </button>
