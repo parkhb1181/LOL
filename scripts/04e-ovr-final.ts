@@ -25,7 +25,7 @@ const OE_WEIGHTS   = { kda: 0.35, gd15: 0.25, dpm: 0.20, cd15: 0.20 }
 const LP_WEIGHTS   = { kda: 0.40, gs: 0.35, kp: 0.25 }
 const SCALE_OE = 4.0  // z=2 → 8점  (cap ±8)
 const SCALE_LP = 1.5  // z=2 → 3점  (cap ±3)
-const CAP_OE = 8
+const CAP_OE = 7  // 3+지표 공통 상한 (전 연도 effectiveCap 규칙 통일)
 const CAP_LP = 3
 const GD15_MIN_COVERAGE = 0.50
 

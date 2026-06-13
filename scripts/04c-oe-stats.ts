@@ -181,8 +181,8 @@ function computeZScores(stats: RawStat[]): ScoredStat[] {
     // 합성 z-score: KDA 35% + GoldShare 25% + CS 20% + Damage 20%
     const statScore = 0.35 * kdaZ + 0.25 * goldZ + 0.20 * csZ + 0.20 * dmgZ
 
-    // scale 3.0 → z=±1.5 ≈ ±4.5점, 다지표 시즌 클램프 ±8 (§9 신규 규칙)
-    const ovrAdjust = Math.max(-8, Math.min(8, Math.round(statScore * 3.0)))
+    // scale 3.0 → z=±1.5 ≈ ±4.5점, 다지표 시즌 클램프 ±7 (3+지표 공통 기준 통일)
+    const ovrAdjust = Math.max(-7, Math.min(7, Math.round(statScore * 3.0)))
 
     return { ...s, kdaZ: +kdaZ.toFixed(3), goldZ: +goldZ.toFixed(3), csZ: +csZ.toFixed(3), dmgZ: +dmgZ.toFixed(3), statScore: +statScore.toFixed(3), ovrAdjust }
   })
