@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import PlayerCard from '@/components/PlayerCard'
 import SiteHeader from '@/components/SiteHeader'
+import BottomNav from '@/components/BottomNav'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
@@ -361,7 +362,137 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':      'text-outline',
 }
 
-// ── RESULT screen (Stitch v1 디자인) ──────────────────────────────────────────
+// ── 모바일 결과 전용 헬퍼 ─────────────────────────────────────────────────────
+// 달성 단계 → 영문 라벨 (모바일 시즌 카드)
+function mobileRoundLabel(h: HighlightStep): string {
+  const stage = h.step.stage
+  const won   = h.step.series?.[0]?.win ?? stage.endsWith('win')
+  if (stage === 'Spring_missed' || stage === 'Summer_missed') return 'DNQ'
+  if (stage === 'worlds_swiss_out')
+    return (h.step.label.includes('DNQ') || h.step.label.includes('미진출')) ? 'DNQ' : 'SWISS ELIM'
+  if (stage === 'msi_out')
+    return (h.step.label.includes('DNQ') || h.step.label.includes('미진출')) ? 'DNQ' : 'ELIMINATED'
+  if (stage === 'msi_win' || stage === 'worlds_win') return 'CHAMPIONS'
+  if (stage === 'Spring_final' || stage === 'Summer_final') return won ? 'CHAMPIONS' : 'FINALIST'
+  if (stage === 'Spring_sf'    || stage === 'Summer_sf')    return won ? 'FINALIST'  : 'PLAYOFFS'
+  if (stage === 'worlds_final') return won ? 'CHAMPIONS' : 'FINALIST'
+  if (stage === 'worlds_sf')    return 'SEMIFINALS'
+  if (stage === 'worlds_qf')    return won ? 'SEMIFINALS' : 'QUARTERFINALS'
+  if (stage === 'msi_r3') return won ? 'CHAMPIONS' : 'FINALIST'
+  if (stage === 'msi_r2') return won ? 'FINALIST'  : 'SEMIFINALS'
+  if (stage === 'msi_r1') return won ? 'SEMIFINALS' : 'QUARTERFINALS'
+  if (stage.startsWith('worlds_swiss_r')) return 'SWISS'
+  return stage.replace(/_/g, ' ').toUpperCase()
+}
+
+const MOBILE_SECTION_SHORT: Record<string, string> = {
+  'Spring Split': 'SPRING', 'MSI': 'MSI', 'Summer Split': 'SUMMER', 'Worlds': 'WORLDS',
+}
+
+// 시즌 결과 개별 카드 (2×2 그리드)
+function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: boolean }) {
+  const roundLabel = mobileRoundLabel(h)
+  const isDNQ = roundLabel === 'DNQ'
+  const ser   = h.step.series?.[0]
+
+  return (
+    <div className={[
+      'rounded flex flex-col items-center justify-center relative overflow-hidden py-3 px-2 min-h-[90px]',
+      isHighlight
+        ? 'bg-surface-container-high border-2 border-secondary/50 shadow-[0_0_12px_rgba(233,195,73,0.1)]'
+        : 'bg-surface-container-low border border-outline-variant',
+    ].join(' ')}>
+      {isHighlight && (
+        <div className="absolute inset-0 card-shimmer opacity-20 pointer-events-none" aria-hidden />
+      )}
+      <span className={`font-label-caps text-[10px] mb-1 z-10 ${isHighlight ? 'text-secondary' : 'text-outline'}`}>
+        {MOBILE_SECTION_SHORT[h.section] ?? h.section.toUpperCase()}
+      </span>
+      <span className={`font-heading-md text-[18px] leading-tight text-center z-10 ${isDNQ ? 'text-outline/50' : 'text-on-surface'}`}>
+        {roundLabel}
+      </span>
+      {ser && !isDNQ && (
+        <div className={`mt-1 z-10 flex items-start gap-1 font-body-main text-[10px] leading-tight ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+          <span className="flex-shrink-0">{ser.win ? '✓' : '✗'}</span>
+          <span>{ser.win ? `def. ${ser.opp} ${ser.score}` : `lost to ${ser.opp} ${ser.score}`}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// 모바일 결과 화면 전체 레이아웃 (Stitch 모바일 디자인)
+function MobileResultScreen({
+  simResult, picks, onReset,
+}: {
+  simResult: NonNullable<ReturnType<typeof useDraftMachine>['state']['simResult']>
+  picks: ReturnType<typeof useDraftMachine>['state']['picks']
+  onReset: () => void
+}) {
+  const highlights  = pickHighlightSteps(simResult.steps)
+  const gradeColor  = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
+
+  // 가장 높은 트로피 획득 섹션에 금테 강조
+  const highlightSection: string | null =
+    simResult.trophies.includes('WORLDS')  ? 'Worlds'       :
+    simResult.trophies.includes('MSI')     ? 'MSI'          :
+    simResult.trophies.includes('SPLIT2')  ? 'Summer Split' :
+    simResult.trophies.includes('SPLIT1')  ? 'Spring Split' : null
+
+  return (
+    <div className="flex flex-col items-center w-full pb-24">
+
+      {/* 등급명 */}
+      <h1 className={`font-heading-lg text-heading-lg uppercase text-center mb-4 ${gradeColor}`}>
+        {simResult.grade}
+      </h1>
+
+      {/* 시즌 결과 2×2 그리드 */}
+      <div className="w-full grid grid-cols-2 gap-3 mb-6">
+        {highlights.map(h => (
+          <MobileSeasonCard
+            key={h.section}
+            h={h}
+            isHighlight={h.section === highlightSection}
+          />
+        ))}
+      </div>
+
+      {/* 선수 카드 3+2 (TOP/JGL/MID → ADC/SUP) */}
+      <div className="w-full flex flex-col items-center gap-3 mb-8">
+        <div className="flex justify-center gap-2 w-full">
+          {[0, 1, 2].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-2 w-full">
+          {[3, 4].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PLAY AGAIN 버튼 */}
+      <button
+        onClick={onReset}
+        className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
+      >
+        PLAY AGAIN
+      </button>
+
+      {/* URL 워터마크 (공유 캡처용) */}
+      <p className="font-label-caps text-[8px] text-outline/30 text-center mt-3">
+        grandslamlol.vercel.app
+      </p>
+    </div>
+  )
+}
+
+// ── RESULT screen (모바일: Stitch 모바일 / 데스크톱: Stitch v1) ────────────────
 function ResultScreen({
   simResult, picks, seed, onReset,
 }: {
@@ -387,7 +518,7 @@ function ResultScreen({
   const highlights = pickHighlightSteps(simResult.steps)
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
 
-  // DNQ=dim / 우승=gold / 그 외=일반 white
+  // DNQ=dim / 우승=gold / 그 외=white (데스크톱 시즌 그리드)
   function sectionTone(h: HighlightStep): string {
     const stage = h.step.stage
     const isDNQ =
@@ -408,65 +539,74 @@ function ResultScreen({
   }
 
   return (
-    <div className="flex flex-col items-center w-full py-6">
+    <div className="w-full py-4">
 
-      {/* ── 등급 헤더 ── */}
-      <div className="text-center mb-6">
-        <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
-          Season Result
+      {/* ── 모바일 전용 ── */}
+      <div className="md:hidden">
+        <MobileResultScreen simResult={simResult} picks={picks} onReset={onReset} />
+      </div>
+
+      {/* ── 데스크톱 전용 ── */}
+      <div className="hidden md:flex flex-col items-center">
+
+        {/* 등급 헤더 */}
+        <div className="text-center mb-6">
+          <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
+            Season Result
+          </p>
+          <h2 className={`font-ovr-display text-[72px] leading-none tracking-tighter uppercase drop-shadow-lg ${gradeColor}`}>
+            {simResult.grade}
+          </h2>
+          <p className="font-heading-md text-heading-md text-on-surface-variant uppercase tracking-wide mt-1">
+            Team OVR {simResult.teamOvr}
+          </p>
+        </div>
+
+        {/* 시즌 결과 4칸 그리드 */}
+        <div className="grid grid-cols-4 gap-x-8 gap-y-2 mb-8 text-sm">
+          {highlights.map(h => (
+            <div key={h.section} className="flex flex-col gap-0.5">
+              <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
+                {SECTION_SHORT[h.section] ?? h.section}
+              </span>
+              <span className={`font-body-main text-sm ${sectionTone(h)}`}>
+                {highlightRoundLabel(h)}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* 선수 카드 가로 스크롤 (snap) */}
+        <div className="w-full max-w-[1100px] flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory pb-4 justify-center gap-4">
+          {ROLES.map((_, i) => picks[i] && (
+            <div key={i} className="flex-shrink-0 snap-center">
+              <PlayerCard player={picks[i]!.player} size="result" />
+            </div>
+          ))}
+        </div>
+
+        {/* URL 워터마크 */}
+        <p className="font-label-caps text-[10px] text-outline/40 select-none mt-1 mb-6">
+          grandslamlol.vercel.app
         </p>
-        <h2 className={`font-ovr-display text-[48px] md:text-[72px] leading-none tracking-tighter uppercase drop-shadow-lg ${gradeColor}`}>
-          {simResult.grade}
-        </h2>
-        <p className="font-heading-md text-heading-md text-on-surface-variant uppercase tracking-wide mt-1">
-          Team OVR {simResult.teamOvr}
-        </p>
-      </div>
 
-      {/* ── 시즌 결과 4칸 그리드 ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-2 mb-8 text-sm">
-        {highlights.map(h => (
-          <div key={h.section} className="flex flex-col gap-0.5">
-            <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
-              {SECTION_SHORT[h.section] ?? h.section}
-            </span>
-            <span className={`font-body-main text-sm ${sectionTone(h)}`}>
-              {highlightRoundLabel(h)}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* ── 선수 카드 가로 스크롤 (snap) ── */}
-      <div className="w-full max-w-[1100px] flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory px-4 md:px-0 pb-4 md:justify-center gap-3 md:gap-4">
-        {ROLES.map((_, i) => picks[i] && (
-          <div key={i} className="flex-shrink-0 snap-center">
-            <PlayerCard player={picks[i]!.player} size="result" />
-          </div>
-        ))}
-      </div>
-
-      {/* URL 워터마크 — 공유 캡처용 */}
-      <p className="font-label-caps text-[10px] text-outline/40 select-none mt-1 mb-6">
-        grandslamlol.vercel.app
-      </p>
-
-      {/* ── 액션 버튼 ── */}
-      <div className="flex flex-col md:flex-row gap-3 items-center w-full max-w-sm justify-center">
-        <button
-          onClick={handleCopy}
-          className="w-full md:w-auto px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
-        >
-          <LinkIcon />
-          {copied ? '✓ COPIED!' : 'COPY LINK'}
-        </button>
-        <button
-          onClick={onReset}
-          className="w-full md:w-auto px-8 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
-        >
-          <ReplayIcon />
-          PLAY AGAIN
-        </button>
+        {/* 액션 버튼 */}
+        <div className="flex flex-row gap-3 items-center w-full max-w-sm justify-center">
+          <button
+            onClick={handleCopy}
+            className="w-full px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
+          >
+            <LinkIcon />
+            {copied ? '✓ COPIED!' : 'COPY LINK'}
+          </button>
+          <button
+            onClick={onReset}
+            className="w-full px-8 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
+          >
+            <ReplayIcon />
+            PLAY AGAIN
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -676,6 +816,9 @@ export default function DraftPage() {
           />
         )}
       </main>
+
+      {/* 모바일 하단 탭바 */}
+      <BottomNav activePage="draft" />
     </div>
   )
 }

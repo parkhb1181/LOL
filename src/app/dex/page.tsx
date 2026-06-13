@@ -6,6 +6,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import PlayerCard from '@/components/PlayerCard'
 import SiteHeader from '@/components/SiteHeader'
+import BottomNav from '@/components/BottomNav'
 import type { PlayerSeason } from '@/lib/data'
 
 const ROLE_ORDER = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
@@ -147,53 +148,53 @@ export default function DexPage() {
         </div>
 
         {/* ── 필터 바 ── */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-[#1e1f2a]/50 p-4 rounded-lg border border-outline-variant/30 backdrop-blur-sm">
-          <div className="flex flex-wrap items-center gap-3 md:gap-4">
+        {/* 모바일: 수평 스크롤 pill 칩 행 / 데스크톱: flex row */}
+        <div className="mb-6">
 
-            {/* 리그 칩 — ALL 포함 */}
-            <div className="flex gap-1.5">
-              {/* ALL 버튼 */}
-              <button
-                onClick={() => setSelectedLeague(null)}
-                className={`px-3 py-1 rounded font-label-caps text-[11px] uppercase tracking-wider transition-all border ${
-                  selectedLeague === null
-                    ? 'border-on-surface-variant/60 text-on-surface'
-                    : 'border-outline-variant/40 text-outline/50 hover:text-outline'
-                }`}
-              >
-                ALL
-              </button>
-              {LEAGUES.map(l => {
-                const isActive = selectedLeague === l
-                const isDimmed = selectedLeague !== null && !isActive
-                return (
-                  <button
-                    key={l}
-                    onClick={() => toggleLeague(l)}
-                    className={`px-3 py-1 rounded font-label-caps text-[11px] uppercase tracking-wider transition-all ${
-                      isDimmed ? 'opacity-35 hover:opacity-75' : 'opacity-100'
-                    }`}
-                    style={{
-                      border: `1px solid ${LEAGUE_COLOR[l]}`,
-                      color: LEAGUE_COLOR[l],
-                      backgroundColor: isActive ? `${LEAGUE_COLOR[l]}1a` : 'transparent',
-                    }}
-                  >
-                    {l}
-                  </button>
-                )
-              })}
-            </div>
+          {/* 리그 칩 + 시즌 — 모바일 가로 스크롤 */}
+          <div className="flex overflow-x-auto gap-2 pb-3 -mx-5 px-5 md:mx-0 md:px-0 md:flex-wrap md:items-center md:gap-3 scrollbar-hide">
+            {/* ALL */}
+            <button
+              onClick={() => setSelectedLeague(null)}
+              className={`shrink-0 px-4 py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all border whitespace-nowrap ${
+                selectedLeague === null
+                  ? 'border-on-surface-variant/60 bg-surface-variant text-on-surface'
+                  : 'border-outline-variant/40 text-outline/60 hover:text-outline'
+              }`}
+            >
+              ALL REGIONS
+            </button>
+            {LEAGUES.map(l => {
+              const isActive = selectedLeague === l
+              const isDimmed = selectedLeague !== null && !isActive
+              return (
+                <button
+                  key={l}
+                  onClick={() => toggleLeague(l)}
+                  className={`shrink-0 px-4 py-1.5 rounded-full font-label-caps text-[11px] uppercase tracking-wider transition-all whitespace-nowrap ${
+                    isDimmed ? 'opacity-35 hover:opacity-75' : 'opacity-100'
+                  }`}
+                  style={{
+                    border: `1px solid ${LEAGUE_COLOR[l]}`,
+                    color: LEAGUE_COLOR[l],
+                    backgroundColor: isActive ? `${LEAGUE_COLOR[l]}1a` : 'transparent',
+                  }}
+                >
+                  {l}
+                </button>
+              )
+            })}
 
-            <div className="w-px h-4 bg-outline-variant hidden md:block" />
+            {/* 구분선 — 데스크톱만 */}
+            <div className="w-px h-4 bg-outline-variant hidden md:block self-center" />
 
-            {/* 시즌 드롭다운 — ALL 옵션 포함 */}
-            <div className="flex items-center gap-2">
-              <span className="font-label-caps text-label-caps text-on-surface uppercase">SEASON</span>
+            {/* 시즌 드롭다운 */}
+            <div className="shrink-0 flex items-center gap-2">
+              <span className="font-label-caps text-[11px] text-on-surface uppercase tracking-wider">SEASON</span>
               <select
                 value={selectedYear ?? 'ALL'}
                 onChange={e => setSelectedYear(e.target.value === 'ALL' ? null : Number(e.target.value))}
-                className="bg-surface-container-high border border-outline-variant font-label-caps text-label-caps text-on-surface rounded py-1 pl-2 pr-6 focus:outline-none focus:ring-1 focus:ring-outline/50 cursor-pointer"
+                className="bg-surface-container-high border border-outline-variant font-label-caps text-label-caps text-on-surface rounded-full py-1 pl-3 pr-7 focus:outline-none focus:ring-1 focus:ring-outline/50 cursor-pointer"
               >
                 <option value="ALL">ALL</option>
                 {YEARS.map(y => (
@@ -203,16 +204,16 @@ export default function DexPage() {
             </div>
           </div>
 
-          {/* 선수 검색 (단일 — 헤더 검색 제거) */}
-          <div className="relative w-full md:w-64">
+          {/* 선수 검색 — 모바일 별도 행, 데스크톱에서도 아래에 배치 */}
+          <div className="relative mt-3">
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search Players..."
-              className="bg-[#14141c] border border-outline-variant w-full rounded text-sm font-body-main text-on-surface py-1.5 pl-3 pr-8 focus:outline-none focus:ring-1 focus:ring-outline/50"
+              placeholder="Search players..."
+              className="bg-surface-container-lowest/60 border border-outline-variant/60 focus:border-secondary/60 w-full md:max-w-sm rounded-full text-sm font-body-main text-on-surface py-2 pl-4 pr-9 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all"
             />
-            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-outline">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline">
               <SearchIcon />
             </span>
           </div>
@@ -256,7 +257,8 @@ export default function DexPage() {
                 </div>
 
                 {/* 5명 카드 그리드 */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+                {/* 모바일 3열 (3+2 레이아웃), 데스크톱 5열 */}
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-4">
                   {group.players.map(player => (
                     <PlayerCard
                       key={player.id}
@@ -270,6 +272,9 @@ export default function DexPage() {
           </div>
         )}
       </main>
+
+      {/* 모바일 하단 탭바 — §6 공유 컴포넌트 */}
+      <BottomNav activePage="collection" />
 
     </div>
   )
