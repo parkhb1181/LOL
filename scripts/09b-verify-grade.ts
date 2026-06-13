@@ -89,7 +89,7 @@ for (const p of players) {
   playerMap.get(key)!.push({ id: p.id, playerId: p.playerId, role: p.role, ovr: p.ovr, teamKey: key, year: p.year })
 }
 
-setEloScale(14)
+setEloScale(20) // 실제 sim.ts 기본값과 일치 (S=20, 2026-06 v3)
 const c = runGreedy(N, spinIndex, teamMap, playerMap, opponents)
 console.log('GRADE_CUT', GRADE_CUT)
 for (const g of GRADES) {

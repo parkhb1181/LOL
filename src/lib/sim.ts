@@ -40,8 +40,8 @@ const ROLE_WEIGHT: Record<string, number> = {
   MID: 1.10, JGL: 1.10, ADC: 1.00, TOP: 0.95, SUP: 0.85,
 }
 
-// §9 Elo scale — 기본 10 (2026-06 v2: 90 OVR 트로피 확률 ~2×, S=14 대비)
-let _eloScale = 10
+// §9 Elo scale — 기본 20 (2026-06 v3: 압축 OVR 분포 맞춤, 곡선 완만화)
+let _eloScale = 20
 export function setEloScale(s: number): void { _eloScale = s }
 export function getEloScale(): number { return _eloScale }
 
