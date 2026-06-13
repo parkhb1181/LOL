@@ -65,14 +65,17 @@ const OVR_OVERRIDES: Record<string, number> = {
   'Canyon|2020|LCK': 99,  // 2020 Worlds 우승 — 역대 최고 정글
   // ── OVR 98 ──────────────────────────────────────────────────────────────
   'Faker|2015|LCK': 98,   // 2015 우승 but 이미 2013/2016 = 99이므로 98
+  'Faker|2023|LCK': 97,   // T1 2023 Worlds 우승 (MID)
   'ShowMaker|2020|LCK': 98,
   'Zeus|2023|LCK': 97,
-  'Oner|2023|LCK': 94,
-  'Keria|2023|LCK': 94,
+  'Oner|2023|LCK': 95,   // T1 2023 (94→95: T1우승팀 상향)
+  'Keria|2023|LCK': 96,  // T1 2023 (94→96: T1우승팀 상향)
   'Chovy|2024|LCK': 98,
   // LPL
   'Scout|2021|LPL': 97,
   'Viper (Park Do-hyeon)|2021|LPL': 97,  // Viper 실제 league=LPL (EDG)
+  'Kanavi|2023|LPL': 96,                 // JDG 2023 준우승 (98→96: T1 역전 해소)
+  'knight (Zhuo Ding)|2023|LPL': 96,    // JDG 2023 준우승 (98→96: T1 역전 해소)
   'Ruler|2023|LPL': 96,                  // Ruler 2023 실제 league=LPL (JDG)
   'knight (Zhuo Ding)|2024|LPL': 96,
   '369|2023|LPL': 95,
@@ -86,13 +89,25 @@ const OVR_OVERRIDES: Record<string, number> = {
   'BrokenBlade|2024|LEC': 90,  // G2 2024 월즈 광탈 반영 (95→90)
 }
 
-// §9 리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
-// LCK/LPL: 1.0 / LEC: 0.95 / LCS: 0.85
-const LEAGUE_COEFF: Record<string, number> = {
-  LCK: 1.0,
-  LPL: 1.0,
-  LEC: 0.95,
-  LCS: 0.85,
+// §9 연도×리그 계수 — 국내 플옵 가점에만 적용 (Worlds/MSI/수상 이중 페널티 방지)
+// key: `${year}|${leagueCode}` — 없는 연도는 LCK=1.0, 나머지=0.80
+const LEAGUE_COEFF_TABLE: Record<string, number> = {
+  '2013|LCK':1.00, '2013|LPL':0.80, '2013|LEC':0.82, '2013|LCS':0.78,
+  '2014|LCK':0.95, '2014|LPL':0.82, '2014|LEC':0.83, '2014|LCS':0.78,
+  '2015|LCK':1.00, '2015|LPL':0.83, '2015|LEC':0.83, '2015|LCS':0.78,
+  '2016|LCK':1.00, '2016|LPL':0.85, '2016|LEC':0.82, '2016|LCS':0.78,
+  '2017|LCK':1.00, '2017|LPL':0.88, '2017|LEC':0.82, '2017|LCS':0.77,
+  '2018|LCK':0.95, '2018|LPL':0.95, '2018|LEC':0.82, '2018|LCS':0.76,
+  '2019|LCK':0.95, '2019|LPL':0.98, '2019|LEC':0.90, '2019|LCS':0.78,
+  '2020|LCK':1.00, '2020|LPL':0.92, '2020|LEC':0.83, '2020|LCS':0.76,
+  '2021|LCK':1.00, '2021|LPL':0.95, '2021|LEC':0.80, '2021|LCS':0.75,
+  '2022|LCK':1.00, '2022|LPL':0.92, '2022|LEC':0.80, '2022|LCS':0.75,
+  '2023|LCK':1.00, '2023|LPL':0.92, '2023|LEC':0.80, '2023|LCS':0.75,
+  '2024|LCK':1.00, '2024|LPL':0.90, '2024|LEC':0.78, '2024|LCS':0.75,
+  '2025|LCK':1.00, '2025|LPL':0.90, '2025|LEC':0.78, '2025|LCS':0.75,
+}
+function getLeagueCoeff(year: number, leagueCode: string): number {
+  return LEAGUE_COEFF_TABLE[`${year}|${leagueCode}`] ?? (leagueCode === 'LCK' ? 1.0 : 0.80)
 }
 
 // §4.3 레이팅 공식 (§6.1 룰 패치 반영)
@@ -104,9 +119,10 @@ function calcOvr(params: {
   worldsPlace: number | null
   awards: AwardRow[]
   leagueCode: string        // 리그 계수 적용용
+  year: number              // 연도별 계수 조회용
 }): number {
   let score = 60
-  const coeff = LEAGUE_COEFF[params.leagueCode] ?? 1.0
+  const coeff = getLeagueCoeff(params.year, params.leagueCode)
 
   // 국내 플옵 — 스플릿별 합산 + 리그 계수 (Rule 1)
   for (const p of params.playoffPlaces) {
@@ -253,17 +269,16 @@ async function main() {
     console.log(`2024~2025 다지표 보너스 로드: ${newStatsByKey.size}건`)
   }
 
-  // ─── v1.1 최종 지표 로드 (2016~2018) ─────────────────────────────────────
-  // 04e-ovr-final.ts 출력: OE 다지표(±8) or LP 3지표 폴백(±3)
-  // key: `${playerId}|${year}|${leagueCode}`  (원본 대소문자)
-  const v11FinalPath = path.join(process.cwd(), 'pipeline-cache', 'ovr-stats-v11-final.json')
-  const v11FinalMap = new Map<string, { statsBonus: number; mode: 'oe' | 'lp' }>()
-  if (fs.existsSync(v11FinalPath)) {
-    const v11Data = JSON.parse(fs.readFileSync(v11FinalPath, 'utf-8')) as Record<string, { statsBonus: number; mode: 'oe' | 'lp' }>
+  // ─── 2016~2018 지표 로드 (04e-ovr-final.ts 출력 — OE 다지표+LP 폴백, cap ±7) ──────
+  // key: `${playerId}|${year}|${leagueCode}` (원본 대소문자)
+  const v11StatsPath = path.join(process.cwd(), 'pipeline-cache', 'ovr-stats-v11-final.json')
+  const v11StatsMap = new Map<string, number>()  // → statsBonus
+  if (fs.existsSync(v11StatsPath)) {
+    const v11Data = JSON.parse(fs.readFileSync(v11StatsPath, 'utf-8')) as Record<string, { statsBonus: number }>
     for (const [k, v] of Object.entries(v11Data)) {
-      v11FinalMap.set(k, { statsBonus: v.statsBonus, mode: v.mode })
+      v11StatsMap.set(k, v.statsBonus)
     }
-    console.log(`v11 final 지표 로드: ${v11FinalMap.size}건 (2016~2018)`)
+    console.log(`2016~2018 지표 로드: ${v11StatsMap.size}건 (v11-final OE+LP)`)
   }
 
   // Leaguepedia playerId → OE 정규화 이름 변환
@@ -378,7 +393,7 @@ async function main() {
     const msiPlace = msiByTeamYear.get(teamYearKey) ?? null
 
     const awards = awardsByPY.get(`${playerId}|${year}`) ?? []
-    const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards, leagueCode })
+    const rawOvr = calcOvr({ playoffPlaces, msiPlace, worldsPlace, awards, leagueCode, year })
     const baseOvr = compressOvr(rawOvr)
 
     // ─── 개인 차등 보정 ───────────────────────────────────────────────────────
@@ -407,12 +422,9 @@ async function main() {
       const earlyBonus = earlyStatsByKey.get(`${playerId}|${year}|${leagueCode}`)
       if (earlyBonus !== undefined) individualBonus += earlyBonus
     } else if (year >= 2016 && year <= 2018) {
-      // 2016~2018 v1.1 복합 지표 (04e-ovr-final.ts): OE 다지표(±8) or LP 폴백(±3)
-      const v11Entry = v11FinalMap.get(`${playerId}|${year}|${leagueCode}`)
-      if (v11Entry) {
-        individualBonus = v11Entry.statsBonus  // 이미 적절히 cap됨
-      }
-      // 미매칭 시 0 유지
+      // 2016~2018 OE 다지표+LP 폴백 (04e-ovr-final.ts), cap ±7 (v11-final에서 이미 cap됨)
+      const bonus = v11StatsMap.get(`${playerId}|${year}|${leagueCode}`)
+      if (bonus !== undefined) individualBonus += bonus
     }
 
     // 주전/서브 구분 — 전 시대 공통 (gameCount 커버리지 100%)
@@ -421,9 +433,9 @@ async function main() {
       individualBonus -= 1  // 서브 소폭 감점
     }
 
-    // 차등 폭 클램프 — 전 연도 다지표 ±8 (각 스크립트에서 이미 cap됨, 여기서 방호막)
-    // KDA단일 시즌은 각 스크립트에서 ±3으로 먼저 cap하므로 bonusCap=8이 실효 없음
-    const bonusCap = 8
+    // 차등 폭 클램프 — 전 연도 ±7/5/3(지표수별) 통일, 방호막 역할
+    // 2024~2025는 ±3 (단지표 KDA 단독 정규화)
+    const bonusCap = year <= 2023 ? 7 : 3
     individualBonus = Math.max(-bonusCap, Math.min(bonusCap, individualBonus))
 
     // 99 희소성 보호: compress 상한=98이므로 baseOvr은 99 미도달 — OVR_OVERRIDES 전용
