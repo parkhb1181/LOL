@@ -1,8 +1,29 @@
 import type { Metadata, Viewport } from 'next'
+import { Anton, Bebas_Neue, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { LangProvider } from '@/i18n'
 import './globals.css'
+
+const anton = Anton({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-anton',
+})
+
+const bebasNeue = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-bebas',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 const BASE_URL = 'https://grandslamlol.vercel.app'
 
@@ -46,7 +67,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${anton.variable} ${bebasNeue.variable} ${inter.variable}`}>
       <body className="bg-[#0d0d1a]">
         <LangProvider>
           {children}
