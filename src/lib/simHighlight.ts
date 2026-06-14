@@ -159,7 +159,10 @@ export function pickHardHighlights(steps: SimStep[]): HardHighlight[] {
 
   function worlds(): HardHighlight {
     if (by.has('worlds_dnq')) return { stageKey: 'worlds', label: 'Worlds', status: 'dnq', roundLabel: 'DNQ' }
-    if (by.has('worlds_win')) return { stageKey: 'worlds', label: 'Worlds', status: 'win', roundLabel: 'Champion' }
+    if (by.has('worlds_win')) {
+      const finSer = by.get('worlds_final')?.series?.[0]
+      return { stageKey: 'worlds', label: 'Worlds', status: 'win', roundLabel: 'Champion', opp: finSer?.opp, score: finSer?.score }
+    }
     const ko = by.get('worlds_final') ?? by.get('worlds_sf') ?? by.get('worlds_qf')
     if (ko) {
       const ser = ko.series?.[0]
