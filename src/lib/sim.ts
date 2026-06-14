@@ -41,8 +41,8 @@ const ROLE_WEIGHT: Record<string, number> = {
   MID: 1.10, JGL: 1.10, ADC: 1.00, TOP: 0.95, SUP: 0.85,
 }
 
-// §9 Elo scale — 기본 20 (2026-06 v3: 압축 OVR 분포 맞춤, 곡선 완만화)
-let _eloScale = 20
+// §9 Elo scale — 기본 40 (2026-06 v4: 난이도 튜닝, NORMAL GS OVR90≈17%·OVR85≈5%·OVR80≈1%)
+let _eloScale = 40
 export function setEloScale(s: number): void { _eloScale = s }
 export function getEloScale(): number { return _eloScale }
 
@@ -201,15 +201,16 @@ export type SimMode = 'normal' | 'hard'
 // ─────────────────────────────────────────────────────────────────────────────
 
 // 국제전 단기 토너먼트 (QF/SF/Finals 3라운드 Bo5) — 비복원 추첨
+// roundsWon: 0=QF 탈락, 1=SF 탈락, 2=결승 탈락, 3=우승 (gradeHard CHALLENGER 판정에 사용)
 function runHardIntlTournament(
   stagePrefix: string,
   roundLabels: string[],
   myOvr: number,
   intlPool: Opponent[],  // splice-mutates (비복원)
   rng: () => number
-): { trophyWon: boolean; steps: SimStep[] } {
+): { trophyWon: boolean; steps: SimStep[]; roundsWon: number } {
   const steps: SimStep[] = []
-  let alive = true
+  let roundsWon = 0
   for (let r = 0; r < roundLabels.length; r++) {
     const opp = drawOne(intlPool, rng)
     const ser = playSeries('bo5', myOvr, opp.rating, rng)
@@ -218,9 +219,10 @@ function runHardIntlTournament(
       label: `${roundLabels[r]} vs ${opp.label}`,
       series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
     })
-    if (!ser.win) { alive = false; break }
+    if (!ser.win) break
+    roundsWon++
   }
-  return { trophyWon: alive, steps }
+  return { trophyWon: roundsWon === roundLabels.length, steps, roundsWon }
 }
 
 function simulateHard(
@@ -246,16 +248,18 @@ function simulateHard(
   if (lckCupWinner) trophies.push('LCK_CUP')
 
   // ── 2. FIRST_STAND (게이트: LCK_CUP 우승) ───────────────────
+  let fsRoundsWon: number | null = null  // null = DNQ, 0~3 = 참가
   if (!lckCupWinner) {
     steps.push({ stage: 'first_stand_dnq', label: 'First Stand — DNQ (LCK Cup 우승 필요)' })
   } else {
     // firstStandPool 전용 풀 사용, 없으면 worlds 폴백
     const intlFs = [...(opponents.firstStandPool ?? opponents.worlds)]
-    const { trophyWon: fsWin, steps: fsSteps } = runHardIntlTournament(
+    const { trophyWon: fsWin, steps: fsSteps, roundsWon: fsRW } = runHardIntlTournament(
       'first_stand',
       ['First Stand QF', 'First Stand SF', 'First Stand Finals'],
       myOvr, intlFs, rng
     )
+    fsRoundsWon = fsRW
     steps.push(...fsSteps)
     if (fsWin) {
       trophies.push('FIRST_STAND')
@@ -273,6 +277,7 @@ function simulateHard(
   const msiQualified = r1.regularRank <= 4
 
   // ── 4. MSI (게이트: REGULAR_1 상위 4위) ──────────────────────
+  let msiReachedSF = false
   if (!msiQualified) {
     steps.push({ stage: 'msi_dnq', label: 'MSI — DNQ (상위 4위 필요)' })
   } else {
@@ -294,6 +299,8 @@ function simulateHard(
         break
       }
     }
+    // msiPlace: 1=우승, 2=결승 패, 3=SF 패, 5=QF 패 — SF 이상(≤3) → ELITE
+    msiReachedSF = msiPlace <= 3
     if (msiAlive) {
       trophies.push('MSI')
       steps.push({ stage: 'msi_win', label: 'MSI Champions' })
@@ -303,14 +310,16 @@ function simulateHard(
   }
 
   // ── 5. EWC (무조건 참가 — 초청전) ───────────────────────────
+  let ewcRoundsWon = 0
   {
     // ewcPool 전용 풀 사용, 없으면 worlds 폴백
     const intlEwc = [...(opponents.ewcPool ?? opponents.worlds)]
-    const { trophyWon: ewcWin, steps: ewcSteps } = runHardIntlTournament(
+    const { trophyWon: ewcWin, steps: ewcSteps, roundsWon: ewcRW } = runHardIntlTournament(
       'ewc',
       ['EWC QF', 'EWC SF', 'EWC Finals'],
       myOvr, intlEwc, rng
     )
+    ewcRoundsWon = ewcRW
     steps.push(...ewcSteps)
     if (ewcWin) {
       trophies.push('EWC')
@@ -382,6 +391,10 @@ function simulateHard(
     }
   }
 
+  // FS/EWC 결승 이상 진출 여부 — CHALLENGER 판정 (roundsWon >= 2 = 결승 또는 우승)
+  const intlNonWorldsFinalist =
+    (fsRoundsWon !== null && fsRoundsWon >= 2) || ewcRoundsWon >= 2
+
   const grade = gradeHard({
     trophies,
     worldsBest,
@@ -389,6 +402,8 @@ function simulateHard(
     reachedWorlds,
     bestRegularRank: Math.min(r1.regularRank, r2.regularRank),
     msiQualified,
+    msiReachedSF,
+    intlNonWorldsFinalist,
   })
 
   return { steps, trophies, grade, teamOvr: Math.round(myOvr), mode: 'hard' }

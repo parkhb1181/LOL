@@ -10,6 +10,8 @@ export type Grade =
   | 'REBUILD'
   | 'GOLDEN ROAD'       // HARD: 6관왕 (EWC 제외)
   | 'TRUE GOLDEN ROAD'  // HARD: 7관왕 (완전 정복)
+  | 'WORLD KING'        // HARD: Worlds 우승 + 추가 국제전 우승
+  | 'CHALLENGER'        // HARD: 비Worlds 국제전 결승 이상 (FS/EWC)
 
 export type Trophy =
   | 'SPLIT1' | 'MSI' | 'SPLIT2' | 'WORLDS'          // NORMAL
@@ -20,10 +22,12 @@ const GRADE_ORD: Record<Grade, number> = {
   'PLAYOFF TEAM': 1,
   CONTENDER: 2,
   ELITE: 3,
-  LEGENDARY: 4,
-  'GRAND SLAM': 5,
-  'GOLDEN ROAD': 6,
-  'TRUE GOLDEN ROAD': 7,
+  CHALLENGER: 4,
+  LEGENDARY: 5,
+  'WORLD KING': 6,
+  'GRAND SLAM': 7,
+  'GOLDEN ROAD': 8,
+  'TRUE GOLDEN ROAD': 9,
 }
 
 // 몬테카를로 그리디 목표: GS 3~8% | LEG+EL 15~20% | CONT 20~25% | REB ≤25%
@@ -120,8 +124,8 @@ export function gradeWithWorldsAndPlayoff(params: {
   return rebuildRescue(base, bestRegularRank)
 }
 
-// HARD 모드 전용 등급 판정
-// TRUE GOLDEN ROAD(7관왕) > GOLDEN ROAD(6관왕) > 이하 NORMAL 골격 재활용
+// HARD 모드 전용 등급 판정 (v2 — 9단계)
+// TRUE GOLDEN ROAD(7관왕) > GOLDEN ROAD(6관왕) > WORLD KING > LEGENDARY > CHALLENGER > ELITE > CONTENDER > PLAYOFF TEAM > REBUILD
 export function gradeHard(params: {
   trophies: Trophy[]
   worldsBest: number | null
@@ -129,27 +133,42 @@ export function gradeHard(params: {
   reachedWorlds: boolean
   bestRegularRank: number
   msiQualified: boolean
+  msiReachedSF?: boolean          // MSI SF 이상 진출 (4강+) — ELITE 판정용
+  intlNonWorldsFinalist?: boolean // First Stand 또는 EWC 결승 이상 진출 — CHALLENGER 판정용
 }): Grade {
-  const { trophies, worldsBest, reachedPlayoff, reachedWorlds, bestRegularRank, msiQualified } = params
+  const {
+    trophies, worldsBest, reachedPlayoff, reachedWorlds,
+    bestRegularRank, msiQualified,
+    msiReachedSF = false,
+    intlNonWorldsFinalist = false,
+  } = params
   const has = (t: Trophy) => trophies.includes(t)
-  const C = GRADE_CUT
 
+  // ── 7관왕 / 6관왕 ─────────────────────────────────────────────
   const SIX_PACK: Trophy[] = ['LCK_CUP', 'FIRST_STAND', 'REGULAR_1', 'MSI', 'REGULAR_2', 'WORLDS']
   if (SIX_PACK.every(t => has(t)) && has('EWC')) return 'TRUE GOLDEN ROAD'
   if (SIX_PACK.every(t => has(t))) return 'GOLDEN ROAD'
 
+  // ── WORLD KING: Worlds 우승 + 추가 국제전 우승 ─────────────────
+  if (has('WORLDS') && (has('FIRST_STAND') || has('MSI') || has('EWC'))) return 'WORLD KING'
+
+  // ── LEGENDARY: Worlds 우승만 또는 Worlds 4강 ──────────────────
   if (has('WORLDS')) return 'LEGENDARY'
-  if (worldsBest !== null && worldsBest <= C.legendaryWorldsTop) return 'LEGENDARY'
+  if (worldsBest !== null && worldsBest <= 4) return 'LEGENDARY'
 
-  if (has('MSI')) return 'ELITE'
+  // ── ELITE: MSI 4강(SF)+ 또는 국내 우승 ────────────────────────
+  // msiQualified만으로는 ELITE 부여 안 함 (이전 양극화 원인)
   const natWins = (['LCK_CUP', 'REGULAR_1', 'REGULAR_2'] as Trophy[]).filter(t => has(t)).length
-  if (natWins >= 2) return 'ELITE'
-  if (msiQualified) return 'ELITE'
-  if (natWins >= 1 && worldsBest !== null && worldsBest <= C.eliteWorldsTop) return 'ELITE'
+  if (msiReachedSF) return 'ELITE'
+  if (natWins >= 1) return 'ELITE'
 
-  if (natWins >= 1) return 'CONTENDER'
-  if (worldsBest !== null && worldsBest <= C.contenderWorldsTop) return 'CONTENDER'
-  if (msiQualified && bestRegularRank <= C.eliteMsiRunTopRank) return 'CONTENDER'
+  // ── CHALLENGER: First Stand 또는 EWC 결승 이상 ────────────────
+  // (MSI는 ELITE에서 처리 — MSI QF는 CONTENDER 이하)
+  if (intlNonWorldsFinalist) return 'CHALLENGER'
+
+  // ── CONTENDER: Worlds 8강 또는 MSI 진출 상위권 ────────────────
+  if (worldsBest !== null && worldsBest <= 8) return 'CONTENDER'
+  if (msiQualified && bestRegularRank <= GRADE_CUT.eliteMsiRunTopRank) return 'CONTENDER'
   if (reachedPlayoff && bestRegularRank <= 4) return 'CONTENDER'
 
   if (reachedPlayoff || reachedWorlds) return 'PLAYOFF TEAM'

@@ -8,22 +8,30 @@ import type { NextRequest } from 'next/server'
 
 // Grade accent colors (same as draft/page.tsx)
 const GRADE_COLOR: Record<string, string> = {
-  'GRAND SLAM':   '#ffd700',
-  'LEGENDARY':    '#c090ff',
-  'ELITE':        '#60c0ff',
-  'CONTENDER':    '#40d4a0',
-  'PLAYOFF TEAM': '#d0d8e8',
-  'REBUILD':      '#5a6070',
+  'GRAND SLAM':       '#ffd700',
+  'LEGENDARY':        '#c090ff',
+  'ELITE':            '#60c0ff',
+  'CONTENDER':        '#40d4a0',
+  'PLAYOFF TEAM':     '#d0d8e8',
+  'REBUILD':          '#5a6070',
+  'GOLDEN ROAD':      '#e9c349',
+  'TRUE GOLDEN ROAD': '#f59e0b',
+  'WORLD KING':       '#ff6b35',
+  'CHALLENGER':       '#80a0ff',
 }
 
 // Font size — adjusted by character count
 const GRADE_FONT_SIZE: Record<string, number> = {
-  'GRAND SLAM':   100,
-  'LEGENDARY':    118,
-  'ELITE':        148,
-  'CONTENDER':    112,
-  'PLAYOFF TEAM':  80,
-  'REBUILD':      132,
+  'GRAND SLAM':       100,
+  'LEGENDARY':        118,
+  'ELITE':            148,
+  'CONTENDER':        112,
+  'PLAYOFF TEAM':      80,
+  'REBUILD':          132,
+  'GOLDEN ROAD':       86,
+  'TRUE GOLDEN ROAD':  68,
+  'WORLD KING':       100,
+  'CHALLENGER':       108,
 }
 
 // Role label colors
