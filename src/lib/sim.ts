@@ -193,11 +193,17 @@ function runDomesticSplit(
   return { trophyWon: fin.win, reachedFinal: true, reachedPlayoff: true, regularRank: userRank, steps }
 }
 
+export type SimMode = 'normal' | 'hard'
+
 export function simulate(
   picks: SimPlayer[],
   opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] },
-  seed: number
+  seed: number,
+  mode: SimMode = 'normal'
 ): SimResult {
+  // mode === 'hard' 분기는 2단계에서 구현 (이번 단계는 normal과 동일 실행)
+  void mode
+
   // §6.1 simRng — separate stream from draftRng via (seed ^ 0x9E3779B9)
   const rng = mulberry32((seed ^ 0x9E3779B9) >>> 0)
 
