@@ -18,10 +18,12 @@ const config: Config = {
         'secondary-fixed-dim': '#e9c349',
         'on-secondary': '#14141c',          // 골드 버튼 위 텍스트 (어두운 색)
         // ── 등급 색상 (RESULT 화면 등급명 강조) ─────────────────────────────
-        'grade-grandslam': '#e9c349',       // 골드 (= secondary)
-        'grade-legendary': '#c080ff',       // 퍼플
-        'grade-elite':     '#60c0ff',       // 블루
-        'grade-contender': '#40d4a0',       // 민트/초록
+        'grade-grandslam':       '#e9c349',   // 골드 (= secondary)
+        'grade-legendary':       '#c080ff',   // 퍼플
+        'grade-elite':           '#60c0ff',   // 블루
+        'grade-contender':       '#40d4a0',   // 민트/초록
+        'grade-golden-road':     '#e9c349',   // HARD GOLDEN ROAD (= grandslam)
+        'grade-true-golden-road':'#f59e0b',   // HARD TRUE GOLDEN ROAD (7관왕 — 더 밝은 앰버)
         // ── 서피스 팔레트 (v0 tone) ─────────────────────────────────────────
         'on-surface':             '#f3f4f6',   // gs.text
         'on-surface-variant':     '#c8c5cb',
@@ -60,8 +62,9 @@ const config: Config = {
     'border-lck/30', 'border-lpl/30', 'border-lec/30', 'border-lcs/30',
     'text-secondary', 'text-sky-300', 'text-on-surface', 'text-outline',
     'text-yellow-300', 'text-secondary/80',
-    // 등급 색상
+    // 등급 색상 (NORMAL + HARD)
     'text-grade-grandslam', 'text-grade-legendary', 'text-grade-elite', 'text-grade-contender',
+    'text-grade-golden-road', 'text-grade-true-golden-road',
     'border-secondary/50', 'border-amber-400/35',
     'bg-surface-container-high', 'bg-surface-bright',
     'is-flying',

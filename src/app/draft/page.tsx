@@ -13,7 +13,7 @@ import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
 import type { DraftData } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
-import { highlightRoundLabel, pickHighlightSteps, type HighlightStep } from '@/lib/simHighlight'
+import { highlightRoundLabel, pickHighlightSteps, pickHardHighlights, type HighlightStep, type HardHighlight } from '@/lib/simHighlight'
 
 // ── Data load hook ────────────────────────────────────────────────────────────
 // §13.5: fetch only after mount (no window/fetch needed in SSR)
@@ -438,12 +438,14 @@ const ReplayIcon = () => (
 
 // Grade accent colors — tailwind.config grade-* 토큰 사용
 const GRADE_COLOR: Record<string, string> = {
-  'GRAND SLAM':   'text-grade-grandslam',
-  'LEGENDARY':    'text-grade-legendary',
-  'ELITE':        'text-grade-elite',
-  'CONTENDER':    'text-grade-contender',
-  'PLAYOFF TEAM': 'text-on-surface',
-  'REBUILD':      'text-outline',
+  'GRAND SLAM':       'text-grade-grandslam',
+  'LEGENDARY':        'text-grade-legendary',
+  'ELITE':            'text-grade-elite',
+  'CONTENDER':        'text-grade-contender',
+  'PLAYOFF TEAM':     'text-on-surface',
+  'REBUILD':          'text-outline',
+  'TRUE GOLDEN ROAD': 'text-grade-true-golden-road',
+  'GOLDEN ROAD':      'text-grade-golden-road',
 }
 
 // ── 경기 상세 모달 ─────────────────────────────────────────────────────────────
@@ -452,12 +454,18 @@ const GRADE_COLOR: Record<string, string> = {
 function DetailModal({ steps, onClose }: { steps: SimStep[]; onClose: () => void }) {
   const { t } = useLang()
 
-  // stage prefix → 섹션 번역명
+  // stage prefix → 섹션 번역명 (NORMAL + HARD)
   function getSection(stage: string): string {
     if (stage.startsWith('Spring_')) return t.draft.sectionShort['Spring Split'] ?? 'SPRING'
     if (stage.startsWith('msi_'))    return t.draft.sectionShort['MSI'] ?? 'MSI'
     if (stage.startsWith('Summer_')) return t.draft.sectionShort['Summer Split'] ?? 'SUMMER'
     if (stage.startsWith('worlds_')) return t.draft.sectionShort['Worlds'] ?? 'WORLDS'
+    // HARD 전용
+    if (stage.startsWith('LCK_CUP'))    return 'LCK CUP'
+    if (stage.startsWith('first_stand')) return 'FIRST STAND'
+    if (stage.startsWith('REGULAR_1'))  return 'REGULAR 1'
+    if (stage.startsWith('ewc_'))       return 'EWC'
+    if (stage.startsWith('REGULAR_2'))  return 'REGULAR 2'
     return '—'
   }
 
@@ -642,6 +650,110 @@ function MobileResultScreen({
   )
 }
 
+// ── HARD 모드 결과 화면 ────────────────────────────────────────────────────────
+
+// 7스테이지 타임라인 한 행 — win🟢/lose🔴/dnq⚪
+function HardTimelineRow({ h }: { h: HardHighlight }) {
+  const isWin = h.status === 'win'
+  const isDNQ = h.status === 'dnq'
+  return (
+    <div className={`flex items-center gap-2.5 py-1.5 ${isDNQ ? 'opacity-40' : ''}`}>
+      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isWin ? 'bg-green-400' : isDNQ ? 'bg-outline/20' : 'bg-red-400/70'}`} />
+      <span className="w-[72px] flex-shrink-0 font-label-caps text-[10px] uppercase text-outline/60 leading-none">
+        {h.label}
+        {h.isBonus && (
+          <span className="ml-1 inline-block px-1 py-px bg-amber-400/15 text-amber-400/70 text-[8px] rounded leading-none align-middle">
+            BONUS
+          </span>
+        )}
+      </span>
+      <span className={`font-body-main text-[12px] leading-none flex-shrink-0 ${isWin ? 'text-green-400' : isDNQ ? 'text-outline/40' : 'text-on-surface/70'}`}>
+        {h.roundLabel}
+      </span>
+      {h.opp && !isDNQ && (
+        <span className="font-body-main text-[11px] text-outline/50 leading-none min-w-0 truncate">
+          vs {h.opp}{h.score ? ` (${h.score})` : ''}
+        </span>
+      )}
+    </div>
+  )
+}
+
+// HARD 모드 모바일 결과 화면
+function HardMobileResultScreen({
+  simResult, picks, onReset, onShowDetail,
+}: {
+  simResult: NonNullable<ReturnType<typeof useDraftMachine>['state']['simResult']>
+  picks: ReturnType<typeof useDraftMachine>['state']['picks']
+  onReset: () => void
+  onShowDetail: () => void
+}) {
+  const { t } = useLang()
+  const hardHighlights = pickHardHighlights(simResult.steps)
+  const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
+
+  return (
+    <div className="flex flex-col items-center w-full pb-24">
+      {/* HARD MODE 뱃지 */}
+      <div className="mb-1.5">
+        <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-outline-variant/40 text-outline/60 uppercase tracking-wider">
+          Hard Mode
+        </span>
+      </div>
+
+      {/* 등급명 */}
+      <h1 className={`font-heading-lg text-[26px] uppercase text-center mb-3 leading-tight ${gradeColor}`}>
+        {simResult.grade}
+      </h1>
+
+      {/* 7스테이지 타임라인 */}
+      <div className="w-full bg-surface-container-high/40 rounded-lg px-3 py-1 mb-3">
+        {hardHighlights.map((h, i) => (
+          <HardTimelineRow key={i} h={h} />
+        ))}
+      </div>
+
+      {/* 선수 카드 3+2 */}
+      <div className="w-full flex flex-col items-center gap-2 mb-3">
+        <div className="flex justify-center gap-2 w-full">
+          {[0, 1, 2].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-2 w-full">
+          {[3, 4].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p className="font-label-caps text-[9px] text-outline/50 text-center mb-3">
+        grandslamlol.vercel.app
+      </p>
+
+      <div className="flex flex-col gap-2 w-full">
+        <button
+          onClick={onShowDetail}
+          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          <ListIcon />
+          {t.draft.detailBtn}
+        </button>
+        <button
+          onClick={onReset}
+          className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
+        >
+          {t.draft.playAgain}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── RESULT screen (모바일: Stitch 모바일 / 데스크톱: Stitch v1) ────────────────
 function ResultScreen({
   simResult, picks, seed, onReset,
@@ -655,10 +767,13 @@ function ResultScreen({
   // 상세 보기 모달 — 모바일(MobileResultScreen)과 데스크톱 공유
   const [showDetail, setShowDetail] = useState(false)
 
-  const highlights = pickHighlightSteps(simResult.steps)
+  const isHard = simResult.mode === 'hard'
+  // NORMAL 전용 하이라이트 (HARD에서는 사용 안 함)
+  const highlights: HighlightStep[] = isHard ? [] : pickHighlightSteps(simResult.steps)
+  const hardHighlights: HardHighlight[] = isHard ? pickHardHighlights(simResult.steps) : []
   const gradeColor = GRADE_COLOR[simResult.grade] ?? 'text-on-surface'
 
-  // DNQ=dim / 우승=gold / 그 외=white (데스크톱 시즌 그리드)
+  // DNQ=dim / 우승=gold / 그 외=white (데스크톱 NORMAL 시즌 그리드)
   function sectionTone(h: HighlightStep): string {
     const stage = h.step.stage
     const isDNQ =
@@ -684,12 +799,21 @@ function ResultScreen({
 
       {/* ── 모바일 전용 ── */}
       <div className="md:hidden">
-        <MobileResultScreen
-          simResult={simResult}
-          picks={picks}
-          onReset={onReset}
-          onShowDetail={() => setShowDetail(true)}
-        />
+        {isHard ? (
+          <HardMobileResultScreen
+            simResult={simResult}
+            picks={picks}
+            onReset={onReset}
+            onShowDetail={() => setShowDetail(true)}
+          />
+        ) : (
+          <MobileResultScreen
+            simResult={simResult}
+            picks={picks}
+            onReset={onReset}
+            onShowDetail={() => setShowDetail(true)}
+          />
+        )}
       </div>
 
       {/* ── 데스크톱 전용 ── */}
@@ -697,6 +821,11 @@ function ResultScreen({
 
         {/* 등급 헤더 */}
         <div className="text-center mb-6">
+          {isHard && (
+            <span className="font-label-caps text-[10px] px-2 py-0.5 rounded border border-outline-variant/40 text-outline/60 uppercase tracking-wider inline-block mb-2">
+              Hard Mode
+            </span>
+          )}
           <p className="font-label-caps text-label-caps text-outline uppercase tracking-widest mb-2">
             {t.draft.seasonResult}
           </p>
@@ -708,27 +837,35 @@ function ResultScreen({
           </p>
         </div>
 
-        {/* 시즌 결과 4칸 그리드 */}
-        <div className="grid grid-cols-4 gap-x-8 gap-y-3 mb-8 text-sm">
-          {highlights.map(h => {
-            const ser = h.step.series?.[0]
-            return (
-              <div key={h.section} className="flex flex-col gap-0.5">
-                <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
-                  {t.draft.sectionShort[h.section] ?? h.section}
-                </span>
-                <span className={`font-body-main text-sm ${sectionTone(h)}`}>
-                  {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
-                </span>
-                {ser && (
-                  <span className={`font-body-main text-[12px] mt-0.5 ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
-                    {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
+        {/* 시즌 결과 — HARD: 7행 타임라인 / NORMAL: 4칸 그리드 */}
+        {isHard ? (
+          <div className="w-full max-w-md mb-8 bg-surface-container-high/50 rounded-lg px-5 py-2">
+            {hardHighlights.map((h, i) => (
+              <HardTimelineRow key={i} h={h} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 gap-x-8 gap-y-3 mb-8 text-sm">
+            {highlights.map(h => {
+              const ser = h.step.series?.[0]
+              return (
+                <div key={h.section} className="flex flex-col gap-0.5">
+                  <span className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-wider">
+                    {t.draft.sectionShort[h.section] ?? h.section}
                   </span>
-                )}
-              </div>
-            )
-          })}
-        </div>
+                  <span className={`font-body-main text-sm ${sectionTone(h)}`}>
+                    {(l => t.draft.roundLabel[l] ?? l)(highlightRoundLabel(h))}
+                  </span>
+                  {ser && (
+                    <span className={`font-body-main text-[12px] mt-0.5 ${ser.win ? 'text-green-400' : 'text-red-400'}`}>
+                      {ser.win ? t.draft.matchWin(ser.opp, ser.score) : t.draft.matchLoss(ser.opp, ser.score)}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
 
         {/* 선수 카드 가로 스크롤 (snap) */}
         <div className="w-full max-w-[1100px] flex overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 justify-center gap-4">
@@ -841,6 +978,14 @@ export default function DraftPage() {
     }
     revealIntervalRef.current = setInterval(() => { machine.revealNext() }, 1800)
     return () => { if (revealIntervalRef.current) clearInterval(revealIntervalRef.current) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.phase])
+
+  // HARD 모드: REVEAL 즉시 스킵 — 7단계 REVEAL은 4/4에서 구현
+  useEffect(() => {
+    if (state.phase === 'REVEAL' && state.simResult?.mode === 'hard') {
+      machine.revealSkip()
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 

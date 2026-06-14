@@ -2,7 +2,7 @@
 // simRng = mulberry32((seed ^ 0x9E3779B9) >>> 0) — must be separate stream from draftRng (§6.1)
 
 import { mulberry32 } from './prng'
-import { gradeWithWorldsAndPlayoff } from './grade'
+import { gradeWithWorldsAndPlayoff, gradeHard } from './grade'
 import type { Grade, Trophy } from './grade'
 
 export type { Grade, Trophy }
@@ -33,6 +33,7 @@ export type SimResult = {
   trophies: Trophy[]
   grade: Grade
   teamOvr: number
+  mode?: SimMode  // undefined = 'normal' (backward compat)
 }
 
 // §7.1 Role weights (sum 5.0)
@@ -379,16 +380,16 @@ function simulateHard(
     }
   }
 
-  const grade = gradeWithWorldsAndPlayoff({
+  const grade = gradeHard({
     trophies,
     worldsBest,
     reachedPlayoff,
     reachedWorlds,
     bestRegularRank: Math.min(r1.regularRank, r2.regularRank),
-    msiParticipated: msiQualified,
+    msiQualified,
   })
 
-  return { steps, trophies, grade, teamOvr: Math.round(myOvr) }
+  return { steps, trophies, grade, teamOvr: Math.round(myOvr), mode: 'hard' }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

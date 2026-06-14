@@ -8,6 +8,8 @@ export type Grade =
   | 'CONTENDER'
   | 'PLAYOFF TEAM'
   | 'REBUILD'
+  | 'GOLDEN ROAD'       // HARD: 6관왕 (EWC 제외)
+  | 'TRUE GOLDEN ROAD'  // HARD: 7관왕 (완전 정복)
 
 export type Trophy =
   | 'SPLIT1' | 'MSI' | 'SPLIT2' | 'WORLDS'          // NORMAL
@@ -20,6 +22,8 @@ const GRADE_ORD: Record<Grade, number> = {
   ELITE: 3,
   LEGENDARY: 4,
   'GRAND SLAM': 5,
+  'GOLDEN ROAD': 6,
+  'TRUE GOLDEN ROAD': 7,
 }
 
 // 몬테카를로 그리디 목표: GS 3~8% | LEG+EL 15~20% | CONT 20~25% | REB ≤25%
@@ -114,4 +118,41 @@ export function gradeWithWorldsAndPlayoff(params: {
   })
 
   return rebuildRescue(base, bestRegularRank)
+}
+
+// HARD 모드 전용 등급 판정
+// TRUE GOLDEN ROAD(7관왕) > GOLDEN ROAD(6관왕) > 이하 NORMAL 골격 재활용
+export function gradeHard(params: {
+  trophies: Trophy[]
+  worldsBest: number | null
+  reachedPlayoff: boolean
+  reachedWorlds: boolean
+  bestRegularRank: number
+  msiQualified: boolean
+}): Grade {
+  const { trophies, worldsBest, reachedPlayoff, reachedWorlds, bestRegularRank, msiQualified } = params
+  const has = (t: Trophy) => trophies.includes(t)
+  const C = GRADE_CUT
+
+  const SIX_PACK: Trophy[] = ['LCK_CUP', 'FIRST_STAND', 'REGULAR_1', 'MSI', 'REGULAR_2', 'WORLDS']
+  if (SIX_PACK.every(t => has(t)) && has('EWC')) return 'TRUE GOLDEN ROAD'
+  if (SIX_PACK.every(t => has(t))) return 'GOLDEN ROAD'
+
+  if (has('WORLDS')) return 'LEGENDARY'
+  if (worldsBest !== null && worldsBest <= C.legendaryWorldsTop) return 'LEGENDARY'
+
+  if (has('MSI')) return 'ELITE'
+  const natWins = (['LCK_CUP', 'REGULAR_1', 'REGULAR_2'] as Trophy[]).filter(t => has(t)).length
+  if (natWins >= 2) return 'ELITE'
+  if (msiQualified) return 'ELITE'
+  if (natWins >= 1 && worldsBest !== null && worldsBest <= C.eliteWorldsTop) return 'ELITE'
+
+  if (natWins >= 1) return 'CONTENDER'
+  if (worldsBest !== null && worldsBest <= C.contenderWorldsTop) return 'CONTENDER'
+  if (msiQualified && bestRegularRank <= C.eliteMsiRunTopRank) return 'CONTENDER'
+  if (reachedPlayoff && bestRegularRank <= 4) return 'CONTENDER'
+
+  if (reachedPlayoff || reachedWorlds) return 'PLAYOFF TEAM'
+
+  return rebuildRescue('REBUILD', bestRegularRank)
 }
