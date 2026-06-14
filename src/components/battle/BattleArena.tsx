@@ -4,9 +4,10 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import type { BattlePlayer } from '@/lib/battle/utils';
 import { ovrToHp, formatLabel } from '@/lib/battle/utils';
 
-const BALL_RADIUS = 44;
+const BALL_RADIUS = 28; // A3: 44 → 28 (0.636x), 사진 식별 가능 최소선
 const INIT_SPEED = 3.2;
 const DMG_COEFF = 6;
+const FLASH_FRAMES = 10; // A4: 충돌 플래시 지속 프레임
 const SLOT_COLORS = ['#ef4444', '#3b82f6'] as const;
 
 type ImgEntry = HTMLImageElement | 'loading' | 'error';
@@ -30,7 +31,18 @@ interface BattleState {
   phase: Phase;
   winner: string | null;
   rafId: number;
+  hitCount: number; // A5: 누적 충돌 횟수
+  flashT: number;   // A4: 잔여 프레임 (0=없음)
+  flashX: number;
+  flashY: number;
 }
+
+type StepResult = {
+  winner: string | null;
+  didHit: boolean;
+  hitX: number;
+  hitY: number;
+};
 
 function getOrLoadImage(url: string, cache: ImgCache): HTMLImageElement | null {
   const entry = cache.get(url);
@@ -48,8 +60,8 @@ function getOrLoadImage(url: string, cache: ImgCache): HTMLImageElement | null {
 function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): Ball[] {
   return [
     {
-      x: size * 0.28, y: size * 0.5,
-      vx: INIT_SPEED, vy: INIT_SPEED * 0.55,
+      x: size * 0.28, y: size * 0.44,
+      vx: INIT_SPEED, vy: INIT_SPEED * 0.6,
       radius: BALL_RADIUS,
       hp: ovrToHp(playerA.ovr), maxHp: ovrToHp(playerA.ovr),
       color: SLOT_COLORS[0],
@@ -58,8 +70,8 @@ function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): 
       initials: playerA.nameEn[0]?.toUpperCase() ?? 'A',
     },
     {
-      x: size * 0.72, y: size * 0.5,
-      vx: -INIT_SPEED, vy: -INIT_SPEED * 0.55,
+      x: size * 0.72, y: size * 0.44,
+      vx: -INIT_SPEED, vy: -INIT_SPEED * 0.6,
       radius: BALL_RADIUS,
       hp: ovrToHp(playerB.ovr), maxHp: ovrToHp(playerB.ovr),
       color: SLOT_COLORS[1],
@@ -70,7 +82,7 @@ function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): 
   ];
 }
 
-function stepPhysics(balls: Ball[], size: number): string | null {
+function stepPhysics(balls: Ball[], size: number): StepResult {
   const [a, b] = balls;
   a.x += a.vx; a.y += a.vy;
   b.x += b.vx; b.y += b.vy;
@@ -91,6 +103,9 @@ function stepPhysics(balls: Ball[], size: number): string | null {
     const nx = dx / dist;
     const ny = dy / dist;
     const relSpeed = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+    const hitX = (a.x + b.x) / 2;
+    const hitY = (a.y + b.y) / 2;
+    let didHit = false;
 
     if (relSpeed > 0) {
       a.vx -= relSpeed * nx;  a.vy -= relSpeed * ny;
@@ -98,6 +113,7 @@ function stepPhysics(balls: Ball[], size: number): string | null {
       const dmg = Math.max(1, Math.round(relSpeed * DMG_COEFF));
       a.hp = Math.max(0, a.hp - dmg);
       b.hp = Math.max(0, b.hp - dmg);
+      didHit = true;
     }
 
     const overlap = (minDist - dist) * 0.5;
@@ -105,18 +121,18 @@ function stepPhysics(balls: Ball[], size: number): string | null {
     b.x += nx * overlap;  b.y += ny * overlap;
 
     if (a.hp <= 0 || b.hp <= 0) {
-      if (a.hp > b.hp) return a.label;
-      if (b.hp > a.hp) return b.label;
-      return 'DRAW';
+      const winner = a.hp > b.hp ? a.label : (b.hp > a.hp ? b.label : 'DRAW');
+      return { winner, didHit, hitX, hitY };
     }
+    return { winner: null, didHit, hitX, hitY };
   }
 
-  return null;
+  return { winner: null, didHit: false, hitX: 0, hitY: 0 };
 }
 
 function drawInitials(ctx: CanvasRenderingContext2D, ball: Ball) {
   ctx.fillStyle = '#fff';
-  ctx.font = `bold ${Math.round(ball.radius * 0.9)}px system-ui, sans-serif`;
+  ctx.font = `bold ${Math.round(ball.radius * 0.85)}px system-ui, sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(ball.initials, ball.x, ball.y + 1);
@@ -128,33 +144,40 @@ function drawFrame(
   size: number,
   imgCache: ImgCache,
 ) {
+  // 배경
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, size, size);
 
-  ctx.strokeStyle = '#9ca3af';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(1, 1, size - 2, size - 2);
+  // A6: 진한 아레나 테두리
+  ctx.strokeStyle = '#1f2937';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(1.5, 1.5, size - 3, size - 3);
 
-  ctx.strokeStyle = '#e5e7eb';
+  // 중앙 점선 구분선
+  ctx.strokeStyle = '#d1d5db';
   ctx.lineWidth = 1;
-  ctx.setLineDash([6, 6]);
+  ctx.setLineDash([5, 5]);
   ctx.beginPath();
   ctx.moveTo(size / 2, 0);
   ctx.lineTo(size / 2, size);
   ctx.stroke();
   ctx.setLineDash([]);
 
+  // ── 공 그리기 ──
   for (const ball of state.balls) {
+    // 그림자
     ctx.beginPath();
-    ctx.arc(ball.x + 4, ball.y + 6, ball.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.arc(ball.x + 3, ball.y + 4, ball.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
     ctx.fill();
 
+    // 공 베이스 (팀 색)
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fillStyle = ball.color;
     ctx.fill();
 
+    // A1: 사진 원형 클립 (photo=null이면 이니셜 폴백)
     if (ball.photo) {
       const img = getOrLoadImage(ball.photo, imgCache);
       if (img) {
@@ -172,56 +195,122 @@ function drawFrame(
       drawInitials(ctx, ball);
     }
 
+    // 반사광 하이라이트
     ctx.beginPath();
-    ctx.arc(ball.x - ball.radius * 0.28, ball.y - ball.radius * 0.28, ball.radius * 0.32, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.arc(ball.x - ball.radius * 0.28, ball.y - ball.radius * 0.3, ball.radius * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
     ctx.fill();
-
-    const barW = ball.radius * 3;
-    const barH = 9;
-    const barX = ball.x - barW / 2;
-    const barY = ball.y - ball.radius - 26;
-    const hpRatio = Math.max(0, ball.hp / ball.maxHp);
-    const hpColor = hpRatio > 0.5 ? '#16a34a' : hpRatio > 0.25 ? '#d97706' : '#dc2626';
-
-    ctx.fillStyle = '#e5e7eb';
-    ctx.fillRect(barX, barY, barW, barH);
-    if (hpRatio > 0) {
-      ctx.fillStyle = hpColor;
-      ctx.fillRect(barX, barY, barW * hpRatio, barH);
-    }
-
-    ctx.fillStyle = '#1f2937';
-    ctx.font = `bold 12px system-ui, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(`${ball.label}  ${ball.hp} / ${ball.maxHp}`, ball.x, barY - 3);
   }
 
+  // A4: 충돌 플래시 — 공 위에 렌더
+  if (state.flashT > 0) {
+    const alpha = state.flashT / FLASH_FRAMES;
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.9;
+    ctx.fillStyle = '#fbbf24';
+    ctx.beginPath();
+    ctx.ellipse(state.flashX, state.flashY, 24, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = alpha * 0.55;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(state.flashX, state.flashY, 13, 9, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // A5: 충돌 카운터 — 상단 중앙, 공 영역 위
+  {
+    const fs = Math.round(size * 0.038);
+    const text = `x ${state.hitCount}`;
+    ctx.fillStyle = 'rgba(255,255,255,0.90)';
+    ctx.fillRect(size / 2 - 38, 7, 76, fs + 8);
+    ctx.fillStyle = '#1f2937';
+    ctx.font = `bold ${fs}px system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(text, size / 2, 11);
+  }
+
+  // A2: HP 바 — 아레나 하단 고정 (공 위에 렌더하므로 항상 가독)
+  {
+    const bp = Math.round(size * 0.04);        // 좌우 여백
+    const bw = Math.round(size * 0.41);        // 바 너비
+    const bh = 10;                             // 바 높이
+    const by = size - bp - bh;                // 바 상단 Y
+    const lfs = Math.max(9, Math.round(size * 0.029));
+    const ly = by - 3;                        // 레이블 바닥 Y
+
+    const [ba, bb] = state.balls;
+    const ar = Math.max(0, ba.hp / ba.maxHp);
+    const br = Math.max(0, bb.hp / bb.maxHp);
+    const ac = ar > 0.5 ? '#16a34a' : ar > 0.25 ? '#d97706' : '#dc2626';
+    const bc = br > 0.5 ? '#16a34a' : br > 0.25 ? '#d97706' : '#dc2626';
+
+    // 반투명 배경 패널 (흰 배경이어도 공과 겹칠 때 가독성 보장)
+    ctx.fillStyle = 'rgba(255,255,255,0.86)';
+    ctx.fillRect(bp - 2, ly - lfs - 2, bw + 4, lfs + bh + 8);
+    ctx.fillRect(size - bp - bw - 2, ly - lfs - 2, bw + 4, lfs + bh + 8);
+
+    // 왼쪽 바 (A, 빨강)
+    ctx.font = `bold ${lfs}px system-ui, sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = '#1f2937';
+    ctx.fillText(ba.label, bp, ly);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#6b7280';
+    ctx.font = `${Math.max(8, lfs - 1)}px system-ui, sans-serif`;
+    ctx.fillText(`${ba.hp}/${ba.maxHp}`, bp + bw, ly);
+
+    ctx.fillStyle = '#d1d5db';
+    ctx.fillRect(bp, by, bw, bh);
+    if (ar > 0) {
+      ctx.fillStyle = ac;
+      ctx.fillRect(bp, by, bw * ar, bh);
+    }
+
+    // 오른쪽 바 (B, 파랑 — 우→좌 미러 채움)
+    ctx.font = `bold ${lfs}px system-ui, sans-serif`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = '#1f2937';
+    ctx.fillText(bb.label, size - bp, ly);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#6b7280';
+    ctx.font = `${Math.max(8, lfs - 1)}px system-ui, sans-serif`;
+    ctx.fillText(`${bb.hp}/${bb.maxHp}`, size - bp - bw, ly);
+
+    ctx.fillStyle = '#d1d5db';
+    ctx.fillRect(size - bp - bw, by, bw, bh);
+    if (br > 0) {
+      ctx.fillStyle = bc;
+      ctx.fillRect(size - bp - bw + bw * (1 - br), by, bw * br, bh);
+    }
+  }
+
+  // 승자 오버레이 (finished)
   if (state.phase === 'finished' && state.winner) {
-    ctx.fillStyle = 'rgba(0,0,0,0.68)';
+    ctx.fillStyle = 'rgba(0,0,0,0.65)';
     ctx.fillRect(0, 0, size, size);
     const cx = size / 2;
-    const cy = size / 2;
+    const cy = size * 0.40;
     ctx.fillStyle = '#fbbf24';
     ctx.font = `bold ${Math.round(size * 0.06)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('WINNER', cx, cy - size * 0.065);
     ctx.fillStyle = '#ffffff';
-    ctx.font = `bold ${Math.round(size * 0.09)}px system-ui, sans-serif`;
-    ctx.fillText(state.winner, cx, cy + size * 0.045);
+    ctx.font = `bold ${Math.round(size * 0.085)}px system-ui, sans-serif`;
+    ctx.fillText(state.winner, cx, cy + size * 0.04);
   }
 }
 
 interface BattleArenaProps {
   playerA: BattlePlayer;
   playerB: BattlePlayer;
-  /** 마운트 시 자동 시작 (BattleFrame 내부 사용) */
   autoStart?: boolean;
-  /** 배틀 종료 콜백 (승자 label 전달) */
   onBattleEnd?: (winnerLabel: string) => void;
-  /** 버튼·라벨 숨김 + w-full 캔버스 (BattleFrame 내부 사용) */
   frameMode?: boolean;
 }
 
@@ -235,20 +324,18 @@ export default function BattleArena({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgCacheRef = useRef<ImgCache>(new Map());
-  const stateRef = useRef<BattleState>({ balls: [], phase: 'idle', winner: null, rafId: 0 });
+  const stateRef = useRef<BattleState>({
+    balls: [], phase: 'idle', winner: null, rafId: 0,
+    hitCount: 0, flashT: 0, flashX: 0, flashY: 0,
+  });
 
-  // UI용 phase — 버튼 라벨에만 사용
   const [uiPhase, setUiPhase] = useState<Phase>('idle');
-
-  // canvasSized: ResizeObserver가 캔버스를 처음 사이징 완료했을 때 true
   const [canvasSized, setCanvasSized] = useState(false);
   const canvasSizedOnce = useRef(false);
-
-  // onBattleEnd 안정 ref — 클로저 stale 방지
   const onBattleEndRef = useRef(onBattleEnd);
   useEffect(() => { onBattleEndRef.current = onBattleEnd; }, [onBattleEnd]);
 
-  // 캔버스 크기 = 컨테이너 기준 (ResizeObserver)
+  // ResizeObserver: 컨테이너 너비 → 캔버스 픽셀 크기
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -260,7 +347,6 @@ export default function BattleArena({
       canvas.width = size;
       canvas.height = size;
 
-      // 처음 사이징 완료 → autoStart 트리거용 state
       if (!canvasSizedOnce.current) {
         canvasSizedOnce.current = true;
         setCanvasSized(true);
@@ -271,11 +357,11 @@ export default function BattleArena({
         if (!ctx) return;
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, size, size);
-        ctx.strokeStyle = '#9ca3af';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(1, 1, size - 2, size - 2);
+        ctx.strokeStyle = '#1f2937';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(1.5, 1.5, size - 3, size - 3);
         if (!frameMode) {
-          ctx.fillStyle = '#6b7280';
+          ctx.fillStyle = '#9ca3af';
           ctx.font = `${Math.round(size * 0.035)}px system-ui, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -309,6 +395,10 @@ export default function BattleArena({
       phase: 'running',
       winner: null,
       rafId: 0,
+      hitCount: 0,
+      flashT: 0,
+      flashX: 0,
+      flashY: 0,
     };
     stateRef.current = freshState;
     setUiPhase('running');
@@ -319,13 +409,24 @@ export default function BattleArena({
       const s = stateRef.current;
       if (s.phase !== 'running') return;
 
-      const winner = stepPhysics(s.balls, size);
-      if (winner !== null) {
+      // A4: 플래시 카운트다운
+      if (s.flashT > 0) s.flashT -= 1;
+
+      const result = stepPhysics(s.balls, size);
+
+      if (result.didHit) {
+        s.hitCount += 1;
+        s.flashT = FLASH_FRAMES;
+        s.flashX = result.hitX;
+        s.flashY = result.hitY;
+      }
+
+      if (result.winner !== null) {
         s.phase = 'finished';
-        s.winner = winner;
+        s.winner = result.winner;
         drawFrame(ctx, s, size, cache);
         setUiPhase('finished');
-        onBattleEndRef.current?.(winner); // 승자 label → BattleFrame으로 전달
+        onBattleEndRef.current?.(result.winner);
         return;
       }
 
@@ -336,7 +437,6 @@ export default function BattleArena({
     freshState.rafId = requestAnimationFrame(loop);
   }, [playerA, playerB]);
 
-  // startBattle 최신 ref (autoStart effect에서 사용)
   const startBattleRef = useRef(startBattle);
   useEffect(() => { startBattleRef.current = startBattle; }, [startBattle]);
 
@@ -346,40 +446,38 @@ export default function BattleArena({
     startBattleRef.current();
   }, [autoStart, canvasSized]);
 
-  const aLabel = formatLabel(playerA.nameEn, playerA.year);
-  const bLabel = formatLabel(playerB.nameEn, playerB.year);
-
-  // frameMode: 캔버스 div만 반환 (버튼·라벨 없음, w-full)
   if (frameMode) {
     return (
       <div
         ref={containerRef}
-        className="w-full aspect-square rounded-xl overflow-hidden border border-[#d1d5db]"
+        className="w-full aspect-square overflow-hidden"
       >
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
     );
   }
 
-  // 일반 모드: 선수 정보 + 재생 버튼 포함
+  const aLabel = formatLabel(playerA.nameEn, playerA.year);
+  const bLabel = formatLabel(playerB.nameEn, playerB.year);
+
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-[520px]">
       <div
         ref={containerRef}
-        className="w-full aspect-square rounded-xl overflow-hidden border border-[#d1d5db]"
+        className="w-full aspect-square rounded-xl overflow-hidden border-2 border-[#1f2937]"
       >
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
 
       <div className="flex items-center gap-6 text-sm flex-wrap justify-center">
         <div className="flex items-center gap-2">
-          <span className="w-3.5 h-3.5 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[0] }} />
+          <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[0] }} />
           <span className="text-white font-semibold">{aLabel}</span>
           <span className="text-[#6b7280] text-xs">OVR {playerA.ovr} → {ovrToHp(playerA.ovr)} HP</span>
         </div>
         <span className="text-[#4a4a7a] font-bold text-xs">VS</span>
         <div className="flex items-center gap-2">
-          <span className="w-3.5 h-3.5 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[1] }} />
+          <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[1] }} />
           <span className="text-white font-semibold">{bLabel}</span>
           <span className="text-[#6b7280] text-xs">OVR {playerB.ovr} → {ovrToHp(playerB.ovr)} HP</span>
         </div>

@@ -3,7 +3,7 @@ import { formatLabel } from '@/lib/battle/utils';
 
 interface IntroCardProps {
   player: BattlePlayer;
-  color: string; // 슬롯 색 (빨강/파랑)
+  color: string;
   className?: string;
 }
 
@@ -11,11 +11,10 @@ export default function IntroCard({ player, color, className = '' }: IntroCardPr
   const label = formatLabel(player.nameEn, player.year);
 
   return (
-    <div className={`rounded-2xl overflow-hidden bg-[#111827] flex flex-col ${className}`}>
-      {/* 사진 영역 */}
-      <div className="relative w-full aspect-[3/4] flex-shrink-0">
+    <div className={`rounded-xl overflow-hidden bg-[#111827] flex flex-col shadow-lg ${className}`}>
+      {/* 사진 영역 — aspect-square(1:1) = PC 카드 비율, 모바일 세로 비율(3/4)에서 변경 */}
+      <div className="relative w-full aspect-square flex-shrink-0">
         {player.photo ? (
-          // HTML img — canvas 아님, CORS 불필요
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={player.photo}
@@ -29,16 +28,16 @@ export default function IntroCard({ player, color, className = '' }: IntroCardPr
             </span>
           </div>
         )}
-        {/* OVR 배지 */}
-        <div className="absolute top-2 left-2 rounded px-1.5 py-0.5 bg-black/60">
+        {/* OVR 배지 — 좌상단 */}
+        <div className="absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 bg-black/70">
           <span className="text-white font-bold text-sm leading-none">{player.ovr}</span>
         </div>
-        {/* 슬롯 색 하단 바 */}
-        <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: color }} />
+        {/* 팀 컬러 하단 라인 */}
+        <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{ background: color }} />
       </div>
 
-      {/* 이름 정보 */}
-      <div className="px-2 py-2 text-center">
+      {/* 이름·역할 정보 */}
+      <div className="px-2 py-1.5 text-center">
         <p className="text-white font-bold text-xs leading-tight line-clamp-1">{label}</p>
         <p className="text-[#6b7280] text-[10px] mt-0.5 line-clamp-1">{player.role} · {player.team}</p>
       </div>
