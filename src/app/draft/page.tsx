@@ -221,7 +221,7 @@ function PickButtons({
           </div>
           {mode === 'hard' && (
             <p className="font-label-caps text-[9px] text-outline/40 text-right leading-relaxed">
-              +3 events: First Stand, EWC · 7 total
+              {t.draft.hardModeDesc}
             </p>
           )}
         </div>
@@ -244,12 +244,13 @@ function PickButtons({
       >
         {t.draft.playAgain}
       </button>
-      {/* 구분선 + 토글 + HARD 설명 */}
-      <div className="ml-1 pl-3 border-l border-outline-variant/30 flex items-center gap-2">
+      {/* 구분선 + 토글 — relative로 설명 텍스트 absolute 기준점 */}
+      <div className="ml-1 pl-3 border-l border-outline-variant/30 relative">
         <ModeToggle mode={mode} onChange={onModeChange} />
+        {/* 설명 텍스트: absolute(left: 100%)로 토글 오른쪽에 붙음 — 버튼 레이아웃에 영향 0 */}
         {mode === 'hard' && (
-          <span className="font-label-caps text-[9px] text-outline/40 whitespace-nowrap">
-            +3 events: First Stand, EWC · 7 total
+          <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 font-label-caps text-[9px] text-outline/40 whitespace-nowrap pointer-events-none">
+            {t.draft.hardModeDesc}
           </span>
         )}
       </div>

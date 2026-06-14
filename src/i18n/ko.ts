@@ -70,5 +70,6 @@ export const ko = {
     detailBtn: '상세 보기',
     detailTitle: '경기 상세',
     closeDetail: '닫기',
+    hardModeDesc: '기본 대회 + First Stand·EWC·스플릿 3개 = 총 7개 대회',
   },
 }

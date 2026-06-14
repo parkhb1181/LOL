@@ -70,5 +70,6 @@ export const en = {
     detailBtn: 'DETAILS',
     detailTitle: 'MATCH DETAILS',
     closeDetail: 'CLOSE',
+    hardModeDesc: '+3 events: First Stand, EWC, Split · 7 total',
   },
 }
