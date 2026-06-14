@@ -832,13 +832,22 @@ function HardMobileResultScreen({
         ))}
       </div>
 
-      {/* 선수 카드 5장 한 줄 (컴팩트) */}
-      <div className="flex justify-center gap-1.5 w-full mb-1.5">
-        {[0, 1, 2, 3, 4].map(i => picks[i] && (
-          <div key={i} className="w-[18%]">
-            <PlayerCard player={picks[i]!.player} size="mob-result" />
-          </div>
-        ))}
+      {/* 선수 카드 3+2 — NORMAL 결과 카드와 동일 레이아웃 */}
+      <div className="w-full flex flex-col items-center gap-2 mb-3">
+        <div className="flex justify-center gap-2 w-full">
+          {[0, 1, 2].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-2 w-full">
+          {[3, 4].map(i => picks[i] && (
+            <div key={i} className="w-[30%]">
+              <PlayerCard player={picks[i]!.player} size="mob-result" />
+            </div>
+          ))}
+        </div>
       </div>
 
       <p className="font-label-caps text-[8px] text-outline/40 text-center mb-2">
