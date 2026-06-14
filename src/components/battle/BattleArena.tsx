@@ -43,6 +43,11 @@ type StepResult = {
   hitY: number;
 };
 
+// R2 pub-*.r2.dev는 CORS 미설정 → 캔버스 직접 접근 차단 → 동일 origin 프록시 경유
+function toProxyUrl(photo: string): string {
+  return `/battle/img?url=${encodeURIComponent(photo)}`;
+}
+
 // crossOrigin을 src 전에 설정해야 R2 CORS 통과 — startBattle에서 Promise.all로 대기
 function preloadImage(url: string, cache: ImgCache): Promise<void> {
   return new Promise<void>(resolve => {
@@ -85,7 +90,7 @@ function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): 
       radius: BALL_RADIUS,
       hp: ovrToHp(playerA.ovr), maxHp: ovrToHp(playerA.ovr),
       color: SLOT_COLORS[0],
-      photo: playerA.photo,
+      photo: playerA.photo ? toProxyUrl(playerA.photo) : null,
       label: formatLabel(playerA.nameEn, playerA.year),
       initials: playerA.nameEn[0]?.toUpperCase() ?? 'A',
     },
@@ -95,7 +100,7 @@ function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): 
       radius: BALL_RADIUS,
       hp: ovrToHp(playerB.ovr), maxHp: ovrToHp(playerB.ovr),
       color: SLOT_COLORS[1],
-      photo: playerB.photo,
+      photo: playerB.photo ? toProxyUrl(playerB.photo) : null,
       label: formatLabel(playerB.nameEn, playerB.year),
       initials: playerB.nameEn[0]?.toUpperCase() ?? 'B',
     },
@@ -387,7 +392,10 @@ export default function BattleArena({
 
     // 공 사진 프리로드 — 1프레임째부터 사진 표시 보장 (onload 완료 후 RAF 진입)
     const cache = imgCacheRef.current;
-    const photos = [playerA.photo, playerB.photo].filter(Boolean) as string[];
+    // 프록시 URL로 변환 후 프리로드 (캐시 키가 프록시 URL과 일치해야 drawFrame에서 조회됨)
+    const photos = [playerA.photo, playerB.photo]
+      .filter(Boolean)
+      .map(url => toProxyUrl(url as string));
     await Promise.all(photos.map(url => preloadImage(url, cache)));
     if (!canvasRef.current) return; // await 후 언마운트 방어
 
