@@ -10,7 +10,7 @@ import SiteHeader from '@/components/SiteHeader'
 import BottomNav from '@/components/BottomNav'
 import { useLang } from '@/i18n'
 import { useDraftMachine, ROLES } from '@/lib/useDraftMachine'
-import type { DraftData } from '@/lib/useDraftMachine'
+import type { DraftData, SimMode } from '@/lib/useDraftMachine'
 import type { PlayerSeason } from '@/lib/data'
 import type { SimStep } from '@/lib/sim'
 import { highlightRoundLabel, pickHighlightSteps, pickHardHighlights, type HighlightStep, type HardHighlight } from '@/lib/simHighlight'
@@ -148,37 +148,76 @@ const RerollIcon = () => (
   </svg>
 )
 
+// ── NORMAL / HARD 모드 토글 ────────────────────────────────────────────────────
+function ModeToggle({ mode, onChange }: { mode: SimMode; onChange: (m: SimMode) => void }) {
+  const isHard = mode === 'hard'
+  return (
+    <div className="flex items-center rounded border border-outline-variant overflow-hidden select-none">
+      <button
+        onClick={() => onChange('normal')}
+        className={`px-2.5 py-1.5 font-label-caps text-[10px] uppercase transition-colors ${
+          !isHard
+            ? 'bg-surface-container text-on-surface'
+            : 'bg-transparent text-outline hover:text-on-surface'
+        }`}
+      >
+        NORMAL
+      </button>
+      <button
+        onClick={() => onChange('hard')}
+        className={`px-2.5 py-1.5 font-label-caps text-[10px] uppercase transition-colors ${
+          isHard
+            ? 'bg-red-600/80 text-white'
+            : 'bg-transparent text-outline hover:text-red-400'
+        }`}
+      >
+        HARD
+      </button>
+    </div>
+  )
+}
+
 // ── 픽 화면 버튼 ───────────────────────────────────────────────────────────────
 // layout="mobile": 전체 너비 버튼 스타일 (Stitch), layout="desktop": 기존 컴팩트 스타일
 function PickButtons({
   onPlayAgain,
   onReroll,
   rerollLeft,
+  mode,
+  onModeChange,
   layout = 'desktop',
 }: {
   onPlayAgain: () => void
   onReroll: () => void
   rerollLeft: number
+  mode: SimMode
+  onModeChange: (m: SimMode) => void
   layout?: 'mobile' | 'desktop'
 }) {
   const { t } = useLang()
   if (layout === 'mobile') {
     return (
-      <div className="flex flex-row gap-2">
-        <button
-          onClick={onReroll}
-          disabled={rerollLeft <= 0}
-          className="group flex-1 py-2 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center gap-1.5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <RerollIcon />
-          {t.draft.reroll(rerollLeft)}
-        </button>
-        <button
-          onClick={onPlayAgain}
-          className="flex-1 py-2 border border-outline-variant/50 bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center transition-colors"
-        >
-          {t.draft.playAgain}
-        </button>
+      <div className="flex flex-col gap-2">
+        {/* 토글 — 버튼 줄 위에 별도 행 (BottomNav 겹침 방지) */}
+        <div className="flex justify-end">
+          <ModeToggle mode={mode} onChange={onModeChange} />
+        </div>
+        <div className="flex flex-row gap-2">
+          <button
+            onClick={onReroll}
+            disabled={rerollLeft <= 0}
+            className="group flex-1 py-2 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center gap-1.5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <RerollIcon />
+            {t.draft.reroll(rerollLeft)}
+          </button>
+          <button
+            onClick={onPlayAgain}
+            className="flex-1 py-2 border border-outline-variant/50 bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface font-label-caps text-[11px] uppercase rounded flex items-center justify-center transition-colors"
+          >
+            {t.draft.playAgain}
+          </button>
+        </div>
       </div>
     )
   }
@@ -198,6 +237,10 @@ function PickButtons({
       >
         {t.draft.playAgain}
       </button>
+      {/* 구분선 + 토글 */}
+      <div className="ml-1 pl-3 border-l border-outline-variant/30">
+        <ModeToggle mode={mode} onChange={onModeChange} />
+      </div>
     </div>
   )
 }
@@ -275,7 +318,7 @@ function PickRosterGrid({
 // ── PICK 화면 (모바일) ─────────────────────────────────────────────────────────
 function MobilePickScreen({
   roster, pickedPlayerIds, emptyRoles, onPick,
-  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase,
+  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase, mode, onModeChange,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
@@ -286,6 +329,8 @@ function MobilePickScreen({
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
   shufflePhase: 'out' | 'in' | null
+  mode: SimMode
+  onModeChange: (m: SimMode) => void
 }) {
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -297,7 +342,7 @@ function MobilePickScreen({
         shufflePhase={shufflePhase}
         layout="mobile"
       />
-      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} layout="mobile" />
+      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} mode={mode} onModeChange={onModeChange} layout="mobile" />
     </div>
   )
 }
@@ -305,7 +350,7 @@ function MobilePickScreen({
 // ── PICK 화면 (데스크톱) ───────────────────────────────────────────────────────
 function DesktopPickScreen({
   roster, pickedPlayerIds, emptyRoles, onPick,
-  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase,
+  onReroll, onPlayAgain, rerollLeft, spunTeam, shufflePhase, mode, onModeChange,
 }: {
   roster: PlayerSeason[]
   pickedPlayerIds: Set<string>
@@ -316,6 +361,8 @@ function DesktopPickScreen({
   rerollLeft: number
   spunTeam: { team: string; year: number } | null
   shufflePhase: 'out' | 'in' | null
+  mode: SimMode
+  onModeChange: (m: SimMode) => void
 }) {
   return (
     <div className="flex flex-col items-center gap-5 w-full">
@@ -327,7 +374,7 @@ function DesktopPickScreen({
         shufflePhase={shufflePhase}
         layout="desktop"
       />
-      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} />
+      <PickButtons onPlayAgain={onPlayAgain} onReroll={onReroll} rerollLeft={rerollLeft} mode={mode} onModeChange={onModeChange} />
     </div>
   )
 }
@@ -570,12 +617,14 @@ function MobileSeasonCard({ h, isHighlight }: { h: HighlightStep; isHighlight: b
 
 // 모바일 결과 화면 전체 레이아웃 (Stitch 모바일 디자인)
 function MobileResultScreen({
-  simResult, picks, onReset, onShowDetail,
+  simResult, picks, onReset, onShowDetail, onCopyLink, copiedLabel,
 }: {
   simResult: NonNullable<ReturnType<typeof useDraftMachine>['state']['simResult']>
   picks: ReturnType<typeof useDraftMachine>['state']['picks']
   onReset: () => void
   onShowDetail: () => void
+  onCopyLink: () => void
+  copiedLabel: string
 }) {
   const { t } = useLang()
   const highlights  = pickHighlightSteps(simResult.steps)
@@ -632,13 +681,21 @@ function MobileResultScreen({
 
       {/* 버튼 영역 */}
       <div className="flex flex-col gap-2 w-full">
-        <button
-          onClick={onShowDetail}
-          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
-        >
-          <ListIcon />
-          {t.draft.detailBtn}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={onShowDetail}
+            className="flex-1 py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+          >
+            <ListIcon />
+            {t.draft.detailBtn}
+          </button>
+          <button
+            onClick={onCopyLink}
+            className="flex-1 py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center transition-colors"
+          >
+            {copiedLabel}
+          </button>
+        </div>
         <button
           onClick={onReset}
           className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
@@ -681,12 +738,14 @@ function HardTimelineRow({ h }: { h: HardHighlight }) {
 
 // HARD 모드 모바일 결과 화면
 function HardMobileResultScreen({
-  simResult, picks, onReset, onShowDetail,
+  simResult, picks, onReset, onShowDetail, onCopyLink, copiedLabel,
 }: {
   simResult: NonNullable<ReturnType<typeof useDraftMachine>['state']['simResult']>
   picks: ReturnType<typeof useDraftMachine>['state']['picks']
   onReset: () => void
   onShowDetail: () => void
+  onCopyLink: () => void
+  copiedLabel: string
 }) {
   const { t } = useLang()
   const hardHighlights = pickHardHighlights(simResult.steps)
@@ -744,6 +803,12 @@ function HardMobileResultScreen({
           {t.draft.detailBtn}
         </button>
         <button
+          onClick={onCopyLink}
+          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+        >
+          {copiedLabel}
+        </button>
+        <button
           onClick={onReset}
           className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
         >
@@ -766,8 +831,20 @@ function ResultScreen({
   const { t } = useLang()
   // 상세 보기 모달 — 모바일(MobileResultScreen)과 데스크톱 공유
   const [showDetail, setShowDetail] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const isHard = simResult.mode === 'hard'
+
+  // §8.1 공유 URL — 클릭 시점에 window.origin 사용 (SSR 시 undefined 방지)
+  function handleCopyLink() {
+    const ids = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
+    const mParam = isHard ? '&m=hard' : ''
+    const url = `${window.location.origin}/r?p=${ids}&s=${seed}${mParam}`
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
   // NORMAL 전용 하이라이트 (HARD에서는 사용 안 함)
   const highlights: HighlightStep[] = isHard ? [] : pickHighlightSteps(simResult.steps)
   const hardHighlights: HardHighlight[] = isHard ? pickHardHighlights(simResult.steps) : []
@@ -805,6 +882,8 @@ function ResultScreen({
             picks={picks}
             onReset={onReset}
             onShowDetail={() => setShowDetail(true)}
+            onCopyLink={handleCopyLink}
+            copiedLabel={copied ? t.draft.copied : t.draft.copyLink}
           />
         ) : (
           <MobileResultScreen
@@ -812,6 +891,8 @@ function ResultScreen({
             picks={picks}
             onReset={onReset}
             onShowDetail={() => setShowDetail(true)}
+            onCopyLink={handleCopyLink}
+            copiedLabel={copied ? t.draft.copied : t.draft.copyLink}
           />
         )}
       </div>
@@ -882,17 +963,23 @@ function ResultScreen({
         </p>
 
         {/* 액션 버튼 */}
-        <div className="flex flex-row gap-3 items-center w-full max-w-sm justify-center">
+        <div className="flex flex-row gap-3 items-center w-full max-w-lg justify-center">
           <button
             onClick={() => setShowDetail(true)}
-            className="w-full px-6 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors"
+            className="px-5 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
           >
             <ListIcon />
             {t.draft.detailBtn}
           </button>
           <button
+            onClick={handleCopyLink}
+            className="px-5 py-3 rounded border border-outline-variant bg-surface-container hover:bg-surface-bright text-on-surface font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+          >
+            {copied ? t.draft.copied : t.draft.copyLink}
+          </button>
+          <button
             onClick={onReset}
-            className="w-full px-8 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity"
+            className="flex-1 px-5 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity whitespace-nowrap"
           >
             <ReplayIcon />
             {t.draft.playAgain}
@@ -909,6 +996,9 @@ export default function DraftPage() {
   const { t } = useLang()
   const machine = useDraftMachine(data)
   const { state } = machine
+
+  // 모드 토글 — component state만 (localStorage 저장 금지, CURSOR_GUIDE §6.1)
+  const [mode, setMode] = useState<SimMode>('normal')
 
   // 리롤 2단계 애니메이션 상태 — out: 기존 카드 페이드아웃, in: 새 카드 페이드인
   const [shufflePhase, setShufflePhase] = useState<'out' | 'in' | null>(null)
@@ -962,10 +1052,10 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase, state.round])
 
-  // SIM phase → 동기 시뮬 실행 (1초 미만)
+  // SIM phase → 동기 시뮬 실행 (1초 미만), 5번째 픽 시점의 mode를 주입
   useEffect(() => {
     if (state.phase !== 'SIM') return
-    machine.runSim()
+    machine.runSim(mode)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
@@ -1050,6 +1140,15 @@ export default function DraftPage() {
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
 
+              {/* HARD 모드 표식 — 하드인 줄 모르고 진행하는 실수 방지 */}
+              {mode === 'hard' && (
+                <div className="flex justify-center -mt-2">
+                  <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-red-600/40 text-red-400/80 uppercase tracking-wider">
+                    Hard Mode
+                  </span>
+                </div>
+              )}
+
               {state.phase === 'SPIN' && (
                 <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">{t.draft.spinning}</p>
               )}
@@ -1076,6 +1175,8 @@ export default function DraftPage() {
                     rerollLeft={state.rerollLeft}
                     spunTeam={state.spunTeam}
                     shufflePhase={shufflePhase}
+                    mode={mode}
+                    onModeChange={setMode}
                   />
                 </div>
               )}
@@ -1085,6 +1186,13 @@ export default function DraftPage() {
             <div className="hidden md:flex md:flex-col md:items-center md:gap-6 md:w-full md:flex-1 md:justify-center md:pt-8">
               {/* 상단 5슬롯 */}
               <DraftSlotRow picks={state.picks} />
+
+              {/* HARD 모드 표식 (데스크톱) */}
+              {mode === 'hard' && (
+                <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-red-600/40 text-red-400/80 uppercase tracking-wider -mt-4">
+                  Hard Mode
+                </span>
+              )}
 
               {/* Round 카운터 */}
               <p className="font-label-caps text-[10px] text-outline/60 uppercase tracking-[0.2em]">
@@ -1110,6 +1218,8 @@ export default function DraftPage() {
                     rerollLeft={state.rerollLeft}
                     spunTeam={state.spunTeam}
                     shufflePhase={shufflePhase}
+                    mode={mode}
+                    onModeChange={setMode}
                   />
                 </>
               )}

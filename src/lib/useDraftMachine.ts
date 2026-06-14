@@ -8,8 +8,10 @@ import { mulberry32 } from './prng'
 import { simulate } from './sim'
 import { highlightStepsFlat, pickHighlightSteps } from './simHighlight'
 import type { PlayerSeason, TeamYear } from './data'
-import type { SimResult, SimStep } from './sim'
+import type { SimResult, SimStep, SimMode } from './sim'
 import type { Opponent } from './sim'
+
+export type { SimMode }
 
 export const ROLES = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
 export type Role = typeof ROLES[number]
@@ -352,7 +354,8 @@ export function useDraftMachine(data: DraftData | null) {
   }, [data, state.picks, state.round, state.seed, teamMap, playersByTeam])
 
   // runSim: run simulation (called from useEffect when SIM phase starts)
-  const runSim = useCallback(() => {
+  // mode는 DraftPage 토글 상태에서 SIM 진입 시점 값을 주입 — machine 내부에 저장 안 함
+  const runSim = useCallback((mode: SimMode = 'normal') => {
     if (!data || state.simResult) return
     const filledPicks = state.picks.filter(Boolean) as PickedPlayer[]
     if (filledPicks.length < 5) return
@@ -360,7 +363,7 @@ export function useDraftMachine(data: DraftData | null) {
       const p = state.picks[ROLES.indexOf(role)]!
       return { playerId: p.player.playerId, role: p.player.role as Role, ovr: p.player.ovr }
     })
-    const result = simulate(simPlayers, data.opponents, state.seed)
+    const result = simulate(simPlayers, data.opponents, state.seed, mode)
     dispatch({ type: 'SIM_DONE', result })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, state.picks, state.seed, state.simResult])

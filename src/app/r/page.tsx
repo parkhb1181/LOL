@@ -10,26 +10,30 @@ import SiteHeader from '@/components/SiteHeader'
 import BottomNav from '@/components/BottomNav'
 import ResultCards from '@/components/ResultCards'
 import { simulate } from '@/lib/sim'
-import type { SimPlayer } from '@/lib/sim'
+import type { SimPlayer, SimMode } from '@/lib/sim'
 import type { PlayerSeason } from '@/lib/data'
 
 const ROLES = ['TOP', 'JGL', 'MID', 'ADC', 'SUP'] as const
 
-// 등급 색상 — draft/page.tsx 토큰과 동일
+// 등급 색상 — draft/page.tsx 토큰과 동일 (HARD 등급 포함)
 const GRADE_COLOR: Record<string, string> = {
-  'GRAND SLAM':   '#e9c349',
-  'LEGENDARY':    '#c080ff',
-  'ELITE':        '#60c0ff',
-  'CONTENDER':    '#40d4a0',
-  'PLAYOFF TEAM': '#f3f4f6',
-  'REBUILD':      '#9ca3af',
+  'GRAND SLAM':        '#e9c349',
+  'LEGENDARY':         '#c080ff',
+  'ELITE':             '#60c0ff',
+  'CONTENDER':         '#40d4a0',
+  'PLAYOFF TEAM':      '#f3f4f6',
+  'REBUILD':           '#9ca3af',
+  'GOLDEN ROAD':       '#e9c349',
+  'TRUE GOLDEN ROAD':  '#f59e0b',
 }
 
 // generateMetadata + 페이지 양쪽에서 호출 — 데이터 로드 + 시뮬 재계산
-function loadAndCompute(pParam: string, sParam: string) {
+function loadAndCompute(pParam: string, sParam: string, mParam: string) {
   const ids = pParam.split('.')
   const seed = parseInt(sParam, 10)
   if (ids.length !== 5 || ids.some(id => !id) || isNaN(seed)) return null
+
+  const mode: SimMode = mParam === 'hard' ? 'hard' : 'normal'
 
   try {
     const root = process.cwd()
@@ -49,9 +53,9 @@ function loadAndCompute(pParam: string, sParam: string) {
       role: ROLES[i],
       ovr: pl.ovr,
     }))
-    const result = simulate(simPicks, opponents, seed)
+    const result = simulate(simPicks, opponents, seed, mode)
 
-    return { result, pickedPlayers: pickedPlayers as PlayerSeason[], seed }
+    return { result, pickedPlayers: pickedPlayers as PlayerSeason[], seed, mode }
   } catch {
     return null
   }
@@ -59,10 +63,10 @@ function loadAndCompute(pParam: string, sParam: string) {
 
 // ── generateMetadata — §8.2 OG image generation ──────────────────────────────
 export async function generateMetadata(
-  { searchParams }: { searchParams: Promise<{ p?: string; s?: string }> }
+  { searchParams }: { searchParams: Promise<{ p?: string; s?: string; m?: string }> }
 ): Promise<Metadata> {
-  const { p = '', s = '' } = await searchParams
-  const computed = loadAndCompute(p, s)
+  const { p = '', s = '', m = '' } = await searchParams
+  const computed = loadAndCompute(p, s, m)
   if (!computed) return {}
 
   const { result, pickedPlayers } = computed
@@ -98,19 +102,22 @@ export async function generateMetadata(
 
 // ── Page component ────────────────────────────────────────────────────────────
 export default async function ResultPage(
-  { searchParams }: { searchParams: Promise<{ p?: string; s?: string }> }
+  { searchParams }: { searchParams: Promise<{ p?: string; s?: string; m?: string }> }
 ) {
-  const { p = '', s = '' } = await searchParams
-  const computed = loadAndCompute(p, s)
+  const { p = '', s = '', m = '' } = await searchParams
+  const computed = loadAndCompute(p, s, m)
 
   // §8.1: invalid id/seed → redirect to home
   if (!computed) redirect('/')
 
-  const { result, pickedPlayers } = computed
+  const { result, pickedPlayers, mode } = computed
   const gradeColor = GRADE_COLOR[result.grade] ?? '#f3f4f6'
+  const isHard = mode === 'hard'
 
   const TROPHY_EN: Record<string, string> = {
     SPLIT1: 'Spring', MSI: 'MSI', SPLIT2: 'Summer', WORLDS: 'Worlds',
+    LCK_CUP: 'LCK Cup', FIRST_STAND: 'First Stand',
+    REGULAR_1: 'Regular 1', EWC: 'EWC', REGULAR_2: 'Regular 2',
   }
 
   return (
@@ -118,6 +125,15 @@ export default async function ResultPage(
       <SiteHeader activePage="draft" fixed />
 
       <main className="max-w-2xl mx-auto px-6 pt-24 pb-28 flex flex-col items-center gap-8">
+        {/* HARD 모드 뱃지 */}
+        {isHard && (
+          <div>
+            <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded border border-red-600/40 text-red-400/70 uppercase">
+              Hard Mode
+            </span>
+          </div>
+        )}
+
         {/* 트로피 뱃지 */}
         {result.trophies.length > 0 && (
           <div className="flex gap-2 flex-wrap justify-center">
