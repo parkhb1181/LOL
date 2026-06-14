@@ -156,15 +156,18 @@ export function gradeHard(params: {
   if (has('WORLDS')) return 'LEGENDARY'
   if (worldsBest !== null && worldsBest <= 4) return 'LEGENDARY'
 
-  // ── ELITE: MSI 4강(SF)+ 또는 국내 우승 ────────────────────────
-  // msiQualified만으로는 ELITE 부여 안 함 (이전 양극화 원인)
+  // ── CHALLENGER: 비Worlds 국제전 우승(FS/MSI/EWC) 또는 FS/EWC 결승 진출 ─
+  // ELITE보다 상위 등급이므로 먼저 체크 (MSI 우승이 ELITE로 떨어지는 버그 방지)
+  const intlNonWorldsWin = has('FIRST_STAND') || has('MSI') || has('EWC')
+  if (intlNonWorldsWin) return 'CHALLENGER'
+  if (intlNonWorldsFinalist) return 'CHALLENGER'  // FS/EWC 결승 진출 (우승 없이)
+
+  // ── ELITE: MSI SF(4강)+ 또는 국내 우승 ────────────────────────
+  // msiQualified만으로는 ELITE 부여 안 함 (양극화 원인 제거)
+  // msiReachedSF: MSI SF/Finals 탈락 케이스만 (우승은 위 CHALLENGER 처리)
   const natWins = (['LCK_CUP', 'REGULAR_1', 'REGULAR_2'] as Trophy[]).filter(t => has(t)).length
   if (msiReachedSF) return 'ELITE'
   if (natWins >= 1) return 'ELITE'
-
-  // ── CHALLENGER: First Stand 또는 EWC 결승 이상 ────────────────
-  // (MSI는 ELITE에서 처리 — MSI QF는 CONTENDER 이하)
-  if (intlNonWorldsFinalist) return 'CHALLENGER'
 
   // ── CONTENDER: Worlds 8강 또는 MSI 진출 상위권 ────────────────
   if (worldsBest !== null && worldsBest <= 8) return 'CONTENDER'
