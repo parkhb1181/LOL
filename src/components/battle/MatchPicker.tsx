@@ -21,9 +21,13 @@ export default function MatchPicker({ players, onSelect }: Props) {
     [players],
   );
 
+  // 랜덤 매치업: photo가 있는 선수만 추첨 (영상 품질 보장)
+  const withPhoto = useMemo(() => sorted.filter(p => p.photo), [sorted]);
+
   const handleRandom = () => {
-    if (sorted.length < 2) return;
-    const [a, b] = randomPair(sorted);
+    const pool = withPhoto.length >= 2 ? withPhoto : sorted;
+    if (pool.length < 2) return;
+    const [a, b] = randomPair(pool);
     setIdA(a.id);
     setIdB(b.id);
   };
