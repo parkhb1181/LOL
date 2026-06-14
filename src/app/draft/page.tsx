@@ -1008,12 +1008,35 @@ function ResultScreen({
           </p>
         </div>
 
-        {/* 시즌 결과 — HARD: 7행 타임라인 / NORMAL: 4칸 그리드 */}
+        {/* 시즌 결과 — HARD: 7칸 가로 그리드(NORMAL 4칸 구조 동일) / NORMAL: 4칸 그리드 */}
         {isHard ? (
-          <div className="w-full max-w-md mb-8 bg-surface-container-high/50 rounded-lg px-5 py-2">
-            {hardHighlights.map((h, i) => (
-              <HardTimelineRow key={i} h={h} />
-            ))}
+          <div className="grid grid-cols-7 gap-x-3 mb-8 w-full max-w-[1100px]">
+            {hardHighlights.map((h) => {
+              const isDnq = h.status === 'dnq'
+              const isWin = h.status === 'win'
+              return (
+                <div key={h.stageKey} className={`flex flex-col gap-1 ${isDnq ? 'opacity-30' : ''}`}>
+                  <span className="font-label-caps text-[9px] text-on-surface-variant uppercase tracking-wider leading-none">
+                    {h.label}
+                  </span>
+                  {h.isBonus && (
+                    <span className="inline-block px-0.5 bg-amber-400/15 text-amber-400/70 text-[7px] rounded leading-none self-start">
+                      BONUS
+                    </span>
+                  )}
+                  <span className={`font-body-main text-[13px] leading-tight ${
+                    isWin ? 'text-secondary' : isDnq ? 'text-outline/40' : 'text-on-surface'
+                  }`}>
+                    {t.draft.roundLabel[h.roundLabel] ?? h.roundLabel}
+                  </span>
+                  {h.opp && (
+                    <span className={`text-[11px] leading-tight truncate ${isWin ? 'text-green-400' : 'text-red-400'}`}>
+                      {isWin ? t.draft.matchWin(h.opp, h.score ?? '') : t.draft.matchLoss(h.opp, h.score ?? '')}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-x-8 gap-y-3 mb-8 text-sm">
