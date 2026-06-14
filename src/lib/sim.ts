@@ -41,8 +41,8 @@ const ROLE_WEIGHT: Record<string, number> = {
   MID: 1.10, JGL: 1.10, ADC: 1.00, TOP: 0.95, SUP: 0.85,
 }
 
-// §9 Elo scale — 기본 40 (2026-06 v4: 난이도 튜닝, NORMAL GS OVR90≈17%·OVR85≈5%·OVR80≈1%)
-let _eloScale = 40
+// §9 Elo scale — 기본 45 (2026-06 v5: ×0.7 난이도 상향, NORMAL GS OVR90≈12%·OVR85≈3.5%·OVR80≈0.5%)
+let _eloScale = 45
 export function setEloScale(s: number): void { _eloScale = s }
 export function getEloScale(): number { return _eloScale }
 
