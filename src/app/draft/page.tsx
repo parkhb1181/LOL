@@ -786,7 +786,7 @@ function MobileResultScreen({
           {t.draft.playAgain}
         </button>
         {simResult.grade === 'GRAND SLAM' && (
-          <p className="font-label-caps text-[10px] text-outline/50 text-center">
+          <p className="font-label-caps text-[10px] text-on-surface-variant text-center">
             Grand Slam cleared! Try HARD?
           </p>
         )}
@@ -1106,7 +1106,7 @@ function ResultScreen({
               {t.draft.playAgain}
             </button>
             {!isHard && simResult.grade === 'GRAND SLAM' && (
-              <p className="font-label-caps text-[10px] text-outline/50 text-center">
+              <p className="font-label-caps text-[10px] text-on-surface-variant text-center">
                 Grand Slam cleared! Try HARD?
               </p>
             )}
