@@ -46,10 +46,10 @@ export default function IntroCard({ player, color, className = '' }: IntroCardPr
         </div>
       )}
 
-      {/* 하단 그라디언트 오버레이 (PlayerCard 동일 수식) */}
+      {/* 하단 그라디언트 오버레이 — 텍스트 확장에 맞춰 높이 증가 */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[42%] pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(20,20,28,1) 0%, rgba(20,20,28,0.85) 40%, transparent 100%)' }}
+        className="absolute inset-x-0 bottom-0 h-[52%] pointer-events-none"
+        style={{ background: 'linear-gradient(to top, rgba(20,20,28,1) 0%, rgba(20,20,28,0.85) 45%, transparent 100%)' }}
       />
 
       {/* 팀 컬러 하단 라인 (슬롯 색 식별) */}
@@ -70,18 +70,18 @@ export default function IntroCard({ player, color, className = '' }: IntroCardPr
         </span>
       </div>
 
-      {/* 하단 텍스트 오버레이 — 그라디언트 위 (PlayerCard: absolute bottom-2.5 left-2.5) */}
-      <div className="absolute bottom-2 left-2 right-2 z-20">
-        {/* 포지션 — Pretendard, 작게 */}
-        <div className="font-label-caps text-[7px] text-white/60 uppercase tracking-wide leading-none">
+      {/* 하단 텍스트 오버레이 — 그라디언트 위 */}
+      <div className="absolute bottom-2.5 left-2.5 right-2 z-20">
+        {/* 포지션 */}
+        <div className="font-label-caps text-[10px] text-white/60 uppercase tracking-wide leading-none">
           {player.role}
         </div>
-        {/* 이름 — Bebas Neue uppercase, PlayerCard의 font-heading-md */}
-        <div className="font-heading-md text-[13px] leading-tight truncate uppercase text-on-surface mt-0.5">
+        {/* 이름 — Bebas Neue, 카드 폭 대비 시원한 크기 */}
+        <div className="font-heading-md text-[18px] leading-tight truncate uppercase text-on-surface mt-0.5">
           {label}
         </div>
-        {/* 팀명 — Pretendard, 작게 */}
-        <div className="font-label-caps text-[7px] text-white/60 mt-0.5 truncate">
+        {/* 팀명 */}
+        <div className="font-label-caps text-[9px] text-white/60 mt-0.5 truncate">
           {player.team}
         </div>
       </div>

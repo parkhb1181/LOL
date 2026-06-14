@@ -43,17 +43,38 @@ type StepResult = {
   hitY: number;
 };
 
-function getOrLoadImage(url: string, cache: ImgCache): HTMLImageElement | null {
+// crossOrigin을 src 전에 설정해야 R2 CORS 통과 — startBattle에서 Promise.all로 대기
+function preloadImage(url: string, cache: ImgCache): Promise<void> {
+  return new Promise<void>(resolve => {
+    const entry = cache.get(url);
+    if (entry instanceof HTMLImageElement) { resolve(); return; }
+    if (entry === 'error') { resolve(); return; }
+    if (entry === 'loading') {
+      // 이미 로딩 중 — 50ms 폴링으로 완료 대기
+      const t = setInterval(() => {
+        const e = cache.get(url);
+        if (e instanceof HTMLImageElement || e === 'error') { clearInterval(t); resolve(); }
+      }, 50);
+      return;
+    }
+    const img = new Image();
+    img.crossOrigin = 'anonymous'; // ★ src 보다 반드시 먼저 (canvas 보안 정책)
+    cache.set(url, 'loading');
+    img.onload = () => { cache.set(url, img); resolve(); };
+    img.onerror = () => {
+      // eslint-disable-next-line no-console
+      console.error('[BattleArena] 이미지 로드 실패 — R2 CORS 설정 확인:', url);
+      cache.set(url, 'error');
+      resolve();
+    };
+    img.src = url;
+  });
+}
+
+// drawFrame 전용 — 프리로드 완료 후 캐시 조회만 수행
+function getFromCache(url: string, cache: ImgCache): HTMLImageElement | null {
   const entry = cache.get(url);
-  if (entry instanceof HTMLImageElement) return entry;
-  if (entry === 'loading' || entry === 'error') return null;
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  cache.set(url, 'loading');
-  img.onload = () => cache.set(url, img);
-  img.onerror = () => cache.set(url, 'error');
-  img.src = url;
-  return null;
+  return entry instanceof HTMLImageElement ? entry : null;
 }
 
 function makeBalls(size: number, playerA: BattlePlayer, playerB: BattlePlayer): Ball[] {
@@ -170,7 +191,7 @@ function drawFrame(
     ctx.fill();
 
     if (ball.photo) {
-      const img = getOrLoadImage(ball.photo, imgCache);
+      const img = getFromCache(ball.photo, imgCache);
       if (img) {
         ctx.save();
         ctx.beginPath();
@@ -354,7 +375,7 @@ export default function BattleArena({
     return () => cancelAnimationFrame(stateRef.current.rafId);
   }, []);
 
-  const startBattle = useCallback(() => {
+  const startBattle = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -363,6 +384,12 @@ export default function BattleArena({
     if (size < 1) return;
 
     cancelAnimationFrame(stateRef.current.rafId);
+
+    // 공 사진 프리로드 — 1프레임째부터 사진 표시 보장 (onload 완료 후 RAF 진입)
+    const cache = imgCacheRef.current;
+    const photos = [playerA.photo, playerB.photo].filter(Boolean) as string[];
+    await Promise.all(photos.map(url => preloadImage(url, cache)));
+    if (!canvasRef.current) return; // await 후 언마운트 방어
 
     const freshState: BattleState = {
       balls: makeBalls(size, playerA, playerB),
@@ -377,8 +404,6 @@ export default function BattleArena({
     setUiPhase('running');
     // 초기 HP 세팅
     setLiveHp({ a: maxA, b: maxB });
-
-    const cache = imgCacheRef.current;
 
     const loop = () => {
       const s = stateRef.current;
