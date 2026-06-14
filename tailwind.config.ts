@@ -24,7 +24,7 @@ const config: Config = {
         'grade-contender':       '#40d4a0',   // 민트/초록
         'grade-golden-road':     '#e9c349',   // HARD GOLDEN ROAD (= grandslam)
         'grade-true-golden-road':'#f59e0b',   // HARD TRUE GOLDEN ROAD (7관왕 — 더 밝은 앰버)
-        'grade-world-king':      '#ff6b35',   // HARD WORLD KING (비비드 오렌지)
+        'grade-world-champion':      '#ff6b35',   // HARD WORLD KING (비비드 오렌지)
         'grade-challenger':      '#80a0ff',   // HARD CHALLENGER (블루-퍼플)
         // ── 서피스 팔레트 (v0 tone) ─────────────────────────────────────────
         'on-surface':             '#f3f4f6',   // gs.text
@@ -67,7 +67,7 @@ const config: Config = {
     // 등급 색상 (NORMAL + HARD)
     'text-grade-grandslam', 'text-grade-legendary', 'text-grade-elite', 'text-grade-contender',
     'text-grade-golden-road', 'text-grade-true-golden-road',
-    'text-grade-world-king', 'text-grade-challenger',
+    'text-grade-world-champion', 'text-grade-challenger',
     'border-secondary/50', 'border-amber-400/35',
     'bg-surface-container-high', 'bg-surface-bright',
     'is-flying',

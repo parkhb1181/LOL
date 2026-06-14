@@ -10,7 +10,7 @@ export type Grade =
   | 'REBUILD'
   | 'GOLDEN ROAD'       // HARD: 6관왕 (EWC 제외)
   | 'TRUE GOLDEN ROAD'  // HARD: 7관왕 (완전 정복)
-  | 'WORLD KING'        // HARD: Worlds 우승 + 추가 국제전 우승
+  | 'WORLD CHAMPION'        // HARD: Worlds 우승 + 추가 국제전 우승
   | 'CHALLENGER'        // HARD: 비Worlds 국제전 결승 이상 (FS/EWC)
 
 export type Trophy =
@@ -24,7 +24,7 @@ const GRADE_ORD: Record<Grade, number> = {
   ELITE: 3,
   CHALLENGER: 4,
   LEGENDARY: 5,
-  'WORLD KING': 6,
+  'WORLD CHAMPION': 6,
   'GRAND SLAM': 7,
   'GOLDEN ROAD': 8,
   'TRUE GOLDEN ROAD': 9,
@@ -125,7 +125,7 @@ export function gradeWithWorldsAndPlayoff(params: {
 }
 
 // HARD 모드 전용 등급 판정 (v2 — 9단계)
-// TRUE GOLDEN ROAD(7관왕) > GOLDEN ROAD(6관왕) > WORLD KING > LEGENDARY > CHALLENGER > ELITE > CONTENDER > PLAYOFF TEAM > REBUILD
+// TRUE GOLDEN ROAD(7관왕) > GOLDEN ROAD(6관왕) > WORLD CHAMPION > LEGENDARY > CHALLENGER > ELITE > CONTENDER > PLAYOFF TEAM > REBUILD
 export function gradeHard(params: {
   trophies: Trophy[]
   worldsBest: number | null
@@ -149,8 +149,8 @@ export function gradeHard(params: {
   if (SIX_PACK.every(t => has(t)) && has('EWC')) return 'TRUE GOLDEN ROAD'
   if (SIX_PACK.every(t => has(t))) return 'GOLDEN ROAD'
 
-  // ── WORLD KING: Worlds 우승 + 추가 국제전 우승 ─────────────────
-  if (has('WORLDS') && (has('FIRST_STAND') || has('MSI') || has('EWC'))) return 'WORLD KING'
+  // ── WORLD CHAMPION: Worlds 우승 + 추가 국제전 우승 ─────────────────
+  if (has('WORLDS') && (has('FIRST_STAND') || has('MSI') || has('EWC'))) return 'WORLD CHAMPION'
 
   // ── LEGENDARY: Worlds 우승만 또는 Worlds 4강 ──────────────────
   if (has('WORLDS')) return 'LEGENDARY'

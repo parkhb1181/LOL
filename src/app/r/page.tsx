@@ -25,7 +25,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':           '#9ca3af',
   'GOLDEN ROAD':       '#e9c349',
   'TRUE GOLDEN ROAD':  '#f59e0b',
-  'WORLD KING':        '#ff6b35',
+  'WORLD CHAMPION':        '#ff6b35',
   'CHALLENGER':        '#80a0ff',
 }
 

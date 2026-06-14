@@ -16,7 +16,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':          '#5a6070',
   'GOLDEN ROAD':      '#e9c349',
   'TRUE GOLDEN ROAD': '#f59e0b',
-  'WORLD KING':       '#ff6b35',
+  'WORLD CHAMPION':       '#ff6b35',
   'CHALLENGER':       '#80a0ff',
 }
 
@@ -30,7 +30,7 @@ const GRADE_FONT_SIZE: Record<string, number> = {
   'REBUILD':          132,
   'GOLDEN ROAD':       86,
   'TRUE GOLDEN ROAD':  68,
-  'WORLD KING':       100,
+  'WORLD CHAMPION':       100,
   'CHALLENGER':       108,
 }
 

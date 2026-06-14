@@ -574,7 +574,7 @@ const GRADE_COLOR: Record<string, string> = {
   'REBUILD':          'text-outline',
   'TRUE GOLDEN ROAD': 'text-grade-true-golden-road',
   'GOLDEN ROAD':      'text-grade-golden-road',
-  'WORLD KING':       'text-grade-world-king',
+  'WORLD CHAMPION':       'text-grade-world-king',
   'CHALLENGER':       'text-grade-challenger',
 }
 
