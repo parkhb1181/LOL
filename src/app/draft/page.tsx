@@ -231,18 +231,18 @@ function PickButtons({
   return (
     <div className="flex flex-row items-center gap-3 mt-2">
       <button
+        onClick={onPlayAgain}
+        className="font-label-caps text-label-caps py-3 px-6 rounded border border-outline-variant/50 bg-surface-container-low hover:bg-surface-bright text-outline hover:text-on-surface transition-colors"
+      >
+        {t.draft.playAgain}
+      </button>
+      <button
         onClick={onReroll}
         disabled={rerollLeft <= 0}
         className="group flex items-center gap-2 font-label-caps text-label-caps py-3 px-6 rounded bg-surface-bright hover:bg-surface-variant border border-outline-variant hover:border-secondary/50 text-on-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <RerollIcon />
         {t.draft.rerollShort(rerollLeft)}
-      </button>
-      <button
-        onClick={onPlayAgain}
-        className="font-label-caps text-label-caps py-3 px-6 rounded border border-outline-variant/50 bg-surface-container-low hover:bg-surface-bright text-outline hover:text-on-surface transition-colors"
-      >
-        {t.draft.playAgain}
       </button>
       {/* 구분선 + 토글 — relative로 설명 텍스트 absolute 기준점 */}
       <div className="ml-1 pl-3 border-l border-outline-variant/30 relative">
@@ -403,13 +403,16 @@ function RevealScreen({
 }) {
   const { t } = useLang()
 
-  // HARD 모드: 7스테이지 타임라인 누적 표시
+  // HARD 모드: NORMAL과 동일한 단계별 큰 중앙 텍스트 (7스테이지)
   if (simResult?.mode === 'hard') {
     const hardHighlights = pickHardHighlights(simResult.steps)
-    const revealed = hardHighlights.slice(0, revealStep)
+    const current = revealStep > 0 ? hardHighlights[revealStep - 1] : null
+    const isWin = current?.status === 'win'
+    const isDNQ = current?.status === 'dnq'
+
     return (
-      <div className="flex flex-col items-center w-full" style={{ minHeight: '45vh' }}>
-        <div className="w-full max-w-sm flex justify-end mt-4 mb-3">
+      <div className="flex flex-col items-center" style={{ minHeight: '55vh' }}>
+        <div className="w-full max-w-sm flex justify-end mt-4 mb-2">
           <button
             onClick={onSkip}
             className="font-label-caps text-[10px] px-3 py-1.5 rounded border border-outline-variant text-outline hover:text-on-surface hover:border-secondary/40 transition-colors"
@@ -417,23 +420,49 @@ function RevealScreen({
             {t.draft.skip}
           </button>
         </div>
-        <div className="w-full max-w-xs bg-surface-container-high/40 rounded-lg px-3 py-1">
-          {revealed.map((h, i) => <HardTimelineRow key={i} h={h} />)}
-          {/* 아직 미공개 행: 점선 자리표시자 */}
-          {Array.from({ length: hardHighlights.length - revealed.length }).map((_, i) => (
-            <div key={`pending-${i}`} className="flex items-center gap-2.5 py-1">
-              <div className="w-2 h-2 rounded-full flex-shrink-0 bg-outline/10" />
-              <span className="font-label-caps text-[9px] text-outline/20 uppercase">···</span>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center gap-1.5 mt-5">
+
+        {current && (
+          <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center py-6 w-full max-w-sm">
+            {/* 대회명 — NORMAL의 sectionShort 위치와 동일 */}
+            <p className="font-label-caps text-label-caps text-outline/50 uppercase">
+              {current.label}
+            </p>
+            {/* 결과 라운드 — NORMAL의 roundLabel 위치와 동일 */}
+            <p className={`text-2xl font-black tracking-wide ${
+              isWin ? 'text-on-surface' : isDNQ ? 'text-outline/40' : 'text-on-surface/60'
+            }`}>
+              {current.roundLabel}
+            </p>
+            {/* 상대 팀 (DNQ 제외) */}
+            {current.opp && !isDNQ && (
+              <h2 className={`text-xl font-bold leading-snug px-2 ${isWin ? 'text-green-300' : 'text-red-300'}`}>
+                {isWin ? 'WIN' : 'LOSS'} vs {current.opp}
+              </h2>
+            )}
+            {/* 스코어 */}
+            {current.score && !isDNQ && (
+              <div className={`text-5xl font-black tabular-nums ${isWin ? 'text-green-400' : 'text-red-400'}`}>
+                {current.score}
+              </div>
+            )}
+            {/* DNQ 표시 */}
+            {isDNQ && <span className="text-outline/40 text-sm tracking-widest">DNQ</span>}
+          </div>
+        )}
+
+        {/* 진행 점 — 7개, NORMAL과 동일 스타일 */}
+        <div className="flex justify-center gap-2 mt-6 pb-2">
           {hardHighlights.map((_, i) => (
-            <div key={i} className={`rounded-full transition-all duration-300 ${i < revealStep ? 'w-5 h-1.5 bg-secondary/60' : 'w-1.5 h-1.5 bg-outline/20'}`} />
+            <div
+              key={i}
+              className={`rounded-full transition-all duration-300 ${
+                i < revealStep ? 'w-8 h-2 bg-secondary/60' : 'w-2 h-2 bg-outline/20'
+              }`}
+            />
           ))}
         </div>
-        <p className="font-label-caps text-[10px] text-outline/30 mt-1.5 tabular-nums">
-          {Math.min(revealStep, 7)} / 7
+        <p className="font-label-caps text-[10px] text-outline/30 mt-2 tabular-nums">
+          {Math.min(revealStep, hardHighlights.length)} / {hardHighlights.length}
         </p>
       </div>
     )
