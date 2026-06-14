@@ -198,10 +198,6 @@ function PickButtons({
   if (layout === 'mobile') {
     return (
       <div className="flex flex-col gap-2">
-        {/* 토글 — 버튼 줄 위에 별도 행 (BottomNav 겹침 방지) */}
-        <div className="flex justify-end">
-          <ModeToggle mode={mode} onChange={onModeChange} />
-        </div>
         <div className="flex flex-row gap-2">
           <button
             onClick={onReroll}
@@ -217,6 +213,17 @@ function PickButtons({
           >
             {t.draft.playAgain}
           </button>
+        </div>
+        {/* 토글 — PLAY AGAIN 아래 (BottomNav 겹침 방지, 버튼 줄보다 아래) */}
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-end">
+            <ModeToggle mode={mode} onChange={onModeChange} />
+          </div>
+          {mode === 'hard' && (
+            <p className="font-label-caps text-[9px] text-outline/40 text-right leading-relaxed">
+              +3 events: First Stand, EWC · 7 total
+            </p>
+          )}
         </div>
       </div>
     )
@@ -237,9 +244,14 @@ function PickButtons({
       >
         {t.draft.playAgain}
       </button>
-      {/* 구분선 + 토글 */}
-      <div className="ml-1 pl-3 border-l border-outline-variant/30">
+      {/* 구분선 + 토글 + HARD 설명 */}
+      <div className="ml-1 pl-3 border-l border-outline-variant/30 flex items-center gap-2">
         <ModeToggle mode={mode} onChange={onModeChange} />
+        {mode === 'hard' && (
+          <span className="font-label-caps text-[9px] text-outline/40 whitespace-nowrap">
+            +3 events: First Stand, EWC · 7 total
+          </span>
+        )}
       </div>
     </div>
   )
@@ -381,13 +393,52 @@ function DesktopPickScreen({
 
 // ── REVEAL ─────────────────────────────────────────────────────────────────────
 function RevealScreen({
-  highlights, revealStep, onSkip,
+  highlights, revealStep, onSkip, simResult,
 }: {
   highlights: HighlightStep[]
   revealStep: number
   onSkip: () => void
+  simResult: ReturnType<typeof useDraftMachine>['state']['simResult']
 }) {
   const { t } = useLang()
+
+  // HARD 모드: 7스테이지 타임라인 누적 표시
+  if (simResult?.mode === 'hard') {
+    const hardHighlights = pickHardHighlights(simResult.steps)
+    const revealed = hardHighlights.slice(0, revealStep)
+    return (
+      <div className="flex flex-col items-center w-full" style={{ minHeight: '45vh' }}>
+        <div className="w-full max-w-sm flex justify-end mt-4 mb-3">
+          <button
+            onClick={onSkip}
+            className="font-label-caps text-[10px] px-3 py-1.5 rounded border border-outline-variant text-outline hover:text-on-surface hover:border-secondary/40 transition-colors"
+          >
+            {t.draft.skip}
+          </button>
+        </div>
+        <div className="w-full max-w-xs bg-surface-container-high/40 rounded-lg px-3 py-1">
+          {revealed.map((h, i) => <HardTimelineRow key={i} h={h} />)}
+          {/* 아직 미공개 행: 점선 자리표시자 */}
+          {Array.from({ length: hardHighlights.length - revealed.length }).map((_, i) => (
+            <div key={`pending-${i}`} className="flex items-center gap-2.5 py-1">
+              <div className="w-2 h-2 rounded-full flex-shrink-0 bg-outline/10" />
+              <span className="font-label-caps text-[9px] text-outline/20 uppercase">···</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-1.5 mt-5">
+          {hardHighlights.map((_, i) => (
+            <div key={i} className={`rounded-full transition-all duration-300 ${i < revealStep ? 'w-5 h-1.5 bg-secondary/60' : 'w-1.5 h-1.5 bg-outline/20'}`} />
+          ))}
+        </div>
+        <p className="font-label-caps text-[10px] text-outline/30 mt-1.5 tabular-nums">
+          {Math.min(revealStep, 7)} / 7
+        </p>
+      </div>
+    )
+  }
+
+  // NORMAL 모드: 기존 단일-스텝 표시 (변경 없음)
   const current = revealStep > 0 ? highlights[revealStep - 1] : null
   const step = current?.step
 
@@ -713,22 +764,32 @@ function MobileResultScreen({
 function HardTimelineRow({ h }: { h: HardHighlight }) {
   const isWin = h.status === 'win'
   const isDNQ = h.status === 'dnq'
+  // DNQ: 높이·불투명도 절반 (중요도 낮음)
+  if (isDNQ) {
+    return (
+      <div className="flex items-center gap-2 py-0.5 opacity-30">
+        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-outline/30" />
+        <span className="w-[60px] flex-shrink-0 font-label-caps text-[9px] uppercase text-outline/50 leading-none">{h.label}</span>
+        <span className="font-body-main text-[10px] text-outline/40 leading-none">DNQ</span>
+      </div>
+    )
+  }
   return (
-    <div className={`flex items-center gap-2.5 py-1.5 ${isDNQ ? 'opacity-40' : ''}`}>
-      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isWin ? 'bg-green-400' : isDNQ ? 'bg-outline/20' : 'bg-red-400/70'}`} />
-      <span className="w-[72px] flex-shrink-0 font-label-caps text-[10px] uppercase text-outline/60 leading-none">
+    <div className="flex items-center gap-2 py-1">
+      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isWin ? 'bg-green-400' : 'bg-red-400/70'}`} />
+      <span className="w-[60px] flex-shrink-0 font-label-caps text-[9px] uppercase text-outline/60 leading-none">
         {h.label}
         {h.isBonus && (
-          <span className="ml-1 inline-block px-1 py-px bg-amber-400/15 text-amber-400/70 text-[8px] rounded leading-none align-middle">
+          <span className="ml-1 inline-block px-0.5 bg-amber-400/15 text-amber-400/70 text-[7px] rounded leading-none align-middle">
             BONUS
           </span>
         )}
       </span>
-      <span className={`font-body-main text-[12px] leading-none flex-shrink-0 ${isWin ? 'text-green-400' : isDNQ ? 'text-outline/40' : 'text-on-surface/70'}`}>
+      <span className={`font-body-main text-[11px] leading-none flex-shrink-0 ${isWin ? 'text-green-400' : 'text-on-surface/70'}`}>
         {h.roundLabel}
       </span>
-      {h.opp && !isDNQ && (
-        <span className="font-body-main text-[11px] text-outline/50 leading-none min-w-0 truncate">
+      {h.opp && (
+        <span className="font-body-main text-[10px] text-outline/50 leading-none min-w-0 truncate">
           vs {h.opp}{h.score ? ` (${h.score})` : ''}
         </span>
       )}
@@ -753,64 +814,54 @@ function HardMobileResultScreen({
 
   return (
     <div className="flex flex-col items-center w-full pb-24">
-      {/* HARD MODE 뱃지 */}
-      <div className="mb-1.5">
-        <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-outline-variant/40 text-outline/60 uppercase tracking-wider">
-          Hard Mode
+      {/* HARD MODE 뱃지 + 등급 — 한 줄 압축 */}
+      <div className="flex items-center gap-2 mb-1.5">
+        <span className="font-label-caps text-[8px] px-1.5 py-0.5 rounded border border-outline-variant/40 text-outline/50 uppercase tracking-wider">
+          HARD
         </span>
+        <h1 className={`font-heading-lg text-[22px] uppercase leading-tight ${gradeColor}`}>
+          {simResult.grade}
+        </h1>
       </div>
 
-      {/* 등급명 */}
-      <h1 className={`font-heading-lg text-[26px] uppercase text-center mb-3 leading-tight ${gradeColor}`}>
-        {simResult.grade}
-      </h1>
-
-      {/* 7스테이지 타임라인 */}
-      <div className="w-full bg-surface-container-high/40 rounded-lg px-3 py-1 mb-3">
+      {/* 7스테이지 타임라인 (압축됨) */}
+      <div className="w-full bg-surface-container-high/40 rounded-lg px-3 py-0.5 mb-2">
         {hardHighlights.map((h, i) => (
           <HardTimelineRow key={i} h={h} />
         ))}
       </div>
 
-      {/* 선수 카드 3+2 */}
-      <div className="w-full flex flex-col items-center gap-2 mb-3">
-        <div className="flex justify-center gap-2 w-full">
-          {[0, 1, 2].map(i => picks[i] && (
-            <div key={i} className="w-[30%]">
-              <PlayerCard player={picks[i]!.player} size="mob-result" />
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-center gap-2 w-full">
-          {[3, 4].map(i => picks[i] && (
-            <div key={i} className="w-[30%]">
-              <PlayerCard player={picks[i]!.player} size="mob-result" />
-            </div>
-          ))}
-        </div>
+      {/* 선수 카드 5장 한 줄 (컴팩트) */}
+      <div className="flex justify-center gap-1.5 w-full mb-1.5">
+        {[0, 1, 2, 3, 4].map(i => picks[i] && (
+          <div key={i} className="w-[18%]">
+            <PlayerCard player={picks[i]!.player} size="mob-result" />
+          </div>
+        ))}
       </div>
 
-      <p className="font-label-caps text-[9px] text-outline/50 text-center mb-3">
+      <p className="font-label-caps text-[8px] text-outline/40 text-center mb-2">
         grandslamlol.vercel.app
       </p>
 
-      <div className="flex flex-col gap-2 w-full">
+      {/* 버튼 3개 — 압축 */}
+      <div className="flex gap-2 w-full">
         <button
           onClick={onShowDetail}
-          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+          className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center gap-1.5 transition-colors"
         >
           <ListIcon />
           {t.draft.detailBtn}
         </button>
         <button
           onClick={onCopyLink}
-          className="w-full py-3.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 transition-colors"
+          className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center transition-colors"
         >
           {copiedLabel}
         </button>
         <button
           onClick={onReset}
-          className="w-full bg-secondary hover:opacity-90 text-on-secondary font-heading-md text-heading-md py-4 rounded uppercase tracking-widest transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(233,195,73,0.2)]"
+          className="flex-1 bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-[10px] py-2.5 rounded uppercase tracking-widest transition-all active:scale-[0.98]"
         >
           {t.draft.playAgain}
         </button>
@@ -1059,23 +1110,17 @@ export default function DraftPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
-  // REVEAL phase: 1.8s 간격 자동 진행
+  // REVEAL phase: NORMAL 1800ms / HARD 500ms 간격 순차 공개
+  // state.simResult는 REVEAL 진입 시점에 이미 확정 — phase 변경 시 참조 안전
   const revealIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   useEffect(() => {
     if (state.phase !== 'REVEAL') {
       if (revealIntervalRef.current) { clearInterval(revealIntervalRef.current); revealIntervalRef.current = null }
       return
     }
-    revealIntervalRef.current = setInterval(() => { machine.revealNext() }, 1800)
+    const ms = state.simResult?.mode === 'hard' ? 500 : 1800
+    revealIntervalRef.current = setInterval(() => { machine.revealNext() }, ms)
     return () => { if (revealIntervalRef.current) clearInterval(revealIntervalRef.current) }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.phase])
-
-  // HARD 모드: REVEAL 즉시 스킵 — 7단계 REVEAL은 4/4에서 구현
-  useEffect(() => {
-    if (state.phase === 'REVEAL' && state.simResult?.mode === 'hard') {
-      machine.revealSkip()
-    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.phase])
 
@@ -1140,15 +1185,6 @@ export default function DraftPage() {
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
 
-              {/* HARD 모드 표식 — 하드인 줄 모르고 진행하는 실수 방지 */}
-              {mode === 'hard' && (
-                <div className="flex justify-center -mt-2">
-                  <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-red-600/40 text-red-400/80 uppercase tracking-wider">
-                    Hard Mode
-                  </span>
-                </div>
-              )}
-
               {state.phase === 'SPIN' && (
                 <p className="text-center text-on-surface animate-pulse font-label-caps text-label-caps">{t.draft.spinning}</p>
               )}
@@ -1186,13 +1222,6 @@ export default function DraftPage() {
             <div className="hidden md:flex md:flex-col md:items-center md:gap-6 md:w-full md:flex-1 md:justify-center md:pt-8">
               {/* 상단 5슬롯 */}
               <DraftSlotRow picks={state.picks} />
-
-              {/* HARD 모드 표식 (데스크톱) */}
-              {mode === 'hard' && (
-                <span className="font-label-caps text-[9px] px-2 py-0.5 rounded border border-red-600/40 text-red-400/80 uppercase tracking-wider -mt-4">
-                  Hard Mode
-                </span>
-              )}
 
               {/* Round 카운터 */}
               <p className="font-label-caps text-[10px] text-outline/60 uppercase tracking-[0.2em]">
@@ -1236,6 +1265,7 @@ export default function DraftPage() {
             highlights={pickHighlightSteps(state.simResult.steps)}
             revealStep={state.revealStep}
             onSkip={machine.revealSkip}
+            simResult={state.simResult}
           />
         )}
 

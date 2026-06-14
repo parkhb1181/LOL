@@ -6,7 +6,7 @@
 import { useReducer, useCallback, useMemo } from 'react'
 import { mulberry32 } from './prng'
 import { simulate } from './sim'
-import { highlightStepsFlat, pickHighlightSteps } from './simHighlight'
+import { highlightStepsFlat, pickHighlightSteps, pickHardHighlights } from './simHighlight'
 import type { PlayerSeason, TeamYear } from './data'
 import type { SimResult, SimStep, SimMode } from './sim'
 import type { Opponent } from './sim'
@@ -147,9 +147,20 @@ function reducer(state: DraftState, action: Action): DraftState {
       }
     }
 
-    // SIM_DONE: simulation complete → REVEAL (하이라이트 4스텝만)
+    // SIM_DONE: simulation complete → REVEAL
+    // NORMAL: 4스텝 (Spring / MSI / Summer / Worlds) 1.8s 간격
+    // HARD: 7스텝 (LCK_CUP / FIRST_STAND / REGULAR_1 / MSI / EWC / REGULAR_2 / WORLDS) 500ms 간격
     case 'SIM_DONE': {
-      const revealSteps = highlightStepsFlat(pickHighlightSteps(action.result.steps))
+      let revealSteps: SimStep[]
+      if (action.result.mode === 'hard') {
+        revealSteps = pickHardHighlights(action.result.steps).map(h => ({
+          stage: h.stageKey,
+          label: h.label,
+          ...(h.opp ? { series: [{ opp: h.opp, score: h.score ?? '', win: h.status === 'win' }] } : {}),
+        }))
+      } else {
+        revealSteps = highlightStepsFlat(pickHighlightSteps(action.result.steps))
+      }
       return { ...state, phase: 'REVEAL', simResult: action.result, revealSteps, revealStep: 1 }
     }
 
