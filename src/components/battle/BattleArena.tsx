@@ -8,7 +8,7 @@ const PLAYERS = [
   { name: 'Ruler', color: '#3b82f6', initials: 'R', maxHp: 200 },
 ];
 
-const BALL_RADIUS = 28;
+const BALL_RADIUS = 44;
 const INIT_SPEED = 3.2;
 // 충돌 데미지 = 충돌 상대속도 × 이 계수
 const DMG_COEFF = 6;
@@ -105,17 +105,17 @@ function stepPhysics(balls: Ball[], size: number): string | null {
 }
 
 function drawFrame(ctx: CanvasRenderingContext2D, state: BattleState, size: number) {
-  // 배경
-  ctx.fillStyle = '#0d0d1a';
+  // 흰 배경
+  ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, size, size);
 
   // 아레나 테두리
-  ctx.strokeStyle = '#2a2a4a';
+  ctx.strokeStyle = '#9ca3af';
   ctx.lineWidth = 2;
   ctx.strokeRect(1, 1, size - 2, size - 2);
 
   // 중앙선 (장식)
-  ctx.strokeStyle = '#1a1a2e';
+  ctx.strokeStyle = '#e5e7eb';
   ctx.lineWidth = 1;
   ctx.setLineDash([6, 6]);
   ctx.beginPath();
@@ -125,10 +125,10 @@ function drawFrame(ctx: CanvasRenderingContext2D, state: BattleState, size: numb
   ctx.setLineDash([]);
 
   for (const ball of state.balls) {
-    // 그림자
+    // 그림자 — 흰 배경에서 과하지 않게
     ctx.beginPath();
-    ctx.arc(ball.x + 3, ball.y + 5, ball.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.arc(ball.x + 4, ball.y + 6, ball.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
     ctx.fill();
 
     // 공 본체
@@ -145,10 +145,10 @@ function drawFrame(ctx: CanvasRenderingContext2D, state: BattleState, size: numb
       ball.radius * 0.32,
       0, Math.PI * 2,
     );
-    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
     ctx.fill();
 
-    // 이니셜
+    // 이니셜 — 공 위에 흰 텍스트 (공 색이 진해 충분한 대비)
     ctx.fillStyle = '#fff';
     ctx.font = `bold ${Math.round(ball.radius * 0.9)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
@@ -157,14 +157,14 @@ function drawFrame(ctx: CanvasRenderingContext2D, state: BattleState, size: numb
 
     // HP 바
     const barW = ball.radius * 3;
-    const barH = 7;
+    const barH = 9;
     const barX = ball.x - barW / 2;
-    const barY = ball.y - ball.radius - 22;
+    const barY = ball.y - ball.radius - 26;
     const hpRatio = Math.max(0, ball.hp / ball.maxHp);
-    const hpColor = hpRatio > 0.5 ? '#22c55e' : hpRatio > 0.25 ? '#f59e0b' : '#ef4444';
+    const hpColor = hpRatio > 0.5 ? '#16a34a' : hpRatio > 0.25 ? '#d97706' : '#dc2626';
 
-    // 바 배경
-    ctx.fillStyle = '#111122';
+    // 바 배경 — 연한 회색 (흰 배경 대비)
+    ctx.fillStyle = '#e5e7eb';
     ctx.fillRect(barX, barY, barW, barH);
 
     // 바 채움
@@ -173,17 +173,17 @@ function drawFrame(ctx: CanvasRenderingContext2D, state: BattleState, size: numb
       ctx.fillRect(barX, barY, barW * hpRatio, barH);
     }
 
-    // 이름 + HP 수치
-    ctx.fillStyle = '#d1d5db';
-    ctx.font = `11px system-ui, sans-serif`;
+    // 이름 + HP 수치 — 어두운 색으로 흰 배경 대비 확보
+    ctx.fillStyle = '#1f2937';
+    ctx.font = `bold 12px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(`${ball.name}  ${ball.hp} / ${ball.maxHp}`, ball.x, barY - 2);
+    ctx.fillText(`${ball.name}  ${ball.hp} / ${ball.maxHp}`, ball.x, barY - 3);
   }
 
-  // 승자 오버레이
+  // 승자 오버레이 — 어두운 딤 위에 텍스트 (흰 배경과 무관하게 가독성 유지)
   if (state.phase === 'finished' && state.winner) {
-    ctx.fillStyle = 'rgba(0,0,0,0.65)';
+    ctx.fillStyle = 'rgba(0,0,0,0.68)';
     ctx.fillRect(0, 0, size, size);
 
     const cx = size / 2;
@@ -230,12 +230,12 @@ export default function BattleArena() {
       if (stateRef.current.phase === 'idle') {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-        ctx.fillStyle = '#0d0d1a';
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, size, size);
-        ctx.strokeStyle = '#2a2a4a';
+        ctx.strokeStyle = '#9ca3af';
         ctx.lineWidth = 2;
         ctx.strokeRect(1, 1, size - 2, size - 2);
-        ctx.fillStyle = '#3a3a6a';
+        ctx.fillStyle = '#6b7280';
         ctx.font = `${Math.round(size * 0.035)}px system-ui, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -300,7 +300,7 @@ export default function BattleArena() {
       {/* 아레나 */}
       <div
         ref={containerRef}
-        className="w-full aspect-square rounded-xl overflow-hidden border border-[#2a2a4a]"
+        className="w-full aspect-square rounded-xl overflow-hidden border border-[#d1d5db]"
       >
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
