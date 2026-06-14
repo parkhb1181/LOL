@@ -4,10 +4,10 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import type { BattlePlayer } from '@/lib/battle/utils';
 import { ovrToHp, formatLabel } from '@/lib/battle/utils';
 
-const BALL_RADIUS = 28; // A3: 44 → 28 (0.636x), 사진 식별 가능 최소선
+const BALL_RADIUS = 28;
 const INIT_SPEED = 3.2;
 const DMG_COEFF = 6;
-const FLASH_FRAMES = 10; // A4: 충돌 플래시 지속 프레임
+const FLASH_FRAMES = 10;
 const SLOT_COLORS = ['#ef4444', '#3b82f6'] as const;
 
 type ImgEntry = HTMLImageElement | 'loading' | 'error';
@@ -31,8 +31,7 @@ interface BattleState {
   phase: Phase;
   winner: string | null;
   rafId: number;
-  hitCount: number; // A5: 누적 충돌 횟수
-  flashT: number;   // A4: 잔여 프레임 (0=없음)
+  flashT: number;
   flashX: number;
   flashY: number;
 }
@@ -138,6 +137,11 @@ function drawInitials(ctx: CanvasRenderingContext2D, ball: Ball) {
   ctx.fillText(ball.initials, ball.x, ball.y + 1);
 }
 
+// HP 바 JSX용 색상 헬퍼
+function hpColor(ratio: number): string {
+  return ratio > 0.5 ? '#16a34a' : ratio > 0.25 ? '#d97706' : '#dc2626';
+}
+
 function drawFrame(
   ctx: CanvasRenderingContext2D,
   state: BattleState,
@@ -148,7 +152,7 @@ function drawFrame(
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, size, size);
 
-  // A6: 진한 아레나 테두리
+  // 진한 아레나 테두리
   ctx.strokeStyle = '#1f2937';
   ctx.lineWidth = 3;
   ctx.strokeRect(1.5, 1.5, size - 3, size - 3);
@@ -163,21 +167,18 @@ function drawFrame(
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // ── 공 그리기 ──
+  // 공
   for (const ball of state.balls) {
-    // 그림자
     ctx.beginPath();
     ctx.arc(ball.x + 3, ball.y + 4, ball.radius, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(0,0,0,0.12)';
     ctx.fill();
 
-    // 공 베이스 (팀 색)
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fillStyle = ball.color;
     ctx.fill();
 
-    // A1: 사진 원형 클립 (photo=null이면 이니셜 폴백)
     if (ball.photo) {
       const img = getOrLoadImage(ball.photo, imgCache);
       if (img) {
@@ -195,14 +196,13 @@ function drawFrame(
       drawInitials(ctx, ball);
     }
 
-    // 반사광 하이라이트
     ctx.beginPath();
     ctx.arc(ball.x - ball.radius * 0.28, ball.y - ball.radius * 0.3, ball.radius * 0.3, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255,255,255,0.25)';
     ctx.fill();
   }
 
-  // A4: 충돌 플래시 — 공 위에 렌더
+  // 충돌 플래시
   if (state.flashT > 0) {
     const alpha = state.flashT / FLASH_FRAMES;
     ctx.save();
@@ -219,82 +219,12 @@ function drawFrame(
     ctx.restore();
   }
 
-  // A5: 충돌 카운터 — 상단 중앙, 공 영역 위
-  {
-    const fs = Math.round(size * 0.038);
-    const text = `x ${state.hitCount}`;
-    ctx.fillStyle = 'rgba(255,255,255,0.90)';
-    ctx.fillRect(size / 2 - 38, 7, 76, fs + 8);
-    ctx.fillStyle = '#1f2937';
-    ctx.font = `bold ${fs}px system-ui, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(text, size / 2, 11);
-  }
-
-  // A2: HP 바 — 아레나 하단 고정 (공 위에 렌더하므로 항상 가독)
-  {
-    const bp = Math.round(size * 0.04);        // 좌우 여백
-    const bw = Math.round(size * 0.41);        // 바 너비
-    const bh = 10;                             // 바 높이
-    const by = size - bp - bh;                // 바 상단 Y
-    const lfs = Math.max(9, Math.round(size * 0.029));
-    const ly = by - 3;                        // 레이블 바닥 Y
-
-    const [ba, bb] = state.balls;
-    const ar = Math.max(0, ba.hp / ba.maxHp);
-    const br = Math.max(0, bb.hp / bb.maxHp);
-    const ac = ar > 0.5 ? '#16a34a' : ar > 0.25 ? '#d97706' : '#dc2626';
-    const bc = br > 0.5 ? '#16a34a' : br > 0.25 ? '#d97706' : '#dc2626';
-
-    // 반투명 배경 패널 (흰 배경이어도 공과 겹칠 때 가독성 보장)
-    ctx.fillStyle = 'rgba(255,255,255,0.86)';
-    ctx.fillRect(bp - 2, ly - lfs - 2, bw + 4, lfs + bh + 8);
-    ctx.fillRect(size - bp - bw - 2, ly - lfs - 2, bw + 4, lfs + bh + 8);
-
-    // 왼쪽 바 (A, 빨강)
-    ctx.font = `bold ${lfs}px system-ui, sans-serif`;
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle = '#1f2937';
-    ctx.fillText(ba.label, bp, ly);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#6b7280';
-    ctx.font = `${Math.max(8, lfs - 1)}px system-ui, sans-serif`;
-    ctx.fillText(`${ba.hp}/${ba.maxHp}`, bp + bw, ly);
-
-    ctx.fillStyle = '#d1d5db';
-    ctx.fillRect(bp, by, bw, bh);
-    if (ar > 0) {
-      ctx.fillStyle = ac;
-      ctx.fillRect(bp, by, bw * ar, bh);
-    }
-
-    // 오른쪽 바 (B, 파랑 — 우→좌 미러 채움)
-    ctx.font = `bold ${lfs}px system-ui, sans-serif`;
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle = '#1f2937';
-    ctx.fillText(bb.label, size - bp, ly);
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#6b7280';
-    ctx.font = `${Math.max(8, lfs - 1)}px system-ui, sans-serif`;
-    ctx.fillText(`${bb.hp}/${bb.maxHp}`, size - bp - bw, ly);
-
-    ctx.fillStyle = '#d1d5db';
-    ctx.fillRect(size - bp - bw, by, bw, bh);
-    if (br > 0) {
-      ctx.fillStyle = bc;
-      ctx.fillRect(size - bp - bw + bw * (1 - br), by, bw * br, bh);
-    }
-  }
-
-  // 승자 오버레이 (finished)
+  // 승자 오버레이
   if (state.phase === 'finished' && state.winner) {
     ctx.fillStyle = 'rgba(0,0,0,0.65)';
     ctx.fillRect(0, 0, size, size);
     const cx = size / 2;
-    const cy = size * 0.40;
+    const cy = size / 2;
     ctx.fillStyle = '#fbbf24';
     ctx.font = `bold ${Math.round(size * 0.06)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
@@ -304,6 +234,53 @@ function drawFrame(
     ctx.font = `bold ${Math.round(size * 0.085)}px system-ui, sans-serif`;
     ctx.fillText(state.winner, cx, cy + size * 0.04);
   }
+}
+
+// HP 바 2개를 캔버스 외부에 렌더하는 서브컴포넌트
+function HpBars({
+  labelA, labelB, hpA, hpB, maxA, maxB,
+}: {
+  labelA: string; labelB: string;
+  hpA: number; hpB: number;
+  maxA: number; maxB: number;
+}) {
+  const rA = Math.max(0, hpA / maxA);
+  const rB = Math.max(0, hpB / maxB);
+
+  return (
+    <div className="w-full bg-white/90 border border-[#e5e7eb] rounded-xl px-3 py-2 flex gap-3 items-stretch">
+      {/* A — 왼쪽, 좌→우 채움 */}
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-baseline mb-1">
+          <span className="text-[10px] font-bold truncate" style={{ color: SLOT_COLORS[0] }}>{labelA}</span>
+          <span className="text-[9px] text-[#6b7280] ml-1 flex-shrink-0">{hpA}/{maxA}</span>
+        </div>
+        <div className="h-2 rounded-full overflow-hidden bg-[#e5e7eb]">
+          <div
+            className="h-full rounded-full transition-all duration-150"
+            style={{ width: `${Math.round(rA * 100)}%`, background: hpColor(rA) }}
+          />
+        </div>
+      </div>
+
+      <div className="flex-shrink-0 flex items-center text-[#9ca3af] text-[9px] font-bold">vs</div>
+
+      {/* B — 오른쪽, 우→좌 채움 (flex-row-reverse로 오른쪽 앵커) */}
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-baseline mb-1">
+          <span className="text-[9px] text-[#6b7280] mr-1 flex-shrink-0">{hpB}/{maxB}</span>
+          <span className="text-[10px] font-bold truncate text-right" style={{ color: SLOT_COLORS[1] }}>{labelB}</span>
+        </div>
+        {/* flex-row-reverse: 채움이 오른쪽에서 시작해 왼쪽으로 줄어듦 */}
+        <div className="h-2 rounded-full overflow-hidden bg-[#e5e7eb] flex flex-row-reverse">
+          <div
+            className="h-full rounded-full transition-all duration-150"
+            style={{ width: `${Math.round(rB * 100)}%`, background: hpColor(rB) }}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface BattleArenaProps {
@@ -326,12 +303,18 @@ export default function BattleArena({
   const imgCacheRef = useRef<ImgCache>(new Map());
   const stateRef = useRef<BattleState>({
     balls: [], phase: 'idle', winner: null, rafId: 0,
-    hitCount: 0, flashT: 0, flashX: 0, flashY: 0,
+    flashT: 0, flashX: 0, flashY: 0,
   });
 
   const [uiPhase, setUiPhase] = useState<Phase>('idle');
   const [canvasSized, setCanvasSized] = useState(false);
   const canvasSizedOnce = useRef(false);
+
+  // HP 바 상태 — 충돌 시에만 업데이트 (매 프레임 setStatex 방지)
+  const maxA = ovrToHp(playerA.ovr);
+  const maxB = ovrToHp(playerB.ovr);
+  const [liveHp, setLiveHp] = useState<{ a: number; b: number } | null>(null);
+
   const onBattleEndRef = useRef(onBattleEnd);
   useEffect(() => { onBattleEndRef.current = onBattleEnd; }, [onBattleEnd]);
 
@@ -395,13 +378,14 @@ export default function BattleArena({
       phase: 'running',
       winner: null,
       rafId: 0,
-      hitCount: 0,
       flashT: 0,
       flashX: 0,
       flashY: 0,
     };
     stateRef.current = freshState;
     setUiPhase('running');
+    // 초기 HP 세팅
+    setLiveHp({ a: maxA, b: maxB });
 
     const cache = imgCacheRef.current;
 
@@ -409,16 +393,16 @@ export default function BattleArena({
       const s = stateRef.current;
       if (s.phase !== 'running') return;
 
-      // A4: 플래시 카운트다운
       if (s.flashT > 0) s.flashT -= 1;
 
       const result = stepPhysics(s.balls, size);
 
       if (result.didHit) {
-        s.hitCount += 1;
         s.flashT = FLASH_FRAMES;
         s.flashX = result.hitX;
         s.flashY = result.hitY;
+        // 충돌 시에만 HP state 업데이트 (매 프레임 렌더 방지)
+        setLiveHp({ a: s.balls[0].hp, b: s.balls[1].hp });
       }
 
       if (result.winner !== null) {
@@ -426,6 +410,7 @@ export default function BattleArena({
         s.winner = result.winner;
         drawFrame(ctx, s, size, cache);
         setUiPhase('finished');
+        setLiveHp({ a: s.balls[0].hp, b: s.balls[1].hp });
         onBattleEndRef.current?.(result.winner);
         return;
       }
@@ -435,33 +420,41 @@ export default function BattleArena({
     };
 
     freshState.rafId = requestAnimationFrame(loop);
-  }, [playerA, playerB]);
+  }, [playerA, playerB, maxA, maxB]);
 
   const startBattleRef = useRef(startBattle);
   useEffect(() => { startBattleRef.current = startBattle; }, [startBattle]);
 
-  // autoStart: canvasSized 확정 직후 1회 실행
   useEffect(() => {
     if (!autoStart || !canvasSized) return;
     startBattleRef.current();
   }, [autoStart, canvasSized]);
 
+  const labelA = formatLabel(playerA.nameEn, playerA.year);
+  const labelB = formatLabel(playerB.nameEn, playerB.year);
+
+  // HP 바 (아레나 박스 밖 아래 — 캔버스 외부 JSX)
+  const hpBarsEl = liveHp ? (
+    <HpBars
+      labelA={labelA} labelB={labelB}
+      hpA={liveHp.a} hpB={liveHp.b}
+      maxA={maxA} maxB={maxB}
+    />
+  ) : null;
+
   if (frameMode) {
     return (
-      <div
-        ref={containerRef}
-        className="w-full aspect-square overflow-hidden"
-      >
-        <canvas ref={canvasRef} className="w-full h-full block" />
+      <div className="w-full flex flex-col gap-2">
+        <div ref={containerRef} className="w-full aspect-square overflow-hidden">
+          <canvas ref={canvasRef} className="w-full h-full block" />
+        </div>
+        {hpBarsEl}
       </div>
     );
   }
 
-  const aLabel = formatLabel(playerA.nameEn, playerA.year);
-  const bLabel = formatLabel(playerB.nameEn, playerB.year);
-
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-[520px]">
+    <div className="flex flex-col items-center gap-4 w-full max-w-[520px]">
       <div
         ref={containerRef}
         className="w-full aspect-square rounded-xl overflow-hidden border-2 border-[#1f2937]"
@@ -469,19 +462,7 @@ export default function BattleArena({
         <canvas ref={canvasRef} className="w-full h-full block" />
       </div>
 
-      <div className="flex items-center gap-6 text-sm flex-wrap justify-center">
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[0] }} />
-          <span className="text-white font-semibold">{aLabel}</span>
-          <span className="text-[#6b7280] text-xs">OVR {playerA.ovr} → {ovrToHp(playerA.ovr)} HP</span>
-        </div>
-        <span className="text-[#4a4a7a] font-bold text-xs">VS</span>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: SLOT_COLORS[1] }} />
-          <span className="text-white font-semibold">{bLabel}</span>
-          <span className="text-[#6b7280] text-xs">OVR {playerB.ovr} → {ovrToHp(playerB.ovr)} HP</span>
-        </div>
-      </div>
+      {hpBarsEl}
 
       <button
         onClick={startBattle}

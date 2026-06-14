@@ -7,39 +7,72 @@ interface IntroCardProps {
   className?: string;
 }
 
+// PlayerCard(본체) 구조 복제:
+//   aspect-[5/7] / 사진 absolute inset-0 full-bleed / 하단 그라디언트 /
+//   OVR 좌상단 / role+name+team 좌하단 오버레이
+// 배틀 전용 컴포넌트 — PlayerCard 수정 없이 독립 구현
 export default function IntroCard({ player, color, className = '' }: IntroCardProps) {
-  const label = formatLabel(player.nameEn, player.year);
+  const label = formatLabel(player.nameEn, player.year); // "{year2} {nameEn}"
 
   return (
-    <div className={`rounded-xl overflow-hidden bg-[#111827] flex flex-col shadow-lg ${className}`}>
-      {/* 사진 영역 — aspect-square(1:1) = PC 카드 비율, 모바일 세로 비율(3/4)에서 변경 */}
-      <div className="relative w-full aspect-square flex-shrink-0">
-        {player.photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={player.photo}
-            alt={player.nameEn}
-            className="w-full h-full object-cover object-top"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ background: color }}>
-            <span className="text-white font-bold text-5xl">
-              {player.nameEn[0]?.toUpperCase() ?? '?'}
-            </span>
-          </div>
-        )}
-        {/* OVR 배지 — 좌상단 */}
-        <div className="absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 bg-black/70">
-          <span className="text-white font-bold text-sm leading-none">{player.ovr}</span>
+    <div className={`relative rounded-xl overflow-hidden bg-[#14141c] aspect-[5/7] ${className}`}>
+
+      {/* 사진 — 카드 전체 채움 (PlayerCard: absolute inset-0 object-cover) */}
+      {player.photo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={player.photo}
+          alt={player.nameEn}
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        />
+      ) : (
+        <div
+          className="absolute inset-0 w-full h-full flex items-center justify-center"
+          style={{ background: color }}
+        >
+          <span className="text-white font-black text-4xl">
+            {player.nameEn[0]?.toUpperCase() ?? '?'}
+          </span>
         </div>
-        {/* 팀 컬러 하단 라인 */}
-        <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{ background: color }} />
+      )}
+
+      {/* 하단 그라디언트 오버레이 (PlayerCard 동일 수식) */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[42%] pointer-events-none"
+        style={{ background: 'linear-gradient(to top, rgba(20,20,28,1) 0%, rgba(20,20,28,0.85) 40%, transparent 100%)' }}
+      />
+
+      {/* 팀 컬러 하단 라인 (슬롯 색 식별) */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 z-20" style={{ background: color }} />
+
+      {/* OVR + 리그 배지 — 좌상단 (PlayerCard: absolute top-2 left-2) */}
+      <div className="absolute top-1.5 left-1.5 z-20 flex flex-col items-center leading-none">
+        <span className="text-white font-black text-2xl leading-none drop-shadow-lg">
+          {player.ovr}
+        </span>
+        <span
+          className="text-[7px] font-bold px-1 py-[1px] rounded-sm uppercase tracking-wide mt-0.5 text-white leading-none"
+          style={{ backgroundColor: color }}
+        >
+          {player.league}
+        </span>
       </div>
 
-      {/* 이름·역할 정보 */}
-      <div className="px-2 py-1.5 text-center">
-        <p className="text-white font-bold text-xs leading-tight line-clamp-1">{label}</p>
-        <p className="text-[#6b7280] text-[10px] mt-0.5 line-clamp-1">{player.role} · {player.team}</p>
+      {/* 하단 텍스트 오버레이 — 그라디언트 위 (PlayerCard: absolute bottom-2.5 left-2.5) */}
+      <div
+        className="absolute bottom-2 left-2 right-2 z-20"
+        style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)' }}
+      >
+        <div className="text-white/60 text-[7px] uppercase tracking-wide leading-none">
+          {player.role}
+        </div>
+        {/* label = "{year2} {nameEn}" 형식 */}
+        <div className="text-white font-bold text-[11px] leading-tight truncate uppercase mt-0.5">
+          {label}
+        </div>
+        <div className="text-white/60 text-[7px] mt-0.5 truncate">
+          {player.team}
+        </div>
       </div>
     </div>
   );
