@@ -785,6 +785,11 @@ function MobileResultScreen({
         >
           {t.draft.playAgain}
         </button>
+        {simResult.grade === 'GRAND SLAM' && (
+          <p className="font-label-caps text-[10px] text-outline/50 text-center">
+            Grand Slam cleared! Try HARD?
+          </p>
+        )}
       </div>
       {simResult.grade === 'GRAND SLAM' && (
         <p className="font-label-caps text-[10px] text-outline/50 text-center mt-3">
@@ -1097,13 +1102,20 @@ function ResultScreen({
           >
             {copied ? t.draft.copied : t.draft.copyLink}
           </button>
-          <button
-            onClick={onReset}
-            className="flex-1 px-5 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity whitespace-nowrap"
-          >
-            <ReplayIcon />
-            {t.draft.playAgain}
-          </button>
+          <div className="flex-1 flex flex-col gap-1">
+            <button
+              onClick={onReset}
+              className="w-full px-5 py-3 rounded bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-label-caps font-bold flex items-center justify-center gap-2 transition-opacity whitespace-nowrap"
+            >
+              <ReplayIcon />
+              {t.draft.playAgain}
+            </button>
+            {!isHard && simResult.grade === 'GRAND SLAM' && (
+              <p className="font-label-caps text-[10px] text-outline/50 text-center">
+                Grand Slam cleared! Try HARD?
+              </p>
+            )}
+          </div>
         </div>
         {!isHard && simResult.grade === 'GRAND SLAM' && (
           <p className="font-label-caps text-[10px] text-outline/50 text-center mt-3">
