@@ -157,16 +157,6 @@ function drawFrame(
   ctx.lineWidth = 3;
   ctx.strokeRect(1.5, 1.5, size - 3, size - 3);
 
-  // 중앙 점선 구분선
-  ctx.strokeStyle = '#d1d5db';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([5, 5]);
-  ctx.beginPath();
-  ctx.moveTo(size / 2, 0);
-  ctx.lineTo(size / 2, size);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
   // 공
   for (const ball of state.balls) {
     ctx.beginPath();
@@ -248,16 +238,17 @@ function HpBars({
   const rB = Math.max(0, hpB / maxB);
 
   return (
-    <div className="w-full bg-white/90 border border-[#e5e7eb] rounded-xl px-3 py-2 flex gap-3 items-stretch">
+    <div className="w-full bg-white/90 border border-[#e5e7eb] px-3 py-2 flex gap-3 items-stretch">
       {/* A — 왼쪽, 좌→우 채움 */}
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-baseline mb-1">
-          <span className="text-[10px] font-bold truncate" style={{ color: SLOT_COLORS[0] }}>{labelA}</span>
-          <span className="text-[9px] text-[#6b7280] ml-1 flex-shrink-0">{hpA}/{maxA}</span>
+          <span className="font-label-caps text-[10px] font-bold truncate" style={{ color: SLOT_COLORS[0] }}>{labelA}</span>
+          <span className="font-label-caps text-[9px] text-[#6b7280] ml-1 flex-shrink-0">{hpA}/{maxA}</span>
         </div>
-        <div className="h-2 rounded-full overflow-hidden bg-[#e5e7eb]">
+        {/* 직사각형 체력바: border 박스, 내부 채움, 모서리 없음 */}
+        <div className="h-4 border-2 overflow-hidden" style={{ borderColor: '#ef444466' }}>
           <div
-            className="h-full rounded-full transition-all duration-150"
+            className="h-full transition-all duration-150"
             style={{ width: `${Math.round(rA * 100)}%`, background: hpColor(rA) }}
           />
         </div>
@@ -268,13 +259,13 @@ function HpBars({
       {/* B — 오른쪽, 우→좌 채움 (flex-row-reverse로 오른쪽 앵커) */}
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-baseline mb-1">
-          <span className="text-[9px] text-[#6b7280] mr-1 flex-shrink-0">{hpB}/{maxB}</span>
-          <span className="text-[10px] font-bold truncate text-right" style={{ color: SLOT_COLORS[1] }}>{labelB}</span>
+          <span className="font-label-caps text-[9px] text-[#6b7280] mr-1 flex-shrink-0">{hpB}/{maxB}</span>
+          <span className="font-label-caps text-[10px] font-bold truncate text-right" style={{ color: SLOT_COLORS[1] }}>{labelB}</span>
         </div>
         {/* flex-row-reverse: 채움이 오른쪽에서 시작해 왼쪽으로 줄어듦 */}
-        <div className="h-2 rounded-full overflow-hidden bg-[#e5e7eb] flex flex-row-reverse">
+        <div className="h-4 border-2 overflow-hidden flex flex-row-reverse" style={{ borderColor: '#3b82f666' }}>
           <div
-            className="h-full rounded-full transition-all duration-150"
+            className="h-full transition-all duration-150"
             style={{ width: `${Math.round(rB * 100)}%`, background: hpColor(rB) }}
           />
         </div>
