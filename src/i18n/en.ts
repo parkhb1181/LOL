@@ -71,5 +71,6 @@ export const en = {
     detailTitle: 'MATCH DETAILS',
     closeDetail: 'CLOSE',
     hardModeDesc: '+3 events: First Stand, EWC, Split · 7 total',
+    tryHard: 'Grand Slam cleared! Try HARD? →',
   },
 }

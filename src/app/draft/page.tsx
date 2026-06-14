@@ -786,6 +786,11 @@ function MobileResultScreen({
           {t.draft.playAgain}
         </button>
       </div>
+      {simResult.grade === 'GRAND SLAM' && (
+        <p className="font-label-caps text-[10px] text-outline/50 text-center mt-3">
+          {t.draft.tryHard}
+        </p>
+      )}
     </div>
   )
 }
@@ -1100,6 +1105,11 @@ function ResultScreen({
             {t.draft.playAgain}
           </button>
         </div>
+        {!isHard && simResult.grade === 'GRAND SLAM' && (
+          <p className="font-label-caps text-[10px] text-outline/50 text-center mt-3">
+            {t.draft.tryHard}
+          </p>
+        )}
       </div>
     </div>
   )
