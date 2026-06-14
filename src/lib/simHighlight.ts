@@ -140,7 +140,11 @@ export function pickHardHighlights(steps: SimStep[]): HardHighlight[] {
   // 국제전 단기 토너먼트 (FIRST_STAND / MSI / EWC)
   function intl(stagePrefix: string, label: string, isBonus?: boolean): HardHighlight {
     if (by.has(`${stagePrefix}_dnq`)) return { stageKey: stagePrefix, label, status: 'dnq', roundLabel: 'DNQ', isBonus }
-    if (by.has(`${stagePrefix}_win`)) return { stageKey: stagePrefix, label, status: 'win', roundLabel: 'Champion', isBonus }
+    if (by.has(`${stagePrefix}_win`)) {
+      // 결승 게임(_r3)에서 상대·스코어 추출 — 우승 시에도 "승 vs OOO" 표시
+      const finSer = by.get(`${stagePrefix}_r3`)?.series?.[0]
+      return { stageKey: stagePrefix, label, status: 'win', roundLabel: 'Champion', opp: finSer?.opp, score: finSer?.score, isBonus }
+    }
     if (by.has(`${stagePrefix}_out`)) {
       const r3 = by.get(`${stagePrefix}_r3`)
       const r2 = by.get(`${stagePrefix}_r2`)
