@@ -50,5 +50,7 @@ export const OpponentsFileSchema = z.object({
   regular: z.array(OpponentSchema).length(9),
   msi: z.array(OpponentSchema).min(12),
   worlds: z.array(OpponentSchema).min(12),
+  firstStandPool: z.array(OpponentSchema).min(4).optional(),  // HARD 전용 — First Stand 참가팀
+  ewcPool: z.array(OpponentSchema).min(12).optional(),        // HARD 전용 — EWC 참가팀
 })
 export type OpponentsFile = z.infer<typeof OpponentsFileSchema>

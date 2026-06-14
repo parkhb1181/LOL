@@ -200,7 +200,7 @@ export type DraftData = {
   players: PlayerSeason[]
   teams: TeamYear[]
   spinIndex: SpinIndex
-  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] }
+  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[]; firstStandPool?: Opponent[]; ewcPool?: Opponent[] }
 }
 
 // ── Weighted draw helper ───────────────────────────────────────────────────────

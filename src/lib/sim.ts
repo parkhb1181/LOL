@@ -225,7 +225,7 @@ function runHardIntlTournament(
 
 function simulateHard(
   picks: SimPlayer[],
-  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] },
+  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[]; firstStandPool?: Opponent[]; ewcPool?: Opponent[] },
   seed: number
 ): SimResult {
   // 동일 RNG 파생 (§6.1 — draftRng와 스트림 분리)
@@ -249,7 +249,8 @@ function simulateHard(
   if (!lckCupWinner) {
     steps.push({ stage: 'first_stand_dnq', label: 'First Stand — DNQ (LCK Cup 우승 필요)' })
   } else {
-    const intlFs = [...opponents.worlds]
+    // firstStandPool 전용 풀 사용, 없으면 worlds 폴백
+    const intlFs = [...(opponents.firstStandPool ?? opponents.worlds)]
     const { trophyWon: fsWin, steps: fsSteps } = runHardIntlTournament(
       'first_stand',
       ['First Stand QF', 'First Stand SF', 'First Stand Finals'],
@@ -303,7 +304,8 @@ function simulateHard(
 
   // ── 5. EWC (무조건 참가 — 초청전) ───────────────────────────
   {
-    const intlEwc = [...opponents.worlds]
+    // ewcPool 전용 풀 사용, 없으면 worlds 폴백
+    const intlEwc = [...(opponents.ewcPool ?? opponents.worlds)]
     const { trophyWon: ewcWin, steps: ewcSteps } = runHardIntlTournament(
       'ewc',
       ['EWC QF', 'EWC SF', 'EWC Finals'],
@@ -397,7 +399,7 @@ function simulateHard(
 // ─────────────────────────────────────────────────────────────────────────────
 export function simulate(
   picks: SimPlayer[],
-  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] },
+  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[]; firstStandPool?: Opponent[]; ewcPool?: Opponent[] },
   seed: number,
   mode: SimMode = 'normal'
 ): SimResult {
