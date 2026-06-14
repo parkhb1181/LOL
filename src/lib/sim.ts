@@ -195,14 +195,212 @@ function runDomesticSplit(
 
 export type SimMode = 'normal' | 'hard'
 
+// ─────────────────────────────────────────────────────────────────────────────
+// HARD MODE helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+// 국제전 단기 토너먼트 (QF/SF/Finals 3라운드 Bo5) — 비복원 추첨
+function runHardIntlTournament(
+  stagePrefix: string,
+  roundLabels: string[],
+  myOvr: number,
+  intlPool: Opponent[],  // splice-mutates (비복원)
+  rng: () => number
+): { trophyWon: boolean; steps: SimStep[] } {
+  const steps: SimStep[] = []
+  let alive = true
+  for (let r = 0; r < roundLabels.length; r++) {
+    const opp = drawOne(intlPool, rng)
+    const ser = playSeries('bo5', myOvr, opp.rating, rng)
+    steps.push({
+      stage: `${stagePrefix}_r${r + 1}`,
+      label: `${roundLabels[r]} vs ${opp.label}`,
+      series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+    })
+    if (!ser.win) { alive = false; break }
+  }
+  return { trophyWon: alive, steps }
+}
+
+function simulateHard(
+  picks: SimPlayer[],
+  opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] },
+  seed: number
+): SimResult {
+  // 동일 RNG 파생 (§6.1 — draftRng와 스트림 분리)
+  const rng = mulberry32((seed ^ 0x9E3779B9) >>> 0)
+
+  const myOvr = calcTeamOvr(picks)
+  const steps: SimStep[] = []
+  const trophies: Trophy[] = []
+  let reachedPlayoff = false
+  let reachedWorlds = false
+  let worldsBest: number | null = null
+
+  // ── 1. LCK_CUP (국내, 무조건 참가) ─────────────────────────
+  const cup = runDomesticSplit('LCK_CUP', myOvr, opponents.regular, rng)
+  steps.push(...cup.steps)
+  if (cup.reachedPlayoff) reachedPlayoff = true
+  const lckCupWinner = cup.trophyWon
+  if (lckCupWinner) trophies.push('LCK_CUP')
+
+  // ── 2. FIRST_STAND (게이트: LCK_CUP 우승) ───────────────────
+  if (!lckCupWinner) {
+    steps.push({ stage: 'first_stand_dnq', label: 'First Stand — DNQ (LCK Cup 우승 필요)' })
+  } else {
+    const intlFs = [...opponents.worlds]
+    const { trophyWon: fsWin, steps: fsSteps } = runHardIntlTournament(
+      'first_stand',
+      ['First Stand QF', 'First Stand SF', 'First Stand Finals'],
+      myOvr, intlFs, rng
+    )
+    steps.push(...fsSteps)
+    if (fsWin) {
+      trophies.push('FIRST_STAND')
+      steps.push({ stage: 'first_stand_win', label: 'First Stand Champions' })
+    } else {
+      steps.push({ stage: 'first_stand_out', label: 'First Stand Eliminated' })
+    }
+  }
+
+  // ── 3. REGULAR_1 / Road to MSI (국내, 무조건 참가) ──────────
+  const r1 = runDomesticSplit('REGULAR_1', myOvr, opponents.regular, rng)
+  steps.push(...r1.steps)
+  if (r1.reachedPlayoff) reachedPlayoff = true
+  if (r1.trophyWon) trophies.push('REGULAR_1')
+  const msiQualified = r1.regularRank <= 4
+
+  // ── 4. MSI (게이트: REGULAR_1 상위 4위) ──────────────────────
+  if (!msiQualified) {
+    steps.push({ stage: 'msi_dnq', label: 'MSI — DNQ (상위 4위 필요)' })
+  } else {
+    const intlMsi = [...opponents.msi]
+    let msiAlive = true
+    let msiPlace = 1
+    const msiLabels = ['MSI QF', 'MSI SF', 'MSI Finals']
+    for (let r = 0; r < 3; r++) {
+      const opp = drawOne(intlMsi, rng)
+      const ser = playSeries('bo5', myOvr, opp.rating, rng)
+      steps.push({
+        stage: `msi_r${r + 1}`,
+        label: `${msiLabels[r]} vs ${opp.label}`,
+        series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+      })
+      if (!ser.win) {
+        msiAlive = false
+        msiPlace = r === 0 ? 5 : r === 1 ? 3 : 2
+        break
+      }
+    }
+    if (msiAlive) {
+      trophies.push('MSI')
+      steps.push({ stage: 'msi_win', label: 'MSI Champions' })
+    } else {
+      steps.push({ stage: 'msi_out', label: `MSI Eliminated (${msiPlace}${ord(msiPlace)})` })
+    }
+  }
+
+  // ── 5. EWC (무조건 참가 — 초청전) ───────────────────────────
+  {
+    const intlEwc = [...opponents.worlds]
+    const { trophyWon: ewcWin, steps: ewcSteps } = runHardIntlTournament(
+      'ewc',
+      ['EWC QF', 'EWC SF', 'EWC Finals'],
+      myOvr, intlEwc, rng
+    )
+    steps.push(...ewcSteps)
+    if (ewcWin) {
+      trophies.push('EWC')
+      steps.push({ stage: 'ewc_win', label: 'EWC Champions' })
+    } else {
+      steps.push({ stage: 'ewc_out', label: 'EWC Eliminated' })
+    }
+  }
+
+  // ── 6. REGULAR_2 / 플옵 (국내, 무조건 참가) ─────────────────
+  const r2 = runDomesticSplit('REGULAR_2', myOvr, opponents.regular, rng)
+  steps.push(...r2.steps)
+  if (r2.reachedPlayoff) reachedPlayoff = true
+  if (r2.trophyWon) trophies.push('REGULAR_2')
+  const worldsQualified = r2.reachedPlayoff  // 플옵 진출 = Worlds 자격
+
+  // ── 7. WORLDS (게이트: REGULAR_2 플옵 진출) ──────────────────
+  if (!worldsQualified) {
+    steps.push({ stage: 'worlds_dnq', label: 'Worlds — DNQ (플옵 진출 필요)' })
+  } else {
+    reachedWorlds = true
+    const intlWorlds = [...opponents.worlds]
+
+    // Swiss Bo3 — 3승 진출 / 3패 탈락
+    let swissWins = 0, swissLosses = 0
+    for (let r = 0; r < 5 && swissWins < 3 && swissLosses < 3; r++) {
+      const opp = drawOne(intlWorlds, rng)
+      const ser = playSeries('bo3', myOvr, opp.rating, rng)
+      steps.push({
+        stage: `worlds_swiss_r${r + 1}`,
+        label: `Worlds Swiss R${r + 1} vs ${opp.label}`,
+        series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+      })
+      if (ser.win) swissWins++
+      else swissLosses++
+    }
+
+    if (swissWins < 3) {
+      steps.push({
+        stage: 'worlds_swiss_out',
+        label: `Worlds Swiss Eliminated (${swissWins}W-${swissLosses}L)`,
+      })
+    } else {
+      const koRounds = [
+        { stage: 'worlds_qf',    label: 'Worlds QF',     best: 8 },
+        { stage: 'worlds_sf',    label: 'Worlds SF',     best: 4 },
+        { stage: 'worlds_final', label: 'Worlds Finals', best: 2 },
+      ]
+      let worldsAlive = true
+      for (const kr of koRounds) {
+        const opp = drawOne(intlWorlds, rng)
+        const ser = playSeries('bo5', myOvr, opp.rating, rng)
+        steps.push({
+          stage: kr.stage,
+          label: `${kr.label} vs ${opp.label}`,
+          series: [{ opp: opp.label, score: `${ser.wins}-${ser.losses}`, win: ser.win, games: ser.games }],
+        })
+        if (!ser.win) {
+          worldsAlive = false
+          worldsBest = kr.best
+          break
+        }
+      }
+      if (worldsAlive) {
+        worldsBest = 1
+        trophies.push('WORLDS')
+        steps.push({ stage: 'worlds_win', label: 'Worlds Champions' })
+      }
+    }
+  }
+
+  const grade = gradeWithWorldsAndPlayoff({
+    trophies,
+    worldsBest,
+    reachedPlayoff,
+    reachedWorlds,
+    bestRegularRank: Math.min(r1.regularRank, r2.regularRank),
+    msiParticipated: msiQualified,
+  })
+
+  return { steps, trophies, grade, teamOvr: Math.round(myOvr) }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PUBLIC — simulate()
+// ─────────────────────────────────────────────────────────────────────────────
 export function simulate(
   picks: SimPlayer[],
   opponents: { regular: Opponent[]; msi: Opponent[]; worlds: Opponent[] },
   seed: number,
   mode: SimMode = 'normal'
 ): SimResult {
-  // mode === 'hard' 분기는 2단계에서 구현 (이번 단계는 normal과 동일 실행)
-  void mode
+  if (mode === 'hard') return simulateHard(picks, opponents, seed)
 
   // §6.1 simRng — separate stream from draftRng via (seed ^ 0x9E3779B9)
   const rng = mulberry32((seed ^ 0x9E3779B9) >>> 0)

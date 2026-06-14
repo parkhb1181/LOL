@@ -9,7 +9,9 @@ export type Grade =
   | 'PLAYOFF TEAM'
   | 'REBUILD'
 
-export type Trophy = 'SPLIT1' | 'MSI' | 'SPLIT2' | 'WORLDS'
+export type Trophy =
+  | 'SPLIT1' | 'MSI' | 'SPLIT2' | 'WORLDS'          // NORMAL
+  | 'LCK_CUP' | 'FIRST_STAND' | 'REGULAR_1' | 'EWC' | 'REGULAR_2'  // HARD
 
 const GRADE_ORD: Record<Grade, number> = {
   REBUILD: 0,
