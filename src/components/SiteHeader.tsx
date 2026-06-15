@@ -47,11 +47,13 @@ export default function SiteHeader({ activePage, fixed = false, fixedMobile, rig
         className={`hidden md:flex items-center px-10 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${desktopPos}`}
         style={{ paddingTop: fixed ? 'max(1rem, env(safe-area-inset-top))' : undefined }}
       >
-        <Link
-          href="/"
-          className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface hover:text-secondary transition-colors mr-8"
-        >
-          GRANDSLAM
+        <Link href="/" className="flex flex-col mr-8 group">
+          <span className="font-ovr-display text-[27px] tracking-tighter text-on-surface group-hover:text-secondary transition-colors leading-none">
+            GRANDSLAM
+          </span>
+          <span className="font-label-caps text-[10px] tracking-wide text-on-surface-variant/45 leading-none mt-[3px]">
+            grandslamlol.vercel.app
+          </span>
         </Link>
         <nav className="flex gap-6">
           <Link href="/dex" className={activePage === 'collection' ? navActive : navIdle}>
@@ -73,8 +75,13 @@ export default function SiteHeader({ activePage, fixed = false, fixedMobile, rig
         className={`flex md:hidden items-center justify-between px-5 py-4 border-b border-outline-variant/30 bg-surface-container-lowest/90 backdrop-blur-md ${mobilePos}`}
         style={{ paddingTop: (fixedMobile ?? fixed) ? 'max(1rem, env(safe-area-inset-top))' : undefined }}
       >
-        <Link href="/" className="font-ovr-display text-ovr-display-mobile tracking-tighter text-on-surface">
-          GRANDSLAM
+        <Link href="/" className="flex flex-col">
+          <span className="font-ovr-display text-[27px] tracking-tighter text-on-surface leading-none">
+            GRANDSLAM
+          </span>
+          <span className="font-label-caps text-[10px] tracking-wide text-on-surface-variant/45 leading-none mt-[3px]">
+            grandslamlol.vercel.app
+          </span>
         </Link>
         <LangToggle />
       </header>
