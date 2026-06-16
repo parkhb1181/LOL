@@ -56,13 +56,13 @@ export default function Home() {
           <div className="flex flex-col w-full max-w-[400px] gap-4">
             <Link
               href="/draft"
-              className="w-full py-4 px-8 bg-secondary text-on-secondary font-label-caps text-label-caps uppercase tracking-widest text-center hover:opacity-90 hover:shadow-[0_0_20px_rgba(233,195,73,0.3)] active:scale-[0.98] transition-all"
+              className="w-full py-4 px-8 bg-secondary text-on-secondary font-label-caps text-label-caps font-bold uppercase tracking-widest text-center hover:opacity-90 hover:shadow-[0_0_20px_rgba(233,195,73,0.3)] active:scale-[0.98] transition-all"
             >
               {t.home.draftStart}
             </Link>
             <Link
               href="/dex"
-              className="w-full py-4 px-8 bg-surface-container border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest text-center hover:bg-surface-container-high active:scale-[0.98] transition-all"
+              className="w-full py-4 px-8 bg-surface-container border border-outline-variant text-on-surface font-label-caps text-label-caps font-bold uppercase tracking-widest text-center hover:bg-surface-container-high active:scale-[0.98] transition-all"
             >
               {t.home.collection}
             </Link>

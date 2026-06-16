@@ -7,11 +7,11 @@ export const ko = {
     subtitle: 'LoL 올타임 드래프트 시뮬레이터',
     desc: '역대 최강 선수들을 드래프트하여 세계 챔피언십을 제패하세요.',
     draftStart: '드래프트 시작',
-    collection: '선수 컬렉션',
+    collection: 'PLAYER COLLECTION',
     ratingSystem: '레이팅 시스템 →',
   },
   dex: {
-    title: '선수 컬렉션',
+    title: 'PLAYER COLLECTION',
     countTeams: (t: number, p: number) => `${t}팀 · ${p}명`,
     allSeasons: '전 시즌',
     noTeams: '팀이 없습니다',
@@ -37,7 +37,7 @@ export const ko = {
     skip: 'SKIP',
     seasonResult: '시즌 결과',
     teamOvr: '팀 OVR',
-    copyLink: '링크 복사',
+    copyLink: '공유하기',
     copied: '✓ 복사됨!',
     roundLabel: {
       'Missed Playoffs': '미진출',
