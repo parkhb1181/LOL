@@ -933,14 +933,23 @@ function ResultScreen({
   const isHard = simResult.mode === 'hard'
 
   // §8.1 공유 URL — 클릭 시점에 window.origin 사용 (SSR 시 undefined 방지)
-  function handleCopyLink() {
+  // navigator.share 지원 시 OS 네이티브 공유창, 미지원 시 clipboard 폴백
+  async function handleCopyLink() {
     const ids = ROLES.map((_, i) => picks[i]?.player.id ?? '').join('.')
     const mParam = isHard ? '&m=hard' : ''
     const url = `${window.location.origin}/r?p=${ids}&s=${seed}${mParam}`
-    navigator.clipboard.writeText(url).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
+    if (navigator.share) {
+      try {
+        await navigator.share({ url })
+      } catch {
+        // 취소(AbortError) 또는 지원 불가 — 조용히 무시
+      }
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      })
+    }
   }
   // NORMAL 전용 하이라이트 (HARD에서는 사용 안 함)
   const highlights: HighlightStep[] = isHard ? [] : pickHighlightSteps(simResult.steps)
