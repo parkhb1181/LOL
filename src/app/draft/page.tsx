@@ -891,23 +891,25 @@ function HardMobileResultScreen({
       </p>
 
       {/* 버튼 3개 — 압축 */}
-      <div className="flex gap-2 w-full">
-        <button
-          onClick={onShowDetail}
-          className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center gap-1.5 transition-colors"
-        >
-          <ListIcon />
-          {t.draft.detailBtn}
-        </button>
-        <button
-          onClick={onCopyLink}
-          className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center transition-colors"
-        >
-          {copiedLabel}
-        </button>
+      <div className="flex flex-col gap-2 w-full">
+        <div className="flex gap-2">
+          <button
+            onClick={onShowDetail}
+            className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center gap-1.5 transition-colors"
+          >
+            <ListIcon />
+            {t.draft.detailBtn}
+          </button>
+          <button
+            onClick={onCopyLink}
+            className="flex-1 py-2.5 border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface font-label-caps text-[10px] rounded flex items-center justify-center transition-colors"
+          >
+            {copiedLabel}
+          </button>
+        </div>
         <button
           onClick={onReset}
-          className="flex-1 bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-[10px] py-2.5 rounded uppercase tracking-widest transition-all active:scale-[0.98]"
+          className="w-full bg-secondary hover:opacity-90 text-on-secondary font-label-caps text-[10px] py-2.5 rounded uppercase tracking-widest transition-all active:scale-[0.98]"
         >
           {t.draft.playAgain}
         </button>
@@ -1265,7 +1267,7 @@ export default function DraftPage() {
         {(state.phase === 'SPIN' || state.phase === 'PICK') && (
           <>
             {/* ── 모바일 (Stitch 디자인) ── */}
-            <div className="md:hidden flex flex-col gap-4 w-full pt-2">
+            <div className="md:hidden flex flex-col gap-4 w-full pt-5">
 
               {/* 5슬롯 그리드 — PICK 중 비어있는 슬롯은 골드 테두리 */}
               <MobileSlotRow picks={state.picks} isPickPhase={state.phase === 'PICK'} />
