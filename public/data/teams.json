@@ -1612,7 +1612,6 @@
     "year": 2013,
     "league": "LPL",
     "roster": [
-      "bigpomelo_2013_oh-my-god",
       "cool_2013_oh-my-god",
       "gogoing_2013_oh-my-god",
       "lovelin_2013_oh-my-god",
@@ -1620,7 +1619,6 @@
     ],
     "rolesAvailable": [
       "ADC",
-      "JGL",
       "MID",
       "SUP",
       "TOP"
@@ -1634,17 +1632,13 @@
     "year": 2014,
     "league": "LPL",
     "roster": [
-      "allen-yin-le_2014_oh-my-god",
       "cool_2014_oh-my-god",
-      "drug_2014_oh-my-god",
       "gogoing_2014_oh-my-god",
       "san-guo-jun-liang_2014_oh-my-god"
     ],
     "rolesAvailable": [
       "ADC",
-      "JGL",
       "MID",
-      "SUP",
       "TOP"
     ],
     "weight": 4

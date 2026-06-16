@@ -6726,26 +6726,6 @@
     "badges": []
   },
   {
-    "id": "bigpomelo_2013_oh-my-god",
-    "playerId": "bigpomelo",
-    "nameEn": "bigpomelo",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "role": "JGL",
-    "ovr": 79,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": null,
-    "badges": [
-      "LEAGUE_CHAMP"
-    ]
-  },
-  {
     "id": "cool_2013_oh-my-god",
     "playerId": "Cool",
     "nameEn": "Cool",
@@ -6898,24 +6878,6 @@
     "badges": []
   },
   {
-    "id": "allen-yin-le_2014_oh-my-god",
-    "playerId": "Allen (Yin Le)",
-    "nameEn": "Allen",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "role": "SUP",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": null,
-    "badges": []
-  },
-  {
     "id": "clearlove_2014_edward-gaming",
     "playerId": "ClearLove",
     "nameEn": "ClearLove",
@@ -7030,24 +6992,6 @@
     "badges": [
       "LEAGUE_CHAMP"
     ]
-  },
-  {
-    "id": "drug_2014_oh-my-god",
-    "playerId": "Drug",
-    "nameEn": "Drug",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "role": "JGL",
-    "ovr": 79,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": null,
-    "badges": []
   },
   {
     "id": "san-guo-jun-liang_2014_oh-my-god",
