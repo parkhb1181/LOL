@@ -34,9 +34,11 @@ const pretendard = localFont({
 
 const BASE_URL = 'https://grandslamlol.vercel.app'
 
-const SEO_TITLE = 'GRANDSLAM — All-Time Pro Roster Builder'
+const SEO_TITLE = 'GRANDSLAM - LoL 올타임 드래프트'
 const SEO_DESCRIPTION =
-  'Unofficial fan project — not affiliated with Riot Games. Build your all-time pro roster from LCK, LPL, LEC & LCS and play through Spring, MSI, Summer, and Worlds.'
+  '역대 LoL 프로 선수로 올타임 팀을 드래프트하고 시즌을 시뮬레이션하는 무료 웹게임'
+const OG_DESCRIPTION = '역대 LoL 프로 선수로 나만의 올타임 팀을 만들어보세요'
+const OG_IMAGE = `${BASE_URL}/og-image.png`
 
 export const metadata: Metadata = {
   title: SEO_TITLE,
@@ -48,18 +50,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: SEO_TITLE,
-    description: SEO_DESCRIPTION,
+    description: OG_DESCRIPTION,
     url: BASE_URL,
     siteName: 'GRANDSLAM',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GRANDSLAM' }],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'GRANDSLAM' }],
     type: 'website',
-    locale: 'en_US',
+    locale: 'ko_KR',
   },
   twitter: {
     card: 'summary_large_image',
     title: SEO_TITLE,
-    description: SEO_DESCRIPTION,
-    images: ['/og-image.png'],
+    description: OG_DESCRIPTION,
+    images: [OG_IMAGE],
   },
   verification: {
     google: 'jg_M-Yy2R7r62UJFFUvHj6jrkmjG9qdLFTd9-ZEzm28',
