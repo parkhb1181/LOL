@@ -1606,44 +1606,6 @@
     "weight": 4
   },
   {
-    "key": "oh-my-god_2013",
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "roster": [
-      "cool_2013_oh-my-god",
-      "gogoing_2013_oh-my-god",
-      "lovelin_2013_oh-my-god",
-      "san-guo-jun-liang_2013_oh-my-god"
-    ],
-    "rolesAvailable": [
-      "ADC",
-      "MID",
-      "SUP",
-      "TOP"
-    ],
-    "weight": 4
-  },
-  {
-    "key": "oh-my-god_2014",
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "roster": [
-      "cool_2014_oh-my-god",
-      "gogoing_2014_oh-my-god",
-      "san-guo-jun-liang_2014_oh-my-god"
-    ],
-    "rolesAvailable": [
-      "ADC",
-      "MID",
-      "TOP"
-    ],
-    "weight": 4
-  },
-  {
     "key": "edward-gaming_2014",
     "team": "EDward Gaming",
     "teamSlug": "edward-gaming",
@@ -2332,6 +2294,7 @@
     "year": 2019,
     "league": "LPL",
     "roster": [
+      "add_2019_bilibili-gaming",
       "jinjiao_2019_bilibili-gaming",
       "kuro_2019_bilibili-gaming",
       "meteor_2019_bilibili-gaming",
@@ -2341,7 +2304,8 @@
       "ADC",
       "JGL",
       "MID",
-      "SUP"
+      "SUP",
+      "TOP"
     ],
     "weight": 2
   },

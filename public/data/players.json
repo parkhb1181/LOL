@@ -6726,26 +6726,6 @@
     "badges": []
   },
   {
-    "id": "cool_2013_oh-my-god",
-    "playerId": "Cool",
-    "nameEn": "Cool",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "role": "MID",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/cool_2013_oh-my-god.webp",
-    "badges": [
-      "LEAGUE_CHAMP"
-    ]
-  },
-  {
     "id": "godlike_2013_royal-club",
     "playerId": "GoDlike",
     "nameEn": "GoDlike",
@@ -6764,46 +6744,6 @@
     "badges": []
   },
   {
-    "id": "gogoing_2013_oh-my-god",
-    "playerId": "Gogoing",
-    "nameEn": "Gogoing",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "role": "TOP",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/gogoing_2013_oh-my-god.webp",
-    "badges": [
-      "LEAGUE_CHAMP"
-    ]
-  },
-  {
-    "id": "lovelin_2013_oh-my-god",
-    "playerId": "LoveLin",
-    "nameEn": "LoveLin",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "role": "SUP",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/lovelin_2013_oh-my-god.webp",
-    "badges": [
-      "LEAGUE_CHAMP"
-    ]
-  },
-  {
     "id": "lucky-liu-jun-jie_2013_royal-club",
     "playerId": "Lucky (Liu Jun-Jie)",
     "nameEn": "Lucky",
@@ -6820,26 +6760,6 @@
     "msiWinner": false,
     "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/lucky-liu-jun-jie_2013_royal-club.webp",
     "badges": []
-  },
-  {
-    "id": "san-guo-jun-liang_2013_oh-my-god",
-    "playerId": "san (Guo Jun-Liang)",
-    "nameEn": "san",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2013,
-    "league": "LPL",
-    "role": "ADC",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/san-guo-jun-liang_2013_oh-my-god.webp",
-    "badges": [
-      "LEAGUE_CHAMP"
-    ]
   },
   {
     "id": "uzi-jian-zi-hao_2013_royal-club",
@@ -6898,24 +6818,6 @@
     ]
   },
   {
-    "id": "cool_2014_oh-my-god",
-    "playerId": "Cool",
-    "nameEn": "Cool",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "role": "MID",
-    "ovr": 80,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/cool_2014_oh-my-god.webp",
-    "badges": []
-  },
-  {
     "id": "koro1_2014_edward-gaming",
     "playerId": "Koro1",
     "nameEn": "Koro1",
@@ -6956,24 +6858,6 @@
     ]
   },
   {
-    "id": "gogoing_2014_oh-my-god",
-    "playerId": "Gogoing",
-    "nameEn": "Gogoing",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "role": "TOP",
-    "ovr": 81,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/gogoing_2014_oh-my-god.webp",
-    "badges": []
-  },
-  {
     "id": "namei_2014_edward-gaming",
     "playerId": "NaMei",
     "nameEn": "NaMei",
@@ -6992,24 +6876,6 @@
     "badges": [
       "LEAGUE_CHAMP"
     ]
-  },
-  {
-    "id": "san-guo-jun-liang_2014_oh-my-god",
-    "playerId": "San (Guo Jun-Liang)",
-    "nameEn": "San",
-    "nameKo": null,
-    "team": "Oh My God",
-    "teamSlug": "oh-my-god",
-    "year": 2014,
-    "league": "LPL",
-    "role": "ADC",
-    "ovr": 81,
-    "frame": "NORMAL",
-    "crown": false,
-    "worldsMvp": false,
-    "msiWinner": false,
-    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/san-guo-jun-liang_2014_oh-my-god.webp",
-    "badges": []
   },
   {
     "id": "u_2014_edward-gaming",
@@ -31743,6 +31609,24 @@
     "worldsMvp": false,
     "msiWinner": false,
     "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/players/zven_2025_cloud9.webp",
+    "badges": []
+  },
+  {
+    "id": "add_2019_bilibili-gaming",
+    "playerId": "ADD",
+    "nameEn": "ADD",
+    "nameKo": "강건모",
+    "team": "Bilibili Gaming",
+    "teamSlug": "bilibili-gaming",
+    "year": 2019,
+    "league": "LPL",
+    "role": "TOP",
+    "ovr": 72,
+    "frame": "NORMAL",
+    "crown": false,
+    "worldsMvp": false,
+    "msiWinner": false,
+    "photo": "https://pub-b9bcf4e1e29746118dcb1aaa2c4fe2f9.r2.dev/add_2019_bilibili-gaming.webp",
     "badges": []
   }
 ]
