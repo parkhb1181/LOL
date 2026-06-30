@@ -15,9 +15,9 @@
 - 설명은 짧게, 단 상태 흐름·렌더 타이밍 관련 결정은 1줄 근거를 남긴다.
 
 ## SSOT 위계
-@CURSOR_GUIDE.md
-- `PRD_LoL_AllTime_Draft_v1.md` — 기획 판단의 최종 권위. 기획 해석이 필요할 때 해당 섹션을 읽는다.
-- `DESIGN_GUIDE.md` — 색·형태·타이포의 권위. 비주얼 작업(Phase 3, /lab) 시 반드시 읽는다.
+@docs/CURSOR_GUIDE.md
+- `docs/PRD_LoL_AllTime_Draft_v1.md` — 기획 판단의 최종 권위. 기획 해석이 필요할 때 해당 섹션을 읽는다.
+- `docs/DESIGN_GUIDE.md` — 색·형태·타이포의 권위. 비주얼 작업(Phase 3, /lab) 시 반드시 읽는다.
 - 문서 간 충돌 발견 = 작업 중단 후 보고. 임의 해석으로 진행 금지.
 
 ## 행동 규약 (CURSOR_GUIDE §0이 원문이며 우선한다)
